@@ -14,6 +14,7 @@
 	<form action="/shopping_login.htm" method="post" id="theForm">
 		<div class="ui-pane">
 			<div class="ui-content">
+
 				<div class="content">
 					<div class="logozong">
 						<img class="logo" src="/asset/img/logo1.png">
@@ -119,13 +120,13 @@
 				 alert("密码忘了填写");
 			 }
 			 console.log(flag);
-			 if(flag){
-			 	$("#theForm").submit();
-			 	/*$.post('/shopping_login.htm',{'email':email,'password':password},function(res){
+			 /*if(flag){
+			 	window.location.href="/shopping_login.htm?email="+email+"&password=" +password;
+			 	$.post('/shopping_login.htm',{'email':email,'password':password},function(res){
 			 		console.log(typeof res);
 					console.log(res);
-				});*/
-			 }
+				});
+			 }*/
 		 });
 
 		$(".wjpassword").click(function() {

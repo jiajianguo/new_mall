@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				</svg>
 				<span class="item-text">首页</span>
 			</a>
-			<a class="item" href="/goodsclass">
+			<a class="item" href="/goodsclass.htm">
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-classify-on"></use>
 				</svg>

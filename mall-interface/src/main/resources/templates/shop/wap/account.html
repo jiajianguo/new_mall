@@ -26,30 +26,24 @@
 
         <div class="content">
             <div class="uesr_info_tips">基本信息</div>
-            <!--<div class="text">
-                <div class="textname">姓名</div>
-                <div>
-                    <span th:text="${user.username}"></span>
-                    <svg class="icon icon_right" aria-hidden="true">
-                        <use xlink:href="#icon-right"></use>
-                    </svg>
-                </div>
-            </div>-->
+
             <div class="lin_box headimg_box flex-between">
+                <div class="textname" >username:</div>
                 <span th:text="${user.username}"></span>
                 <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}"/>
                 <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}"/>
             </div>
             <div class="lin_box headimg_box flex-between">
             <div class="text">
-                <div class="textname" >E-mail</div>
+                <div class="textname" >E-mail:</div>
                 <div>
-                    <span th:text="${user.email}">1484031892@qq.com</span>
+                    <span th:text="${user.email}"></span>
                     <svg class="icon icon_right" aria-hidden="true">
                         <use xlink:href="#icon-right"></use>
                     </svg>
                 </div>
             </div>
+
             <div class="content_title">账号安全</div>
             <div class="text">
                 <div class="textname"><a href="/buyer/account_password.htm">修改密码</a></div>
@@ -73,6 +67,38 @@
 
     </div>
 </div>
+
+    <div class="ui-content">
+        <div class="uesr_info_tips">
+            基本信息
+        </div>
+        <div class="lin_box headimg_box flex-between">
+            <div class="textname" >username:</div>
+            <span th:text="${user.username}"></span>
+            <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}"/>
+            <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}"/>
+        </div>
+        <div class="lin_box flex-between">
+            <span>E-mail:</span>
+            <span th:text="${user.email}"></span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-right"></use>
+            </svg>
+        </div>
+        <div class="uesr_info_tips">
+            账号安全
+        </div>
+        <div class="lin_box flex-between">
+            <span><a href="/buyer/account_password.htm">修改密码</a></span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-right"></use>
+            </svg>
+        </div>
+
+        <a href="/shopping_logout.htm">
+        <input type="button" class="btn" name="" id="" value="退出" />
+        </a>
+    </div>
 </body>
 <script type="text/javascript">
 </script>

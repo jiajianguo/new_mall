@@ -147,7 +147,7 @@
 	display: block;
 	margin-left: .15rem;
 	border-radius: 4px;
-}	
+}
 
 .sepc_cont img:nth-child(4n - 3){
 	margin-left: 0;
@@ -239,4 +239,10 @@
 
 .goods_intro_box img{
 	width: 100%;
+}
+
+.swiper1 .swiper-slide{
+	width: 100vw;
+	height: 100vw;
+	overflow: hidden;
 }

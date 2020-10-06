@@ -17,8 +17,10 @@
 			<div class="page_address flex-between">
 				<div class="address_left" id="user_address">
 					<p>收货地址</p>
-					<div th:if="${ address }">
-						<span th:each="addr : ${address}" th:text="${addr.countries} +${addr.city}+ ${addr.areaInfo}"></span>
+					<div th:if="${ address }" th:each="addr : ${address}">
+						<span id="person" th:text="${addr.truename } "></span>
+						<span id="mobile" th:text="${addr.mobile}"></span>
+						<div  th:text="${addr.countries} +${addr.city}+ ${addr.areaInfo}"></div>
 					</div>
 					<div th:unless="${address }">未添加默认地址</div>
 				</div>
@@ -92,10 +94,10 @@
 				</div>
 				<div class="Nav"></div>
 			</div>
-			
 
-			
-			
+
+
+
 		</div>
 	</div>
 </body>
@@ -133,7 +135,7 @@
 
 			})
 
-			
+
 			$(".reduce").click(function(){
 				var val = $(this).parents(".num_box").find(".goods_num").text();
 				if(val > 1){
@@ -150,7 +152,7 @@
 
 
 			})
-			
+
 			$(".add").click(function(){
 				var val = $(this).parents(".num_box").find(".goods_num").text();
 					val++;
@@ -163,8 +165,8 @@
 					}
 				});
 			})
-			
-			
+
+
 			function calcAllprice(){
 				var allprice = 0.00;
 				$(".list_item input[type=checkbox]").each(function(){
@@ -178,6 +180,6 @@
 					$(".allprice").text( "$" + allprice.toFixed(2))
 				})
 			}
-			
+
 </script>
 </html>

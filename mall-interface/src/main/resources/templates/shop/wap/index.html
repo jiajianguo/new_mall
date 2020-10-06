@@ -140,7 +140,9 @@
 
     <!--幻灯-->
     <div class="focusBox" id="focusBox">
-        <div style='float:left;overflow:hidden;' th:if="${wapslide != null && wapslide.apType=='img' }">
+        <!--<script src="/advert_invoke.htm?id=262157"></script>-->
+
+        <div style='float:left;overflow:hidden;' th:if="${wapslide.apType=='img' }">
             <a th:href='@{/advert_redirect.htm(url=${obj.apAccUrl},id=${obj.advId})}' target='_blank'>
                 <img th:width='${obj.apWidth}' th:height='${obj.apHeight}' th:src="@{'/'+${obj.adAcc.path}+'/'+${obj.adAcc.name}" style='border:none;' />
             </a>
@@ -210,7 +212,7 @@
                 </a>
             </li>
             <li>
-                <a href="/brand.htm">
+                <a href="/">
                     <img  src="/style/system/front/wap/images/nav_pp.png">
                     <p>品牌街</p>
                 </a>
@@ -256,13 +258,13 @@
         <h1>
             <span class="fl">品牌街</span>
             <span class="fr">
-                <a href="/brand.htm">更多</a>
+                <a href="/">更多</a>
             </span>
         </h1>
         <div class="phone_brand">
             <ul id="banners">
                 <li th:each="gb,index : ${gbs}" th:class="${index.index <4?'display:none;':''}">
-                    <a th:href="@{/brand_goods.htm(id=${gb.id})}" target="_blank">
+                    <a href="/" target="_blank"> <!--th:href="@{/brand_goods.htm(id=${gb.id})}"-->
                         <img th:src="@{${'/'+gb.brandLogo.path+'/'+gb.brandLogo.name}}" width="88" height="44"/>
                     </a>
                 </li>
@@ -281,7 +283,7 @@
                         <img th:unless="${goods.d_goods.goods_main_photo}"
                              th:src="@{'/'+config.goodsImage.path +'/'+config.goodsImage.name}">
                         <p class="price" style="font-size: 14px">
-                            <b th:text="${'现价:¥'+goods.d_goods.storePrice}"></b>
+                            <b th:text="${'¥'+goods.d_goods.storePrice}"></b>
                         </p>
                     </a>
                 </li>

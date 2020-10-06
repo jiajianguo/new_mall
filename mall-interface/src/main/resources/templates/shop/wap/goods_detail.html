@@ -7,9 +7,10 @@
 	<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/goods_intro.css" />
-	<script src="/wap/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/wap/js/changePX.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/wap/js/main.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 	<div class="ui-pane">
@@ -62,6 +63,15 @@
 
 			</div>
 
+			<div class="cuxiao">
+				<div class="cux_tit flex-between">
+					<div><a th:href="@{/app_store.htm(id=${obj.goodsStoreId})}" style="color: #ff9900">进入店铺</a></div>
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-right"></use>
+					</svg>
+				</div>
+			</div>
+
 			<!--<div class="cuxiao">
 				<div class="cux_tit flex-between">
 					<div>促销</div>
@@ -109,14 +119,7 @@
 						<input type="number" name="count" id="count" value="1" />
 						<div id="add_count">+</div>
 						&nbsp;&nbsp;&nbsp;
-
-					</div>
-				</div>
-				<div class="spec_line">
-					<div class="spec_tit">
-						库存
-					</div>
-					<div class="num_opt flex-star">
+						<div id="add_count" style="color: #CC3C1A;">库存</div>
 						&nbsp;&nbsp;&nbsp;
 						<input type="number" name="inventory" id="inventory" th:value="${obj.goodsInventory}" disabled="disabled" />
 					</div>
