@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<title>shopping cart</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<link rel="stylesheet" type="text/css" href="/wap/css/swiper.min.css" />
-	<link rel="stylesheet" type="text/css" href="/wap/css/framework.css" />
-	<link rel="stylesheet" type="text/css" href="/wap/css/goods_intro.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/goods_intro.css" />
 	<script src="/wap/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/wap/js/changePX.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/wap/js/main.js" type="text/javascript" charset="utf-8"></script>
@@ -109,7 +109,14 @@
 						<input type="number" name="count" id="count" value="1" />
 						<div id="add_count">+</div>
 						&nbsp;&nbsp;&nbsp;
-						<div id="add_count" style="color: #CC3C1A;">库存</div>
+
+					</div>
+				</div>
+				<div class="spec_line">
+					<div class="spec_tit">
+						库存
+					</div>
+					<div class="num_opt flex-star">
 						&nbsp;&nbsp;&nbsp;
 						<input type="number" name="inventory" id="inventory" th:value="${obj.goodsInventory}" disabled="disabled" />
 					</div>

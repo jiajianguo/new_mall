@@ -34,65 +34,6 @@ public class ShoppingUser extends BaseEntity implements UserDetails {
 
     private ShoppingArea area;
 
-    public ShoppingArea getArea() {
-        return area;
-    }
-
-    public void setArea(ShoppingArea area) {
-        this.area = area;
-    }
-
-    public ShoppingAccessory getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(ShoppingAccessory photo) {
-        this.photo = photo;
-    }
-
-    @Override
-    public String toString() {
-        return "ShoppingUser{" +
-                "id=" + id +
-                ", addtime=" + addtime +
-                ", deletestatus=" + deletestatus +
-                ", msn='" + msn + '\'' +
-                ", qq='" + qq + '\'' +
-                ", ww='" + ww + '\'' +
-                ", address='" + address + '\'' +
-                ", availablebalance=" + availablebalance +
-                ", birthday=" + birthday +
-                ", email='" + email + '\'' +
-                ", freezeblance=" + freezeblance +
-                ", gold=" + gold +
-                ", integral=" + integral +
-                ", lastlogindate=" + lastlogindate +
-                ", lastloginip='" + lastloginip + '\'' +
-                ", logincount=" + logincount +
-                ", logindate=" + logindate +
-                ", loginip='" + loginip + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
-                ", report=" + report +
-                ", sex=" + sex +
-                ", status=" + status +
-                ", telephone='" + telephone + '\'' +
-                ", truename='" + truename + '\'' +
-                ", username='" + username + '\'' +
-                ", userrole='" + userrole + '\'' +
-                ", userCredit=" + userCredit +
-                ", photoId=" + photoId +
-                ", storeId=" + storeId +
-                ", qqOpenid='" + qqOpenid + '\'' +
-                ", sinaOpenid='" + sinaOpenid + '\'' +
-                ", parentId=" + parentId +
-                ", years=" + years +
-                ", areaId=" + areaId +
-                ", storeQuickMenu='" + storeQuickMenu + '\'' +
-                ", store=" + store +
-                '}';
-    }
-
     private BigDecimal freezeblance;
 
     private Integer gold;
@@ -152,6 +93,65 @@ public class ShoppingUser extends BaseEntity implements UserDetails {
      */
     private ShoppingUserconfig userconfig;
     private List<ShoppingRole> roles;
+
+    public ShoppingArea getArea() {
+        return area;
+    }
+
+    public void setArea(ShoppingArea area) {
+        this.area = area;
+    }
+
+    public ShoppingAccessory getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(ShoppingAccessory photo) {
+        this.photo = photo;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingUser{" +
+                "id=" + id +
+                ", addtime=" + addtime +
+                ", deletestatus=" + deletestatus +
+                ", msn='" + msn + '\'' +
+                ", qq='" + qq + '\'' +
+                ", ww='" + ww + '\'' +
+                ", address='" + address + '\'' +
+                ", availablebalance=" + availablebalance +
+                ", birthday=" + birthday +
+                ", email='" + email + '\'' +
+                ", freezeblance=" + freezeblance +
+                ", gold=" + gold +
+                ", integral=" + integral +
+                ", lastlogindate=" + lastlogindate +
+                ", lastloginip='" + lastloginip + '\'' +
+                ", logincount=" + logincount +
+                ", logindate=" + logindate +
+                ", loginip='" + loginip + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", password='" + password + '\'' +
+                ", report=" + report +
+                ", sex=" + sex +
+                ", status=" + status +
+                ", telephone='" + telephone + '\'' +
+                ", truename='" + truename + '\'' +
+                ", username='" + username + '\'' +
+                ", userrole='" + userrole + '\'' +
+                ", userCredit=" + userCredit +
+                ", photoId=" + photoId +
+                ", storeId=" + storeId +
+                ", qqOpenid='" + qqOpenid + '\'' +
+                ", sinaOpenid='" + sinaOpenid + '\'' +
+                ", parentId=" + parentId +
+                ", years=" + years +
+                ", areaId=" + areaId +
+                ", storeQuickMenu='" + storeQuickMenu + '\'' +
+                ", store=" + store +
+                '}';
+    }
 
     private Collection<? extends GrantedAuthority> authorities;
 

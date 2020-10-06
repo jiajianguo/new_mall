@@ -71,11 +71,12 @@ public class PasswordFilter extends OncePerRequestFilter {
 		}
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
 		String email = request.getParameter("email");
+		log.info("------登录信息------{}",email);
 		if (StringUtils.isNotBlank(email)) {
 			try {
 				String password = request.getParameter("password");
-				ShoppingUserMapper userDAO = webApplicationContext.getBean(ShoppingUserMapper.class);
-				ShoppingUser user = userDAO.findByEmail(email);
+				/*ShoppingUserMapper userDAO = webApplicationContext.getBean(ShoppingUserMapper.class);
+				ShoppingUser user = userDAO.findByEmail(email);*/
 				Map paramter = new HashMap();
 				//paramter.put("username", user.getUsername());
 				paramter.put("username", email);

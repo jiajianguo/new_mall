@@ -508,7 +508,7 @@ public class IndexViewAction {
 	}
 
 
-	@RequestMapping( { "/index.htm" } )
+	@RequestMapping( {"/index.htm"} )
 	public ModelAndView index( HttpServletRequest request, HttpServletResponse response ) {
 		ModelAndView mv = new JModelAndView( "index.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
 		Map params = new HashMap();
@@ -726,7 +726,7 @@ public class IndexViewAction {
 		if( (shopping_view_type != null) && (!shopping_view_type.equals( "" )) && (shopping_view_type.equals( "wap" )) ) {
 			//String store_id = CommUtil.null2String( request.getSession( false ).getAttribute( "store_id" ) );
 			mv = new JModelAndView( "wap/404.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
-			mv.addObject( "url", CommUtil.getURL( request ) + "/wap/index.htm");
+			mv.addObject( "url", CommUtil.getURL( request ) + "/");
 		}
 		return mv;
 	}
@@ -897,7 +897,7 @@ public class IndexViewAction {
 		params.put("start",0);
 		params.put("pageSize",15);
 		List<ShoppingGoodsclass> gcs = this.goodsClassService.queryByCondition(params);
-				//query( "select obj from GoodsClass obj where obj.parent.id is null and obj.display=:display order by obj.sequence asc", params, 0, 15 );
+		viewTools.advertInvoke(mv,"262157","wapslide");
 		mv.addObject( "gcs", gcs );
 		params.clear();
 		params.put( "audit", Integer.valueOf( 1 ) );
@@ -908,8 +908,6 @@ public class IndexViewAction {
 		params.put("pageSize",4);
 		List<ShoppingGoodsbrand> gbs = this.goodsBrandService.queryByCondition(params);
 		accessViewTools.logoPhotoHandle(gbs);
-				//.query( "select obj from GoodsBrand obj where obj.audit=:audit and obj.recommend=:recommend order by obj.sequence", params, -1, -1 );
-
 		mv.addObject( "gbs", gbs );
 		params.clear();
 		params.put("orderBy","sequence");
@@ -927,7 +925,6 @@ public class IndexViewAction {
 		params.put("sequence","asc");
 		params.put("parent_id","is null");
 		List acs = this.articleClassService.queryByCondition(params);
-		//query( "select obj from ArticleClass obj where obj.parent.id is null and obj.mark!=:mark order by obj.sequence asc", params, 0, 9 );
 		mv.addObject( "acs", acs );
 		params.clear();
 		params.put( "store_recommend", Boolean.valueOf( true ) );

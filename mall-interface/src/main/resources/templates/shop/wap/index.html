@@ -140,9 +140,7 @@
 
     <!--幻灯-->
     <div class="focusBox" id="focusBox">
-        <!--<script src="/advert_invoke.htm?id=262157"></script>-->
-
-        <div style='float:left;overflow:hidden;' th:if="${wapslide.apType=='img' }">
+        <div style='float:left;overflow:hidden;' th:if="${wapslide != null && wapslide.apType=='img' }">
             <a th:href='@{/advert_redirect.htm(url=${obj.apAccUrl},id=${obj.advId})}' target='_blank'>
                 <img th:width='${obj.apWidth}' th:height='${obj.apHeight}' th:src="@{'/'+${obj.adAcc.path}+'/'+${obj.adAcc.name}" style='border:none;' />
             </a>

@@ -14,6 +14,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -48,7 +49,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Client
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
@@ -143,18 +144,15 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 		.userDetailsService(userDetailsServiceImpl)
 		//请求过滤配置
 		.authorizeRequests()
-			.antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+			.antMatchers(
 					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM,//用户密码登录请求url
-					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,//手机登录请求url
 					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
 					SecurityConstants.DEFAULT_FORGOT_PASSWORD_URL,//忘记密码页面
 					SecurityConstants.DEFAULT_MODIFY_PASSWORD_URL,//修改密码请求url
 					SecurityConstants.DEFAULT_FORGOT_PASSWORD_SMS_URL,//手机找回密码 短信请求url
 					securityProperties.getBrowser().getLoginPage(),//用户密码登录页面
-					//securityProperties.getBrowser().getMobileLoginPage(),//手机登录登录页面
 					securityProperties.getBrowser().getRegisterPage(),//注册页
 					securityProperties.getBrowser().getRegisterUrl(),//这册请求url
-					"/*/login.htm",
 					"/goods.htm",
 					"/integral.htm",
 					"/integral.htm",
@@ -183,9 +181,9 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 				//.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
 		//登录配置
 			.formLogin()
-			.loginPage("/user/login.htm")
+			.loginPage(SecurityConstants.DEFAULT_LOGIN_URL)
 			.loginProcessingUrl(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL)
-			.successForwardUrl("/success.htm")
+			.successForwardUrl(SecurityConstants.DEFAULT_SUCCESS_URL)
 			.failureForwardUrl("/login_error.htm")
 			.and()
 		//登出配置

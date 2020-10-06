@@ -9,6 +9,9 @@ spring:
     username: root
     password: 54@Xdj.con
     #password: root
+  messages:
+    basename: static/i18n/messages
+    encoding: UTF-8
   redis:
     database: 1
     host: 127.0.0.1

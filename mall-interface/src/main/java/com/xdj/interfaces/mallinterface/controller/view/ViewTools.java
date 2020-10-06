@@ -462,7 +462,7 @@ public class ViewTools {
                 }
                 ap.getAdvId();
                 Map para = new HashMap<String, Object>();
-                para.put("ad_ap_id", ap.getAdvId());
+                para.put("ad_ap_id", ap.getId());
                 para.put("startTime", new Date());
                 para.put("endTime", new Date());
                 para.put("start", 0);

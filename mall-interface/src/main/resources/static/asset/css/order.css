@@ -184,7 +184,13 @@ input[type=checkbox]:checked {
 	background-color: #333333;
 	color: #ffffff;
 }
-
+.fptext{
+	font-size: .28rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #868686;
+}
 .zfbot{
 	margin-top: 1px;
 	padding: .25rem .25rem .25rem .25rem;
@@ -194,14 +200,7 @@ input[type=checkbox]:checked {
 	display: flex;
 	align-items: center;
 }
-.fptext{
-	font-size: .28rem;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: #868686;
-}
-.fptextzong > div{
+.fptextzong>div{
 	display: flex;
 	align-items: center;
 	margin-right: .2rem;
