@@ -9,7 +9,6 @@
 .intro_line{
 	background: white;
 	padding: .15rem .24rem;
-	color: ;
 }
 
 .price{
@@ -31,6 +30,10 @@
 
 .collect_box{
 	text-align: center;
+}
+
+.collect_act{
+	fill: red;
 }
 
 .goods_tit{

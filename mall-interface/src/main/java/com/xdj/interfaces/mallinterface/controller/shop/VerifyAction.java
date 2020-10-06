@@ -2,29 +2,30 @@
 
 
  import com.xdj.interfaces.mallinterface.service.IGroupService;
- import com.xdj.interfaces.mallinterface.service.IStoreService;
- import com.xdj.interfaces.mallinterface.service.IUserService;
- import com.xdj.www.core.tools.CommUtil;
- import com.xdj.www.entity.*;
- import org.apache.commons.lang3.StringUtils;
- import org.springframework.beans.factory.annotation.Autowired;
- import org.springframework.stereotype.Controller;
- import org.springframework.web.bind.annotation.RequestMapping;
- import org.springframework.web.bind.annotation.ResponseBody;
+import com.xdj.interfaces.mallinterface.service.IStoreService;
+import com.xdj.interfaces.mallinterface.service.IUserService;
+import com.xdj.www.core.tools.CommUtil;
+import com.xdj.www.entity.ShoppingStoreExample;
+import com.xdj.www.entity.ShoppingStoreWithBLOBs;
+import com.xdj.www.entity.ShoppingUser;
+import com.xdj.www.entity.ShoppingUserExample;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
- import javax.imageio.ImageIO;
- import javax.servlet.ServletOutputStream;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
- import javax.servlet.http.HttpSession;
- import java.awt.*;
- import java.awt.image.BufferedImage;
- import java.io.IOException;
- import java.io.PrintWriter;
- import java.util.HashMap;
- import java.util.List;
- import java.util.Map;
- import java.util.Random;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Random;
 
  @Controller
  public class VerifyAction {
@@ -91,12 +92,12 @@
    }
 
    @RequestMapping({"/verify_email.htm"})
-   public void verify_email(HttpServletRequest request, HttpServletResponse response, String email, String id)
+   public void verify_email(HttpServletRequest request, HttpServletResponse response, String email)
    {
      boolean ret = true;
      ShoppingUserExample example = new ShoppingUserExample();
      ShoppingUserExample.Criteria criteria = example.createCriteria();
-     criteria.andEmailEqualTo(email).andIdNotEqualTo(CommUtil.null2Long(id));
+     criteria.andEmailEqualTo(email);
      List<ShoppingUser> users=userService.selectByExample(example);
      if ((users != null) && (users.size() > 0)) {
        ret = false;

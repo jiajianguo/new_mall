@@ -1,25 +1,21 @@
 package com.xdj.interfaces.mallinterface.security.passwordauth;
 
-import java.io.IOException;
-import java.util.*;
+import com.xdj.interfaces.mallinterface.cache.RequestMsgCache;
+import com.xdj.interfaces.mallinterface.util.CommUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.xdj.interfaces.mallinterface.cache.RequestMsgCache;
-import com.xdj.interfaces.mallinterface.mapper.ShoppingUserMapper;
-import com.xdj.interfaces.mallinterface.util.CommUtil;
-import com.xdj.www.entity.ShoppingUser;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
+import java.util.*;
 
 
 
@@ -35,6 +31,7 @@ public class PasswordFilter extends OncePerRequestFilter {
 		passUrl.add("register.htm");
 		passUrl.add("verify");
 		passUrl.add("logout");
+		passUrl.add("register_finish.htm");
 		passUrl.add("invoke.htm");
 	}
 
@@ -71,7 +68,6 @@ public class PasswordFilter extends OncePerRequestFilter {
 		}
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
 		String email = request.getParameter("email");
-		log.info("------登录信息------{}",email);
 		if (StringUtils.isNotBlank(email)) {
 			try {
 				String password = request.getParameter("password");

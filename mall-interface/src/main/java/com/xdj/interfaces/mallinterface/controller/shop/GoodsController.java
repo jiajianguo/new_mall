@@ -3,15 +3,12 @@ package com.xdj.interfaces.mallinterface.controller.shop;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xdj.interfaces.mallinterface.controller.view.*;
 import com.xdj.interfaces.mallinterface.mv.JModelAndView;
 import com.xdj.interfaces.mallinterface.mv.PageModel;
-import com.xdj.interfaces.mallinterface.query.IPageList;
 import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
 import com.xdj.interfaces.mallinterface.util.CommUtil;
-import com.xdj.www.core.domain.virtual.SysMap;
 import com.xdj.www.core.tools.IpAddress;
 import com.xdj.www.entity.*;
 import org.apache.commons.lang3.StringUtils;
@@ -424,6 +421,120 @@ public class GoodsController {
             mv.addObject("goodsViewTools", this.goodsViewTools);
             mv.addObject("storeViewTools", this.storeViewTools);
             mv.addObject("areaViewTools", this.areaViewTools);
+            ShoppingGoodsExample ex = new ShoppingGoodsExample();
+            ex.createCriteria()
+                    .andGoodsStoreIdEqualTo(store.getId())
+                    .andGoodsStatusEqualTo(0);
+            List<ShoppingGoodsWithBLOBs>  list= goodsService.selectExample(ex);
+            if(list != null){
+                mv.addObject("goods_counts",list.size());
+            }
+            return mv;
+        }
+        ModelAndView mv = new JModelAndView("error.html",
+                this.configService.getSysConfig(),
+                this.userConfigService.getUserConfig(), 1, request,
+                response);
+        mv.addObject("op_title", "请求参数错误");
+        mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
+        return mv;
+    }
+
+    //app端按照销量、价格筛选的方法（不带分类）
+    @RequestMapping({"/goodsList.htm"})
+    public ModelAndView goodsist(HttpServletRequest request, HttpServletResponse response, String gc_id, String store_id, String recommend, String currentPage, String orderBy, String orderType, String begin_price, String end_price)
+    {
+        String template = "default";
+        ShoppingStoreWithBLOBs store = this.storeService.getObjById(CommUtil.null2Long(store_id));
+        if (store != null) {
+            storeViewTools.addGoods(store);
+            storeViewTools.addUser(store);
+            storeViewTools.addBanner(store);
+            storeViewTools.addStoreLogo(store);
+            ModelAndView mv = new JModelAndView( "wap/store_goods_list.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+            Map<String,Object> params = new HashMap<>();
+            params.put("goods_store_id",store.getId());
+            params.put("orderBy",orderBy);
+            params.put("sort",orderType);
+            params.put("goods_status",0);
+            int pageNow = 1;
+            if(StringUtils.isNotBlank(currentPage)){
+                pageNow = Integer.parseInt(currentPage);
+            }
+            params.put("start",(pageNow-1)*20);
+            params.put("pageSize",20);
+
+            if(gc_id!=null) {
+                ShoppingUsergoodsclass ugc = this.userGoodsClassService.getObjById(CommUtil.null2Long(gc_id));
+                if (ugc != null) {
+                    Set<Long> ids = genericUserGcIds(ugc);
+                    List ugc_list = new ArrayList();
+                    for (Long g_id : ids) {
+                        ShoppingUsergoodsclass temp_ugc = this.userGoodsClassService.getObjById(g_id);
+                        ugc_list.add(temp_ugc);
+                    }
+
+                    params.put("ugc_ids", ids);
+                    System.err.println("ugc_ids=====" + ids);
+
+                    // gqo.addQuery("ugc", ugc, "obj.goods_ugcs", "member of");
+               /* for (int i = 0; i < ugc_list.size(); i++){
+                    //gqo.addQuery("ugc" + i, ugc_list.get(i), "obj.goods_ugcs","member of", "or");
+                }*/
+
+                } else {
+                    ugc = new ShoppingUsergoodsclass();
+                    ugc.setClassname("全部商品");
+                    mv.addObject("ugc", ugc);
+                }
+                mv.addObject("ugc", ugc);
+            }
+            if ((recommend != null) && (!recommend.equals(""))) {
+                params.put("goods_recommend",Boolean.valueOf(CommUtil.null2Boolean(recommend)));
+
+            }
+
+            if ((begin_price != null) && (!begin_price.equals(""))) {
+                params.put("store_price_begin", BigDecimal.valueOf(CommUtil.null2Double(begin_price)));
+
+            }
+            if ((end_price != null) && (!end_price.equals(""))) {
+                params.put("store_price_end",BigDecimal.valueOf(CommUtil.null2Double(end_price)));
+
+            }
+            List<ShoppingGoodsWithBLOBs> pList = this.goodsService.queryByCondition(params);
+            if(pList != null){
+                PageModel page = new PageModel();
+                accessViewTools.addMainPhotos(pList);
+                page.setResult(pList);
+                int count = goodsService.count(params);
+                page.setPageSize(20);
+                page.setCurrentPage(pageNow);
+                page.setRowCount(count);
+                page.setPages(count/20);
+                com.xdj.interfaces.mallinterface.util.CommUtil.saveIPageList2ModelAndView("", "", "", page, mv);
+            }
+            String url = this.configService.getSysConfig().getAddress();
+            if ((url == null) || (url.equals(""))) {
+                url = CommUtil.getURL(request);
+            }
+
+            ShoppingUser  user = userService.queryOneByStoreId(CommUtil.null2Long(store_id));
+            params.clear();
+            params.put("user_id", user.getId());
+            params.put("display", 1);
+            params.put("parent_id","is null");
+            params.put("orderBy","sequence");
+            params.put("sort","asc");
+            List<ShoppingUsergoodsclass> ugcs = this.userGoodsClassService.queryByCondition(params);
+            userGoodsClassTools.addChilds(ugcs);
+
+            mv.addObject("ugcs", ugcs);
+            mv.addObject("store", store);
+            mv.addObject("recommend", recommend);
+            mv.addObject("begin_price", begin_price);
+            mv.addObject("end_price", end_price);
             ShoppingGoodsExample ex = new ShoppingGoodsExample();
             ex.createCriteria()
                     .andGoodsStoreIdEqualTo(store.getId())

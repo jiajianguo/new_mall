@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -93,6 +92,11 @@ public class AccountController {
     @RequestMapping({"/buyer/account.htm"})
     public ModelAndView account(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mv = new JModelAndView("buyer/account.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 0, request, response);
+        String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
+        if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+            mv = new JModelAndView("wap/account.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+        }
         ShoppingUser user = this.userService.getObjById(SecurityUserHolder.getCurrentUser().getId());
         accessoryViewTools.addUserHeadImg(user);
         if( user.getAreaId()!=null && !"".equals(user.getAreaId()) ) {
@@ -255,9 +259,12 @@ public class AccountController {
     @SecurityMapping(display = false, rsequence = 0, title="图像修改", value="/buyer/account_avatar.htm*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
     @RequestMapping({"/buyer/account_avatar.htm"})
     public ModelAndView account_avatar(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mv = new JModelAndView(
-                "buyer/account_avatar.html", this.configService.getSysConfig(),
-                this.userConfigService.getUserConfig(), 0, request, response);
+        ModelAndView mv = new JModelAndView("buyer/account_avatar.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 0, request, response);
+        String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
+        if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+            mv = new JModelAndView("wap/account_avatar.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+        }
         ShoppingUser user = SecurityUserHolder.getCurrentUser();
         accessoryViewTools.addUserHeadImg(user);
         mv.addObject("user",user);

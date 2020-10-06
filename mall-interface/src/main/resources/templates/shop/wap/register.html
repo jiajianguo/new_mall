@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<title>注册</title>
@@ -26,17 +26,41 @@
 						</div>
 					</div>
 
+					<form th:action="@{/register_finish.htm}" method="post" name="theForm" id="theForm">
 					<div class="text textname">
-						<input class="text_input" type="text" placeholder="EMAIL  ADDRESS" />
+						<input class="text_input" type="text" name="email" placeholder="EMAIL  ADDRESS" />
 					</div>
+						<span class="menu_null" style="color:#991726;"></span>
+						<script>
+							jQuery("input[name='email']").blur(function(){
+								var email=jQuery(this).val();
+								jQuery.post('/verify_email.htm',{'email': email},function(res){
+									if(res === 'false'){
+										jQuery(".menu_null").text('Email已存在');
+
+										var count=5;
+										window.setInterval(go,1000);
+										function go(){
+											count--;
+											if(count==0){
+												jQuery(".menu_null").text('');
+
+											}
+										}
+									}
+								});
+							});
+
+
+						</script>
 					<div class="text">
-						<input class="text_input" type="password" placeholder="PASSWORD" />
+						<input class="text_input" type="password" name="password" placeholder="PASSWORD" />
 					</div>
 					<div class="xz">
 						<input type="checkbox" name="" id="" value="" />
 						<div>I'd like to receive exclusive offers and news by Email or SMS</div>
 					</div>
-					<input class="content_bt" type="button" value="SIGN UP" />
+					<input class="content_bt" type="submit" value="SIGN UP" />
 					<div class="text_bototm">
 						<div class="text_dian"></div>
 						<div class="text_bototm_row">Or Join With</div>
@@ -46,7 +70,9 @@
 						<img src="asset/img/book.png" >
 						<img src="asset/img/go.png" >
 					</div>
+					</form>
 				</div>
+
 
 			</div>
 		</div>

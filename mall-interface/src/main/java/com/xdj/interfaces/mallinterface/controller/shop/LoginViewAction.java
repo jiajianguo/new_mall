@@ -1,33 +1,30 @@
  package com.xdj.interfaces.mallinterface.controller.shop;
 
  import com.xdj.interfaces.mallinterface.cache.RequestMsgCache;
- import com.xdj.interfaces.mallinterface.mv.JModelAndView;
- import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
- import com.xdj.interfaces.mallinterface.service.*;
- import com.xdj.interfaces.mallinterface.util.ImageViewTools;
- import com.xdj.interfaces.mallinterface.util.UCTools;
- import com.xdj.www.core.tools.CommUtil;
- import com.xdj.www.core.uc.UCClient;
- import com.xdj.www.core.uc.XMLHelper;
- import com.xdj.www.entity.*;
- import org.apache.commons.lang3.StringUtils;
- import org.slf4j.Logger;
- import org.slf4j.LoggerFactory;
- import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
- import org.springframework.security.core.context.SecurityContextHolder;
- import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
- import org.springframework.stereotype.Controller;
- import org.springframework.web.bind.annotation.RequestBody;
- import org.springframework.web.bind.annotation.RequestMapping;
- import org.springframework.web.servlet.ModelAndView;
+import com.xdj.interfaces.mallinterface.mv.JModelAndView;
+import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
+import com.xdj.interfaces.mallinterface.service.*;
+import com.xdj.interfaces.mallinterface.util.ImageViewTools;
+import com.xdj.interfaces.mallinterface.util.UCTools;
+import com.xdj.www.core.tools.CommUtil;
+import com.xdj.www.core.uc.UCClient;
+import com.xdj.www.core.uc.XMLHelper;
+import com.xdj.www.entity.*;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
- import javax.annotation.Resource;
- import javax.servlet.http.Cookie;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
- import javax.servlet.http.HttpSession;
- import java.io.IOException;
- import java.util.*;
+import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.*;
 
 
  /**
@@ -179,16 +176,10 @@
    public void register_finish(HttpServletRequest request, HttpServletResponse response, String userName, String password, String email, String code)
            throws  IOException{
        boolean reg = true;
-       if ((code != null) && (!code.equals(""))) {
-           code = CommUtil.filterHTML(code);
-
-       }
-       System.err.println("request.getSession(false).getAttribute(\"verify_code\")==="+request.getSession(false).getAttribute("verify_code"));
        Map params = new HashMap();
-       params.put("username", userName);
        ShoppingUserExample example = new ShoppingUserExample();
        ShoppingUserExample.Criteria criteria = example.createCriteria();
-       criteria.andUsernameEqualTo(userName);
+       criteria.andEmailEqualTo(email);
        List<ShoppingUser> users=userService.selectByExample(example);
        if ((users != null) && (users.size() > 0)) {
            reg = false;
@@ -206,9 +197,8 @@
            user.setReport(Integer.valueOf(0));
            user.setUserCredit(Integer.valueOf(0));
            user.setYears(Integer.valueOf(0));
-           user.setUsername(userName);
+           user.setUsername(email.substring(0,email.indexOf("@")));
            user.setPassword(new BCryptPasswordEncoder().encode(password));
-           params.clear();
            params.put("type", "BUYER");
            List<ShoppingRole> roles =roleService.queryByCondition(params);
            if (user.getRoles()==null){
@@ -243,7 +233,6 @@
            album.setUserId(user.getId());
            album.setDeletestatus(false);
            this.albumService.save(album);
-           request.getSession(false).removeAttribute("verify_code");
            if (this.configService.getSysConfig().getUcBbs()) {
                UCClient client = new UCClient();
                String ret = client.uc_user_register(userName, password, email);

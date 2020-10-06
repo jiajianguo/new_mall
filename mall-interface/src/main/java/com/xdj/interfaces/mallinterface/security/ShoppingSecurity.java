@@ -28,7 +28,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CompositeFilter;
 
 import javax.annotation.Resource;
@@ -153,15 +152,14 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 					securityProperties.getBrowser().getLoginPage(),//用户密码登录页面
 					securityProperties.getBrowser().getRegisterPage(),//注册页
 					securityProperties.getBrowser().getRegisterUrl(),//这册请求url
-					"/goods.htm",
-					"/integral.htm",
+					//"/goods_order.htm",
+					//"/goods_consult.htm",
+					//"/goods_detail.htm",
+					//"/goods.htm",
 					"/integral.htm",
 					"/register*.htm",
 					"/verify*.htm",
 					"/goods_evaluation.htm",
-					"/goods_order.htm",
-					"/goods_consult.htm",
-					"/goods_detail.htm",
 					"/shopping_logout.htm",
 					"/index.htm",
 					"/wap/index.htm",
@@ -169,7 +167,6 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 					"/language",
 					"/",
 					"/newIndex.htm",
-					"/*/index.htm",
 					"/login/**",
 					"/shopping_login.htm/*",
 					"/static/**","/upload/**","/login*","/**/*.js","/**/*.jpg","/**/*.png","/**/*.css")

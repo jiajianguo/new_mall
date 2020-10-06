@@ -23,6 +23,7 @@
 						<use xlink:href="#icon-sousuo"></use>
 					</svg>
 					<input type="text" placeholder="请输入您要搜索的内容" class="search_input" name="keyword" id="keyword" value="">
+					<input name="store_id" type="hidden" id="store_id" th:value="${goodsStore.id}" />
 				</div>
 				<a href="/buyer/message.htm?type=0">
 				<svg class="icon" aria-hidden="true">
@@ -79,7 +80,8 @@
 <script type="text/javascript">
 	$("#keyword").blur(function (){
 		var keyword=$(this).val();
-		window.location.href="/app_store_goods_search.htm?type=goods&keyword="+keyword;
+		var store_id=$("#store_id").val();
+		window.location.href="/app_store_goods_search.htm?type=goods&keyword="+keyword+"&store_id="+store_id;
 	});
 	$("#collect_store").click(function(){
 		var store_id = $(this).attr("data-id");
