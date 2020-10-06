@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<div class="per_page_left">
+    <div class="per_interview">
+        <h3><span class="in_left">最近访问</span> <span class="in_right" th:text="'浏览总量：'+${visits.size()+'次'}"></span></h3>
+        <ul>
+
+            <li th:each="obj :${visits}" th:id="'visit_list_'+${obj.user.id}" th:visit_id="${obj.user.id}">
+                    <span>
+                        <a th:href="@{/buyer/homepage.htm(uid=${obj.user.id})}">
+                            <img th:if="${obj.user.photo}"
+                                 th:src="@{'/'+${obj.user.photo.path}+'/'+${obj.user.photo.name}}" width="50"
+                                 height="50"/>
+                            <img th:unless="${obj.user.photo}"
+                                 th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="50"
+                                 height="50"/>
+                        </a>
+                    </span>
+                <b th:text="${obj.user.username}">
+                    <div class="per_interview_x" style="display:none; ">
+                        <a th:if="${owner.id==user.id}" href="javascript:void(0);" th:id="'visit_dele_'+${obj.user.id}"
+                           th:visit_id="${obj.user.id}">x</a>
+                    </div>
+                </b>
+                <i th:text="${#dates.format(obj.addtime,'MM月dd日HH:mm')}"></i>
+            </li>
+
+            <input id="visit_dele_id" name="visit_dele_id" type="hidden" value=""/>
+        </ul>
+    </div>
+</div>
+
+
+$!httpInclude.include("/footer.htm")
+
+</html>

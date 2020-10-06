@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>订单详情 - Powered by shopping</title>
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/user.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script>
+jQuery(document).ready(function(){
+jQuery("#ship_info_a").click(
+				function(){
+				var dis = jQuery("#ship_info_ul").css("display");
+				if(dis=="none"){
+					jQuery("#ship_info_ul").slideDown();
+					jQuery(this).find("img").attr("src","/style/system/front/default/images/usercenter/user_down.png");
+					}else{
+					jQuery("#ship_info_ul").slideUp();
+					jQuery(this).find("img").attr("src","/style/system/front/default/images/usercenter/user_up.png");
+						}
+		});
+//
+});
+</script>
+</head>
+<body>
+<!--$!httpInclude.include("/top.htm")-->
+<div class="main">
+    <!--$!httpInclude.include("/buyer/head.htm")-->
+  <div class="orderdetail">
+    <div class="orderdh">
+      <h1>订单详情</h1>
+    </div>
+    <div class="ordersee">
+      <div class="ordersee1">
+        <table width="925" border="0" cellspacing="0" cellpadding="0" class="tablesee1">
+            <li class="li_02" th:if="${obj.payment}"  th:switch="${obj.payment.mark}">
+                <span  th:case="'alipay'" th:text="${'支付方式：支付宝'}"></span>
+                <span  th:case="'alipay_wap'" th:text="${'支付方式：手机网页支付宝'}"></span>
+                <span  th:case="'tenpay'" th:text="${'支付方式：财付通'}"></span>
+                <span  th:case="'bill'" th:text="${'支付方式：快钱'}"></span>
+                <span  th:case="'chinabank'" th:text="${'支付方式：网银在线'}"></span>
+                <span  th:case="'outline'" th:text="${'支付方式：线下'}"></span>
+                <span  th:case="'balance'"th:text="${'支付方式：预存款'}"></span>
+                <span  th:case="'payafter'" th:text="${'支付方式：货到付款'}"></span>
+                <span  th:case="'paypal'" th:text="${'支付方式：paypal'}"></span>
+                <span  th:case="'*'" th:text="${'支付方式：未支付'}"></span>
+            </li>
+            <li class="li_02" th:unless="${obj.payment}"  >
+                <span   th:text="${'支付方式：没有支付信息'}"></span>
+            </li>
+            <li class="li_02" th:switch="${obj.orderStatus}" >
+                <span th:case=" 0" th:text="${'订单状态：已取消'}"></span>
+                <span th:case="10" th:text="${'订单状态：待付款'}"></span>
+                <span th:case="15" th:text="${'订单状态：线下支付待审核'}"></span>
+                <span th:case="16" th:text="${'订单状态：货到付款待发货'}"></span>
+                <span th:case="20" th:text="${'订单状态：付款'}"></span>
+                <span th:case="30" th:text="${'订单状态：已发货'}"></span>
+                <span th:case="40" th:text="${'订单状态：已收货'}"></span>
+                <span th:case="45" th:text="${'订单状态：买家申请退货'}"></span>
+                <span th:case="46" th:text="${'订单状态：退货中'}"></span>
+                <span th:case="47" th:text="${'订单状态：退货完成，已结束'}"></span>
+                <span th:case="48" th:text="${'订单状态：卖家拒绝退货'}"></span>
+                <span th:case="49" th:text="${'订单状态：退货失败'}"></span>
+                <span th:case="50" th:text="${'订单状态：已完成,已评价'}"></span>
+                <span th:case="60" th:text="${'订单状态：已结束'}"></span>
+                <span th:case="50" th:text="${'订单状态：已结束，不可评价'}"></span>
+                <span th:case="50" th:text="${'订单状态：已收货'}"></span>
+            </li>
+            <li class="li_02" th:switch="${obj.orderType}">
+                <span th:case="'weixin'" th:text="${'订单类型：微信订单'}"></span>
+                <span th:case="'android'" th:text="${'订单类型：android订单'}"></span>
+                <span th:case= "'ios'" th:text="${'订单类型：ios订单'}"></span>
+                <span th:case="'*'" th:text="${'订单类型：PC订单'}"></span>
+            </li>
+          <tr>
+            <td width="80" align="right" class="blue2">订单状态：</td>
+
+            <td width="220" align="left" th:switch="${obj.orderStatus}">
+                <strong style="color:#F60" th:case=" 0" th:text="${'订单状态：已取消'}"></strong>
+                <strong style="color:#F60" th:case="10" th:text="${'订单状态：待付款'}"></strong>
+                <strong style="color:#F60" th:case="15" th:text="${'订单状态：线下支付待审核'}"></strong>
+                <strong style="color:#F60"  th:case="16" th:text="${'订单状态：货到付款待发货'}"></strong>
+                <strong style="color:#F60" th:case="20" th:text="${'订单状态：待发货'}"></strong>
+                <strong style="color:#F60" th:case="30" th:text="${'订单状态：已发货'}"></strong>
+                <strong style="color:#F60" th:case="40" th:text="${'订单状态：已收货'}"></strong>
+                <strong style="color:#F60" th:case="45" th:text="${'订单状态：买家申请退货'}"></strong>
+                <strong style="color:#F60" th:case="46" th:text="${'订单状态：退货中'}"></strong>
+                <strong style="color:#F60" th:case="47" th:text="${'订单状态：退货完成，已结束'}"></strong>
+                <strong style="color:#F60" th:case="48" th:text="${'订单状态：卖家拒绝退货'}"></strong>
+                <strong style="color:#F60" th:case="49" th:text="${'订单状态：退货失败'}"></strong>
+                <strong style="color:#F60" th:case="50" th:text="${'订单状态：已完成,已评价'}"></strong>
+                <strong style="color:#F60" th:case="60" th:text="${'订单状态：已结束'}"></strong>
+                </td>
+            <td width="80" align="right"  class="blue2">订单编号：</td>
+            <td width="220" align="left" th:text="${obj.orderId}"></td>
+            <td width="80" align="right"  class="blue2">下单时间：</td>
+            <td width="220" align="left" th:text="${#dates.format(obj.addtime,'yyyy-MM-dd')}"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="ordersee2">
+        <h2>卖家信息</h2>
+        <table width="925" border="0" cellspacing="0" cellpadding="0" class="tablesee2">
+          <tr>
+            <td width="80" align="right" class="blue2">店铺名：</td>
+            <td width="220" align="left" th:text="${obj.store.storeName}"></td>
+            <td width="80" align="right"  class="blue2">电话号码：</td>
+            <td width="220" align="left" th:text="${obj.store.storeTelephone}"></td>
+            <td width="80" align="right"  class="blue2">所在地区：</td>
+            <td width="220" align="left" th:text="${obj.store.area.parent.parent == null?obj.store.area.parent.areaname:obj.store.area.parent.parent.areaname}+ ${obj.store.area.parent.areaname} +${obj.store.area.areaname}"></td>
+          </tr>
+          <tr>
+            <td width="80" align="right" class="blue2">MSN：</td>
+            <td width="220" align="left" th:text="${obj.store.storeMsn}"></td>
+            <td width="80" align="right"  class="blue2">QQ：</td>
+            <td width="220" align="left" th:text="${obj.store.storeQq}"></td>
+            <td width="80" align="right"  class="blue2">旺旺：</td>
+            <td width="220" align="left" th:text="${obj.store.storeWw}"></td>
+          </tr>
+          <tr>
+            <td width="80" align="right" class="blue2">详细地址：</td>
+            <td colspan="5" align="left" th:text="${obj.store.storeAddress}"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="ordersee3">
+        <h2>订单信息</h2>
+        <div class="orderinfo">
+          <div class="orderinfo_r">
+              <span class="frspan" th:text="${'运费：'+obj.shipPrice }+${obj.transport == null?'':obj.transport}"></span>
+              <span class="frspan" th:if="${obj.ci}">
+                  <span th:text="${ '使用优惠券：'+ obj.ci.couponSn }"></span>
+                  <strong style="color:#F90" th:text="${obj.ci.coupon.couponAmount}" ></strong>
+              </span>
+          </div>
+
+          <div class="orderinfo_r">
+              <span class="frspan">
+                  订单总价：
+                  <strong style="color:#F90" th:text="${obj.totalprice}"></strong>
+              </span>
+              <span th:if="${obj.refund}" class="frspan">
+                  <strong style="color:#F90" th:text="${'订单退款：'+ obj.refund}"></strong>
+              </span>
+
+              <span class="frspan" th:if="${obj.payment}"  th:switch="${obj.payment.mark}">
+                    <span  th:case="'alipay'" th:text="${'支付方式：支付宝'}"></span>
+                    <span  th:case="'alipay_wap'" th:text="${'支付方式：手机网页支付宝'}"></span>
+                    <span  th:case="'tenpay'" th:text="${'支付方式：财付通'}"></span>
+                    <span  th:case="'bill'" th:text="${'支付方式：快钱'}"></span>
+                    <span  th:case="'chinabank'" th:text="${'支付方式：网银在线'}"></span>
+                    <span  th:case="'outline'" th:text="${'支付方式：线下'}"></span>
+                    <span  th:case="'balance'"th:text="${'支付方式：预存款'}"></span>
+                    <span  th:case="'payafter'" th:text="${'支付方式：货到付款'}"></span>
+                    <span  th:case="'paypal'" th:text="${'支付方式：paypal'}"></span>
+                    <span  th:case="'*'" th:text="${'支付方式：未支付'}"></span>
+              </span>
+              <span class="frspan" th:text="${'支付时间：'} + ${#dates.format(obj.paytime,'yyyy-MM-dd')}"></span>
+          </div>
+          <div class="orderinfo_l">
+            <table width="923" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="119" align="center" style="background:#F9F9F9">
+                    <strong>商品图片</strong>
+                </td>
+                <td width="352" height="31" style="background:#F9F9F9">
+                    <strong>商品名称</strong>
+                </td>
+                <td width="62" align="center" style="background:#F9F9F9">商品属性</td>
+                <td width="62" align="center" style="background:#F9F9F9">商品数量</td>
+                <td width="90" align="center" style="background:#F9F9F9">商品价格</td>
+              </tr>
+
+              <tr th:each="gc : ${obj.gcs}" style="border-bottom:1px solid #EEE;">
+                <td width="119" align="center" style="border-right:1px solid #EEE">
+                    <span class="infoimg">
+                        <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
+                            <img th:if="${gc.goods.goods_main_photo}" th:src="@{${'/'+gc.goods.goods_main_photo.path+'/'+gc.goods.goods_main_photo.name}}" width="62" height="62" />
+                            <img th:unless="${gc.goods.goods_main_photo}" th:src="@{${'/'+config.goodsImage.path+'/'+config.goodsImage.name}}" width="62" height="62" />
+                        </a>
+                    </span>
+                </td>
+                <td height="71">
+                    <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" th:text="${gc.goods.goodsName}"></a>
+                    <span th:if="${gc.goods.groupBuy ==2}" style="color:#F00">(团购)</span>
+                    <span th:if="${gc.goods.deliveryStatus ==2}" style="color:#F00">[买就送]</span>
+                    <span style="color:#F00" th:if="${gc.goods.bargainStatus ==2}">(特价)</span>
+                    <div class="baby_gp" th:if="${gc.cartType =='combin'}">
+                        <a href="javascript:void(0);" style="color:#F00;">【组合商品】</a>
+                    </div>
+                </td>
+                <td align="center" th:text="${gc.specInfo}"></td>
+                <td align="center" th:text="${gc.count}"></td>
+                <td align="center">
+                    <strong style="color:#F90" th:text="${'￥'+gc.goods.goodsCurrentPrice}"></strong>
+                </td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="ordersee4">
+        <h2>物流信息</h2>
+        <ul>
+          <li>
+              <span class="orseet">收货人:</span>
+              <span class="orseet2" th:text="${obj.addr.truename}"></span>
+          </li>
+          <li>
+              <span class="orseet">收货地址:</span>
+              <span class="orseet2" th:text="${obj.addr.area.parent.parent==null?obj.addr.area.parent.areaname:obj.addr.area.parent.parent.areaname}+${obj.addr.area.parent.areaname+obj.addr.area.areaname+obj.addr.areaInfo}"></span>
+          </li>
+          <li>
+              <span class="orseet">邮政编码:</span>
+              <span class="orseet2" th:text="${obj.addr.zip}"></span>
+          </li>
+          <li>
+              <span class="orseet">电话号码:</span>
+              <span class="orseet2" th:text="${obj.addr.telephone}"></span>
+          </li>
+          <li>
+              <span class="orseet">手机号码:</span>
+              <span class="orseet2" th:text="${obj.addr.mobile}"></span>
+          </li>
+          <li >
+              <span class="orseet"  >配送方式:</span>
+              <span class="orseet2" th:if="${obj.ship  }" th:text="${obj.ship.shippingName}"></span>
+          </li>
+
+          <li>
+              <span class="orseet">配送时间:</span>
+              <span class="orseet2" th:if="${obj.ship  }" th:text="${#dates.format(obj.shipTime,'yyyy-MM-dd')}"></span>
+          </li>
+
+            <li th:if="${obj.msg }">
+                <span class="orseet">买家留言:</span>
+                <span class="orseet2" th:text="${obj.msg}"></span>
+            </li>
+
+          <li>
+              <span class="orseet">发票类型:</span>
+              <span class="orseet2" th:text="${obj.invoicetype==0?'个人':'单位'}"></span>
+          </li>
+
+            <li th:if="${obj.invoice}">
+                <span class="orseet">发票台头:</span>
+                <span class="orseet2" th:text="${obj.invoice}"></span>
+            </li>
+          </ul>
+         <h2>
+             <span>物流动态</span>
+             <a href="javascript:void(0);" id="ship_info_a">
+                 <img src="/style/system/front/default/images/usercenter/user_up.png" />
+             </a>
+         </h2>
+         <ul style="display:none" id="ship_info_ul">
+          <li>
+              <span class="orseet">物流公司:</span>
+              <span class="orseet2" th:if="${obj.ec}" th:text="${obj.ec.companyName}"></span>
+          </li>
+          <li>
+              <span class="orseet">物流单号:</span>
+              <span class="orseet2"  th:text="${obj.shipcode}"></span>
+          </li>
+
+       		<li th:if="${transInfo.status ==1}" th:each="info : ${transInfo.data}">
+                <span class="orseet"> &nbsp;</span>
+                <span class="orseet2" th:text="${#dates.format(info.time,'yyyy-MM-dd hh:mm:ss')}+${nfo.context}"></span>
+            </li>
+
+           <li th:if="${transInfo.status==0}">
+               <span class="orseet"></span>
+               <span class="orseet2" style=" margin-left:90px; _margin-left:0px; font-size:14px; color:#F90" th:text="${transInfo.message}"></span>
+           </li>
+
+        </ul>
+      </div>
+      <div class="ordersee5">
+        <h2>操作历史</h2>
+        <div class="ophistory" th:each="ofl : ${obj.ofls}">
+            <strong style="color:#F90" th:text="${ofl.log_user.username}"></strong>
+            <strong><em th:text="'于'+${#dates.format(ofl.addtime,'yyyy-MM-dd hh:mm:ss')}"></em></strong>
+            <strong th:if="${ofl.stateInfo}"><em th:text="${'操作原因:'+ofl.stateInfo}">$!{}</em></strong>
+        </div>
+
+      </div>
+
+      <div class="ordersee5" th:if="${obj.rls  }">
+        <h2>退款日志</h2>
+        <div th:each="rl : ${obj.rls}" class="ophistory">
+            <strong style="color:#F90" th:text="${rl.refund_user.username +'于'}"></strong>
+            <strong><em th:text="${#date.format(rl.addtime,'yyyy-MM-dd hh:mm:ss')}"></em></strong>
+
+            <strong><em th:text="${' 使用'+rl.refundType }"></em></strong>
+            <strong><em th:text="${' 退款'+rl.refund }"></em></strong>
+        </div>
+
+      </div>
+
+
+      <div th:if="${obj.grls !=  null }" class="ordersee5">
+        <h2>退货日志</h2>
+       <div  th:each="grl :  ${obj.grls}">
+           <div th:each="item : ${grl.gr.items}" class="ophistory">
+               <strong><em th:text="${#dates.format(grl.addtime,'yyyy-MM-dd hh:mm:ss')}"></em> </strong>
+               <strong><em th:text="'订单：'+${item.gr.of.orderId}"></em></strong>
+               <strong><em th:text="'商品：'+${item.goods.goodsName}"></em></strong>
+               <strong><em th:text="'数量：'+${item.count}"></em></strong>
+               <strong><em th:text="'属性：'"></em></strong>
+               <!--#foreach($gsp in $obj.gsps)
+                   #if($!gsp.spec)
+                    $!gsp.spec.name: $!gsp.value
+                   #end
+               #end-->
+           </div>
+       </div>
+
+      </div>
+
+    </div>
+  </div>
+ <!-- $!httpInclude.include("/footer.htm")-->
+  </div>
+</body>
+</html>

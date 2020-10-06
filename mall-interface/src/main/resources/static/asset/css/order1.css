@@ -1,0 +1,172 @@
+/*   公共样式   */
+.order,
+.takeover,
+.takeover-content,
+.commodity,
+.commodity-content,
+.pay,
+.pay-content,
+.logistics,
+.logistics-content {
+	background-color: #fff;
+	padding-left: .24rem;
+	padding-right: .3rem;
+}
+
+/*   订单编号   */
+.order {
+	margin-top: .16rem;
+	height: 1.86rem;
+}
+
+.order div:nth-child(1) {
+	padding-top: .28rem;
+}
+
+.order div:nth-child(2),
+.order div:nth-child(3) {
+	padding-top: .1rem;
+}
+
+.order .state {
+	color: #ff9900;
+}
+
+/*   收货信息   */
+.container .takeover,
+.container .pay,
+.container .logistics {
+	margin-top: .14rem;
+	color: #000000;
+	font-size: .32rem;
+	height: .82rem;
+	line-height: .82rem;
+}
+
+.takeover-content {
+	margin-top: 1px;
+	height: 2.05rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding: .18rem .24rem;
+}
+
+/*   物流信息   */
+.logistics-content {
+	height: 1.4rem;
+	margin-top: 1px;
+}
+
+.logistics-content div:first-child {
+	padding-top: .25rem;
+}
+
+.spnew {
+	margin-top: .1rem;
+}
+
+.text_title {
+	height: .8rem;
+	padding: 0 .25rem 0 .25rem;
+	font-size: .32rem;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	color: #333333;
+	background-color: #ffffff;
+}
+
+.spnew_text {
+	margin-top: 1px;
+	padding: .28rem .25rem .28rem .25rem;
+	display: flex;
+	align-items: center;
+	background-color: #ffffff;
+}
+
+.spnew_text_img {
+
+	width: 1.6rem;
+	height: 1.6rem;
+	border-radius: .2rem;
+}
+
+.text {
+	height: 1.6rem;
+	margin-left: .2rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.text_row {
+	height: 100%;
+	font-size: .32rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	color: #333333;
+}
+
+.text_row_pay {
+	font-size: .36rem;
+}
+
+.textnumber {
+	font-size: .24rem;
+	color: #bebebe;
+}
+
+.zfpay {
+	margin-top: .1rem;
+}
+
+.zfpay_text {
+	margin-top: 1px;
+	padding: .2rem .25rem .28rem .25rem;
+	background-color: #ffffff;
+}
+
+.zfpay_row {
+	font-size: .26rem;
+	color: #868686;
+	margin-top: .1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.fontd {
+	font-size: .18rem;
+}
+
+.color1 {
+	margin-top: .15rem;
+	font-size: .3rem;
+	color: #333333;
+}
+
+.texttop1 {
+	margin-top: .1rem;
+}
+
+
+.takeover-content>div{
+	font-size: .28rem;
+	display: flex;
+	align-items: center;
+	color: #868686;
+}
+.sh11 {
+	width: 1.5rem;
+	display: flex;
+}
+.order,.logistics-content{
+	font-size: .28rem;
+	color: #868686;
+}
+.zfpay_row1{
+	color: #333333;
+	margin-bottom: .3rem;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/style/system/front/default/css/public_auto.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet" />
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+    <script th:src="@{https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js}" />
+  </head>
+  <body>
+  <div class="menu-bd-panel">
+    <div class="gwc">
+      <h1 th:if="${ cart.size() >0}">
+        购物车商品总价：¥<span id="cart_goods_price_top" th:text="${total_price}"></span>
+      </h1>
+     <div th:each="gc : ${cart}">
+       <div class="shopp_ingtop" th:id="${gc.id}">
+         <div class="shopimg">
+           <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
+             <img th:src="@{${gc.goods.goods_main_photo.path}+'/'+${gc.goods.goods_main_photo.name}+'_small.'+${gc.goods.goods_main_photo.ext}}" width="40" height="40" />
+           </a>
+         </div>
+         <div>
+           <span class="shopl">
+             <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
+              <span style="color:#F00;float:right;" th:text="${gc.goods.goods_name }+${gc.cartType ==true ? '[组合]':''}" th:if="${gc.cartType}"></span>
+               </a>
+           </span>
+           <span style="color:#F60; padding-left:15px;" th:text="'¥'+${gc.price *gc.count }"></span>
+         </div>
+         <div><span class="shopl_del">
+           <a href="javascript:void(0);" th:onclick="'cart_remove(' + ${gc.id} +','+ ${gc.goods.goodsStoreId} + ');'" >删除</a></span></div>
+       </div>
+     </div>
+      <span th:unless="${ cart.size() >0}">
+         购物车暂时为空，赶紧挑选自己喜欢的商品去
+      </span>
+
+      <div class="shopbtn" th:if="${ cart.size() >0}">
+        <a th:href="@{/goods_cart1.htm}" >查看我的购物车</a>
+      </div>
+
+    </div>
+  </div>
+  </body>
+</html>
+

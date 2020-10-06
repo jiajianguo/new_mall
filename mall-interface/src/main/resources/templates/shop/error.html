@@ -1,0 +1,40 @@
+﻿﻿﻿<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统提示 -</title>
+  <meta name="keywords" th:content="${keywords}"/>
+  <meta name="description" th:content="${config.description}" />
+<meta name="generator" content="shopping 2.0" />
+<meta name="author" content="www.shopping.com">
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+</head>
+<body>
+<div class="main">
+  <div class="index" style="height:300px;">
+    <div style="height:280px;border:1px solid #CCCCCC;overflow:hidden; margin-left:auto; margin-right:auto; margin-top:10px;">
+      <div style="font-size:16px; color:#666666;margin-top:100px; padding-left:40%;">
+      <span style="float:left;">
+      <img th:src="@{/style/common/images/icon/error.png}" />
+      </span>
+      <span style=" padding-top:10px; line-height:30px; float:left;" th:text="${op_title}"></span>
+      </div>
+    </div>
+  </div>
+ <!-- #if($!url)-->
+<script>
+	  var count=3;
+	  window.setInterval(go,1000);
+	  function go(){
+	    count--;
+        if(count==0) window.location.href="/user/login.htm";
+	  }
+</script>
+  <!--<div th:include="/shop/footer.html :: myfooter"></div>-->
+</div>
+</body>
+</html>

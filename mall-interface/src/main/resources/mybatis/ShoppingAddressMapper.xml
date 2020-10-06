@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingAddressMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingAddress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="area_info" jdbcType="VARCHAR" property="areaInfo" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="trueName" jdbcType="VARCHAR" property="truename" />
+    <result column="zip" jdbcType="VARCHAR" property="zip" />
+    <result column="area_id" jdbcType="BIGINT" property="areaId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="countries" jdbcType="VARCHAR" property="countries" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="isdefault" jdbcType="BIT"  property="isdefault"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, area_info, mobile, telephone, trueName, zip, area_id,
+    user_id, company, city, countries, sex,isdefault
+  </sql>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select  * from shopping_address
+    <where>
+      1=1
+      <if test="user_id != null "> and user_id=#{user_id}</if>
+      <if test="isdefault != null "> and isdefault =#{isdefault}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null"> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="count" resultType="java.lang.Integer">
+    select  count(*) from shopping_address
+    <where>
+      1=1
+      <if test="user_id != null "> and user_id=#{user_id}</if>
+    </where>
+  </select>
+
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingAddressExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_address
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_address
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_address
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingAddressExample">
+    delete from shopping_address
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingAddress">
+    insert into shopping_address (id, addTime, deleteStatus,
+      area_info, mobile, telephone,
+      trueName, zip, area_id,
+      user_id, company, city,
+      countries, sex,isdefault)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{areaInfo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR},
+      #{truename,jdbcType=VARCHAR}, #{zip,jdbcType=VARCHAR}, #{areaId,jdbcType=BIGINT},
+      #{userId,jdbcType=BIGINT}, #{company,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+      #{countries,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},#{isdefault,jdbcType=BIT})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingAddress">
+    insert into shopping_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="areaInfo != null">
+        area_info,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="truename != null">
+        trueName,
+      </if>
+      <if test="zip != null">
+        zip,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="countries != null">
+        countries,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="isdefault != null">
+        isdefault,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="areaInfo != null">
+        #{areaInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null">
+        #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null">
+        #{zip,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="countries != null">
+        #{countries,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="isdefault != null">
+        #{isdefault,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingAddressExample" resultType="java.lang.Long">
+    select count(*) from shopping_address
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_address
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.areaInfo != null">
+        area_info = #{record.areaInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telephone != null">
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.truename != null">
+        trueName = #{record.truename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zip != null">
+        zip = #{record.zip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.company != null">
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countries != null">
+        countries = #{record.countries,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_address
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      area_info = #{record.areaInfo,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      trueName = #{record.truename,jdbcType=VARCHAR},
+      zip = #{record.zip,jdbcType=VARCHAR},
+      area_id = #{record.areaId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      company = #{record.company,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      countries = #{record.countries,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingAddress">
+    update shopping_address
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="areaInfo != null">
+        area_info = #{areaInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null">
+        trueName = #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null">
+        zip = #{zip,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="countries != null">
+        countries = #{countries,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 1=1
+    <if test="id != null"> and id = #{id,jdbcType=BIGINT}</if>
+
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingAddress">
+    update shopping_address
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      area_info = #{areaInfo,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      trueName = #{truename,jdbcType=VARCHAR},
+      zip = #{zip,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      company = #{company,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      countries = #{countries,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

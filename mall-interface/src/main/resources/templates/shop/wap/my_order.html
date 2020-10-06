@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css"/>
+		<link rel="stylesheet" type="text/css" href="/asset/css/myorder.css"/>
+		<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/easyJs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="ui-pane">
+			<div class="ui-header">
+				<a href="" class="header-button">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-left"></use>
+					</svg>
+				</a>
+				<div class="header-title">订单</div>
+			</div>
+			<div class="ui-content">
+				<div class="page_nav flex-between">
+					<div><a href="/buyer/order.htm">全部</a></div>
+					<div><a href="/buyer/order.htm?order_status=order_submit">待付款</a></div>
+					<div><a href="/buyer/order.htm?order_status=order_pay">待发货</a></div>
+					<div><a href="/buyer/order.htm?order_status=order_shipping">待收货</a></div>
+					<div><a href="/buyer/order.htm?order_status=order_receive">待评价</a></div>
+				</div>
+
+				<div class="page_list_cont" >
+					<div class="list_item" th:if="${objs.size()>0}" th:each="obj : ${objs}">
+						<div class="item_tit flex-between">
+							<span th:text="${'订单编号：'+obj.orderId}"></span>
+							<!--<span th:text="${'下单时间：'+#dates.format(obj.addtime,'yyyy-MM-dd hh:mm:ss')}" ></span>-->
+							<p th:switch="${obj.orderStatus}">
+								<span th:case=" 0" th:text="${'已取消'}"></span>
+								<span th:case="10" th:text="${'待付款'}"></span>
+								<span th:case="15" th:text="${'线下支付待审核'}"></span>
+								<span th:case="16" th:text="${'货到付款待发货'}"></span>
+								<span th:case="20" th:text="${'待发货'}"></span>
+								<span th:case="30" th:text="${'待收货'}"></span>
+								<span th:case="40" th:text="${'已收货'}"></span>
+								<span th:case="45" th:text="${'买家申请退货'}"></span>
+								<span th:case="46" th:text="${'退货中'}"></span>
+								<span th:case="47" th:text="${'退货完成，已结束'}"></span>
+								<span th:case="48" th:text="${'卖家拒绝退货'}"></span>
+								<span th:case="49" th:text="${'退货失败'}"></span>
+								<span th:case="50" th:text="${'已完成,已评价'}"></span>
+								<span th:case="60" th:text="${'已结束'}"></span>
+								<span th:case="50" th:text="${'已结束，不可评价'}"></span>
+								<span th:case="50" th:text="${'已收货'}"></span>
+							</p>
+						</div>
+						<div th:each="gc : ${obj.gcs}">
+						<div class="goods_area flex-between" >
+							<a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
+								<img th:if="${gc.goods.goods_main_photo}" th:src="@{${'/'+gc.goods.goods_main_photo.path +'/'+gc.goods.goods_main_photo.name }}"/>
+								<img th:unless="${gc.goods.goods_main_photo}" th:src="@{${ '/'+config.goodsImage.path+'/'+config.goodsImage.name }}"/>
+								<!--<img src="asset/img/goods_img.png" >-->
+							</a>
+							<div class="goods_area_right">
+								<a th:href="@{/buyer/order_view.htm(id=${obj.id})}">
+								<div class="goods_tit wordNoWarp" th:text="${gc.goods.goodsName}">
+									<!--<a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" ></a>-->
+								</div>
+								<div class="price_box_num flex-between">
+									<div th:text="${'$'+gc.goods.storePrice}"></div>
+									<span>x<span th:text="${gc.count}"></span></span>
+								</div>
+								</a>
+							</div>
+						</div>
+						</div>
+
+						<div class="item_more_cont">
+							<div class="price_tips">
+								<!--共计1件商品 -->
+								合计支付:	<span th:text="${'$'+obj.totalprice}"></span>
+							</div>
+							<!-- <div class="pay_tips">订单即将关闭，请尽快付款</div> -->
+						</div>
+						</div>
+					<img th:unless="${objs.size()>0}" src="/asset/img/nodata.png">
+				</div>
+
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(".page_nav div").click(function(){
+			$(this).addClass("page_nav_act").siblings().removeClass("page_nav_act");
+			let index = $(this).index();
+			window.sessionStorage.setItem("index",index);
+		})
+
+		let cuindex = window.sessionStorage.getItem("index")||0;
+
+		$($(".page_nav div")[cuindex]).addClass("page_nav_act");
+
+	</script>
+</html>

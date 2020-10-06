@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingAdvPosMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingAdvPos">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="ap_acc_url" jdbcType="VARCHAR" property="apAccUrl" />
+    <result column="ap_height" jdbcType="INTEGER" property="apHeight" />
+    <result column="ap_price" jdbcType="INTEGER" property="apPrice" />
+    <result column="ap_sale_type" jdbcType="INTEGER" property="apSaleType" />
+    <result column="ap_show_type" jdbcType="INTEGER" property="apShowType" />
+    <result column="ap_status" jdbcType="INTEGER" property="apStatus" />
+    <result column="ap_sys_type" jdbcType="INTEGER" property="apSysType" />
+    <result column="ap_text" jdbcType="VARCHAR" property="apText" />
+    <result column="ap_title" jdbcType="VARCHAR" property="apTitle" />
+    <result column="ap_type" jdbcType="VARCHAR" property="apType" />
+    <result column="ap_use_status" jdbcType="INTEGER" property="apUseStatus" />
+    <result column="ap_width" jdbcType="INTEGER" property="apWidth" />
+    <result column="ap_acc_id" jdbcType="BIGINT" property="apAccId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingAdvPosWithBLOBs">
+    <result column="ap_code" jdbcType="LONGVARCHAR" property="apCode" />
+    <result column="ap_content" jdbcType="LONGVARCHAR" property="apContent" />
+    <collection property="advs" ofType="com.xdj.www.entity.ShoppingAdvert">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+      <result column="ad_begin_time" jdbcType="DATE" property="adBeginTime" />
+      <result column="ad_click_num" jdbcType="INTEGER" property="adClickNum" />
+      <result column="ad_end_time" jdbcType="DATE" property="adEndTime" />
+      <result column="ad_gold" jdbcType="INTEGER" property="adGold" />
+      <result column="ad_slide_sequence" jdbcType="INTEGER" property="adSlideSequence" />
+      <result column="ad_status" jdbcType="INTEGER" property="adStatus" />
+      <result column="ad_text" jdbcType="VARCHAR" property="adText" />
+      <result column="ad_title" jdbcType="VARCHAR" property="adTitle" />
+      <result column="ad_url" jdbcType="VARCHAR" property="adUrl" />
+      <result column="ad_acc_id" jdbcType="BIGINT" property="adAccId" />
+      <result column="ad_ap_id" jdbcType="BIGINT" property="adApId" />
+      <result column="ad_user_id" jdbcType="BIGINT" property="adUserId" />
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, ap_acc_url, ap_height, ap_price, ap_sale_type, ap_show_type,
+    ap_status, ap_sys_type, ap_text, ap_title, ap_type, ap_use_status, ap_width, ap_acc_id
+  </sql>
+  <sql id="Blob_Column_List">
+    ap_code, ap_content
+  </sql>
+
+  <select id="oneToManyById" resultMap="ResultMapWithBLOBs">
+      select * from shopping_adv_pos sap ,shopping_advert sa
+      where   sap.adv_id  = sa.id and sap.id=#{id}
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingAdvPosExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_adv_pos
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingAdvPosExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_adv_pos
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_adv_pos
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_adv_pos
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingAdvPosExample">
+    delete from shopping_adv_pos
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingAdvPosWithBLOBs">
+    insert into shopping_adv_pos (id, addTime, deleteStatus,
+      ap_acc_url, ap_height, ap_price,
+      ap_sale_type, ap_show_type, ap_status,
+      ap_sys_type, ap_text, ap_title,
+      ap_type, ap_use_status, ap_width,
+      ap_acc_id, ap_code, ap_content
+      )
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{apAccUrl,jdbcType=VARCHAR}, #{apHeight,jdbcType=INTEGER}, #{apPrice,jdbcType=INTEGER},
+      #{apSaleType,jdbcType=INTEGER}, #{apShowType,jdbcType=INTEGER}, #{apStatus,jdbcType=INTEGER},
+      #{apSysType,jdbcType=INTEGER}, #{apText,jdbcType=VARCHAR}, #{apTitle,jdbcType=VARCHAR},
+      #{apType,jdbcType=VARCHAR}, #{apUseStatus,jdbcType=INTEGER}, #{apWidth,jdbcType=INTEGER},
+      #{apAccId,jdbcType=BIGINT}, #{apCode,jdbcType=LONGVARCHAR}, #{apContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingAdvPosWithBLOBs">
+    insert into shopping_adv_pos
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="apAccUrl != null">
+        ap_acc_url,
+      </if>
+      <if test="apHeight != null">
+        ap_height,
+      </if>
+      <if test="apPrice != null">
+        ap_price,
+      </if>
+      <if test="apSaleType != null">
+        ap_sale_type,
+      </if>
+      <if test="apShowType != null">
+        ap_show_type,
+      </if>
+      <if test="apStatus != null">
+        ap_status,
+      </if>
+      <if test="apSysType != null">
+        ap_sys_type,
+      </if>
+      <if test="apText != null">
+        ap_text,
+      </if>
+      <if test="apTitle != null">
+        ap_title,
+      </if>
+      <if test="apType != null">
+        ap_type,
+      </if>
+      <if test="apUseStatus != null">
+        ap_use_status,
+      </if>
+      <if test="apWidth != null">
+        ap_width,
+      </if>
+      <if test="apAccId != null">
+        ap_acc_id,
+      </if>
+      <if test="apCode != null">
+        ap_code,
+      </if>
+      <if test="apContent != null">
+        ap_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="apAccUrl != null">
+        #{apAccUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="apHeight != null">
+        #{apHeight,jdbcType=INTEGER},
+      </if>
+      <if test="apPrice != null">
+        #{apPrice,jdbcType=INTEGER},
+      </if>
+      <if test="apSaleType != null">
+        #{apSaleType,jdbcType=INTEGER},
+      </if>
+      <if test="apShowType != null">
+        #{apShowType,jdbcType=INTEGER},
+      </if>
+      <if test="apStatus != null">
+        #{apStatus,jdbcType=INTEGER},
+      </if>
+      <if test="apSysType != null">
+        #{apSysType,jdbcType=INTEGER},
+      </if>
+      <if test="apText != null">
+        #{apText,jdbcType=VARCHAR},
+      </if>
+      <if test="apTitle != null">
+        #{apTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="apType != null">
+        #{apType,jdbcType=VARCHAR},
+      </if>
+      <if test="apUseStatus != null">
+        #{apUseStatus,jdbcType=INTEGER},
+      </if>
+      <if test="apWidth != null">
+        #{apWidth,jdbcType=INTEGER},
+      </if>
+      <if test="apAccId != null">
+        #{apAccId,jdbcType=BIGINT},
+      </if>
+      <if test="apCode != null">
+        #{apCode,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apContent != null">
+        #{apContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingAdvPosExample" resultType="java.lang.Long">
+    select count(*) from shopping_adv_pos
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_adv_pos
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.apAccUrl != null">
+        ap_acc_url = #{record.apAccUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apHeight != null">
+        ap_height = #{record.apHeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.apPrice != null">
+        ap_price = #{record.apPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.apSaleType != null">
+        ap_sale_type = #{record.apSaleType,jdbcType=INTEGER},
+      </if>
+      <if test="record.apShowType != null">
+        ap_show_type = #{record.apShowType,jdbcType=INTEGER},
+      </if>
+      <if test="record.apStatus != null">
+        ap_status = #{record.apStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.apSysType != null">
+        ap_sys_type = #{record.apSysType,jdbcType=INTEGER},
+      </if>
+      <if test="record.apText != null">
+        ap_text = #{record.apText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apTitle != null">
+        ap_title = #{record.apTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apType != null">
+        ap_type = #{record.apType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apUseStatus != null">
+        ap_use_status = #{record.apUseStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.apWidth != null">
+        ap_width = #{record.apWidth,jdbcType=INTEGER},
+      </if>
+      <if test="record.apAccId != null">
+        ap_acc_id = #{record.apAccId,jdbcType=BIGINT},
+      </if>
+      <if test="record.apCode != null">
+        ap_code = #{record.apCode,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.apContent != null">
+        ap_content = #{record.apContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_adv_pos
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ap_acc_url = #{record.apAccUrl,jdbcType=VARCHAR},
+      ap_height = #{record.apHeight,jdbcType=INTEGER},
+      ap_price = #{record.apPrice,jdbcType=INTEGER},
+      ap_sale_type = #{record.apSaleType,jdbcType=INTEGER},
+      ap_show_type = #{record.apShowType,jdbcType=INTEGER},
+      ap_status = #{record.apStatus,jdbcType=INTEGER},
+      ap_sys_type = #{record.apSysType,jdbcType=INTEGER},
+      ap_text = #{record.apText,jdbcType=VARCHAR},
+      ap_title = #{record.apTitle,jdbcType=VARCHAR},
+      ap_type = #{record.apType,jdbcType=VARCHAR},
+      ap_use_status = #{record.apUseStatus,jdbcType=INTEGER},
+      ap_width = #{record.apWidth,jdbcType=INTEGER},
+      ap_acc_id = #{record.apAccId,jdbcType=BIGINT},
+      ap_code = #{record.apCode,jdbcType=LONGVARCHAR},
+      ap_content = #{record.apContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_adv_pos
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ap_acc_url = #{record.apAccUrl,jdbcType=VARCHAR},
+      ap_height = #{record.apHeight,jdbcType=INTEGER},
+      ap_price = #{record.apPrice,jdbcType=INTEGER},
+      ap_sale_type = #{record.apSaleType,jdbcType=INTEGER},
+      ap_show_type = #{record.apShowType,jdbcType=INTEGER},
+      ap_status = #{record.apStatus,jdbcType=INTEGER},
+      ap_sys_type = #{record.apSysType,jdbcType=INTEGER},
+      ap_text = #{record.apText,jdbcType=VARCHAR},
+      ap_title = #{record.apTitle,jdbcType=VARCHAR},
+      ap_type = #{record.apType,jdbcType=VARCHAR},
+      ap_use_status = #{record.apUseStatus,jdbcType=INTEGER},
+      ap_width = #{record.apWidth,jdbcType=INTEGER},
+      ap_acc_id = #{record.apAccId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingAdvPosWithBLOBs">
+    update shopping_adv_pos
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="apAccUrl != null">
+        ap_acc_url = #{apAccUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="apHeight != null">
+        ap_height = #{apHeight,jdbcType=INTEGER},
+      </if>
+      <if test="apPrice != null">
+        ap_price = #{apPrice,jdbcType=INTEGER},
+      </if>
+      <if test="apSaleType != null">
+        ap_sale_type = #{apSaleType,jdbcType=INTEGER},
+      </if>
+      <if test="apShowType != null">
+        ap_show_type = #{apShowType,jdbcType=INTEGER},
+      </if>
+      <if test="apStatus != null">
+        ap_status = #{apStatus,jdbcType=INTEGER},
+      </if>
+      <if test="apSysType != null">
+        ap_sys_type = #{apSysType,jdbcType=INTEGER},
+      </if>
+      <if test="apText != null">
+        ap_text = #{apText,jdbcType=VARCHAR},
+      </if>
+      <if test="apTitle != null">
+        ap_title = #{apTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="apType != null">
+        ap_type = #{apType,jdbcType=VARCHAR},
+      </if>
+      <if test="apUseStatus != null">
+        ap_use_status = #{apUseStatus,jdbcType=INTEGER},
+      </if>
+      <if test="apWidth != null">
+        ap_width = #{apWidth,jdbcType=INTEGER},
+      </if>
+      <if test="apAccId != null">
+        ap_acc_id = #{apAccId,jdbcType=BIGINT},
+      </if>
+      <if test="apCode != null">
+        ap_code = #{apCode,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apContent != null">
+        ap_content = #{apContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingAdvPosWithBLOBs">
+    update shopping_adv_pos
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ap_acc_url = #{apAccUrl,jdbcType=VARCHAR},
+      ap_height = #{apHeight,jdbcType=INTEGER},
+      ap_price = #{apPrice,jdbcType=INTEGER},
+      ap_sale_type = #{apSaleType,jdbcType=INTEGER},
+      ap_show_type = #{apShowType,jdbcType=INTEGER},
+      ap_status = #{apStatus,jdbcType=INTEGER},
+      ap_sys_type = #{apSysType,jdbcType=INTEGER},
+      ap_text = #{apText,jdbcType=VARCHAR},
+      ap_title = #{apTitle,jdbcType=VARCHAR},
+      ap_type = #{apType,jdbcType=VARCHAR},
+      ap_use_status = #{apUseStatus,jdbcType=INTEGER},
+      ap_width = #{apWidth,jdbcType=INTEGER},
+      ap_acc_id = #{apAccId,jdbcType=BIGINT},
+      ap_code = #{apCode,jdbcType=LONGVARCHAR},
+      ap_content = #{apContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingAdvPos">
+    update shopping_adv_pos
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ap_acc_url = #{apAccUrl,jdbcType=VARCHAR},
+      ap_height = #{apHeight,jdbcType=INTEGER},
+      ap_price = #{apPrice,jdbcType=INTEGER},
+      ap_sale_type = #{apSaleType,jdbcType=INTEGER},
+      ap_show_type = #{apShowType,jdbcType=INTEGER},
+      ap_status = #{apStatus,jdbcType=INTEGER},
+      ap_sys_type = #{apSysType,jdbcType=INTEGER},
+      ap_text = #{apText,jdbcType=VARCHAR},
+      ap_title = #{apTitle,jdbcType=VARCHAR},
+      ap_type = #{apType,jdbcType=VARCHAR},
+      ap_use_status = #{apUseStatus,jdbcType=INTEGER},
+      ap_width = #{apWidth,jdbcType=INTEGER},
+      ap_acc_id = #{apAccId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

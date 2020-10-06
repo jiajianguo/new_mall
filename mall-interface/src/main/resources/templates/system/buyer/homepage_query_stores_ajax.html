@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+
+<script>
+jQuery(document).ready(function(){
+ jQuery("a[id^=favorite_a_]").click(function(){
+		 var obj_id =jQuery(this).attr("obj_id");
+		 var store_id =jQuery(this).attr("store_id");
+		 jQuery("#store_id").val(store_id);
+		 jQuery("li[id^=favorite_li_]").removeClass("this");
+		 jQuery("#favorite_li_"+obj_id).addClass("this");
+												
+	});								
+});
+</script>
+
+<ul>
+
+    <li th:each="fav :${$favorites}" th:class="${velocityCount==1 ? 'this' :''}"  th:store_id="${fav.store.id}"  th:id="'favorite_li_'+${fav.id}">
+        <a href="javascript:void(0);" th:id="'favorite_a_'+${fav.id}" th:obj_id="${fav.id}" th:store_id="${fav.store.id}" th:title="${fav.store.storeName}">
+            <img th:if="${fav.store.store_logo}" th:src="@{'/'+${fav.store.store_logo.path}+'/'+${fav.store.store_logo.name}}" width="60" height="60" />
+            <img th:unless="${fav.store.store_logo}" th:src="@{'/'+${config.storeImag.path}+'/'+${config.storeImag.name}}" width="60" height="60" />
+        </a>
+    </li>
+
+</ul>

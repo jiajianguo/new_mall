@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingSpareGoodsfloorMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingSpareGoodsfloor">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="adver_id" jdbcType="VARCHAR" property="adverId" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="visable" jdbcType="INTEGER" property="visable" />
+    <result column="sgc_id" jdbcType="BIGINT" property="sgcId" />
+    <result column="adver_type" jdbcType="INTEGER" property="adverType" />
+    <result column="advert_url" jdbcType="VARCHAR" property="advertUrl" />
+    <result column="advert_id" jdbcType="BIGINT" property="advertId" />
+    <result column="advert_img_id" jdbcType="BIGINT" property="advertImgId" />
+    <result column="display" jdbcType="BIT" property="display" />
+    <result column="adp_id" jdbcType="BIGINT" property="adpId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, adver_id, sequence, title, visable, sgc_id, adver_type,
+    advert_url, advert_id, advert_img_id, display, adp_id
+  </sql>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select *  from shopping_spare_goodsfloor
+    <where>
+      1=1
+      <if test="display != null "> and display =#{display}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloorExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_spare_goodsfloor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_spare_goodsfloor
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_spare_goodsfloor
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloorExample">
+    delete from shopping_spare_goodsfloor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloor">
+    insert into shopping_spare_goodsfloor (id, addTime, deleteStatus,
+      adver_id, sequence, title,
+      visable, sgc_id, adver_type,
+      advert_url, advert_id, advert_img_id,
+      display, adp_id)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{adverId,jdbcType=VARCHAR}, #{sequence,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
+      #{visable,jdbcType=INTEGER}, #{sgcId,jdbcType=BIGINT}, #{adverType,jdbcType=INTEGER},
+      #{advertUrl,jdbcType=VARCHAR}, #{advertId,jdbcType=BIGINT}, #{advertImgId,jdbcType=BIGINT},
+      #{display,jdbcType=BIT}, #{adpId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloor">
+    insert into shopping_spare_goodsfloor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="adverId != null">
+        adver_id,
+      </if>
+      <if test="sequence != null">
+        sequence,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="visable != null">
+        visable,
+      </if>
+      <if test="sgcId != null">
+        sgc_id,
+      </if>
+      <if test="adverType != null">
+        adver_type,
+      </if>
+      <if test="advertUrl != null">
+        advert_url,
+      </if>
+      <if test="advertId != null">
+        advert_id,
+      </if>
+      <if test="advertImgId != null">
+        advert_img_id,
+      </if>
+      <if test="display != null">
+        display,
+      </if>
+      <if test="adpId != null">
+        adp_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="adverId != null">
+        #{adverId,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="visable != null">
+        #{visable,jdbcType=INTEGER},
+      </if>
+      <if test="sgcId != null">
+        #{sgcId,jdbcType=BIGINT},
+      </if>
+      <if test="adverType != null">
+        #{adverType,jdbcType=INTEGER},
+      </if>
+      <if test="advertUrl != null">
+        #{advertUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="advertId != null">
+        #{advertId,jdbcType=BIGINT},
+      </if>
+      <if test="advertImgId != null">
+        #{advertImgId,jdbcType=BIGINT},
+      </if>
+      <if test="display != null">
+        #{display,jdbcType=BIT},
+      </if>
+      <if test="adpId != null">
+        #{adpId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloorExample" resultType="java.lang.Long">
+    select count(*) from shopping_spare_goodsfloor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_spare_goodsfloor
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.adverId != null">
+        adver_id = #{record.adverId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sequence != null">
+        sequence = #{record.sequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visable != null">
+        visable = #{record.visable,jdbcType=INTEGER},
+      </if>
+      <if test="record.sgcId != null">
+        sgc_id = #{record.sgcId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adverType != null">
+        adver_type = #{record.adverType,jdbcType=INTEGER},
+      </if>
+      <if test="record.advertUrl != null">
+        advert_url = #{record.advertUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.advertId != null">
+        advert_id = #{record.advertId,jdbcType=BIGINT},
+      </if>
+      <if test="record.advertImgId != null">
+        advert_img_id = #{record.advertImgId,jdbcType=BIGINT},
+      </if>
+      <if test="record.display != null">
+        display = #{record.display,jdbcType=BIT},
+      </if>
+      <if test="record.adpId != null">
+        adp_id = #{record.adpId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_spare_goodsfloor
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      adver_id = #{record.adverId,jdbcType=VARCHAR},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      visable = #{record.visable,jdbcType=INTEGER},
+      sgc_id = #{record.sgcId,jdbcType=BIGINT},
+      adver_type = #{record.adverType,jdbcType=INTEGER},
+      advert_url = #{record.advertUrl,jdbcType=VARCHAR},
+      advert_id = #{record.advertId,jdbcType=BIGINT},
+      advert_img_id = #{record.advertImgId,jdbcType=BIGINT},
+      display = #{record.display,jdbcType=BIT},
+      adp_id = #{record.adpId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloor">
+    update shopping_spare_goodsfloor
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="adverId != null">
+        adver_id = #{adverId,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="visable != null">
+        visable = #{visable,jdbcType=INTEGER},
+      </if>
+      <if test="sgcId != null">
+        sgc_id = #{sgcId,jdbcType=BIGINT},
+      </if>
+      <if test="adverType != null">
+        adver_type = #{adverType,jdbcType=INTEGER},
+      </if>
+      <if test="advertUrl != null">
+        advert_url = #{advertUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="advertId != null">
+        advert_id = #{advertId,jdbcType=BIGINT},
+      </if>
+      <if test="advertImgId != null">
+        advert_img_id = #{advertImgId,jdbcType=BIGINT},
+      </if>
+      <if test="display != null">
+        display = #{display,jdbcType=BIT},
+      </if>
+      <if test="adpId != null">
+        adp_id = #{adpId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingSpareGoodsfloor">
+    update shopping_spare_goodsfloor
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      adver_id = #{adverId,jdbcType=VARCHAR},
+      sequence = #{sequence,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      visable = #{visable,jdbcType=INTEGER},
+      sgc_id = #{sgcId,jdbcType=BIGINT},
+      adver_type = #{adverType,jdbcType=INTEGER},
+      advert_url = #{advertUrl,jdbcType=VARCHAR},
+      advert_id = #{advertId,jdbcType=BIGINT},
+      advert_img_id = #{advertImgId,jdbcType=BIGINT},
+      display = #{display,jdbcType=BIT},
+      adp_id = #{adpId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingIntegralGoodsorderMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingIntegralGoodsorder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="igo_order_sn" jdbcType="VARCHAR" property="igoOrderSn" />
+    <result column="igo_pay_time" jdbcType="TIMESTAMP" property="igoPayTime" />
+    <result column="igo_payment" jdbcType="VARCHAR" property="igoPayment" />
+    <result column="igo_ship_code" jdbcType="VARCHAR" property="igoShipCode" />
+    <result column="igo_ship_time" jdbcType="DATE" property="igoShipTime" />
+    <result column="igo_status" jdbcType="INTEGER" property="igoStatus" />
+    <result column="igo_total_integral" jdbcType="INTEGER" property="igoTotalIntegral" />
+    <result column="igo_trans_fee" jdbcType="DECIMAL" property="igoTransFee" />
+    <result column="igo_addr_id" jdbcType="BIGINT" property="igoAddrId" />
+    <result column="igo_user_id" jdbcType="BIGINT" property="igoUserId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingIntegralGoodsorderWithBLOBs">
+    <result column="igo_msg" jdbcType="LONGVARCHAR" property="igoMsg" />
+    <result column="igo_pay_msg" jdbcType="LONGVARCHAR" property="igoPayMsg" />
+    <result column="igo_ship_content" jdbcType="LONGVARCHAR" property="igoShipContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, igo_order_sn, igo_pay_time, igo_payment, igo_ship_code,
+    igo_ship_time, igo_status, igo_total_integral, igo_trans_fee, igo_addr_id, igo_user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    igo_msg, igo_pay_msg, igo_ship_content
+  </sql>
+  <select id="queryByCondition" resultMap="ResultMapWithBLOBs">
+    select <include refid="Base_Column_List" />
+    from shopping_integral_goodsorder
+    <where>
+      1=1
+      <if test="igo_user_id != null"> and igo_user_id =#{igo_user_id}</if>
+      <if test="orderBy != null and sort != null "> order by #{orderBy} #{sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="pageCount" resultType="java.lang.Integer">
+    select count(*)
+    from shopping_integral_goodsorder
+    <where>
+      1=1
+      <if test="igo_user_id != null"> and igo_user_id =#{igo_user_id}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_integral_goodsorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_integral_goodsorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_integral_goodsorder
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_integral_goodsorder
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderExample">
+    delete from shopping_integral_goodsorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderWithBLOBs">
+    insert into shopping_integral_goodsorder (id, addTime, deleteStatus,
+      igo_order_sn, igo_pay_time, igo_payment,
+      igo_ship_code, igo_ship_time, igo_status,
+      igo_total_integral, igo_trans_fee, igo_addr_id,
+      igo_user_id, igo_msg, igo_pay_msg,
+      igo_ship_content)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{igoOrderSn,jdbcType=VARCHAR}, #{igoPayTime,jdbcType=TIMESTAMP}, #{igoPayment,jdbcType=VARCHAR},
+      #{igoShipCode,jdbcType=VARCHAR}, #{igoShipTime,jdbcType=DATE}, #{igoStatus,jdbcType=INTEGER},
+      #{igoTotalIntegral,jdbcType=INTEGER}, #{igoTransFee,jdbcType=DECIMAL}, #{igoAddrId,jdbcType=BIGINT},
+      #{igoUserId,jdbcType=BIGINT}, #{igoMsg,jdbcType=LONGVARCHAR}, #{igoPayMsg,jdbcType=LONGVARCHAR},
+      #{igoShipContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderWithBLOBs"  useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+    insert into shopping_integral_goodsorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="igoOrderSn != null">
+        igo_order_sn,
+      </if>
+      <if test="igoPayTime != null">
+        igo_pay_time,
+      </if>
+      <if test="igoPayment != null">
+        igo_payment,
+      </if>
+      <if test="igoShipCode != null">
+        igo_ship_code,
+      </if>
+      <if test="igoShipTime != null">
+        igo_ship_time,
+      </if>
+      <if test="igoStatus != null">
+        igo_status,
+      </if>
+      <if test="igoTotalIntegral != null">
+        igo_total_integral,
+      </if>
+      <if test="igoTransFee != null">
+        igo_trans_fee,
+      </if>
+      <if test="igoAddrId != null">
+        igo_addr_id,
+      </if>
+      <if test="igoUserId != null">
+        igo_user_id,
+      </if>
+      <if test="igoMsg != null">
+        igo_msg,
+      </if>
+      <if test="igoPayMsg != null">
+        igo_pay_msg,
+      </if>
+      <if test="igoShipContent != null">
+        igo_ship_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="igoOrderSn != null">
+        #{igoOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="igoPayTime != null">
+        #{igoPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="igoPayment != null">
+        #{igoPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="igoShipCode != null">
+        #{igoShipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="igoShipTime != null">
+        #{igoShipTime,jdbcType=DATE},
+      </if>
+      <if test="igoStatus != null">
+        #{igoStatus,jdbcType=INTEGER},
+      </if>
+      <if test="igoTotalIntegral != null">
+        #{igoTotalIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="igoTransFee != null">
+        #{igoTransFee,jdbcType=DECIMAL},
+      </if>
+      <if test="igoAddrId != null">
+        #{igoAddrId,jdbcType=BIGINT},
+      </if>
+      <if test="igoUserId != null">
+        #{igoUserId,jdbcType=BIGINT},
+      </if>
+      <if test="igoMsg != null">
+        #{igoMsg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="igoPayMsg != null">
+        #{igoPayMsg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="igoShipContent != null">
+        #{igoShipContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderExample" resultType="java.lang.Long">
+    select count(*) from shopping_integral_goodsorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_integral_goodsorder
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.igoOrderSn != null">
+        igo_order_sn = #{record.igoOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igoPayTime != null">
+        igo_pay_time = #{record.igoPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.igoPayment != null">
+        igo_payment = #{record.igoPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igoShipCode != null">
+        igo_ship_code = #{record.igoShipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igoShipTime != null">
+        igo_ship_time = #{record.igoShipTime,jdbcType=DATE},
+      </if>
+      <if test="record.igoStatus != null">
+        igo_status = #{record.igoStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.igoTotalIntegral != null">
+        igo_total_integral = #{record.igoTotalIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.igoTransFee != null">
+        igo_trans_fee = #{record.igoTransFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.igoAddrId != null">
+        igo_addr_id = #{record.igoAddrId,jdbcType=BIGINT},
+      </if>
+      <if test="record.igoUserId != null">
+        igo_user_id = #{record.igoUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.igoMsg != null">
+        igo_msg = #{record.igoMsg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.igoPayMsg != null">
+        igo_pay_msg = #{record.igoPayMsg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.igoShipContent != null">
+        igo_ship_content = #{record.igoShipContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_integral_goodsorder
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      igo_order_sn = #{record.igoOrderSn,jdbcType=VARCHAR},
+      igo_pay_time = #{record.igoPayTime,jdbcType=TIMESTAMP},
+      igo_payment = #{record.igoPayment,jdbcType=VARCHAR},
+      igo_ship_code = #{record.igoShipCode,jdbcType=VARCHAR},
+      igo_ship_time = #{record.igoShipTime,jdbcType=DATE},
+      igo_status = #{record.igoStatus,jdbcType=INTEGER},
+      igo_total_integral = #{record.igoTotalIntegral,jdbcType=INTEGER},
+      igo_trans_fee = #{record.igoTransFee,jdbcType=DECIMAL},
+      igo_addr_id = #{record.igoAddrId,jdbcType=BIGINT},
+      igo_user_id = #{record.igoUserId,jdbcType=BIGINT},
+      igo_msg = #{record.igoMsg,jdbcType=LONGVARCHAR},
+      igo_pay_msg = #{record.igoPayMsg,jdbcType=LONGVARCHAR},
+      igo_ship_content = #{record.igoShipContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_integral_goodsorder
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      igo_order_sn = #{record.igoOrderSn,jdbcType=VARCHAR},
+      igo_pay_time = #{record.igoPayTime,jdbcType=TIMESTAMP},
+      igo_payment = #{record.igoPayment,jdbcType=VARCHAR},
+      igo_ship_code = #{record.igoShipCode,jdbcType=VARCHAR},
+      igo_ship_time = #{record.igoShipTime,jdbcType=DATE},
+      igo_status = #{record.igoStatus,jdbcType=INTEGER},
+      igo_total_integral = #{record.igoTotalIntegral,jdbcType=INTEGER},
+      igo_trans_fee = #{record.igoTransFee,jdbcType=DECIMAL},
+      igo_addr_id = #{record.igoAddrId,jdbcType=BIGINT},
+      igo_user_id = #{record.igoUserId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderWithBLOBs">
+    update shopping_integral_goodsorder
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="igoOrderSn != null">
+        igo_order_sn = #{igoOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="igoPayTime != null">
+        igo_pay_time = #{igoPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="igoPayment != null">
+        igo_payment = #{igoPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="igoShipCode != null">
+        igo_ship_code = #{igoShipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="igoShipTime != null">
+        igo_ship_time = #{igoShipTime,jdbcType=DATE},
+      </if>
+      <if test="igoStatus != null">
+        igo_status = #{igoStatus,jdbcType=INTEGER},
+      </if>
+      <if test="igoTotalIntegral != null">
+        igo_total_integral = #{igoTotalIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="igoTransFee != null">
+        igo_trans_fee = #{igoTransFee,jdbcType=DECIMAL},
+      </if>
+      <if test="igoAddrId != null">
+        igo_addr_id = #{igoAddrId,jdbcType=BIGINT},
+      </if>
+      <if test="igoUserId != null">
+        igo_user_id = #{igoUserId,jdbcType=BIGINT},
+      </if>
+      <if test="igoMsg != null">
+        igo_msg = #{igoMsg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="igoPayMsg != null">
+        igo_pay_msg = #{igoPayMsg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="igoShipContent != null">
+        igo_ship_content = #{igoShipContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorderWithBLOBs">
+    update shopping_integral_goodsorder
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      igo_order_sn = #{igoOrderSn,jdbcType=VARCHAR},
+      igo_pay_time = #{igoPayTime,jdbcType=TIMESTAMP},
+      igo_payment = #{igoPayment,jdbcType=VARCHAR},
+      igo_ship_code = #{igoShipCode,jdbcType=VARCHAR},
+      igo_ship_time = #{igoShipTime,jdbcType=DATE},
+      igo_status = #{igoStatus,jdbcType=INTEGER},
+      igo_total_integral = #{igoTotalIntegral,jdbcType=INTEGER},
+      igo_trans_fee = #{igoTransFee,jdbcType=DECIMAL},
+      igo_addr_id = #{igoAddrId,jdbcType=BIGINT},
+      igo_user_id = #{igoUserId,jdbcType=BIGINT},
+      igo_msg = #{igoMsg,jdbcType=LONGVARCHAR},
+      igo_pay_msg = #{igoPayMsg,jdbcType=LONGVARCHAR},
+      igo_ship_content = #{igoShipContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsorder">
+    update shopping_integral_goodsorder
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      igo_order_sn = #{igoOrderSn,jdbcType=VARCHAR},
+      igo_pay_time = #{igoPayTime,jdbcType=TIMESTAMP},
+      igo_payment = #{igoPayment,jdbcType=VARCHAR},
+      igo_ship_code = #{igoShipCode,jdbcType=VARCHAR},
+      igo_ship_time = #{igoShipTime,jdbcType=DATE},
+      igo_status = #{igoStatus,jdbcType=INTEGER},
+      igo_total_integral = #{igoTotalIntegral,jdbcType=INTEGER},
+      igo_trans_fee = #{igoTransFee,jdbcType=DECIMAL},
+      igo_addr_id = #{igoAddrId,jdbcType=BIGINT},
+      igo_user_id = #{igoUserId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

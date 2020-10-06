@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingAlbumMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingAlbum">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="album_default" jdbcType="BIT" property="albumDefault" />
+    <result column="album_name" jdbcType="VARCHAR" property="albumName" />
+    <result column="album_sequence" jdbcType="INTEGER" property="albumSequence" />
+    <result column="album_cover_id" jdbcType="BIGINT" property="albumCoverId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingAlbum">
+    <result column="alblum_info" jdbcType="LONGVARCHAR" property="alblumInfo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, album_default, album_name, album_sequence, album_cover_id,
+    user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    alblum_info
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingAlbumExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_album
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingAlbumExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_album
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_album
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_album
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingAlbumExample">
+    delete from shopping_album
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingAlbum">
+    insert into shopping_album (id, addTime, deleteStatus,
+      album_default, album_name, album_sequence,
+      album_cover_id, user_id, alblum_info
+      )
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{albumDefault,jdbcType=BIT}, #{albumName,jdbcType=VARCHAR}, #{albumSequence,jdbcType=INTEGER},
+      #{albumCoverId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{alblumInfo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingAlbum">
+    insert into shopping_album
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="albumDefault != null">
+        album_default,
+      </if>
+      <if test="albumName != null">
+        album_name,
+      </if>
+      <if test="albumSequence != null">
+        album_sequence,
+      </if>
+      <if test="albumCoverId != null">
+        album_cover_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="alblumInfo != null">
+        alblum_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="albumDefault != null">
+        #{albumDefault,jdbcType=BIT},
+      </if>
+      <if test="albumName != null">
+        #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumSequence != null">
+        #{albumSequence,jdbcType=INTEGER},
+      </if>
+      <if test="albumCoverId != null">
+        #{albumCoverId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="alblumInfo != null">
+        #{alblumInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingAlbumExample" resultType="java.lang.Long">
+    select count(*) from shopping_album
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_album
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.albumDefault != null">
+        album_default = #{record.albumDefault,jdbcType=BIT},
+      </if>
+      <if test="record.albumName != null">
+        album_name = #{record.albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.albumSequence != null">
+        album_sequence = #{record.albumSequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.albumCoverId != null">
+        album_cover_id = #{record.albumCoverId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.alblumInfo != null">
+        alblum_info = #{record.alblumInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_album
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      album_default = #{record.albumDefault,jdbcType=BIT},
+      album_name = #{record.albumName,jdbcType=VARCHAR},
+      album_sequence = #{record.albumSequence,jdbcType=INTEGER},
+      album_cover_id = #{record.albumCoverId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      alblum_info = #{record.alblumInfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_album
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      album_default = #{record.albumDefault,jdbcType=BIT},
+      album_name = #{record.albumName,jdbcType=VARCHAR},
+      album_sequence = #{record.albumSequence,jdbcType=INTEGER},
+      album_cover_id = #{record.albumCoverId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingAlbum">
+    update shopping_album
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="albumDefault != null">
+        album_default = #{albumDefault,jdbcType=BIT},
+      </if>
+      <if test="albumName != null">
+        album_name = #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumSequence != null">
+        album_sequence = #{albumSequence,jdbcType=INTEGER},
+      </if>
+      <if test="albumCoverId != null">
+        album_cover_id = #{albumCoverId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="alblumInfo != null">
+        alblum_info = #{alblumInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingAlbum">
+    update shopping_album
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      album_default = #{albumDefault,jdbcType=BIT},
+      album_name = #{albumName,jdbcType=VARCHAR},
+      album_sequence = #{albumSequence,jdbcType=INTEGER},
+      album_cover_id = #{albumCoverId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      alblum_info = #{alblumInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingAlbum">
+    update shopping_album
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      album_default = #{albumDefault,jdbcType=BIT},
+      album_name = #{albumName,jdbcType=VARCHAR},
+      album_sequence = #{albumSequence,jdbcType=INTEGER},
+      album_cover_id = #{albumCoverId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

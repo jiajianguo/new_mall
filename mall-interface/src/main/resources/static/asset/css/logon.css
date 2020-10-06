@@ -1,0 +1,275 @@
+.logo {
+	width: 2rem;
+}
+
+.content {
+	padding: 0 .25rem 0 .25rem;
+}
+
+.logozong {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+}
+
+.ui-content {
+	background-color: #ffffff;
+}
+
+.text_title {
+	margin-top: .76rem;
+	font-size: .4rem;
+	display: flex;
+	align-items: center;
+	position: relative;
+	color: #333333;
+}
+
+.text_title>div {
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.textlink {
+	padding-bottom: .1rem;
+	color: #333333;
+	border-bottom: 3px solid #ffffff;
+}
+
+.textborder {
+	border-bottom: 3px solid #333333;
+}
+
+.text {
+	height: .7rem;
+	margin-top: .56rem;
+	border-bottom: 2px solid #cdcdcd;
+}
+
+.text_input {
+	width: 100%;
+	height: 100%;
+	padding: 0 .1rem 0 .1rem;
+	border: none;
+}
+
+::-webkit-input-placeholder {
+	font-size: .3rem !important;
+	color: #cacaca !important;
+}
+
+.textname {
+	margin-top: 1rem;
+}
+
+.wjpasswordbt {
+	text-align: right;
+	margin-top: .2rem;
+}
+
+.wjpassword {
+	font-size: .24rem;
+	color: #cacaca;
+}
+
+.content_bt {
+	width: 100%;
+	height: .8rem;
+	border: none;
+	border-radius: 2px;
+	font-size: .28rem;
+	margin-top: .5rem;
+	background-color: #333333;
+	color: #fffefe;
+}
+
+
+.text_dian {
+	width: .68rem;
+	height: 1px;
+	background-color: #e7e7e7;
+}
+
+.text_bototm {
+	font-size: .24rem;
+	margin-top: .6rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #cacaca;
+}
+
+.text_bototm_row {
+	margin: 0 .1rem 0 .1rem;
+}
+
+.dbtp {
+	padding: 0 2.4rem 0 2.4rem;
+	margin-top: .65rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.dbtp>img {
+	width: .96rem;
+}
+
+.xz {
+	font-size: .24rem;
+	display: flex;
+	margin-top: .2rem;
+	color: #cacaca;
+}
+
+.xz>div {
+	width: 90%;
+}
+
+/* 遮罩 */
+.forget1 {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	display: none;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.forget_text {
+	width: 100%;
+	height: 50%;
+	padding: .35rem .25rem 0 .25rem;
+	position: absolute;
+	bottom: 0;
+	animation: topshow 0.25s;
+	background-color: #ffffff;
+}
+
+.forget_text1 {
+	animation: topshowno 0.25s;
+	bottom: -50%;
+}
+
+
+@keyframes topshow {
+	from {
+		bottom: -50%;
+	}
+
+	to {
+		bottom: 0;
+	}
+}
+
+@keyframes topshowno {
+	from {
+		bottom: 0;
+	}
+
+	to {
+		bottom: -50%;
+	}
+}
+
+.tbqx {
+	display: flex;
+	justify-content: flex-end;
+	padding-right: .2rem;
+}
+
+.forget_title {
+	font-size: .24rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: #666666;
+}
+
+.forget_title_font {
+	font-size: .36rem;
+	margin: .5rem 0 .2rem 0;
+	font-weight: bold;
+	color: #333333;
+}
+
+.password1 {
+	width: 100%;
+	height: .7rem;
+	margin-top: 1.1rem;
+	border: none;
+	border-bottom: 2px solid #cdcdcd;
+}
+
+.password1_bt {
+	width: 100%;
+	height: .8rem;
+	border: none;
+	border-radius: 2px;
+	margin-top: 1.1rem;
+	font-size: .28rem;
+	background-color: #333333;
+	color: #ffffff;
+}
+
+.good1{
+	display: none;
+}
+.tbgood {
+	font-size: 1rem;
+	color: #ff7b00;
+}
+
+.tbgoodzong {
+	margin-top: .2rem;
+	display: flex;
+	justify-content: center;
+}
+
+.goodts {
+	padding: 0 .37rem 0 .37rem;
+	text-align: center;
+	margin-top: .5rem;
+	margin-bottom: .5rem;
+	font-size: .32rem;
+	font-weight: bold;
+	word-break: break-all;
+	color: #333333;
+}
+
+.forget_ts {
+	font-size: .3rem;
+	margin-top: .2rem;
+	display: flex;
+	word-break: break-all;
+	color: #cacaca;
+}
+
+.forget_dian {
+	margin-right: .1rem;
+}
+
+.good_bt {
+	width: 100%;
+	height: .8rem;
+	border: none;
+	border-radius: 2px;
+	margin-top: .5rem;
+	font-size: .28rem;
+	background-color: #333333;
+	color: #ffffff;
+}
+.resendzong{
+	display: flex;
+	justify-content: center;
+}
+.resend_bt{
+	font-size: .28rem;
+	border: none;
+	margin-top: .2rem;
+	background-color: rgba(0,0,0,0);
+	color: #2081b3;
+}

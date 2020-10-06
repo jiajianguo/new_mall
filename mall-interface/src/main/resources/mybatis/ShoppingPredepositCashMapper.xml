@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingPredepositCashMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingPredepositCash">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="cash_account" jdbcType="VARCHAR" property="cashAccount" />
+    <result column="cash_amount" jdbcType="DECIMAL" property="cashAmount" />
+    <result column="cash_bank" jdbcType="VARCHAR" property="cashBank" />
+    <result column="cash_pay_status" jdbcType="INTEGER" property="cashPayStatus" />
+    <result column="cash_payment" jdbcType="VARCHAR" property="cashPayment" />
+    <result column="cash_sn" jdbcType="VARCHAR" property="cashSn" />
+    <result column="cash_status" jdbcType="INTEGER" property="cashStatus" />
+    <result column="cash_userName" jdbcType="VARCHAR" property="cashUsername" />
+    <result column="cash_admin_id" jdbcType="BIGINT" property="cashAdminId" />
+    <result column="cash_user_id" jdbcType="BIGINT" property="cashUserId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingPredepositCashWithBLOBs">
+    <result column="cash_admin_info" jdbcType="LONGVARCHAR" property="cashAdminInfo" />
+    <result column="cash_info" jdbcType="LONGVARCHAR" property="cashInfo" />
+    <association property="from_user" javaType="com.xdj.www.entity.ShoppingUser" column="cash_admin_id" select="com.xdj.interfaces.mallinterface.mapper.ShoppingUserMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, cash_account, cash_amount, cash_bank, cash_pay_status,
+    cash_payment, cash_sn, cash_status, cash_userName, cash_admin_id, cash_user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    cash_admin_info, cash_info
+  </sql>
+
+  <select id="queryByCondition" resultMap="ResultMapWithBLOBs" >
+    select * from shopping_predeposit_cash
+    <where >
+      1=1
+      <if test="cash_user_id!=null">and cash_user_id =#{cash_user_id}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null"> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="count" resultType="java.lang.Integer">
+    select  count(*) from shopping_predeposit_cash
+    <where>
+      1=1
+      <if test="cash_user_id!=null">and cash_user_id =#{cash_user_id}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingPredepositCashExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_predeposit_cash
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingPredepositCashExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_predeposit_cash
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_predeposit_cash
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_predeposit_cash
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingPredepositCashExample">
+    delete from shopping_predeposit_cash
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingPredepositCashWithBLOBs">
+    insert into shopping_predeposit_cash (id, addTime, deleteStatus,
+      cash_account, cash_amount, cash_bank,
+      cash_pay_status, cash_payment, cash_sn,
+      cash_status, cash_userName, cash_admin_id,
+      cash_user_id, cash_admin_info, cash_info
+      )
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{cashAccount,jdbcType=VARCHAR}, #{cashAmount,jdbcType=DECIMAL}, #{cashBank,jdbcType=VARCHAR},
+      #{cashPayStatus,jdbcType=INTEGER}, #{cashPayment,jdbcType=VARCHAR}, #{cashSn,jdbcType=VARCHAR},
+      #{cashStatus,jdbcType=INTEGER}, #{cashUsername,jdbcType=VARCHAR}, #{cashAdminId,jdbcType=BIGINT},
+      #{cashUserId,jdbcType=BIGINT}, #{cashAdminInfo,jdbcType=LONGVARCHAR}, #{cashInfo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingPredepositCashWithBLOBs">
+    insert into shopping_predeposit_cash
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="cashAccount != null">
+        cash_account,
+      </if>
+      <if test="cashAmount != null">
+        cash_amount,
+      </if>
+      <if test="cashBank != null">
+        cash_bank,
+      </if>
+      <if test="cashPayStatus != null">
+        cash_pay_status,
+      </if>
+      <if test="cashPayment != null">
+        cash_payment,
+      </if>
+      <if test="cashSn != null">
+        cash_sn,
+      </if>
+      <if test="cashStatus != null">
+        cash_status,
+      </if>
+      <if test="cashUsername != null">
+        cash_userName,
+      </if>
+      <if test="cashAdminId != null">
+        cash_admin_id,
+      </if>
+      <if test="cashUserId != null">
+        cash_user_id,
+      </if>
+      <if test="cashAdminInfo != null">
+        cash_admin_info,
+      </if>
+      <if test="cashInfo != null">
+        cash_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="cashAccount != null">
+        #{cashAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAmount != null">
+        #{cashAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashBank != null">
+        #{cashBank,jdbcType=VARCHAR},
+      </if>
+      <if test="cashPayStatus != null">
+        #{cashPayStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cashPayment != null">
+        #{cashPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSn != null">
+        #{cashSn,jdbcType=VARCHAR},
+      </if>
+      <if test="cashStatus != null">
+        #{cashStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cashUsername != null">
+        #{cashUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAdminId != null">
+        #{cashAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="cashUserId != null">
+        #{cashUserId,jdbcType=BIGINT},
+      </if>
+      <if test="cashAdminInfo != null">
+        #{cashAdminInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cashInfo != null">
+        #{cashInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingPredepositCashExample" resultType="java.lang.Long">
+    select count(*) from shopping_predeposit_cash
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_predeposit_cash
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.cashAccount != null">
+        cash_account = #{record.cashAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cashAmount != null">
+        cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cashBank != null">
+        cash_bank = #{record.cashBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cashPayStatus != null">
+        cash_pay_status = #{record.cashPayStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.cashPayment != null">
+        cash_payment = #{record.cashPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cashSn != null">
+        cash_sn = #{record.cashSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cashStatus != null">
+        cash_status = #{record.cashStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.cashUsername != null">
+        cash_userName = #{record.cashUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cashAdminId != null">
+        cash_admin_id = #{record.cashAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cashUserId != null">
+        cash_user_id = #{record.cashUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cashAdminInfo != null">
+        cash_admin_info = #{record.cashAdminInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.cashInfo != null">
+        cash_info = #{record.cashInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_predeposit_cash
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      cash_account = #{record.cashAccount,jdbcType=VARCHAR},
+      cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+      cash_bank = #{record.cashBank,jdbcType=VARCHAR},
+      cash_pay_status = #{record.cashPayStatus,jdbcType=INTEGER},
+      cash_payment = #{record.cashPayment,jdbcType=VARCHAR},
+      cash_sn = #{record.cashSn,jdbcType=VARCHAR},
+      cash_status = #{record.cashStatus,jdbcType=INTEGER},
+      cash_userName = #{record.cashUsername,jdbcType=VARCHAR},
+      cash_admin_id = #{record.cashAdminId,jdbcType=BIGINT},
+      cash_user_id = #{record.cashUserId,jdbcType=BIGINT},
+      cash_admin_info = #{record.cashAdminInfo,jdbcType=LONGVARCHAR},
+      cash_info = #{record.cashInfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_predeposit_cash
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      cash_account = #{record.cashAccount,jdbcType=VARCHAR},
+      cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+      cash_bank = #{record.cashBank,jdbcType=VARCHAR},
+      cash_pay_status = #{record.cashPayStatus,jdbcType=INTEGER},
+      cash_payment = #{record.cashPayment,jdbcType=VARCHAR},
+      cash_sn = #{record.cashSn,jdbcType=VARCHAR},
+      cash_status = #{record.cashStatus,jdbcType=INTEGER},
+      cash_userName = #{record.cashUsername,jdbcType=VARCHAR},
+      cash_admin_id = #{record.cashAdminId,jdbcType=BIGINT},
+      cash_user_id = #{record.cashUserId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingPredepositCashWithBLOBs">
+    update shopping_predeposit_cash
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="cashAccount != null">
+        cash_account = #{cashAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAmount != null">
+        cash_amount = #{cashAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashBank != null">
+        cash_bank = #{cashBank,jdbcType=VARCHAR},
+      </if>
+      <if test="cashPayStatus != null">
+        cash_pay_status = #{cashPayStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cashPayment != null">
+        cash_payment = #{cashPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSn != null">
+        cash_sn = #{cashSn,jdbcType=VARCHAR},
+      </if>
+      <if test="cashStatus != null">
+        cash_status = #{cashStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cashUsername != null">
+        cash_userName = #{cashUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAdminId != null">
+        cash_admin_id = #{cashAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="cashUserId != null">
+        cash_user_id = #{cashUserId,jdbcType=BIGINT},
+      </if>
+      <if test="cashAdminInfo != null">
+        cash_admin_info = #{cashAdminInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cashInfo != null">
+        cash_info = #{cashInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingPredepositCashWithBLOBs">
+    update shopping_predeposit_cash
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      cash_account = #{cashAccount,jdbcType=VARCHAR},
+      cash_amount = #{cashAmount,jdbcType=DECIMAL},
+      cash_bank = #{cashBank,jdbcType=VARCHAR},
+      cash_pay_status = #{cashPayStatus,jdbcType=INTEGER},
+      cash_payment = #{cashPayment,jdbcType=VARCHAR},
+      cash_sn = #{cashSn,jdbcType=VARCHAR},
+      cash_status = #{cashStatus,jdbcType=INTEGER},
+      cash_userName = #{cashUsername,jdbcType=VARCHAR},
+      cash_admin_id = #{cashAdminId,jdbcType=BIGINT},
+      cash_user_id = #{cashUserId,jdbcType=BIGINT},
+      cash_admin_info = #{cashAdminInfo,jdbcType=LONGVARCHAR},
+      cash_info = #{cashInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingPredepositCash">
+    update shopping_predeposit_cash
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      cash_account = #{cashAccount,jdbcType=VARCHAR},
+      cash_amount = #{cashAmount,jdbcType=DECIMAL},
+      cash_bank = #{cashBank,jdbcType=VARCHAR},
+      cash_pay_status = #{cashPayStatus,jdbcType=INTEGER},
+      cash_payment = #{cashPayment,jdbcType=VARCHAR},
+      cash_sn = #{cashSn,jdbcType=VARCHAR},
+      cash_status = #{cashStatus,jdbcType=INTEGER},
+      cash_userName = #{cashUsername,jdbcType=VARCHAR},
+      cash_admin_id = #{cashAdminId,jdbcType=BIGINT},
+      cash_user_id = #{cashUserId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

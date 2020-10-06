@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div style='float:left;overflow:hidden;' th:if="${obj.apType=='img' }">
+  <a th:href='@{/advert_redirect.htm(url=${obj.apAccUrl},id=${obj.advId})}' target='_blank'>
+    <img th:width='${obj.apWidth}' th:height='${obj.apHeight}' th:src="@{'/'+${obj.adAcc.path}+'/'+${obj.adAcc.name}" style='border:none;' />
+  </a>
+</div>
+<script th:if="${obj.apType=='slide'}">
+  jQuery('document').ready(function(){
+    jQuery('#shopping_advert').KinSlideshow(
+            { btn:{btn_bgColor:'#FFFFFF',btn_bgHoverColor:'#FF8921',btn_fontColor:'#000000',btn_fontHoverColor:'#EEEEEE',btn_borderColor:'#666666',btn_borderHoverColor:'#FFFFFF',btn_borderWidth:1}
+            }
+    );
+  });
+</script>
+<div class='hdp' id='shopping_advert' style='visibility:hidden;' th:if="${obj.apType=='slide'}">
+  <ul th:each="adv : ${obj.advs}">
+    <a th:href="@{/advert_redirect.htm(url=${adv.adUrl},id=${adv.id})}" target='_blank'>
+      <img th:src="@{'/'+${adv.adAcc.path+'/'+adv.adAcc.name}}" th:width='${obj.apWidth}' th:height='${obj.apHeight}' />
+    </a>
+  </ul>
+</div>
+<div class='conti_left' id='advert_left' th:if="${obj.apType=='scroll'}">
+  <span></span>
+</div>
+<div class='conti' th:if="${obj.apType=='scroll'}">
+  <ul>
+    <li th:each="adv : ${obj.advs} ">
+      <a th:href="@{/advert_redirect.htm(url=${adv.adUrl},id=${adv.id})}" target='_blank'>
+        <img th:src="@{'/'+${adv.ad_acc.path+'/'+adv.ad_acc.name}}" th:width='${adv.apWidth}' th:height='${adv.apHeight}' />
+      </a>
+    </li>
+  </ul>
+</div>
+<div class='conti_right' id='advert_right' th:if="${obj.apType=='scroll'}">
+  <span></span>
+</div>
+<div th:if="${obj.apType=='text'}" th:style="${'width:'+obj.apWidth +';height:'+ obj.ap_height+';float:left;overflow:hidden;'}">
+  <a th:href="@{/advert_redirect.htm(url=${obj.apAccUrl},id=${obj.advId})}" target='_blank'></a>
+</div>
+<div id='focus' class='focus' th:if="${obj.apType=='wapslide'}">
+  <div class='hd'>
+    <ul></ul>
+  </div>
+  <div class='bd'>
+    <div class='tempWrap' style='overflow: hidden; position: relative;'>
+      <ul>
+        <li th:each="adv : ${obj.advs}">
+          <a th:href="@{/advert_redirect.htm(url=${adv.adUrl},id=${adv.id})}" target='_blank'>
+            <img th:src="@{${'/'+adv.adAcc.path+'/'+adv.adAcc.name}}" width='100%' height='150' />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    TouchSlide({slideCell:'#focus',titCell:'.hd ul',mainCell:'.bd ul',effect:'leftLoop',autoPlay:true,autoPage:true});
+  </script>
+</div>
+</body>
+</html>
+

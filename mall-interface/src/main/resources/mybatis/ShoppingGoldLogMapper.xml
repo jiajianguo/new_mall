@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingGoldLogMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingGoldLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="gl_admin_time" jdbcType="TIMESTAMP" property="glAdminTime" />
+    <result column="gl_count" jdbcType="INTEGER" property="glCount" />
+    <result column="gl_money" jdbcType="INTEGER" property="glMoney" />
+    <result column="gl_payment" jdbcType="VARCHAR" property="glPayment" />
+    <result column="gl_type" jdbcType="INTEGER" property="glType" />
+    <result column="gl_admin_id" jdbcType="BIGINT" property="glAdminId" />
+    <result column="gl_user_id" jdbcType="BIGINT" property="glUserId" />
+    <result column="gr_id" jdbcType="BIGINT" property="grId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingGoldLogWithBLOBs">
+    <result column="gl_admin_content" jdbcType="LONGVARCHAR" property="glAdminContent" />
+    <result column="gl_content" jdbcType="LONGVARCHAR" property="glContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, gl_admin_time, gl_count, gl_money, gl_payment, gl_type,
+    gl_admin_id, gl_user_id, gr_id
+  </sql>
+  <sql id="Blob_Column_List">
+    gl_admin_content, gl_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoldLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingGoldLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_gold_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_gold_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingGoldLogExample">
+    delete from shopping_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingGoldLogWithBLOBs">
+    insert into shopping_gold_log (id, addTime, deleteStatus,
+      gl_admin_time, gl_count, gl_money,
+      gl_payment, gl_type, gl_admin_id,
+      gl_user_id, gr_id, gl_admin_content,
+      gl_content)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{glAdminTime,jdbcType=TIMESTAMP}, #{glCount,jdbcType=INTEGER}, #{glMoney,jdbcType=INTEGER},
+      #{glPayment,jdbcType=VARCHAR}, #{glType,jdbcType=INTEGER}, #{glAdminId,jdbcType=BIGINT},
+      #{glUserId,jdbcType=BIGINT}, #{grId,jdbcType=BIGINT}, #{glAdminContent,jdbcType=LONGVARCHAR},
+      #{glContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingGoldLogWithBLOBs">
+    insert into shopping_gold_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="glAdminTime != null">
+        gl_admin_time,
+      </if>
+      <if test="glCount != null">
+        gl_count,
+      </if>
+      <if test="glMoney != null">
+        gl_money,
+      </if>
+      <if test="glPayment != null">
+        gl_payment,
+      </if>
+      <if test="glType != null">
+        gl_type,
+      </if>
+      <if test="glAdminId != null">
+        gl_admin_id,
+      </if>
+      <if test="glUserId != null">
+        gl_user_id,
+      </if>
+      <if test="grId != null">
+        gr_id,
+      </if>
+      <if test="glAdminContent != null">
+        gl_admin_content,
+      </if>
+      <if test="glContent != null">
+        gl_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="glAdminTime != null">
+        #{glAdminTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="glCount != null">
+        #{glCount,jdbcType=INTEGER},
+      </if>
+      <if test="glMoney != null">
+        #{glMoney,jdbcType=INTEGER},
+      </if>
+      <if test="glPayment != null">
+        #{glPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="glType != null">
+        #{glType,jdbcType=INTEGER},
+      </if>
+      <if test="glAdminId != null">
+        #{glAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="glUserId != null">
+        #{glUserId,jdbcType=BIGINT},
+      </if>
+      <if test="grId != null">
+        #{grId,jdbcType=BIGINT},
+      </if>
+      <if test="glAdminContent != null">
+        #{glAdminContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="glContent != null">
+        #{glContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingGoldLogExample" resultType="java.lang.Long">
+    select count(*) from shopping_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_gold_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.glAdminTime != null">
+        gl_admin_time = #{record.glAdminTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.glCount != null">
+        gl_count = #{record.glCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.glMoney != null">
+        gl_money = #{record.glMoney,jdbcType=INTEGER},
+      </if>
+      <if test="record.glPayment != null">
+        gl_payment = #{record.glPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.glType != null">
+        gl_type = #{record.glType,jdbcType=INTEGER},
+      </if>
+      <if test="record.glAdminId != null">
+        gl_admin_id = #{record.glAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="record.glUserId != null">
+        gl_user_id = #{record.glUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.grId != null">
+        gr_id = #{record.grId,jdbcType=BIGINT},
+      </if>
+      <if test="record.glAdminContent != null">
+        gl_admin_content = #{record.glAdminContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.glContent != null">
+        gl_content = #{record.glContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_gold_log
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      gl_admin_time = #{record.glAdminTime,jdbcType=TIMESTAMP},
+      gl_count = #{record.glCount,jdbcType=INTEGER},
+      gl_money = #{record.glMoney,jdbcType=INTEGER},
+      gl_payment = #{record.glPayment,jdbcType=VARCHAR},
+      gl_type = #{record.glType,jdbcType=INTEGER},
+      gl_admin_id = #{record.glAdminId,jdbcType=BIGINT},
+      gl_user_id = #{record.glUserId,jdbcType=BIGINT},
+      gr_id = #{record.grId,jdbcType=BIGINT},
+      gl_admin_content = #{record.glAdminContent,jdbcType=LONGVARCHAR},
+      gl_content = #{record.glContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_gold_log
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      gl_admin_time = #{record.glAdminTime,jdbcType=TIMESTAMP},
+      gl_count = #{record.glCount,jdbcType=INTEGER},
+      gl_money = #{record.glMoney,jdbcType=INTEGER},
+      gl_payment = #{record.glPayment,jdbcType=VARCHAR},
+      gl_type = #{record.glType,jdbcType=INTEGER},
+      gl_admin_id = #{record.glAdminId,jdbcType=BIGINT},
+      gl_user_id = #{record.glUserId,jdbcType=BIGINT},
+      gr_id = #{record.grId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingGoldLogWithBLOBs">
+    update shopping_gold_log
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="glAdminTime != null">
+        gl_admin_time = #{glAdminTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="glCount != null">
+        gl_count = #{glCount,jdbcType=INTEGER},
+      </if>
+      <if test="glMoney != null">
+        gl_money = #{glMoney,jdbcType=INTEGER},
+      </if>
+      <if test="glPayment != null">
+        gl_payment = #{glPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="glType != null">
+        gl_type = #{glType,jdbcType=INTEGER},
+      </if>
+      <if test="glAdminId != null">
+        gl_admin_id = #{glAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="glUserId != null">
+        gl_user_id = #{glUserId,jdbcType=BIGINT},
+      </if>
+      <if test="grId != null">
+        gr_id = #{grId,jdbcType=BIGINT},
+      </if>
+      <if test="glAdminContent != null">
+        gl_admin_content = #{glAdminContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="glContent != null">
+        gl_content = #{glContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoldLogWithBLOBs">
+    update shopping_gold_log
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      gl_admin_time = #{glAdminTime,jdbcType=TIMESTAMP},
+      gl_count = #{glCount,jdbcType=INTEGER},
+      gl_money = #{glMoney,jdbcType=INTEGER},
+      gl_payment = #{glPayment,jdbcType=VARCHAR},
+      gl_type = #{glType,jdbcType=INTEGER},
+      gl_admin_id = #{glAdminId,jdbcType=BIGINT},
+      gl_user_id = #{glUserId,jdbcType=BIGINT},
+      gr_id = #{grId,jdbcType=BIGINT},
+      gl_admin_content = #{glAdminContent,jdbcType=LONGVARCHAR},
+      gl_content = #{glContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingGoldLog">
+    update shopping_gold_log
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      gl_admin_time = #{glAdminTime,jdbcType=TIMESTAMP},
+      gl_count = #{glCount,jdbcType=INTEGER},
+      gl_money = #{glMoney,jdbcType=INTEGER},
+      gl_payment = #{glPayment,jdbcType=VARCHAR},
+      gl_type = #{glType,jdbcType=INTEGER},
+      gl_admin_id = #{glAdminId,jdbcType=BIGINT},
+      gl_user_id = #{glUserId,jdbcType=BIGINT},
+      gr_id = #{grId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

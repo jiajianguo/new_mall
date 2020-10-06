@@ -1,0 +1,853 @@
+<!--<!DOCTYPE html>-->
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"   style="font-size: 40px;">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${goodsStore.storeName}"></title>
+
+    <meta name="description" content="victor">
+    <meta property="og:site_name" content="victor">
+    <meta property="og:url" content="https://victor.xshoppy.shop/">
+    <meta property="og:title" content="victor">
+    <meta property="og:description" content="victor">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="victor">
+    <meta name="twitter:description" content="victor">
+
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <meta name="applicable-device" content="mobile">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="victor">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="aplus-terminal" content="1">
+    <meta name="format-detection" content="telephone=no, email=no">
+
+    <link rel="icon"
+          href="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+          type="image/x-icon">
+    <script async="" th:src="@{js/scevent.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/init.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/checkout.min.js}"></script>
+    <script async="true" id="xo-pptm" th:src="@{/js/pptm.js}"></script>
+    <!-- Snap Pixel Code -->
+    <script type="text/javascript">
+        (function (e, t, n) {
+            if (e.snaptr) return;
+            var a = e.snaptr = function () {
+                a.handleRequest ? a.handleRequest.apply(a, arguments) : a.queue.push(arguments)
+            };
+            a.queue = [];
+            var s = 'script';
+            r = t.createElement(s);
+            r.async = !0;
+            r.src = n;
+            var u = t.getElementsByTagName(s)[0];
+            u.parentNode.insertBefore(r, u);
+        })(window, document,
+            'https://sc-static.net/scevent.min.js');
+
+        snaptr('init', '', {
+            'user_email': ''
+        });
+
+        snaptr('track', 'PAGE_VIEW');
+    </script>
+    <!-- End Snap Pixel Code -->
+    <style type="text/css" class="buyer-font-style">@font-face {
+        font-family: LatoRegular;
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/Lato-Regular.ttf?v=victor.xshoppy.shop)
+    }
+
+    @font-face {
+        font-family: MontserratRegular;
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-Regular.ttf?v=victor.xshoppy.shop)
+    }
+
+    @font-face {
+        font-family: RobotoRegular;
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/Roboto-Regular.ttf?v=victor.xshoppy.shop)
+    }
+
+    .sl-main-title, .sl-main-title a {
+        font-family: LatoRegular !important;
+        font-size: 28px !important;
+        line-height: 32px !important
+    }
+
+    .banner .sl-main-title {
+        font-size: 48px !important;
+        line-height: 52px !important
+    }
+
+    .sl-subhead-title, .sl-subhead-title a {
+        font-family: MontserratRegular !important
+    }
+
+    body, input, .product-details * {
+        font-family: RobotoRegular !important;
+        font-size: 16px !important
+    }</style>
+
+    <link rel="stylesheet" th:href="@{https://static.xshoppy.shop/buyer/public/css/styles.min.css(v=20200818144522)}">
+    <link rel="stylesheet" th:href="@{https://static.xshoppy.shop/buyer/public/css/template5.comm.min.css(v=20200818144522)}">
+</head>
+<body class="template5-body" style="">
+<div class="nav-model-mask J-Mask"></div>
+<div class="nav-drawer drawer J-Nav-Drawer">
+    <div class="mobile-menu">
+        <ul class="nav-ul sl-subhead-title">
+
+            <li class="nav-item">
+                <a class="" href="/">
+                    Home </a>
+
+            </li>
+            <li class="nav-item">
+                <a class="" th:href="@{/goods_list.htm(store_id=${goodsStore.id})}">
+                    All products </a>
+
+            </li>
+        </ul>
+        <div class="footer-menu sl-subhead-title">
+            <a href="/login?redirect_uri=CDzCCDuEfY3_I-xOGPUiNw">
+                Log in </a>
+            <a href="/register?redirect_uri=CDzCCDuEfY3_I-xOGPUiNw">
+                Create Account </a>
+
+            <a href="/">
+                Home </a>
+            <a th:href="@{/store_goods_search.htm(store_id=${goodsStore.id})}">
+                Search </a>
+        </div>
+    </div>
+</div>
+<h1 style="display: none">victor</h1>
+<input type="hidden" class="preview-hide-code" value="1">
+<input type="hidden" class="sail-event-page-location" value="index">
+<input type="hidden" class="sail-event-page-handler" value="">
+<input type="hidden" class="sail-event-recommend-product" value="0">
+<input type="hidden" class="J-isPreview" value="0">
+<input type="hidden" class="sail-event-referer" value="https://www.xshoppy.com/advantage/templates">
+<input type="hidden" class="J-PaypalClientId" value="0">
+<input type="hidden" class="J-getCurrentState" value="HK" data-flag="https://static.xshoppy.shop/country_image/HK.png">
+<!-- 访客地区 -->
+<input type="hidden" class="J-IsRenovation" value="0">
+<input type="hidden" class="J-language" value="en">
+<input type="hidden" class="J-TemplateStyle" value="general">
+<div class="PageContainer J-PageContainer" style="padding-top: 0px;">
+    <!--
+    <div class="domain-tips">
+        <span class="iconfont icon-gantanhao"></span>
+        店铺仅供体验使用,请尽快绑定您的域名.
+        <a href="/admin/domainSettings">去绑定</a>
+    </div>
+-->
+    <input type="hidden" class="JH-page-location" value="">
+    <input type="hidden" value="0" class="JH-currency-tag">
+    <input type="hidden" class="JH-Event-Name" value="index">
+    <input type="hidden" class="J-isOpenCurrency" value="0">
+    <input type="hidden" class="J-CurrentStateCode" value="USD" data-symbol="$" data-rate-value="1.0000">
+    <input type="hidden" class="J-currency-code" value="USD" data-symbol="$" data-rate-value="1.0000">
+
+    <div class="JH-Columns">
+        <div class="head-notice ">
+            <a href="javascript:;">
+            </a>
+        </div>
+
+        <div class="header J-Header">
+
+            <div class="main head">
+
+                <div class="logo" itemscope="" itemtype="http://schema.org/Organization">
+
+                    <a href="javascript:;">
+                        <img th:if="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
+                             th:data-original="${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}"
+                             th:src="@{${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}}"
+                             alt="default" itemprop="logo">
+                        <img th:unless="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
+                             th:data-original="${config.websiteLogo.path+'/'+config.websiteLogo.name}"
+                             th:src="@{${config.websiteLogo.path+'/'+config.websiteLogo.name}}"
+                             alt="default" itemprop="logo">
+                    </a>
+
+                </div>
+
+
+                <div class="search-box">
+                    <form th:action="@{/store_goods_search.htm}" method="post" id="store_search_form">
+                        <input id="search_keyword_HFL" type="search" name="keyword" class="search"
+                               placeholder="Search categories, products..." value="">
+                    </form>
+                    <span class="search-icon iconfont icon-sousuo2"></span>
+                </div>
+
+                <script type="application/javascript">
+                    $(document).on('click', '.search-box .iconfont', function () {
+                        var store_id =jQuery("#store_id").val();
+                        var search_keyword = $(this).parent('.search-box').find('input').val();
+                        var url = '/store_goods_search.htm';
+                        window.location = url +'?store_id='+store_id+'&keyword=' + search_keyword;
+                    });
+                </script>
+
+                <div class="operat">
+
+                    <div class="head-search">
+                        <span class="iconfont icon-search J-openSearchBox"></span>
+                    </div>
+                    <div class=" head-customer">
+                        <a th:if="${user==null}" th:href="@{/user/login.htm}" class="iconfont icon-peoplefill"></a>
+                    </div>
+                    <a class="head-buycart" th:href="@{/goods_cart1.htm}">
+                        <span class="iconfont icon-cartfill"></span>
+                        <i style="display: none;">4</i>
+                    </a>
+                </div>
+
+                <div class="nav J-NavWidth">
+                    <div class="nav-icon J-NavShow">
+                        <span class="nav-icon-show top"></span>
+                        <span class="nav-icon-show center"></span>
+                        <span class="nav-icon-show bottom"></span>
+                    </div>
+                    <ul class="nav-ul sl-subhead-title J-NavMenuWidth">
+                        <li class="nav-item nav-single">
+                            <a class="" href="/">
+                                Home </a>
+
+                        </li>
+                        <li class="nav-item nav-single">
+                            <a class="" th:href="@{/goods_list.htm(store_id=${goodsStore.id})}">
+                                All products </a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="back-prev J-backPrev">
+                <span class="iconfont icon-back"></span>
+                Cart
+            </div>
+
+
+            <div class="mobile-search-box">
+                <div>
+                    <form th:action="@{/store_goods_search.htm}" method="post">
+                        <input type="search" class="search" name="keyword" placeholder="Search categories, products..."
+                               value="">
+                        <span class="search-icon iconfont icon-sousuo2"></span>
+                    </form>
+                </div>
+                <span class="iconfont icon-close J-closeSearchBox"></span>
+            </div>
+
+            <script type="application/javascript">
+                $(document).on('click', '.mobile-search-box .search-icon', function () {
+                    var store_id =jQuery("#store_id").val();
+                    var search_keyword = $(this).prev().val();
+                    var url = '/store_goods_search.htm';
+                    window.location = url +'?store_id='+store_id+'&keyword=' + search_keyword;
+                });
+            </script>
+        </div>
+
+        <div class="main-head-cart-popup">
+            <div class="head-cart-popup" style="top: 81px;">
+                <div class="J-HeadcartImg">
+                    <span class="iconfont icon-close J-CloseCartPopup"></span>
+                    <div class="jh-model-arrow up position-top"></div>
+                    <img src="">
+                </div>
+                <div>
+                    <div>got it in the cart!</div>
+                    <a th:href="@{/goods_cart1.htm}">VIEW CART</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (window.screen.availWidth > 768 || window.orientation == 90 || window.orientation == -90) {
+            var NavMenuWidth = $('.J-NavMenuWidth').width(), NavWidth = $('.J-NavWidth').width()
+            NavMenuWidth - NavWidth >= 0 ? $('.header').find('.head').addClass('mobile') : $('.header').find('.head').removeClass('mobile')
+        }
+    </script>
+    <div class="main-wrap JH-Columns">
+        <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/jquery.js(v=0517)}"></script>
+        <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js(v=0517)}"></script>
+        <!--  轮播图 -->
+        <div  class="banner index_2FA6tG swiper-container swiper-container-fade swiper-container-horizontal">
+            <img style="display: none" src="https://img.xshoppy.shop/uploader/cdc53a949cbce121dac8a791d68841c3.jpg?x-oss-process=image/blur,r_10,s_10">
+
+            <div th:if="${goodsStore.slides !=  null && goodsStore.slides.size() >0  }" class="swiper-wrapper" style="transition-duration: 0ms;">
+                <a th:each="s : ${goodsStore.slides}" th:href="@{/goods_list.htm(gc_id=${s.id},store_id=${goodsStore.id})}" class="swiper-slide">
+                    <div class="swiper-item"
+                         th:style="'background-image: url('+@{${s.sliderImg.path+'/'+s.sliderImg.name}}+');background-size: cover !important'">
+                        <div class="swiper-item-box text-center" style="background: rgba(0,0,0,0.25)">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div th:unless="${goodsStore.slides !=  null && goodsStore.slides.size() >0  }"  class="swiper-wrapper" style="transition-duration: 0ms;">
+                <a href="javascript:; "
+                   class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"
+                   data-swiper-slide-index="2"
+                   style="width: 980px; transition-duration: 0ms; opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                    <div class="swiper-item"
+                         style="background-image: url('https://img.xshoppy.shop/uploader/41d5c11e7ce5ef77f439d57f9e20dac1.jpg');background-size: cover !important">
+
+                        <div class="swiper-item-box text-center" style="background: rgba(0,0,0,0.25)">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                        </div>
+
+                    </div>
+                </a>
+                <a href="javascript:; " class="swiper-slide swiper-slide-duplicate-next" data-swiper-slide-index="0"
+                   style="width: 980px; transition-duration: 0ms; opacity: 1; transform: translate3d(-980px, 0px, 0px);">
+                    <div class="swiper-item"
+                         style="background-image: url('https://img.xshoppy.shop/uploader/cdc53a949cbce121dac8a791d68841c3.jpg');background-size: cover !important">
+                        <div class="swiper-item-box text-center" style="background: rgba(0,0,0,0.25)">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);">
+                                <div style=""></div>
+                            </div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);">
+                                <div style=""></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+                <a href="javascript:; " class="swiper-slide swiper-slide-prev" data-swiper-slide-index="1"
+                   style="width: 980px; transition-duration: 0ms; opacity: 1; transform: translate3d(-1960px, 0px, 0px);">
+                    <div class="swiper-item"
+                         style="background-image: url('https://img.xshoppy.shop/uploader/58df38277f9b081859158f04e148a8c6.jpg');background-size: cover !important">
+
+                        <div class="swiper-item-box text-center" style="background: rgba(0,0,0,0.25)">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);">
+                                <div style=""></div>
+                            </div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);">
+                                <div style=""></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+                <a href="javascript:; " class="swiper-slide swiper-slide-active" data-swiper-slide-index="2"
+                   style="width: 980px; transition-duration: 0ms; opacity: 1; transform: translate3d(-2940px, 0px, 0px);">
+                    <div class="swiper-item"
+                         style="background-image: url('https://img.xshoppy.shop/uploader/41d5c11e7ce5ef77f439d57f9e20dac1.jpg');background-size: cover !important">
+
+                        <div class="swiper-item-box text-center" style="background: rgba(0,0,0,0.25)">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(0%, 0px, 0px);"></div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(0%, 0px, 0px);"></div>
+                        </div>
+
+                    </div>
+                </a>
+                <a href="javascript:; " class="swiper-slide swiper-slide-duplicate swiper-slide-next"
+                   data-swiper-slide-index="0"
+                   style="width: 980px; transition-duration: 0ms; opacity: 0; transform: translate3d(-3920px, 0px, 0px);">
+                    <div class="swiper-item"
+                         style="background-image: url('https://img.xshoppy.shop/uploader/cdc53a949cbce121dac8a791d68841c3.jpg');background-size: cover !important">
+
+                        <div class="swiper-item-box text-center" style="background: rgba(0,0,0,0.25)">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(50%, 0px, 0px);">
+                                <div style=""></div>
+                            </div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%"
+                                 style="transition-duration: 0ms; transform: translate3d(50%, 0px, 0px);">
+                                <div style=""></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+
+            <div th:if="${goodsStore.slides !=  null && goodsStore.slides.size() >0  }" class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+                 <span   th:each="slide,index : ${goodsStore.slides}" th:class="${index.count ==1?'swiper-pagination-bullet swiper-pagination-bullet-active': 'swiper-pagination-bullet' }"
+                         tabindex="0" role="button" th:aria-label="${'Go to slide '+ index.count}">
+                 </span>
+            </div>
+            <div th:unless="${goodsStore.slides !=  null && goodsStore.slides.size() >0  }" class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span
+                    class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span
+                    class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span
+                    class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button"
+                    aria-label="Go to slide 3"></span>
+            </div>
+            <div class="swiper-button-next iconfont icon-next-copy" tabindex="0" role="button"
+                 aria-label="Next slide"></div>
+            <div class="swiper-button-prev iconfont icon-back-copy" tabindex="0" role="button"
+                 aria-label="Previous slide"></div>
+            <script type="text/javascript">
+                $(function () {
+                    var delay_time = parseInt('7000');
+                    var banner_open = parseInt('0');
+                    var banner_key = parseInt('0');
+                    new Swiper(".index_2FA6tG", {
+                        speed: 600,
+                        parallax: true,
+                        watchOverflow: true,
+                        effect: 'fade',
+                        slidesPerView: 1,
+                        autoplay: banner_open ? false : {delay: delay_time},
+                        initialSlide: banner_open ? banner_key : 0,
+                        preloadImages: false,
+                        loop: 1 ? true : false,
+                        pagination: {el: ".swiper-pagination", clickable: true,},
+                        navigation: {nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev",}
+                    })
+                });
+            </script>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+    </div>
+    <div class="main featured-product section JH-Columns ">
+        <h3 class="title sl-main-title">Featured collection</h3>
+        <div class="grid clearfloat J-infiniteList" data-category-id="1681816" data-feed-ended="0" data-offset="50">
+
+            <div th:each="goods :${goods_recommend}" class="grid-item one-four-middle" th:data-id="${goods.id}">
+                <div class="grid-item-picture">
+                    <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                        <img th:if="${goods.goods_main_photo}" class="J-openProductPopup lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                         th:data-original="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}"
+                         th:src="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}"
+                         alt="Waxed Canvas Pouch">
+                        <img th:unless="${goods.goods_main_photo}" class="J-openProductPopup lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}"
+                             th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}"
+                             alt="Waxed Canvas Pouch">
+                    </a>
+
+                    <div th:data-id="${goods.id}"
+                         class="jh-btn sl-secondary-btn JH-Event-BuyCart add-to-cart display-none JH-Pixel-BuyCart "
+                         data-compare-at-price="0.00" th:data-price="'￥'+${goods.storePrice}"
+                         sku-title="Waxed Canvas Pouch" >
+                        <span class="iconfont icon-cartfill"></span>
+                    </div>
+                </div>
+                <div class="grid-item-title J-openProductPopup">
+                    <p class="price">
+                        <span class="visually-hidden" aria-hidden="false">Sale price</span>
+                        <span class="pay-price sl-subhead-title" th:data-price="${goods.storePrice}" th:text="'￥'+${goods.storePrice}"
+                              itemprop="price" content="52.00">
+                        </span>
+                        <span class="visually-hidden" aria-hidden="false">Regular price</span>
+                        <span class="orig-price sl-subhead-title" th:data-price="${goods.goodsPrice}" th:text="'￥'+${goods.goodsPrice}">
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="main single-image-main clearfloat section JH-Columns  left">
+
+        <div class="single-img-img">
+            <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                 data-original="https://img.xshoppy.shop/uploader/43e41b26b42ea1f4baef7943f56720cd.jpg"
+                 src="https://img.xshoppy.shop/uploader/43e41b26b42ea1f4baef7943f56720cd.jpg" alt="">
+        </div>
+
+        <div class="single-img-text">
+            <div>
+                <div class="model-title sl-main-title">
+                    <div style="font-size: 14px;" >
+                        <div>
+                            <span >店铺名称：</span>
+                            <span th:text="${goodsStore.storeName}">平台自营店</span>
+                        </div>
+                        <div>
+                            <span >店&nbsp;&nbsp;铺&nbsp;&nbsp;号：</span>
+                            <span th:text="${goodsStore.id}"></span>
+                        </div>
+                        <div>
+                            <span >店铺等级：</span>
+                            <span th:text="${goodsStore.id}"></span>
+                        </div>
+                        <div >
+                            <span >创建时间：</span>
+                            <span th:text="${#dates.format(goodsStore.addtime,'yyyy-MM-dd')}"></span>
+                        </div>
+                        <div>
+                            <span >服务态度：</span>
+                            <span >
+                                    <b th:text="${goodsStore.point.serviceEvaluate}"></b>
+                                    <em th:class="${service_css}">
+                                        <span th:text="${service_result}"></span>
+                                        <strong th:text="${service_type }"></strong>
+                                    </em>
+                                </span>
+                        </div>
+                        <div >
+                            <span >描述相符：</span>
+                            <span >
+                                    <b th:text="${goodsStore.point.descriptionEvaluate}"></b>
+                                    <em th:class="${description_css}">
+                                        <span th:text="${description_result}"></span>
+                                        <strong th:text="${description_type}"></strong>
+                                    </em>
+                                </span>
+                        </div>
+                        <div>
+                            <span >发货速度：</span>
+                            <span >
+                                    <b th:text="${goodsStore.point.shipEvaluate}"></b>
+                                    <em th:class="${ship_css}">
+                                        <span th:text="${ship_result}"></span>
+                                        <strong th:text="${ship_type}"> </strong>
+                                    </em>
+                                </span>
+                        </div>
+                        <div >
+                            <span >商品数量：</span>
+                            <span th:text="${goods_counts +'件商品'}"></span>
+                        </div>
+                        <div >
+                            <span >联系电话：</span>
+                            <span th:text="${goodsStore.storeTelephone}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-describe">
+                    <div style="font-size: 14px;">
+                        <div >
+                            <span >站内客服：</span>
+                            <span >
+                                     <a  th:if="${user}" class="im_common" href="javascript:void(0);" th:user_id="${goodsStore.user.id}" th:id="${'userDialog_img_contact_'+goodsStore.user.id}" th:user_name="${goodsStore.user.username}"> 咨询客服</a>
+                                     <a th:unless="${user}" class="im_common" href="javascript:void(0);" th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">咨询客服 </a>
+                                </span>
+                        </div>
+                        <div >
+                            <span >站外客服：</span>
+                            <span >
+                                     <a target="_blank" th:href="@{${'http://wpa.qq.com/msgrd?v=3&uin='+goodsStore.storeQq+'&Site='+goodsStore.storeQq +'&Menu=yes'}}">
+                                     <img alt="点击这里给我发消息" th:src="@{${'http://wpa.qq.com/pa?p=2:'+goodsStore.storeQq+':51'}}" />
+                                   </a>
+                                </span>
+                        </div>
+                        <a  th:if="${user }" class="jh-btn sl-main-btn" id="store_fav" th:data-id="${goodsStore.id}"  onclick="add_store_favorite(this.getAttribute('data-id'))">收藏店铺 </a>
+                        <a  th:unless="${user }"  th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" th:data-id="${goodsStore.id}"  onclick="add_store_favorite(this.getAttribute('data-id'))">收藏店铺 </a>
+                        <a class="jh-btn sl-main-btn" href="javascript:;">Our story </a>
+                    </div>
+                </div>
+                <a class="jh-btn sl-main-btn display-none" href="javascript:;">
+                    Talk about your brand </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="main-wrap JH-Columns ">
+        <div class="main subscribe section">
+            <div class="model-title sl-main-title">Subscribe to our newsletter</div>
+            <div class="model-describe">A short sentence describing what someone will receive by subscribing</div>
+            <div class="newsletter">
+                <input type="text" class="newsletter-email" placeholder="Email address">
+                <button class="jh-btn sl-main-btn J-Subscribe">
+                    <em>SUBSCRIBE</em>
+                    <span class="iconfont icon-right1"></span>
+                </button>
+                <div class="subscribe-tips"></div>
+            </div>
+        </div>
+    </div>
+    <footer class="JH-Columns footer J-footer" style="padding-bottom: 0px;">
+        <div class="main help-center section">
+            <div class="help-box">
+                <ul class="help-list ">
+                    <li class="help-item">
+                        <a href="/">
+                            Home </a>
+                    </li>
+                    <li class="help-item">
+                        <a th:href="@{store_goods_search.htm(store_id=${goodsStore.id})}">
+                            Search </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="help-box">
+                <div class="share-box">
+                </div>
+            </div>
+
+            <div class="help-box fr">
+                <p class="reserved">© 2020 emode</p>
+                <p class="payment-method">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/paypal.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/visa1.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/mastercard.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/maestro.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/AmericanExpress.svg" alt="Payment">
+                </p>
+            </div>
+        </div>
+    </footer>
+    <div class="product-types-box">
+        <div class="recommend clearfloat">
+            <div class="recom-item pl40 J-Product">
+                <h4 class="title J-Product-Title sl-main-title"></h4>
+                <div class="price">
+                    <span class="pay-price J-Pay-Price" data-price=""></span>
+                    <span class="orig-price J-Orig-Price" data-price=""></span>
+                </div>
+                <div class="products-tisp J-ProductsTisp">
+                    <span></span>
+                </div>
+                <div class="jh-specification choose-style-box">
+                </div>
+
+                <div class="good-quantity-tips J-InventoryQuantity"></div>
+                <button class="jh-btn sl-subhead-title sl-main-btn JH-BuyCart">
+                    <span class="btn-text">Add To Cart</span>
+                </button>
+
+            </div>
+        </div>
+        <div class="pop-close iconfont icon-close"></div>
+    </div>
+    <div class="sece  J-Popup">
+        <div class="quick-view">
+            <div class="header">
+                <div class="head">
+                    <div class="logo">
+
+
+                        <a href="/">
+                            <span>victor</span>
+                        </a>
+
+                    </div>
+
+
+                    <div class="search-box">
+                        <form th:action="@{/store_goods_search.htm(store_id=${goodsStore.id})}" method="get">
+                            <input id="search_keyword_rzd" type="search" name="keyword" class="search"
+                                   placeholder="Search categories, products..." value="">
+                            <input type="hidden" id="store_id" th:value="${goodsStore.id}">
+                        </form>
+                        <span class="search-icon iconfont icon-sousuo2"></span>
+                    </div>
+
+                    <script type="application/javascript">
+                        $(document).on('click', '.search-box .iconfont', function () {
+                            var store_id =jQuery("#store_id").val();
+                            var search_keyword = $(this).parent('.search-box').find('input').val();
+                            var url = '/store_goods_search.htm';
+                            window.location = url +'?store_id='+store_id+'&keyword=' + search_keyword;
+                        });
+                    </script>
+
+                    <div class="operat">
+                        <div class="head-search"><span class="iconfont icon-search J-openSearchBox"></span></div>
+                        <a class="head-buycart" href="/cart">
+                            <span class="iconfont icon-cartfill"></span>
+                            <i style="display: none;"></i>
+                        </a>
+                    </div>
+                    <span class="iconfont icon-back J-close-popup"></span>
+                </div>
+
+                <div class="mobile-search-box">
+                    <div>
+                        <form action="/search" method="get">
+                            <input type="search" class="search" name="keyword"
+                                   placeholder="Search categories, products..." value="">
+                            <span class="search-icon iconfont icon-sousuo2"></span>
+                        </form>
+                    </div>
+                    <span class="iconfont icon-close J-closeSearchBox"></span>
+                </div>
+
+                <script type="application/javascript">
+                    $(document).on('click', '.mobile-search-box .search-icon', function () {
+                        var store_id =jQuery("#store_id").val();
+                        var search_keyword = $(this).prev().val();
+                        var url = '/store_goods_search.htm';
+                        window.location = url +'?store_id='+store_id+'&keyword=' + search_keyword;
+                    });
+                </script>
+            </div>
+            <div class="quick-view-btn J-Overview active">
+                Overview
+            </div>
+            <div class="quick-view-btn J-Detail">
+                Detail
+            </div>
+            <div class="quick-view-btn J-Related">
+                Related
+            </div>
+        </div>
+
+        <div class="product-details-popup">
+            <span class="iconfont icon-close J-close-popup"></span>
+            <div class="container  J-PopupContainer">
+                <div class="main  recommend  product">
+                    <div class="recom-item  J-ProductSwiper tag"></div>
+                    <div class="recom-item  pl40  J-Product">
+                        <div class="J-ProductInfo"></div>
+                        <div class="recom-operat">
+                            <div class="types-item quantity ">
+                                <label>Qty: </label>
+                                <span class="iconfont icon-31xiala"></span>
+                                <select class="J-QtySelect">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    <option value="32">32</option>
+                                    <option value="33">33</option>
+                                    <option value="34">34</option>
+                                    <option value="35">35</option>
+                                    <option value="36">36</option>
+                                    <option value="37">37</option>
+                                    <option value="38">38</option>
+                                    <option value="39">39</option>
+                                    <option value="40">40</option>
+                                    <option value="41">41</option>
+                                    <option value="42">42</option>
+                                    <option value="43">43</option>
+                                    <option value="44">44</option>
+                                    <option value="45">45</option>
+                                    <option value="46">46</option>
+                                    <option value="47">47</option>
+                                    <option value="48">48</option>
+                                    <option value="49">49</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+
+                            <div class="types-add-cart">
+                                <button class=" jh-btn sl-subhead-title sl-main-btn JH-BuyCart JH-Event-BuyCart">
+                                    <span class="btn-text">BUY</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="good-quantity-tips J-InventoryQuantity"></div>
+
+                    </div>
+
+                    <div class="recom-item">
+                        <div class="product-details-box">
+                            <div class="J-PopupGroupProductTop">
+
+                            </div>
+                            <div class="product-details J-Productdetails">
+                                <!--产品详情-->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="J-PopupGroupProductBottom">
+
+                </div>
+                <!-- 平铺 -->
+                <div class="main model-recommend">
+                    <h3 class="title J-title sl-main-title"></h3>
+                    <ul class="J-productList">
+
+                    </ul>
+                </div>
+
+
+                <div class="J-PopupComment">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-add-cart">
+            <div class="J-priceFixed">
+
+            </div>
+
+            <button class="jh-btn sl-subhead-title sl-main-btn JH-FixedBuyCart">
+                <span class="btn-text">BUY</span>
+            </button>
+        </div>
+    </div>
+    <div class="product-big-img">
+        <div class="layer-img"><img src="" alt=""></div>
+        <span class="iconfont icon-close J-bigImgClose"></span>
+        <span class="iconfont icon-left J-bigImgPrev"></span>
+        <span class="iconfont icon-right J-bigImgNext"></span>
+    </div>
+</div>
+
+
+<script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js(v=0517)}"></script>
+<script type="text/javascript" th:src="@{/js/jhPlugin.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+<script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/lib/event.js(v=20200818144522)}"></script>
+
+<script>
+    function add_store_favorite(storeId) {
+        console.log('添加收藏');
+        $.post('/add_store_favorite.htm',{id:storeId},function (res) {
+            console.log('返回值-----',res);
+            if(res == '1'){
+                alert("收藏成功！")
+            }else{
+                alert('该店铺已经被收藏！');
+            }
+        })
+    }
+
+
+</script>
+
+
+</body>
+</html>

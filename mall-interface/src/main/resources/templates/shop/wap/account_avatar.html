@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>修改头像</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css"/>
+		<link rel="stylesheet" type="text/css" href="/asset/css/edit_img.css"/>
+		<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="ui-pane">
+			<div class="nav"></div>
+			<div class="ui-header">
+				<a href="" class="header-button">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-left"></use>
+					</svg>
+				</a>
+				<div class="header-title">修改头像</div>
+			</div>
+
+			<div class="ui-content">
+				<div class="head_img_box">
+					<img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}"/>
+					<img th:unless="${user.photo}" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}"/>
+					<input type="file" name="img" id="" value="" />
+					<p class="up_itps">点击图片更换头像</p>
+				</div>
+				<input type="button" class="btn" name="" id="" onclick="return preserve()" value="保存" />
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	</script>
+	<script>
+		function preserve(){
+			var formData    = new FormData();
+			var img = $("[name='img']").prop('files')[0];/*获取上传图片的信息*/
+			formData.append("file",img);
+			formData.append("type","headimg");
+			$.ajax({
+				type : "post",
+				url : "/fileUpload",/*此处填写上传路径*/
+				processData : false,
+				contentType : false,
+				data : formData,
+				success : function(data) {
+					var datas = JSON.parse(data);
+					if(datas.code == '200'){
+						var id= $("#user_id").val();
+						console.log(datas.data);
+						$.post('/buyer/upload_avatar.htm',{id:id,accessory:JSON.stringify(datas.data)},function(res){
+							console.log(res);
+							console.log(typeof res);
+							if(res == '200'){
+								alert("上传成功");
+								window.location.reload();
+							}
+						},"text")
+					}else{
+						alert("上传失败");
+					}
+				}
+			});
+		}
+
+	</script>
+
+</html>

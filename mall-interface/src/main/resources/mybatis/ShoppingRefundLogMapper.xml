@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingRefundLogMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingRefundLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="refund" jdbcType="DECIMAL" property="refund" />
+    <result column="refund_id" jdbcType="VARCHAR" property="refundId" />
+    <result column="refund_log" jdbcType="VARCHAR" property="refundLog" />
+    <result column="refund_type" jdbcType="VARCHAR" property="refundType" />
+    <result column="of_id" jdbcType="BIGINT" property="ofId" />
+    <result column="refund_user_id" jdbcType="BIGINT" property="refundUserId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, refund, refund_id, refund_log, refund_type, of_id, refund_user_id
+  </sql>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select * from shopping_refund_log
+    <where>
+      1=1
+      <if test="of_id != null"> and of_id =#{of_id}</if>
+    </where>
+  </select>
+
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingRefundLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_refund_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_refund_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_refund_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingRefundLogExample">
+    delete from shopping_refund_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingRefundLog">
+    insert into shopping_refund_log (id, addTime, deleteStatus,
+      refund, refund_id, refund_log,
+      refund_type, of_id, refund_user_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{refund,jdbcType=DECIMAL}, #{refundId,jdbcType=VARCHAR}, #{refundLog,jdbcType=VARCHAR},
+      #{refundType,jdbcType=VARCHAR}, #{ofId,jdbcType=BIGINT}, #{refundUserId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingRefundLog">
+    insert into shopping_refund_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="refund != null">
+        refund,
+      </if>
+      <if test="refundId != null">
+        refund_id,
+      </if>
+      <if test="refundLog != null">
+        refund_log,
+      </if>
+      <if test="refundType != null">
+        refund_type,
+      </if>
+      <if test="ofId != null">
+        of_id,
+      </if>
+      <if test="refundUserId != null">
+        refund_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="refund != null">
+        #{refund,jdbcType=DECIMAL},
+      </if>
+      <if test="refundId != null">
+        #{refundId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundLog != null">
+        #{refundLog,jdbcType=VARCHAR},
+      </if>
+      <if test="refundType != null">
+        #{refundType,jdbcType=VARCHAR},
+      </if>
+      <if test="ofId != null">
+        #{ofId,jdbcType=BIGINT},
+      </if>
+      <if test="refundUserId != null">
+        #{refundUserId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingRefundLogExample" resultType="java.lang.Long">
+    select count(*) from shopping_refund_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_refund_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.refund != null">
+        refund = #{record.refund,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundId != null">
+        refund_id = #{record.refundId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.refundLog != null">
+        refund_log = #{record.refundLog,jdbcType=VARCHAR},
+      </if>
+      <if test="record.refundType != null">
+        refund_type = #{record.refundType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ofId != null">
+        of_id = #{record.ofId,jdbcType=BIGINT},
+      </if>
+      <if test="record.refundUserId != null">
+        refund_user_id = #{record.refundUserId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_refund_log
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      refund = #{record.refund,jdbcType=DECIMAL},
+      refund_id = #{record.refundId,jdbcType=VARCHAR},
+      refund_log = #{record.refundLog,jdbcType=VARCHAR},
+      refund_type = #{record.refundType,jdbcType=VARCHAR},
+      of_id = #{record.ofId,jdbcType=BIGINT},
+      refund_user_id = #{record.refundUserId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingRefundLog">
+    update shopping_refund_log
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="refund != null">
+        refund = #{refund,jdbcType=DECIMAL},
+      </if>
+      <if test="refundId != null">
+        refund_id = #{refundId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundLog != null">
+        refund_log = #{refundLog,jdbcType=VARCHAR},
+      </if>
+      <if test="refundType != null">
+        refund_type = #{refundType,jdbcType=VARCHAR},
+      </if>
+      <if test="ofId != null">
+        of_id = #{ofId,jdbcType=BIGINT},
+      </if>
+      <if test="refundUserId != null">
+        refund_user_id = #{refundUserId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingRefundLog">
+    update shopping_refund_log
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      refund = #{refund,jdbcType=DECIMAL},
+      refund_id = #{refundId,jdbcType=VARCHAR},
+      refund_log = #{refundLog,jdbcType=VARCHAR},
+      refund_type = #{refundType,jdbcType=VARCHAR},
+      of_id = #{ofId,jdbcType=BIGINT},
+      refund_user_id = #{refundUserId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

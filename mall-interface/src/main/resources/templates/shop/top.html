@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/style/system/front/default/css/public_auto.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet" />
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+  </head>
+  <body>
+  <div class="top"  th:fragment="mytop" ng-app="top"><!--ng-app="top"-->
+    <div class="top_page">
+      <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+          <li class="mytaobao menu-item menupx">
+            <div class="menu"> <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+              <div class="menu-bd">
+                <div class="menu-bd-panel">
+                  <div>
+                    <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                    <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                    <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="mytaobao menu-item menupx">
+            <div class="menu"> <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+              <div class="menu-bd">
+                <div class="menu-bd-panel">
+                  <div>
+                    <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                    <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}"  rel="nofollow">商家订单</a>
+                    <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                    <a ng-if="user"   rel="nofollow">我的店铺</a>
+                    <!--th:href="@{/store.htm(id="+ {{user.storeId}}+")}" -->
+                    <a ng-if ="!user" th:href="@{/seller/store_create_first.htm}"   rel="nofollow">商家入驻</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="search menu-item menupx">
+            <div class="menu" id="cart_menu">
+              <span class="menu-hd" id="cart_goods_top_menu">
+                <s></s>购物车<span id="cart_goods_count_top" class="top_car" >{{cart.length}}</span>
+                种商品<b></b>
+              </span>
+              <div class="menu-bd" id="cart_goods_top_info">
+                <div class="menu-bd-panel">
+                  <div style="text-align:center;">
+                    <img th:src="@{/style/common/images/loader.gif}" />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="menupx">
+            <a th:href="@{/buyer/message.htm}">
+            站内短信<span ng-if= "msgs" style="color:#FF3300;" > {{msgs.length}}</span></a>
+          </li>
+          <li class="mytaobao menu-item menupx">
+            <div class="menu"> <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+              <div class="menu-bd">
+                <div class="menu-bd-panel">
+                  <div>
+                    <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                    <a th:href="@{/buyer/favorite_store.htm}"  rel="nofollow">收藏店铺</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li ng-if="user.userRole == 'ADMIN'" class="menupx">
+            <a href="/admin/index.htm" target="_blank">管理后台</a>
+          </li>
+          <li class="menupx" ng-if="navs">
+            <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+          </li>
+          <li class="menupx" ng-if="!navs" style="background:none;">
+            <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+          </li>
+          <li class="mytaobao menu-item menupx" style="background:none;" ng-if="navs">
+            <div class="menu">
+              <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">更多链接<b></b></a>
+              <div class="menu-bd" style="height:auto;">
+                <div class="menu-bd-panel">
+                  <div ng-repeat="nav in navs track by $index" >
+                    <a    rel="nofollow" >{{nav.title}}</a><!--th:href="@{/store.htm(id="+ {{user.storeId}}+")}"-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+      <div class="pageleft">
+        <span ng-if="user">
+             <span>{{user.username}}您好,欢迎来到{{config.websitename}}</span>
+             <a  th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+        </span>
+        <span ng-if="!user">
+             <span >亲，欢迎来到{{config.websitename}}</span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+      </div>
+    </div>
+  </div>
+  </body>
+  <script>
+    var app = angular.module('top', []);
+    app.controller('myCtrl', function($scope, $http) {
+      //$scope.name = "John Doe";
+      $scope.user={};
+      $scope.msgs=[];
+      $scope.navs=[];
+      $scope.cart=[];
+      var init = function () {
+        $http.post('/top').then(function (res){
+          console.log("shuju "+res);
+        });
+      };
+      init();
+      $cope.cart_remove=function (index){
+
+      }
+    });
+
+    function cart_remove(id,store_id){
+      jQuery.post('/remove_goods_cart.htm',{"id":id,"store_id":store_id},function(data){
+        jQuery("div[class=table] tr[id="+id+"]").remove();
+        jQuery(".shopping[id="+id+"]").remove();
+        jQuery(".shopp_ingtop[id="+id+"]").remove();
+        jQuery("#cart_goods_count_top").html(data.count);
+        jQuery("#cart_goods_price_top").html(data.total_price);
+        jQuery("#top_total_price_"+store_id).html(data.total_price);
+        if(store_id!=""){
+          jQuery("#total_price_"+store_id).html(data.sc_total_price);
+        }
+        if( jQuery("form[id=cart_"+store_id+"]").find("tr[goods_list^=goods_info]").length==0){
+          jQuery("form[id=cart_"+store_id+"]").remove();
+        }
+        if(jQuery("tr[goods_list^=goods_info]").length==0){
+          jQuery(".car_nogoods").show();
+        }
+      },"json");
+    }
+    jQuery(document).ready(function(){
+      jQuery("#cart_goods_top_menu").mouseover(function(){
+        jQuery.ajax({type:'POST',url:'/cart_menu_detail.htm',data:'',
+          beforeSend:function(){
+            jQuery("#cart_goods_top_info").empty().html('<div class="menu-bd-panel"><div style="text-align:center;"><img th:src="@{/style/common/images/loader.gif}" /></div></div>');
+            jQuery("#cart_goods_top_info").show();
+          },
+          success:function(data){
+            jQuery("#cart_goods_top_info").empty();
+            jQuery("#cart_goods_top_info").html(data);
+          }
+        });
+      });
+      jQuery("#cart_menu").mouseleave(function(){
+        jQuery("#cart_goods_top_info").hide();
+      });
+    });
+  </script>
+</html>
+

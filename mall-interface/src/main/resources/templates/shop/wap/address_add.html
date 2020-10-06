@@ -1,0 +1,88 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>收货地址设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/dz.css"/>
+		<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+	<form th:action="@{/buyer/address_save.htm}" method="post" id="theForm">
+		<div class="ui-pane">
+			<div class="ui-header">
+				<a href="" class="header-button">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-left"></use>
+					</svg>
+				</a>
+				<div class="header-title">收货地址设置</div>
+			</div>
+			<div class="ui-content">
+				
+				<div class="content">
+					<input name="id" type="hidden" id="id"  th:value="${obj!=null?obj.id:''}" />
+					<div class="content_text">
+						<div class="text_title"><span>*</span>Name</div>
+						<input class="text" name="trueName" type="text" id="trueName" th:value="${obj !=null ? obj.truename:''}"/>
+					</div>
+					
+					<!--<div class="content_text">
+						<div class="text_title"><span>*</span>Last Name</div>
+						<input class="text" type="text"/>
+					</div>-->
+					
+					<div class="content_text">
+						<div class="text_title"><span>*</span>Detailed address</div>
+						<input class="text" name="area_info" type="text" id="area_info" th:value="${obj!=null?obj.areaInfo:''}"/>
+					</div>
+					
+					<!--<div class="content_text">
+						<div class="text_title">Address Continued</div>
+						<input class="text" type="text"/>
+					</div>-->
+					
+					<div class="content_text">
+						<div class="text_title"><span>*</span>City</div>
+						<input class="text" name="city" type="text" id="city" th:value="${obj !=null ? obj.city:''}"/>
+					</div>
+					
+					<div class="content_text">
+						<div class="text_title"><span>*</span>Country</div>
+						<input class="text" name="countries" id="countries" th:value="${obj !=null ? obj.countries:''}"/>
+					</div>
+					
+					<!--<div class="content_text">
+						<div class="text_title">State/Province</div>
+						<input class="text" type="text"/>
+					</div>-->
+					
+					<div class="content_text">
+						<div class="text_title"><span>*</span>Zip / Postal Code</div>
+						<input class="text" name="zip" type="text" id="zip" th:value="${obj!=null?obj.zip:''}"/>
+					</div>
+
+					<div>
+						<div class="text_title"><span>*</span>default address</div>
+					</div>
+					
+					<div class="content_text">
+						<div class="text_title"><span>*</span>Mobile Phone Number</div>
+						<div class="text textbd">
+							<div class="text_row">+86</div>
+							<input class="phone" type="number" name="telephone" id="telephone" th:value="${obj!=null?obj.telephone:''}" />
+						</div>
+					</div>
+					<input name="currentPage" type="hidden" id="currentPage" th:value="${currentPage}" />
+					<input type="submit" class="content_bt" name="" id="" value="Create Address" />
+				</div>
+				
+			</div>
+		</div>
+	</form>
+	</body>
+	<script type="text/javascript">
+	</script>
+</html>

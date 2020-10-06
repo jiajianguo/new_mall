@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingGoodsbrandMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingGoodsbrand">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="audit" jdbcType="BIT" property="audit" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="recommend" jdbcType="BIT" property="recommend" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="brandLogo_id" jdbcType="BIGINT" property="brandlogoId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="userStatus" jdbcType="INTEGER" property="userstatus" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="weixin_shop_recommend" jdbcType="BIT" property="weixinShopRecommend" />
+    <result column="weixin_shop_recommendTime" jdbcType="DATE" property="weixinShopRecommendtime" />
+    <result column="first_word" jdbcType="VARCHAR" property="firstWord" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingGoodsbrand">
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    <collection property="goodsList" ofType="com.xdj.www.entity.ShoppingGoods">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+      <result column="goods_click" jdbcType="INTEGER" property="goodsClick" />
+      <result column="goods_fee" jdbcType="VARCHAR" property="goodsFee" />
+      <result column="goods_inventory" jdbcType="INTEGER" property="goodsInventory" />
+      <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+      <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
+      <result column="goods_recommend" jdbcType="BIT" property="goodsRecommend" />
+      <result column="goods_salenum" jdbcType="INTEGER" property="goodsSalenum" />
+      <result column="goods_seller_time" jdbcType="TIMESTAMP" property="goodsSellerTime" />
+      <result column="goods_serial" jdbcType="VARCHAR" property="goodsSerial" />
+      <result column="goods_status" jdbcType="INTEGER" property="goodsStatus" />
+      <result column="goods_transfee" jdbcType="INTEGER" property="goodsTransfee" />
+      <result column="goods_weight" jdbcType="DECIMAL" property="goodsWeight" />
+      <result column="inventory_type" jdbcType="VARCHAR" property="inventoryType" />
+      <result column="seo_keywords" jdbcType="VARCHAR" property="seoKeywords" />
+      <result column="store_price" jdbcType="DECIMAL" property="storePrice" />
+      <result column="store_recommend" jdbcType="BIT" property="storeRecommend" />
+      <result column="store_recommend_time" jdbcType="TIMESTAMP" property="storeRecommendTime" />
+      <result column="ztc_apply_time" jdbcType="TIMESTAMP" property="ztcApplyTime" />
+      <result column="ztc_begin_time" jdbcType="DATE" property="ztcBeginTime" />
+      <result column="ztc_click_num" jdbcType="INTEGER" property="ztcClickNum" />
+      <result column="ztc_dredge_price" jdbcType="INTEGER" property="ztcDredgePrice" />
+      <result column="ztc_gold" jdbcType="INTEGER" property="ztcGold" />
+      <result column="ztc_pay_status" jdbcType="INTEGER" property="ztcPayStatus" />
+      <result column="ztc_price" jdbcType="INTEGER" property="ztcPrice" />
+      <result column="ztc_status" jdbcType="INTEGER" property="ztcStatus" />
+      <result column="gc_id" jdbcType="BIGINT" property="gcId" />
+      <result column="goods_brand_id" jdbcType="BIGINT" property="goodsBrandId" />
+      <result column="goods_main_photo_id" jdbcType="BIGINT" property="goodsMainPhotoId" />
+      <result column="goods_store_id" jdbcType="BIGINT" property="goodsStoreId" />
+      <result column="ztc_admin_id" jdbcType="BIGINT" property="ztcAdminId" />
+      <result column="goods_collect" jdbcType="INTEGER" property="goodsCollect" />
+      <result column="group_buy" jdbcType="INTEGER" property="groupBuy" />
+      <result column="goods_choice_type" jdbcType="INTEGER" property="goodsChoiceType" />
+      <result column="group_id" jdbcType="BIGINT" property="groupId" />
+      <result column="activity_status" jdbcType="INTEGER" property="activityStatus" />
+      <result column="bargain_status" jdbcType="INTEGER" property="bargainStatus" />
+      <result column="delivery_status" jdbcType="INTEGER" property="deliveryStatus" />
+      <result column="goods_current_price" jdbcType="DECIMAL" property="goodsCurrentPrice" />
+      <result column="goods_volume" jdbcType="DECIMAL" property="goodsVolume" />
+      <result column="ems_trans_fee" jdbcType="DECIMAL" property="emsTransFee" />
+      <result column="express_trans_fee" jdbcType="DECIMAL" property="expressTransFee" />
+      <result column="mail_trans_fee" jdbcType="DECIMAL" property="mailTransFee" />
+      <result column="transport_id" jdbcType="BIGINT" property="transportId" />
+      <result column="combin_status" jdbcType="INTEGER" property="combinStatus" />
+      <result column="combin_begin_time" jdbcType="DATE" property="combinBeginTime" />
+      <result column="combin_end_time" jdbcType="DATE" property="combinEndTime" />
+      <result column="combin_price" jdbcType="DECIMAL" property="combinPrice" />
+      <result column="description_evaluate" jdbcType="DECIMAL" property="descriptionEvaluate" />
+      <result column="weixin_shop_hot" jdbcType="BIT" property="weixinShopHot" />
+      <result column="weixin_shop_hotTime" jdbcType="DATE" property="weixinShopHottime" />
+      <result column="weixin_shop_recommend" jdbcType="BIT" property="weixinShopRecommend" />
+      <result column="weixin_shop_recommendTime" jdbcType="DATE" property="weixinShopRecommendtime" />
+      <result column="goods_details" jdbcType="LONGVARCHAR" property="goodsDetails" />
+      <result column="goods_inventory_detail" jdbcType="LONGVARCHAR" property="goodsInventoryDetail" />
+      <result column="goods_property" jdbcType="LONGVARCHAR" property="goodsProperty" />
+      <result column="seo_description" jdbcType="LONGVARCHAR" property="seoDescription" />
+      <result column="ztc_admin_content" jdbcType="LONGVARCHAR" property="ztcAdminContent" />
+    </collection>
+  </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, audit, name, recommend, sequence, brandLogo_id, category_id,
+    userStatus, user_id, weixin_shop_recommend, weixin_shop_recommendTime, first_word
+  </sql>
+  <sql id="Blob_Column_List">
+    remark
+  </sql>
+
+  <select id="queryByMany" resultMap="ResultMapWithBLOBs">
+    select s.* from shopping_goodsbrand s
+    left join shopping_goodstype_brand b on b.brand_id =  s.id
+    <where>
+      1=1
+      <if test="type_id != null"> and b.type_id =#{type_id}</if>
+    </where>
+  </select>
+
+  <select id="queryByCondition" resultMap="ResultMapWithBLOBs">
+     select * from shopping_goodsbrand
+     <where>
+       1=1
+       <if test="audit != null ">and audit=#{audit}</if>
+       <if test="recommend != null "> and recommend=#{recommend}</if>
+       <if test="orderBy != null and sort != null "> order by #{orderBy}  #{sort}</if>
+       <if test="start != null and pageSize != null  "> limit #{start},#{pageSize}</if>
+     </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoodsbrandExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_goodsbrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingGoodsbrandExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_goodsbrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_goodsbrand
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_goodsbrand
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingGoodsbrandExample">
+    delete from shopping_goodsbrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingGoodsbrand">
+    insert into shopping_goodsbrand (id, addTime, deleteStatus,
+      audit, name, recommend, sequence,
+      brandLogo_id, category_id, userStatus,
+      user_id, weixin_shop_recommend, weixin_shop_recommendTime,
+      first_word, remark)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{audit,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{recommend,jdbcType=BIT}, #{sequence,jdbcType=INTEGER},
+      #{brandlogoId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{userstatus,jdbcType=INTEGER},
+      #{userId,jdbcType=BIGINT}, #{weixinShopRecommend,jdbcType=BIT}, #{weixinShopRecommendtime,jdbcType=DATE},
+      #{firstWord,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingGoodsbrand">
+    insert into shopping_goodsbrand
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="audit != null">
+        audit,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="recommend != null">
+        recommend,
+      </if>
+      <if test="sequence != null">
+        sequence,
+      </if>
+      <if test="brandlogoId != null">
+        brandLogo_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="userstatus != null">
+        userStatus,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="weixinShopRecommend != null">
+        weixin_shop_recommend,
+      </if>
+      <if test="weixinShopRecommendtime != null">
+        weixin_shop_recommendTime,
+      </if>
+      <if test="firstWord != null">
+        first_word,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="audit != null">
+        #{audit,jdbcType=BIT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=BIT},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="brandlogoId != null">
+        #{brandlogoId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="userstatus != null">
+        #{userstatus,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="weixinShopRecommend != null">
+        #{weixinShopRecommend,jdbcType=BIT},
+      </if>
+      <if test="weixinShopRecommendtime != null">
+        #{weixinShopRecommendtime,jdbcType=DATE},
+      </if>
+      <if test="firstWord != null">
+        #{firstWord,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingGoodsbrandExample" resultType="java.lang.Long">
+    select count(*) from shopping_goodsbrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_goodsbrand
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.audit != null">
+        audit = #{record.audit,jdbcType=BIT},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recommend != null">
+        recommend = #{record.recommend,jdbcType=BIT},
+      </if>
+      <if test="record.sequence != null">
+        sequence = #{record.sequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.brandlogoId != null">
+        brandLogo_id = #{record.brandlogoId,jdbcType=BIGINT},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userstatus != null">
+        userStatus = #{record.userstatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.weixinShopRecommend != null">
+        weixin_shop_recommend = #{record.weixinShopRecommend,jdbcType=BIT},
+      </if>
+      <if test="record.weixinShopRecommendtime != null">
+        weixin_shop_recommendTime = #{record.weixinShopRecommendtime,jdbcType=DATE},
+      </if>
+      <if test="record.firstWord != null">
+        first_word = #{record.firstWord,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_goodsbrand
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      audit = #{record.audit,jdbcType=BIT},
+      name = #{record.name,jdbcType=VARCHAR},
+      recommend = #{record.recommend,jdbcType=BIT},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      brandLogo_id = #{record.brandlogoId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
+      userStatus = #{record.userstatus,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      weixin_shop_recommend = #{record.weixinShopRecommend,jdbcType=BIT},
+      weixin_shop_recommendTime = #{record.weixinShopRecommendtime,jdbcType=DATE},
+      first_word = #{record.firstWord,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_goodsbrand
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      audit = #{record.audit,jdbcType=BIT},
+      name = #{record.name,jdbcType=VARCHAR},
+      recommend = #{record.recommend,jdbcType=BIT},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      brandLogo_id = #{record.brandlogoId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
+      userStatus = #{record.userstatus,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      weixin_shop_recommend = #{record.weixinShopRecommend,jdbcType=BIT},
+      weixin_shop_recommendTime = #{record.weixinShopRecommendtime,jdbcType=DATE},
+      first_word = #{record.firstWord,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingGoodsbrand">
+    update shopping_goodsbrand
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="audit != null">
+        audit = #{audit,jdbcType=BIT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=BIT},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="brandlogoId != null">
+        brandLogo_id = #{brandlogoId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="userstatus != null">
+        userStatus = #{userstatus,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="weixinShopRecommend != null">
+        weixin_shop_recommend = #{weixinShopRecommend,jdbcType=BIT},
+      </if>
+      <if test="weixinShopRecommendtime != null">
+        weixin_shop_recommendTime = #{weixinShopRecommendtime,jdbcType=DATE},
+      </if>
+      <if test="firstWord != null">
+        first_word = #{firstWord,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoodsbrand">
+    update shopping_goodsbrand
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      audit = #{audit,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      recommend = #{recommend,jdbcType=BIT},
+      sequence = #{sequence,jdbcType=INTEGER},
+      brandLogo_id = #{brandlogoId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      userStatus = #{userstatus,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      weixin_shop_recommend = #{weixinShopRecommend,jdbcType=BIT},
+      weixin_shop_recommendTime = #{weixinShopRecommendtime,jdbcType=DATE},
+      first_word = #{firstWord,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingGoodsbrand">
+    update shopping_goodsbrand
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      audit = #{audit,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      recommend = #{recommend,jdbcType=BIT},
+      sequence = #{sequence,jdbcType=INTEGER},
+      brandLogo_id = #{brandlogoId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      userStatus = #{userstatus,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      weixin_shop_recommend = #{weixinShopRecommend,jdbcType=BIT},
+      weixin_shop_recommendTime = #{weixinShopRecommendtime,jdbcType=DATE},
+      first_word = #{firstWord,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

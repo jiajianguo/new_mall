@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingReportMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingReport">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="handle_Time" jdbcType="TIMESTAMP" property="handleTime" />
+    <result column="result" jdbcType="INTEGER" property="result" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="acc1_id" jdbcType="BIGINT" property="acc1Id" />
+    <result column="acc2_id" jdbcType="BIGINT" property="acc2Id" />
+    <result column="acc3_id" jdbcType="BIGINT" property="acc3Id" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="subject_id" jdbcType="BIGINT" property="subjectId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingReportWithBLOBs">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="handle_info" jdbcType="LONGVARCHAR" property="handleInfo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, handle_Time, result, status, acc1_id, acc2_id, acc3_id,
+    goods_id, subject_id, user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    content, handle_info
+  </sql>
+
+  <select id="queryByCondition" resultMap="ResultMapWithBLOBs">
+    select  * from shopping_report
+    <where>
+      1=1
+      <if test="user_id != null "> and user_id=#{user_id}</if>
+      <if test="goods_id != null "> and goods_id=#{goods_id}</if>
+      <if test="status != null "> and status=#{status}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null"> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select  count(*) from shopping_report
+    <where>
+      1=1
+      <if test="user_id != null "> and user_id=#{user_id}</if>
+      <if test="goods_id != null "> and goods_id=#{goods_id}</if>
+      <if test="status != null "> and status=#{status}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingReportExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingReportExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_report
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_report
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingReportExample">
+    delete from shopping_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingReportWithBLOBs">
+    insert into shopping_report (id, addTime, deleteStatus,
+      handle_Time, result, status,
+      acc1_id, acc2_id, acc3_id,
+      goods_id, subject_id, user_id,
+      content, handle_info)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{handleTime,jdbcType=TIMESTAMP}, #{result,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{acc1Id,jdbcType=BIGINT}, #{acc2Id,jdbcType=BIGINT}, #{acc3Id,jdbcType=BIGINT},
+      #{goodsId,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+      #{content,jdbcType=LONGVARCHAR}, #{handleInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingReportWithBLOBs">
+    insert into shopping_report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="handleTime != null">
+        handle_Time,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="acc1Id != null">
+        acc1_id,
+      </if>
+      <if test="acc2Id != null">
+        acc2_id,
+      </if>
+      <if test="acc3Id != null">
+        acc3_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="subjectId != null">
+        subject_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="handleInfo != null">
+        handle_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="handleTime != null">
+        #{handleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="acc1Id != null">
+        #{acc1Id,jdbcType=BIGINT},
+      </if>
+      <if test="acc2Id != null">
+        #{acc2Id,jdbcType=BIGINT},
+      </if>
+      <if test="acc3Id != null">
+        #{acc3Id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="handleInfo != null">
+        #{handleInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingReportExample" resultType="java.lang.Long">
+    select count(*) from shopping_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_report
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.handleTime != null">
+        handle_Time = #{record.handleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.result != null">
+        result = #{record.result,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.acc1Id != null">
+        acc1_id = #{record.acc1Id,jdbcType=BIGINT},
+      </if>
+      <if test="record.acc2Id != null">
+        acc2_id = #{record.acc2Id,jdbcType=BIGINT},
+      </if>
+      <if test="record.acc3Id != null">
+        acc3_id = #{record.acc3Id,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subjectId != null">
+        subject_id = #{record.subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.handleInfo != null">
+        handle_info = #{record.handleInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_report
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      handle_Time = #{record.handleTime,jdbcType=TIMESTAMP},
+      result = #{record.result,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      acc1_id = #{record.acc1Id,jdbcType=BIGINT},
+      acc2_id = #{record.acc2Id,jdbcType=BIGINT},
+      acc3_id = #{record.acc3Id,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      subject_id = #{record.subjectId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      content = #{record.content,jdbcType=LONGVARCHAR},
+      handle_info = #{record.handleInfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_report
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      handle_Time = #{record.handleTime,jdbcType=TIMESTAMP},
+      result = #{record.result,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      acc1_id = #{record.acc1Id,jdbcType=BIGINT},
+      acc2_id = #{record.acc2Id,jdbcType=BIGINT},
+      acc3_id = #{record.acc3Id,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      subject_id = #{record.subjectId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingReportWithBLOBs">
+    update shopping_report
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="handleTime != null">
+        handle_Time = #{handleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="acc1Id != null">
+        acc1_id = #{acc1Id,jdbcType=BIGINT},
+      </if>
+      <if test="acc2Id != null">
+        acc2_id = #{acc2Id,jdbcType=BIGINT},
+      </if>
+      <if test="acc3Id != null">
+        acc3_id = #{acc3Id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null">
+        subject_id = #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="handleInfo != null">
+        handle_info = #{handleInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingReportWithBLOBs">
+    update shopping_report
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      handle_Time = #{handleTime,jdbcType=TIMESTAMP},
+      result = #{result,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      acc1_id = #{acc1Id,jdbcType=BIGINT},
+      acc2_id = #{acc2Id,jdbcType=BIGINT},
+      acc3_id = #{acc3Id,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      subject_id = #{subjectId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      content = #{content,jdbcType=LONGVARCHAR},
+      handle_info = #{handleInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingReport">
+    update shopping_report
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      handle_Time = #{handleTime,jdbcType=TIMESTAMP},
+      result = #{result,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      acc1_id = #{acc1Id,jdbcType=BIGINT},
+      acc2_id = #{acc2Id,jdbcType=BIGINT},
+      acc3_id = #{acc3Id,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      subject_id = #{subjectId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

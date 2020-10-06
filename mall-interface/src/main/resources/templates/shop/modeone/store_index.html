@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"   style="font-size: 40px;">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type">
+    <title>emode-店铺首页</title>
+    <meta name="description" content="default">
+    <meta property="og:site_name" content="default">
+    <meta property="og:title" content="default">
+    <meta property="og:description" content="default">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="default">
+    <meta name="twitter:description" content="default">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <meta name="applicable-device" content="mobile">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="default">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="aplus-terminal" content="1">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <link rel="icon"  href="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" type="image/x-icon">
+    <script type="text/javascript" async="" th:src="@{/js/scevent.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/init.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/checkout.min.js}"></script>
+    <script async="true" id="xo-pptm" th:src="@{/js/pptm.js}"></script>
+    <!-- Snap Pixel Code -->
+    <script type="text/javascript">
+        (function (e, t, n) {
+            if (e.snaptr) return;
+            var a = e.snaptr = function () {
+                a.handleRequest ? a.handleRequest.apply(a, arguments) : a.queue.push(arguments)
+            };
+            a.queue = [];
+            var s = 'script';
+            r = t.createElement(s);
+            r.async = !0;
+            r.src = n;
+            var u = t.getElementsByTagName(s)[0];
+            u.parentNode.insertBefore(r, u);
+        })(window, document,
+            'https://sc-static.net/scevent.min.js');
+        snaptr('init', '', {
+            'user_email': ''
+        });
+        snaptr('track', 'PAGE_VIEW');
+    </script>
+    <!-- End Snap Pixel Code -->
+    <link rel="stylesheet" th:href="@{/style/shop/styles.min.css}">
+    <link rel="stylesheet" th:href="@{/style/shop/template1.comm.min.css}">
+    <style type="text/css">
+
+        @font-face {
+            font-family: "Arapey";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/arapey-italic.ttf?v=default.xshoppy.shop);
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: "Montserrat";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-Regular.ttf?v=default.xshoppy.shop);
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Montserrat";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-SemiBold.ttf?v=default.xshoppy.shop);
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "OldStandard";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/OldStandard-Regular.ttf?v=default.xshoppy.shop);
+        }
+    </style>
+    <style type="text/css" class="buyer-font-style">
+        @font-face {
+            font-family: OpenSansRegular;
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/OpenSans-Regular.ttf?v=default.xshoppy.shop)
+        }
+
+        @font-face {
+            font-family: LatoRegular;
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/Lato-Regular.ttf?v=default.xshoppy.shop)
+        }
+
+        @font-face {
+            font-family: AvenirNextRegular;
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/AvenirNext-Regular.ttf?v=default.xshoppy.shop)
+        }
+
+        .sl-main-title, .sl-main-title a {
+            font-family: OpenSansRegular !important;
+            font-size: 14px !important;
+            line-height: 22px !important;
+            margin-top: 20px;
+
+        }
+
+        .banner .sl-main-title {
+            font-size: 48px !important;
+            line-height: 52px !important
+        }
+
+        .sl-subhead-title, .sl-subhead-title a {
+            font-family: LatoRegular !important
+        }
+
+        body, input, .product-details * {
+            font-family: AvenirNextRegular !important;
+            font-size: 16px !important
+        }
+    </style>
+</head>
+<body class="template1-body" style="">
+<div class="nav-model-mask J-Mask"></div>
+<div class="nav-drawer drawer J-Nav-Drawer">
+    <div class="close" style="padding-left: 0.5rem ">
+        <i class="iconfont icon-close" style="font-size: 24px;"></i>
+    </div>
+    <ul class="nav-ul sl-subhead-title">
+        <li class="nav-item sl-subhead-title">
+            <a href="/login?redirect_uri=CDzCCDuEfY3_I-xOGPUiNw">
+                Log in </a>
+        </li>
+        <li class="nav-item sl-subhead-title">
+            <a href="/register?redirect_uri=CDzCCDuEfY3_I-xOGPUiNw">
+                Create Account </a>
+        </li>
+    </ul>
+
+
+</div>
+<div class="buy-cart-box drawer J-BuyCart--Box J-CartList" style="display: none;">
+    <h3 class="buy-title sl-main-title">
+        Your Cart <span class="close iconfont icon-close"></span>
+    </h3>
+
+    <div class="flex-main">
+        <div class="cart-discount-tips J-CartDiscountTips sl-subhead-title">
+            <span class="iconfont icon-yduizhekou"></span>
+            <em></em>
+        </div>
+
+        <ul class="buy-product-list clearfloat J-BuyProduct"></ul>
+        <div class="cart-comments display-none">
+            <p>Comment</p>
+            <div>
+                <textarea class="jh-textarea J-Textarea"></textarea>
+            </div>
+        </div>
+        <div class="currency-tips">
+            All orders are processed in
+			<span class="payment-currency">USD</span>.
+            While the content of your cart is currently displayed in
+			<span class="display-currency">CYN</span>,
+            you will checkout using
+			<span class="payment-currency">USD</span>
+            at the most current exchange rate.
+        </div>
+        <div class="total-tips">
+            <span class="iconfont icon-gantanhao"></span>
+            <h4>Out of stock</h4>
+            <p>Some items are no longer available. Your cart has been updated.</p>
+        </div>
+        <div class="cart-coupon-main">
+                            <span class="cart-coupon-open J-CartCouponOpen" style="display: block;">
+                    Have a discount code?                </span>
+            <div style="display: none;">
+                <div class="cart-coupon-box">
+                    <input type="text" class="jh-input J-GetCartCouponVal" placeholder="Discount code">
+                    <button class="jh-btn sl-subhead-title sl-main-btn jh-btn-disabled fr J-GetCartCoupon"
+                            disabled="disabled">
+                        Apply
+                    </button>
+                </div>
+                <div class="J-CartCouponTips"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="buy-cart-total">
+
+        <div class="subtotal-price sl-subhead-title">
+            <span class="fl">Subtotal</span>
+            <span class="fr sl-subhead-title J-Subtotal" data-price="0.00"><strong>$0.00</strong> </span>
+        </div>
+
+        <div class="cart-discount sl-subhead-title">
+            <div class="fl">
+                <span class="fl">Discount</span>
+                <span class="iconfont icon-wenhao J-DiscountTips" style="display: none;"></span>
+                <div class="cartlist-discount-tips">
+                    <p>This discount code cannot be used in conjunction with other promotional or discounted offer.</p>
+                    <span class="iconfont icon-bofang"></span>
+                </div>
+            </div>
+            <span class="fr J-CartDiscount" data-price="0.00"><strong></strong> </span>
+        </div>
+
+        <div class="total-price sl-subhead-title">
+            <span class="fl">Total</span>
+            <span class="fr J-Total" data-price="0.00">USD <strong>$0.00</strong> </span>
+        </div>
+
+        <div class="total-describe">Taxes and shipping calculated at checkout</div>
+
+        <button class="jh-btn sl-subhead-title sl-main-btn J-Gopay JH-Event-CheckOut jh-btn-disabled"
+                disabled="disabled">
+            <span class="btn-text">
+                CHECK OUT                <em class="iconfont icon-right"></em>
+            </span>
+
+            <span class="iconfont icon-jiazai loading">
+
+            </span>
+        </button>
+
+    </div>
+</div>
+
+<div class="buy-cart-box drawer J-BuyCart--Box cart-empty J-CartEmpty" style="display: block;">
+    <div class="buy-cart">
+        <h3 class="buy-title sl-main-title">
+            Your Cart <span class="close iconfont icon-close"></span>
+        </h3>
+        <div class="icon-cart-empty">
+            <span class="iconfont icon-empty-cart"></span>
+        </div>
+        <p>Your cart is empty.</p>
+    </div>
+</div>
+<h1 style="display: none">default</h1>
+<input type="hidden" class="preview-hide-code" value="1">
+<input type="hidden" class="sail-event-page-location" value="index">
+<input type="hidden" class="sail-event-page-handler" value="">
+<input type="hidden" class="sail-event-recommend-product" value="0">
+<input type="hidden" class="J-isPreview" value="0">
+<input type="hidden" class="sail-event-referer" value="https://www.xshoppy.com/advantage/templates">
+<input type="hidden" class="J-PaypalClientId"  value="AegPP-h905NDC0rb2cUvPxTq7LXZ6xT6KfcV5gRDkRklD_A9OJV07WclY1bjmpZoYxwF3UNKOkrK3orn">
+<input type="hidden" class="J-getCurrentState" value="HK" data-flag="https://static.xshoppy.shop/country_image/HK.png">
+<!-- 访客地区 -->
+<input type="hidden" class="J-IsRenovation" value="0">
+<input type="hidden" class="J-language" value="en">
+<input type="hidden" class="J-TemplateStyle" value="general">
+<div class="PageContainer J-PageContainer">
+    <input type="hidden" class="JH-page-location" value="">
+    <input type="hidden" class="JH-currency-tag" value="USD">
+    <input type="hidden" class="JH-Event-Name" value="index">
+    <input type="hidden" class="J-isOpenCurrency" value="0">
+    <input type="hidden" class="J-CurrentStateCode" value="USD" data-symbol="$" data-rate-value="1.0000">
+    <input type="hidden" class="J-currency-code" value="USD" data-symbol="$" data-rate-value="1.0000">
+    <input type="hidden" class="J-currency-code" th:value="${goodsStore.id}" id="storeId">
+    <div class="JH-Columns">
+        <div class="head-notice ">
+            <a href="javascript:;"> Enjoy Free Express Shipping on orders over $29 </a>
+        </div>
+        <div class="header">
+            <div class="main head">
+                <div class="logo" itemscope="" itemtype="http://schema.org/Organization">
+                    <a href="/" itemprop="url">
+                        <img th:if="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
+                             th:data-original="${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}"
+                             th:src="@{${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}}"
+                             alt="default" itemprop="logo">
+                        <img th:unless="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
+                             th:data-original="${config.websiteLogo.path+'/'+config.websiteLogo.name}"
+                             th:src="@{${config.websiteLogo.path+'/'+config.websiteLogo.name}}"
+                             alt="default" itemprop="logo">
+                    </a>
+
+                </div>
+                <div class="nav">
+                    <div class="nav-icon J-NavShow">
+                        <span class="nav-icon-show top"></span>
+                        <span class="nav-icon-show center"></span>
+                        <span class="nav-icon-show bottom"></span>
+                    </div>
+                    <ul class="nav-ul sl-subhead-title">
+                    </ul>
+                </div>
+
+                <div class="operat">
+                    <span class="head-search iconfont J-HeadSearch icon-search1"></span>
+                    <a th:if="${user==null}" href="/user/login.htm"
+                       class="iconfont icon-gerenzhongxin-1 head-customer"></a>
+                    <a th:if="${user!=null}" href="/buyer/index.htm"
+                       class="iconfont icon-gerenzhongxin-1 head-customer"></a>
+                    <!--<span class="head-buycart iconfont icon-cart-1 J-openSlideCart" >
+                        <a th:href="@{/goods_cart1.htm}"></a>
+                        <i style="display: none;"></i>
+                    </span>-->
+                    <a class="head-buycart" th:href="@{/goods_cart1.htm}">
+                        <span class="iconfont icon-cartfill"></span>
+                        <i style="display: none;">4</i>
+                    </a>
+                </div>
+            </div>
+            <div class="head-search-box J-HeadSearchBox">
+                <div class="search-box">
+                    <form action="/search" method="get">
+                        <input id="search_keyword_rmk" type="search" name="keyword" class="search"
+                               placeholder="Start Typing Here" value="">
+                    </form>
+                    <span class="search-icon iconfont icon-sousuo2"></span>
+                </div>
+
+                <script type="application/javascript">
+                    jQuery(document).ready(function(){
+                        $(".search-box  .iconfont ").on('click', function () {
+                            var type = "goods";
+                            var search_keyword = $(this).parent('.search-box').find('input').val();
+                            var storeId = $("#storeId").val();
+                            var url = '/store_goods_search.htm?store_id='+storeId;
+                            window.location = url + '&keyword=' + search_keyword + '&type=' + type;
+                        });
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/jquery.js(v=0517)}"></script>
+    <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js(v=0517)}"></script>
+    <div class="JH-Columns banner index_C2b2hg swiper-container swiper-container-fade swiper-container-horizontal">
+        <img style="display: none" src="https://img.xshoppy.shop/uploader/8a907cf6420c0260e89c2df10b8fcc62.jpeg" alt="">
+		<!--  轮播图 -->
+        <div th:if="${goodsStore.slides !=  null && goodsStore.slides.size() >0}"  class="swiper-wrapper" style="transition-duration: 0ms;"  >
+                <a   th:each="s : ${goodsStore.slides}"  th:href="@{/goods_list.htm(gc_id=${s.id},store_id=${goodsStore.id})}" class="swiper-slide">
+                    <div class="swiper-item" th:style="'background-image:url('+@{${s.sliderImg.path+'/'+s.sliderImg.name}}+');background-size: cover !important;'">
+                            <div class="swiper-item-box text-center">
+                            <div class="swiper-title sl-main-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                            <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                        </div>
+                    </div>
+                </a>
+        </div>
+
+        <div th:unless="${goodsStore.slides !=  null && goodsStore.slides.size() >0 }" class="swiper-wrapper" style="transition-duration: 0ms;" >
+            <a  href="javascript:; " class="swiper-slide">
+                <div class="swiper-item" style="background-image: url('https://img.xshoppy.shop/uploader/8a907cf6420c0260e89c2df10b8fcc62.jpeg');background-size: cover !important">
+                    <div class="swiper-item-box text-center">
+                        <div class="swiper-title sl-main-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                        <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript:; " class="swiper-slide">
+                <div class="swiper-item" style="background-image: url('https://img.xshoppy.shop/uploader/d251a628e161b2bdee2c283faf55b088.jpeg');background-size: cover !important">
+                    <div class="swiper-item-box text-center">
+                        <div class="swiper-title sl-main-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                        <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript:; " class="swiper-slide">
+                <div class="swiper-item" style="background-image: url('https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg');background-size: cover !important">
+                    <div class="swiper-item-box text-center">
+                        <div class="swiper-title sl-main-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                        <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%" style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);"></div>
+                    </div>
+                </div>
+            </a>
+		</div>
+
+        <div th:if="${goodsStore.slides != null }" class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+            <span   th:each="ugc,index : ${goodsStore.slides}" th:class="${index.count ==1?'swiper-pagination-bullet swiper-pagination-bullet-active': 'swiper-pagination-bullet' }"
+                  tabindex="0" role="button" th:aria-label="${'Go to slide '+ index.count}"> </span>
+        </div>
+        <div th:unless="${goodsStore.slides != null}" class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+            <span th:unless="${goodsStore.slides != null}" class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 1"></span>
+            <span th:unless="${goodsStore.slides != null}" class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span>
+            <span th:unless="${goodsStore.slides != null}" class="swiper-pagination-bullet " tabindex="0" role="button" aria-label="Go to slide 3"></span>
+        </div>
+        <div class="swiper-button-next iconfont icon-next-copy" tabindex="0" role="button" aria-label="Next slide"></div>
+        <div class="swiper-button-prev iconfont icon-back-copy" tabindex="0" role="button" aria-label="Previous slide"></div>
+        <script type="text/javascript">
+            $(function() {
+                var delay_time = parseInt('5000');
+                var banner_open = parseInt('0');
+                var banner_key = parseInt('0');
+                new Swiper(".index_C2b2hg", {
+                    speed: 600,
+                    parallax: true,
+                    autoplay: banner_open ? false : {
+                        delay: delay_time
+                    },
+                    watchOverflow: true,
+                    effect: 'fade',
+                    slidesPerView: 1,
+                    preloadImages: false,
+                    loop: true,
+                    initialSlide: banner_open ? banner_key : 0,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    }
+                });
+            });
+        </script>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>
+    <!-- 商铺信息  -->
+    <div class="main single-image clearfloat JH-Columns "  style="height: 400px;">
+        <div class="single-image-main"  style="height: 400px;">
+            <!-- 店铺描述 -->
+            <div class="single-img-text">
+                <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                     data-original="https://img.xshoppy.shop/uploader/78a958a13f598347bbf5f1dc8f108026.png"
+                     src="https://img.xshoppy.shop/uploader/78a958a13f598347bbf5f1dc8f108026.png" alt="">
+            </div>
+            <!-- 商品展示 -->
+            <div class="single-img-img">
+                <div>
+                    <div class="model-title sl-main-title ">
+                        <div style="font-size: 14px;" >
+                            <div>
+                                <span >店铺名称：</span>
+                                <span th:text="${goodsStore.storeName}">平台自营店</span>
+                            </div>
+                            <div>
+                                <span >店&nbsp;&nbsp;铺&nbsp;&nbsp;号：</span>
+                                <span th:text="${goodsStore.id}"></span>
+                            </div>
+                            <div>
+                                <span >店铺等级：</span>
+                                <span th:text="${goodsStore.id}"></span>
+                            </div>
+                            <div >
+                                <span >创建时间：</span>
+                                <span th:text="${#dates.format(goodsStore.addtime,'yyyy-MM-dd')}"></span>
+                            </div>
+                            <div>
+                                <span >服务态度：</span>
+                                <span >
+                                    <b th:text="${goodsStore.point.serviceEvaluate}"></b>
+                                    <em th:class="${service_css}">
+                                        <span th:text="${service_result}"></span>
+                                        <strong th:text="${service_type }"></strong>
+                                    </em>
+                                </span>
+                            </div>
+                            <div >
+                                <span >描述相符：</span>
+                                <span >
+                                    <b th:text="${goodsStore.point.descriptionEvaluate}"></b>
+                                    <em th:class="${description_css}">
+                                        <span th:text="${description_result}"></span>
+                                        <strong th:text="${description_type}"></strong>
+                                    </em>
+                                </span>
+                            </div>
+                            <div>
+                                <span >发货速度：</span>
+                                <span >
+                                    <b th:text="${goodsStore.point.shipEvaluate}"></b>
+                                    <em th:class="${ship_css}">
+                                        <span th:text="${ship_result}"></span>
+                                        <strong th:text="${ship_type}"> </strong>
+                                    </em>
+                                </span>
+                            </div>
+                            <div >
+                                <span >商品数量：</span>
+                                <span th:text="${goods_counts +'件商品'}"></span>
+                            </div>
+                            <div >
+                                <span >联系电话：</span>
+                                <span th:text="${goodsStore.storeTelephone}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="model-describe">
+                        <div style="font-size: 14px;">
+                            <div >
+                                <span >站内客服：</span>
+                                <span >
+                                     <a  th:if="${user}" class="im_common" href="javascript:void(0);" th:user_id="${goodsStore.user.id}" th:id="${'userDialog_img_contact_'+goodsStore.user.id}" th:user_name="${goodsStore.user.username}"> 咨询客服</a>
+                                     <a th:unless="${user}" class="im_common" href="javascript:void(0);" th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">咨询客服 </a>
+                                </span>
+                            </div>
+                            <div >
+                                <span >站外客服：</span>
+                                <span >
+                                     <a target="_blank" th:href="@{${'http://wpa.qq.com/msgrd?v=3&uin='+goodsStore.storeQq+'&Site='+goodsStore.storeQq +'&Menu=yes'}}">
+                                     <img alt="点击这里给我发消息" th:src="@{${'http://wpa.qq.com/pa?p=2:'+goodsStore.storeQq+':51'}}" />
+                                   </a>
+                                </span>
+                            </div>
+                            <a  th:if="${user!=null }"  class="jh-btn sl-main-btn"  th:data-id="${goodsStore.id}"  onclick="add_store_favorite(this.getAttribute('data-id'))">收藏店铺 </a>
+                            <a  th:unless="${user !=null}"  th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" class="jh-btn sl-main-btn" th:data-id="${goodsStore.id}"  onclick="add_store_favorite(this.getAttribute('data-id'))">收藏店铺 </a>
+                            <a class="jh-btn sl-main-btn" href="javascript:;">Our story </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品类别 -->
+    <div class="main best-sellers clearfloat JH-Columns ">
+        <h3 class="title border sl-main-title">
+            <span>商品分类专区</span>
+        </h3>
+        <ul class="sellers-ul four-col">
+            <li class="sellers-item" th:each="c,index : ${ugcaccsorry}" th:if="${index.index <8}">
+                <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${goodsStore.id})}">
+                    <div class="sellers-title-box">
+                        <p class="sellers-title" th:text="${c.classname}">  </p>
+                    </div>
+                    <div>
+                        <img th:if="${c.store_gc_img}" class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="${'/'+c.store_gc_img.path+'/'+c.store_gc_img.name }"
+                             th:src="@{${'/'+c.store_gc_img.path+'/'+c.store_gc_img.name }}" alt="">
+                        <img th:unless="${c.store_gc_img}" class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             data-original="https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg"
+                             src="https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg" alt="">
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+	<!-- 主流商品区 -->
+	<div class="main goods-list clearfloat JH-Columns ">
+        <h3 class="title border sl-main-title">
+            <span>推荐商品</span>
+        </h3>
+        <ul class="classify-ul four-col">
+            <li th:each="goods : ${goods_recommend}" class="classify-item" itemscope="" itemtype="http://schema.org/Product">
+                <meta itemprop="name" th:content="${goods.goodsName}">
+                <meta itemprop="url" content="/products/all-black">
+                <meta itemprop="image" th:content="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}">
+                <a th:if="${config.secondDomainOpen == true && goods.goods_store.storeSecondDomain != null}"  th:href="@{${'http://'+ goods.goods_store.storeSecondDomain+config.sysDomain+ '/goods.htm(id='+goods.id +')'}}" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="CNY">
+                    <link itemprop="availability" href="http://localhost">
+                    <div class="img-wrapper">
+                        <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}"
+                             th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"
+                             th:alt="${goods.goodsName}">
+                    </div>
+                    <div class="good-info">
+                        <p class="name" th:text="${goods.goodsName}"></p>
+                        <p class="price">
+                            <span class="visually-hidden" aria-hidden="false" >Sale price</span>
+                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
+                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
+                            <span class="visually-hidden" aria-hidden="false">Regular price</span>
+                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
+                        </p>
+                    </div>
+                </a>
+                <a th:unless="${config.secondDomainOpen == true && obj.d_goods.goods_store.storeSecondDomain != null}" th:href="@{/goods.htm(id=${goods.id})}" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="CNY">
+                    <link itemprop="availability" href="http://localhost">
+                    <div class="img-wrapper">
+                        <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}"
+                             th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"
+                             th:alt="${goods.goodsName}">
+                    </div>
+                    <div class="good-info">
+                        <p class="name" th:text="${goods.goodsName}"></p>
+                        <p class="price">
+                            <span class="visually-hidden" aria-hidden="false" >Sale price</span>
+                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
+                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
+                            <span class="visually-hidden" aria-hidden="false">Regular price</span>
+                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <footer class="JH-Columns J-footer" style="padding-bottom: 0px;">
+        <div class="main">
+            <div class="help-center clearfloat">
+                <div class="help-box">
+                    <ul class="help-list">
+                        <li class="help-item" th:each="item : ${partners}">
+                            <a th:href="@{'/'+${item.url}}" target="_blank" th:text="${item.title}"></a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="help-box">
+                    <h3></h3>
+                    <ul class="help-list">
+                    </ul>
+                </div>
+                <div class="help-box">
+                </div>
+            </div>
+            <div class="foot">
+                <div class="share-box">
+                </div>
+                <p class="payment-method">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/paypal.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/visa1.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/mastercard.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/maestro.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/AmericanExpress.svg" alt="Payment">
+                </p>
+                <p class="reserved">
+                    ©2020 default </p>
+            </div>
+
+        </div>
+    </footer>
+</div>
+<script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js?v=0517"></script>
+<script type="text/javascript" th:src="@{/js/jhPlugin.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+<script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/lib/event.js?v=20200803012259"></script>
+<script>
+    function add_store_favorite(storeId) {
+        console.log('添加收藏');
+            $.post('/add_store_favorite.htm',{id:storeId},function (res) {
+                console.log('返回值-----',res);
+                if(res == '1'){
+                    alert("收藏成功！")
+                }else{
+                    alert('该店铺已经被收藏！');
+                }
+            })
+    }
+
+
+</script>
+
+</body>
+</html>
+

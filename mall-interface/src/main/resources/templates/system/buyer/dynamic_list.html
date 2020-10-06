@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script>
+jQuery(document).ready(function(){
+//回复动态ajax
+	jQuery("input[id^=reply_]").click(function(){
+	var parent_id=jQuery(this).attr("parent_id");
+	var reply_content = jQuery("#reply_content_"+parent_id).val();
+	var length = reply_content.length;
+	if(length>0){
+	if(jQuery("#reply_content_"+parent_id).attr("returnMark")){
+		jQuery.post("/buyer/dynamic_ajax_turn.htm",
+			   {
+				"dynamic_id":parent_id,
+				"content":reply_content
+			   },
+			   function(data){
+				   if(data){
+					jQuery("#reply_content_"+parent_id).val("");
+					jQuery("#ListForm").html(data);
+					showDialog("share_sns","系统提示","转发成功！",0,"succeed",3);
+				   }else{
+					showDialog("share_sns","系统提示","转发失败！",0,"error",3);
+					   }
+					},"text");
+	}
+else{
+			jQuery.post("/buyer/dynamic_ajax_reply.htm",
+			   {
+				"reply_content":reply_content,
+				"parent_id":parent_id
+			   },
+			   function(data){
+				   if(data){
+					jQuery("#reply_content_"+parent_id).val("");
+					jQuery("#child_list_"+parent_id).html(data).show();
+					showDialog("share_sns","系统提示","回复成功！",0,"succeed",3);
+				   }else{
+					 showDialog("share_sns","系统提示","回复失败！",0,"error",3);
+					   }
+					},"text");
+	 }
+	 }
+	 else{
+		 alert("请输入内容");
+		 }
+	});
+
+	 //点击转发按钮ajax
+	  jQuery("a[id^=turn_]").click(function(){
+	            var turn_id=jQuery(this).attr("turn_id");
+				var turn_name = jQuery(this).attr("turn_name");
+				jQuery("textarea[id^=reply_content_]").val("");
+				if(jQuery.browser.msie==true)
+				jQuery("#reply_content_"+turn_id).attr("returnMark",true).focus();
+				else{
+				jQuery("#reply_content_"+turn_id).attr("placeholder","//转自"+turn_name).attr("returnMark",true).focus();
+					}
+		});
+	//赞动态ajax
+	 jQuery("a[id^=praise_]").click(function(){
+	 var praise_id=jQuery(this).attr("praise_id");
+				jQuery.post("/buyer/dynamic_ajax_praise.htm",
+			    {
+				"dynamic_id":praise_id
+			    },
+			    function(data){
+				   if(data){
+					 jQuery("#praise_span_"+praise_id).html(data);
+					 jQuery("#praise_div_span_"+praise_id).html(data);
+					   }
+						},"text");
+		});
+	//好友评论点击回复按钮ajax
+	jQuery("a[id^=child_reply_]").click(function(){
+	jQuery("textarea[id^=reply_content_]").val("");
+	 var child_name = jQuery(this).attr("child_name");
+	 var parent_id = jQuery(this).attr("parent_id");
+	 jQuery("#reply_content_"+parent_id).val("回复"+child_name+":");
+		});
+	//动态显示评论的回复与删除
+	jQuery("dl[id^=id_dl_]").hover(
+		  function(){
+			 var hide_child_id =jQuery(this).attr("child_id");
+			 jQuery("#hide_span_"+hide_child_id).show();
+			},
+		  function(){
+			 var hide_child_id =jQuery(this).attr("child_id");
+			 jQuery("#hide_span_"+hide_child_id).hide();
+		});
+	//动态显示隐藏删除隐藏按钮
+	jQuery("span[id^=enjoy_triangle_]").toggle(
+		function(){
+			jQuery("div[id^=enjhid_list_]").hide();
+			 var obj_id =jQuery(this).attr("obj_id");
+			 jQuery("#enjhid_list_"+obj_id).show();
+		},function(){
+			 var obj_id =jQuery(this).attr("obj_id");
+			 jQuery("#enjhid_list_"+obj_id).hide();
+	});
+	//隐藏动态
+	jQuery("a[id^=hide_button_]").click(function(){
+		var obj_id =jQuery(this).attr("obj_id");
+		jQuery("#enjoy_pro_one_"+obj_id).slideUp(500);
+		});
+	//评论框动态变大
+	jQuery("textarea[id^=reply_content_]").focus(function(){
+			jQuery("textarea[id^=reply_content_]").attr("class","enjoy_reply_text2");
+			jQuery("input[id^=reply_]").hide();
+			jQuery(this).attr("class","enjoy_reply_text");
+			jQuery(this).parent().find("input").show();
+	});
+		//删除动态下方的评论
+	jQuery("a[id^=reply_dele_ajax_]").click(function(){
+			jQuery("#hidden_dynamic_id").val(jQuery(this).attr("child_id"));
+			jQuery("#hidden_parent_dynamic_id").val(jQuery(this).attr("parent_id"));
+			showDialog("share_sns","系统提示","删除后不可恢复，是否继续？",1,"question",10,dele_dynamic_reply);
+			});
+
+	//删除动态弹出确认框
+	jQuery("a[id^=dele_button_]").click(function(){
+		showDialog("share_sns","系统提示","删除后不可恢复，是否继续？",1,"question",10,dele_dynamic);
+		jQuery("#hidden_dynamic_id").val(jQuery(this).attr("obj_id"));
+	});
+
+		//展开评论列表
+	jQuery("a[id^=show_childs_]").click(function(){
+	var parent_id =	jQuery(this).attr("parent_id");
+	var display = jQuery("#child_list_"+parent_id).css("display");
+		if(display=="none"){
+			jQuery("#child_list_"+parent_id).slideDown(500);
+			}else{
+			jQuery("#child_list_"+parent_id).slideUp(500);
+				}
+	});
+
+		});
+//删除动态
+function dele_dynamic(){
+	var currentPage = jQuery("#currentPage").val();
+	var obj_id = jQuery("#hidden_dynamic_id").val();
+		jQuery.post("/buyer/dynamic_del.htm",
+					   {
+						 "currentPage":currentPage,
+						"id":obj_id
+					   },
+					   function(data){
+						   if(data){
+							   jQuery("#ListForm").html(data);
+							   showDialog("share_sns","系统提示","删除成功！",0,"succeed",3);
+							   }
+	   							},"text");
+	};
+	//删除动态下方评论
+function dele_dynamic_reply(){
+	var child_id = jQuery("#hidden_dynamic_id").val();
+	var parent_id = jQuery("#hidden_parent_dynamic_id").val();
+ 	jQuery.post("/buyer/dynamic_reply_del.htm",
+					   {
+						"id":child_id,
+						"parent_id":parent_id
+					   },
+					   function(data){
+						   if(data){
+							   jQuery("#child_list_"+parent_id).html(data);
+							   showDialog("share_sns","系统提示","删除成功！",0,"succeed",3);
+							   }
+	   							},"text");
+
+}
+</script>
+  <div class="friend_trebox">
+                  <div class="firend_group"> <span class="fgroup_a">
+                  <a th:href="@{/buyer/index.htm}" th:class="${type==null?'this':''}">全部</a>
+                  <a th:href="@{/buyer/index.htm(type=1)}" th:class="${type==1?'this':''}">自己</a>
+                  <a th:href="@{/buyer/index.htm(type=2)}" th:class="${type==2?'this':''}">好友</a>
+                  <a th:href="@{/buyer/index.htm(type=3)}" th:class="${type==3?'this':''}">互相关注</a>
+                  </span>
+                  </div>
+                  <div class="enjoy_box">
+
+                    <!--分享1店铺-->
+                    <div th:each="obj :${objs}"  class="enjoy_pro_one" th:id="'enjoy_pro_one_'+${obj.id}">
+                      <div class="enjoy_del_hid">
+                      <span class="enjoy_triangle" th:id="'enjoy_triangle_'+${obj.id}" style="cursor:pointer" th:obj_id="${obj.id}"><s></s></span>
+                        <div class="enjhid" th:id="'enjhid_list_'+${obj.id}" style="display:none">
+                        <a href="javascript:void(0);" th:id="'hide_button_'+${obj.id}" th:obj_id="${obj.id}">隐藏</a>
+                            <a  href="javascript:void(0);" th:id="'dele_button_'+${obj.id}" th:obj_id="${obj.id}">删除</a><!--th:if="${user.id==obj.user.id}"-->
+                        </div>
+
+                      </div>
+                      <div class="enjoy_one_out"> <span class="enjoy_pro_per">
+                      <img th:if="${obj.user!=null && obj.user.photo!=null}" th:src="@{'/'+${obj.user.photo.path}+'/'+${obj.user.photo.name}}" width="60" height="60" />
+                      <img th:if="${obj.user!=null && obj.user.photo!=null}" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="60" height="60" />
+                      </span>
+                        <div class="enjoy_pro_info">
+                          <p class="enjoy_p"><a href="javascript:void(0);" th:text="${obj.user.username+':'}"></a><span th:utext="${obj.content}"></span> </p>
+
+                           <!--动态中的店铺-->
+
+                          <dl th:if="${obj.store}" class="enjoy_dl">
+                            <dt><span class="compimg_span">
+                              <p>
+                                  <img th:if="${obj.store.store_logo}" th:src="@{'/'+${obj.store.store_logo.path}+'/'+${obj.store.store_logo.name}}" width="160" height="160" />
+                                  <img th:unless="${obj.store.store_logo}" th:src="@{'/'+${config.storeImage.path}+'/'+${config.storeImage.name}}" width="160" height="160" />
+                              </p>
+                              </span>
+                              </dt>
+                            <dd>
+                              <ul class="enjoy_pro_deta">
+                                <li><span>店铺名称：</span><strong><a th:href="@{/store.htm(id=${obj.store.id})}" target="_blank" class="blue2" th:text="${obj.store.storeName}"></a></strong></li>
+                                <li><span>店铺星级：</span>
+                                <strong class="level">
+                                    <span th:if="${credit==0}"><img th:src="@{style/common/images/level_-1.gif}}" /></span>
+                                    <span th:unless="${credit==0}"><img  th:each="count : ${credits }" style="margin-left:1px;" th:src="@{${creditsImg}}" />
+                                    </span>
+                                </strong>
+                                </li>
+                                <li th:text="'收藏数'+${obj.store.favoriteCount}"></li>
+                                <li><a th:href="@{/store.htm(id=${obj.store.id})}" target="_blank" class="seedeta">查看详情</a></li>
+                              </ul>
+                            </dd>
+                          </dl>
+
+                         <!--动态中的商品-->
+                          <dl th:if="${obj.goods}" class="enjoy_dl">
+                            <dt><span class="compimg_span">
+                              <p><img th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" src="$!goods_logo" width="160" height="160" /></p>
+                              </span> <em class="enjoy_em"></em><i class="enjoy_money"><b class="enjoy_stype_gif"></b><strong th:text="'￥'+${obj.goods.storePrice}"></strong></i></dt>
+                            <dd>
+                              <ul class="enjoy_pro_deta">
+                                <li><span>宝贝名称：</span><strong><a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" class="blue2" th:text="${obj.goods.goodsName}"></a></strong></li>
+                                <li><span>商品原价：</span><strong style="text-decoration:line-through;" th:text="'￥'+${obj.goods.goodsPrice}"></strong></li>
+                                 <li><span th:text="'￥'+${obj.goods.storePrice}">店铺价格：</span></li>
+                                <li><span>所属店铺：</span><a th:href="@{/store.htm(id=${obj.goods.goods_store.id})}" target="_blank" th:text="${obj.goods.goods_store.storeName}"></a></li>
+                              </ul>
+                            </dd>
+                          </dl>
+                         <!--   动态中的商品-->
+
+                          <div class="enjoy_extra" >
+                          <span class="enjoy_exright">
+                          <a href="javascript:void(0);" th:id="'praise_'+${obj.id}" praise_id=$!obj.id>赞(<span th:id="'praise_span_'+${obj.id}" th:text="${obj.praisenum}"></span>)</a>
+                          <a href="javascript:void(0);" th:id="'turn_'+${obj.id}" th:turn_id="${obj.id}" th:turn_name="${obj.user.username}">转发(<span th:id="'turn_span_'+${obj.turnnum}" th:text="${obj.turnnum}"></span>)</a>
+                              <a href="javascript:void(0);" th:id="'show_childs_'+${obj.id}" th:parent_id="${obj.id}" th:text="'评论('+${obj.childs.size()}+')'"></a>
+                          </span>
+                          <span class="enjoy_exleft">
+                          <b th:text="${#dates.format(obj.addtime,'yyyy-MM-dd HH:mm:ss')}"></b><span th:text="'来自：'+${obj.user.username}"></span> </span></div>
+                          <!--评论开始-->
+                          <div class="enjoy_agree"><span th:id="'praise_div_span_'+${obj.id}" th:text="${obj.praisenum}"></span>人觉得很赞</div>
+                          <div class="enjoy_reply" >
+                            <div class="enjoy_entri"></div>
+                            <div class="enjoy_reply_all" >
+
+                              <div class="enjoy_first" th:id="'child_list_'+${obj.id}" style="display:none"  >
+                                <dl th:if="${obj.childs.size()>0}" th:each="child : ${obj.childs}" th:id="'id_dl_'+${child.id}" th:child_id="${child.id}">
+                                  <dt>
+                                      <img th:if="${child.user.photo}" th:src="@{'/'+${child.user.photo.path}+'/'+${child.user.photo.name}}" width="40" height="40" />
+                                      <img th:unless="${child.user.photo}" th:src="@{'/'+${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="40" height="40" />
+                                  </dt>
+                                  <dd>
+                                    <div class="enjoy_rptext"><a href="javascript:void(0);" class="blue2" th:text="${child.user.username+': '}"></a><span th:utext="${child.content}"></span> </div>
+                                    <div class="enjoy_fbtime" th:text="${#dates.format(child.addtime,'yyyy-MM-dd HH:mm:ss')}">
+                                    <span class="reply_fun" th:id="'hide_span_'+${child.id}"  style="display:none">
+                                        <a th:if="${child.user.id!=user.id}" href="javascript:void(0);" th:id="'child_reply_'+${child.id}" th:parent_id="${obj.id}" th:child_name="${child.user.username}" >回复</a> |
+                                        <a th:if="${child.user.id==user.id}" href="javascript:void(0);" th:id="'reply_dele_ajax_'+${child.id}" th:child_id="${child.id}" th:parent_id="${obj.id}">删除</a>
+                                    </span>
+                                    </div>
+                                  </dd>
+                                </dl>
+                                </div>
+
+                              <div class="reply_box">
+           <textarea th:name="'reply_content_'+${obj.id}" th:id="'reply_content_'+${obj.id}" cols="" rows="" class="enjoy_reply_text2"></textarea>
+           <input th:name="'reply_'+${obj.id}" th:id="'reply_'+${obj.id}" th:parent_id="${obj.id}" type="button"  class="enjoy_discuss" value="评论"
+           style="display:none"/>
+             </div>
+                            </div>
+                          </div>
+                          <!--评论结束-->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="alldel">
+                      <div  class="userfenye" th:utext="${gotoPageFormHTML}"> </div>
+                    </div>
+                  </div>
+                </div>
+                  <input id="hidden_parent_dynamic_id"  type="hidden" value="">
+                  <input id="hidden_dynamic_id"  type="hidden" value="">
+                 <input id="type" name="type" type="hidden" th:value="${type}"/>
+                <input id="currentPage" name="currentPage" type="hidden" th:value="${currentPage}"/>
+
+
+</html>

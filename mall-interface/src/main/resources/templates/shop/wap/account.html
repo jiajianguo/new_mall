@@ -1,0 +1,79 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+    <link rel="stylesheet" type="text/css" href="/asset/css/grdata.css"/>
+    <link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css" />
+    <link rel="stylesheet" type="text/css" href="/asset/css/user_info.css" />
+    <script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://at.alicdn.com/t/font_2092067_2rzxvi38lgj.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div class="ui-pane">
+    <div class="ui-header">
+        <a href="" class="header-button">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-left"></use>
+            </svg>
+        </a>
+        <div class="header-title">个人资料</div>
+    </div>
+    <div class="ui-content">
+
+        <div class="content">
+            <div class="uesr_info_tips">基本信息</div>
+            <!--<div class="text">
+                <div class="textname">姓名</div>
+                <div>
+                    <span th:text="${user.username}"></span>
+                    <svg class="icon icon_right" aria-hidden="true">
+                        <use xlink:href="#icon-right"></use>
+                    </svg>
+                </div>
+            </div>-->
+            <div class="lin_box headimg_box flex-between">
+                <span th:text="${user.username}"></span>
+                <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}"/>
+                <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}"/>
+            </div>
+            <div class="lin_box headimg_box flex-between">
+            <div class="text">
+                <div class="textname" >E-mail</div>
+                <div>
+                    <span th:text="${user.email}">1484031892@qq.com</span>
+                    <svg class="icon icon_right" aria-hidden="true">
+                        <use xlink:href="#icon-right"></use>
+                    </svg>
+                </div>
+            </div>
+            <div class="content_title">账号安全</div>
+            <div class="text">
+                <div class="textname"><a href="/buyer/account_password.htm">修改密码</a></div>
+                <div>
+                    <svg class="icon icon_right" aria-hidden="true">
+                        <use xlink:href="#icon-right"></use>
+                    </svg>
+                </div>
+            </div>
+            <div class="text">
+                <div class="textname">退出登录</div>
+                <div>
+                    <a href="/shopping_logout.htm">
+                    <svg class="icon icon_right" aria-hidden="true">
+                        <use xlink:href="#icon-right"></use>
+                    </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Shopping Bag</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/goods_cart.css"/>
+	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div class="ui-pane">
+		<div class="Nav"></div>
+		<div class="ui-content">
+			<div class="page_address flex-between">
+				<div class="address_left" id="user_address">
+					<p>收货地址</p>
+					<div th:if="${ address }">
+						<span th:each="addr : ${address}" th:text="${addr.countries} +${addr.city}+ ${addr.areaInfo}"></span>
+					</div>
+					<div th:unless="${address }">未添加默认地址</div>
+				</div>
+				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'">添加</button>
+			</div>
+			<form th:if="${carts.size()>0}" th:each="sc :${carts}" status="no_submit" method="post" th:name="'cart_'+${sc.storeId}" target="_blank"
+				  th:id="'cart_'+${sc.storeId}" th:action="@{/goods_cart2.htm}">
+			<div class="goodscartList">
+				<div th:each="obj :${sc.gcs}" class="list_item flex-between">
+					<input type="checkbox" name="goodscart" th:id="${obj.id}" th:value="${obj.id}" />
+					<div class="item_right">
+						<div class="right_top flex-between">
+							<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+							<img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" >
+							<div class="right_top_rgiht">
+								<div class="goods_tit flex-between">
+									<div class="wordNoWarp">
+										<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" th:text="${obj.goods.goodsName}"></a>
+									</div>
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="#icon-shoucang"></use>
+									</svg>
+								</div>
+								<div class="price_box flex-star">
+									<div th:text="'$'+${obj.price}"></div>
+									<!--<span>$ 199.00</span>-->
+								</div>
+								<div class="goods_opt flex-between">
+									<div class="spec_box flex-star">
+										<span th:text="${obj.specInfo}"></span>
+										<svg class="icon" aria-hidden="true">
+											<use xlink:href="#icon-bottom"></use>
+										</svg>
+									</div>
+									<div class="num_box flex-between">
+										<div class="reduce" th:data-id="${obj.id}">-</div>
+										<div class="goods_num" >1</div>
+										<div class="add" th:data-id="${obj.id}">+</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class= "goods_tips">
+							<svg class="icon" aria-hidden="true" >
+								<use xlink:href="#icon-gantan"></use>
+							</svg>
+							<span>最终售出的商品不能退货</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="page_bottom">
+					<div class="price_line flex-star">
+						Total：<span class="allprice" th:text="${sc.totalPrice}"></span>
+					</div>
+					<input type="button" class="pay_btn" name="" id="goods_pay" value="结算" />
+					<div class="pay_tips">支付可以使用优惠券商品更划算</div>
+				</div>
+
+			</div>
+			</form>
+
+			<div th:unless="${carts.size()>0}" class="ui-pane">
+				<div class="ui-content">
+					<div class="content">
+						<div class="content_text">
+							<img class="cartimg" src="/asset/img/carttp.png" >
+							<p>购物车空空的，快去选购商品吧！</p>
+						</div>
+					</div>
+				</div>
+				<div class="Nav"></div>
+			</div>
+			
+
+			
+			
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$("#user_address").click(function (){
+		window.location.href="/buyer/address.htm";
+	});
+	      $("#goods_pay").click(function(){
+	      	//获取选中的IDS
+			var checkboxs =  $(".goodscartList .list_item").find("input[type=checkbox]");
+			console.log(checkboxs);
+			if(checkboxs.length){
+				var ids="";
+				checkboxs.each(function(){
+					if($(this).is(":checked")){
+						ids= ids+$(this).val()+",";
+					}
+				});
+				if(ids.length>0){
+					window.location.href="/goods_cart2?ids="+ids;
+				}else{
+					alert("没有选择要结算的商品");
+				}
+			}else{
+				alert("没有商品不能结算");
+			}
+		  });
+
+			calcAllprice();
+			$(".list_item input[type=checkbox]").click(function(){
+				var length = $(".list_item input[type=checkbox]").length;
+				var checknum = 0;
+
+				calcAllprice();
+
+			})
+
+			
+			$(".reduce").click(function(){
+				var val = $(this).parents(".num_box").find(".goods_num").text();
+				if(val > 1){
+					val--;
+				}
+				$.post('/goods_count_adjust',{'cart_id':$(this).attr('data-id'),'count': val},function(res){
+					if(res.err == '200'){
+						$(this).parents(".num_box").find(".goods_num").text(val);
+						calcAllprice();
+					}else{
+						alert("数据有误")
+					}
+				});
+
+
+			})
+			
+			$(".add").click(function(){
+				var val = $(this).parents(".num_box").find(".goods_num").text();
+					val++;
+				$.post('/goods_count_adjust',{'cart_id':$(this).attr('data-id'),'count': val},function(res){
+					if(res.err == '200'){
+						$(this).parents(".num_box").find(".goods_num").text(val);
+						calcAllprice();
+					}else{
+						alert("数据有误")
+					}
+				});
+			})
+			
+			
+			function calcAllprice(){
+				var allprice = 0.00;
+				$(".list_item input[type=checkbox]").each(function(){
+					if($(this).is(":checked")){
+						var num = $(this).parents(".list_item").find(".num_box .goods_num").text();
+						var pricestr = $(this).parents(".list_item").find(".price_box div").text();
+						pricestr = pricestr.slice(1,pricestr.length);
+						pricestr = parseFloat(pricestr) * num;
+						allprice += pricestr;
+					}
+					$(".allprice").text( "$" + allprice.toFixed(2))
+				})
+			}
+			
+</script>
+</html>

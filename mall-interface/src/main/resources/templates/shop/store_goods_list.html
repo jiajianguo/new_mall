@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>搜索商品</title>
+    <meta name="keywords" th:content="${gc.seoKeywords}"/>
+    <meta name="description" th:content="${gc.seoDescription}"/>
+    <meta name="generator" content="shopping 2.0"/>
+    <meta name="author" content="www.shopping.com">
+    <meta name="copyright" content="shopping Inc. All Rights Reserved">
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/goodshidden.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+    <script th:src="@{/js/jquery.shop.common.js}"></script>
+    <script th:src="@{/js/jquery.lazyload.js}"></script>
+    <script th:src="@{/js/top.js}"></script>
+    <script th:src="@{/js/head.js}"></script>
+    <script th:src="@{/js/nav.js}"></script>
+</head>
+<body>
+<div class="top_page">
+    <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+            <li class="mytaobao menu-item menupx">
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="search menu-item menupx">
+                <div class="menu" id="cart_menu">
+                    <span class="menu-hd" id="cart_goods_top_menu">
+                        <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车
+                        <span id="cart_goods_count_top" class="top_car" th:text="${cart.size()}"></span>种商品</a><b></b>
+                    </span>
+                </div>
+            </li>
+
+
+            <li class="menupx">
+                <a th:href="@{/buyer/message.htm}">
+                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            </li>
+            <li class="menupx" th:if="${navs != null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="menupx" style="background:none;" th:if="${navs == null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+                <div class="menu">
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+                    <div class="menu-bd" style="height:auto;">
+                        <div class="menu-bd-panel">
+                            <div th:each="nav : ${navs}">
+                                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+    </div>
+</div>
+
+<div class="main">
+    <div id="header_form">
+        <div id="head_h" class="head_width">
+            <div class="head clearFix">
+                <div class="logo">
+                    <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+                        <img
+                             th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60"/>
+                    </a>
+                    <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
+                        <img  th:src="@{/style/system/front/default/images/logo.png}"
+                             border="0" width="180" height="60"/>
+                    </a>
+                </div>
+                <div class="searchForm">
+                    <form action="/search.htm" method="post" target="_blank" id="searchForm">
+                        <input name="type" type="hidden" id="type" value="${type}"/>
+                        <div class="toph_bigsearch">
+                            <div class="toph_sear">
+                                <ul class="toph_bgsear">
+                                    <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+                                    <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                                </ul>
+                                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                                       class="toph_sear_txt"/>
+                                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                                       onclick="search_form();" class="toph_sear_btn"/>
+                            </div>
+                            <div class="keyword">
+						   <span th:each="info : ${config.hotsearch.split(',')}">
+							   <a href="javascript:void(0);" th:data="${info}" onclick="search_form(this.getAttribute('data'),'goods');"
+                                  th:text="${info}"></a>
+						   </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <div class="nav_center">
+            <div class="nav_left">
+                <h2>
+                    <a th:href="@{/goods_class.htm}">
+                        <span>
+                            全部分类
+                            <em>
+                                <img th:src="@{/style/system/front/default/images/nav_left.png}">
+                            </em>
+                        </span>
+                    </a>
+                </h2>
+                <div id="other_menu" class="other_menu" style="display:none;">
+                    <div id="left_menu" class="left_menu">
+                        <dl th:each="gc : ${navgcs}" sc_color="#E60012" style="position:relative;" th:id="${gc.id}"
+                            child_count="${gc.childs.size()}" class="left_menu_dl">
+                            <dt id="dts_15" class="left_menu_dt">
+                                <i class="left_menu_i">
+                                    <img th:if="${gc.iconType==0   }" width="16" height="16"
+                                         th:src="@{'/style/common/images/icon/icon_'+ ${gc.iconSys}+'.png'}">
+                                    <img th:unless="${gc.iconType==0   }" width="16" height="16"
+                                         th:src="@{'/'+${gc.icon_acc.path} +'/'+${gc.icon_acc.name}}">
+                                </i>
+                                <strong class="left_menu_str">
+                                    <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
+                                </strong>
+                            </dt>
+                            <dd th:id="${'child_'+gc.id}" style="display: none;" class="left_menu_dd">
+                                <div id="left_menu_con_15" class="left_menu_con this ">
+                                  <span class="left_menu_sp">
+                                      <div class="left_menu_con_center">
+                                          <div class="menu_con_right_top" style="background-color: rgb(230, 0, 18);">
+                                          <dl>
+                                            <dt>
+                                                <span th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                  <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}" target="_blank"
+                                                     th:text="${gc1.classname}"></a>
+                                                </span>
+                                            </dt>
+                                          </dl>
+                                        </div>
+                                        <div class="left_menu_con_center_left">
+                                                    <dl th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                        <dt>
+                                                          <b> &gt; </b>
+                                                          <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}"
+                                                             target="_blank" th:text="${gc1.classname}"></a>
+                                                        </dt>
+                                                        <dd>
+                                                            <a th:each="gc2 : ${gc1.childs}" th:if="${gc2.display}"
+                                                               th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}"
+                                                               target="_blank"
+                                                               th:text="${gc2.classname}"></a>
+                                                        </dd>
+                                                    </dl>
+                                         </div>
+                                      </div>
+                                  </span>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+
+                </div>
+            </div>
+
+            <ul id="navul">
+                <!--#set($navs=$!navTools.queryNav(0,-1))-->
+                <li th:each="nav : ${navs}">
+                    <a th:id="${nav.id}" th:if="${nav.newWin==1}" target="_blank" th:original_url="${nav.originalUrl}"
+                       th:href="@{${nav.url}}"><span th:text="${nav.title}"></span></a>
+                    <a th:id="${nav.id}" th:unless="${nav.newWin==1}" th:original_url="${nav.originalUrl}"
+                       th:href="@{${nav.url}"><span th:text="${nav.title}"></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="index">
+        <div class="position">
+            当前位置：<a th:href="@{/index.htm}">首页</a>>
+            <a th:href="@{/goods_class.htm}" class="pos">商品分类</a> >
+            <a th:if="${gc.parent != null  && gc.parent.parent !=  null}"
+               th:href="@{/store_goods_list.htm(gc_id=${gc.parent.parent.id})}"
+               th:text="${gc.parent.parent.classname}"> ></a>
+            <a th:if="${gc.parent}" th:href="@{/store_goods_list.htm(gc_id=${gc.parent.id})}"
+               th:text="${gc.parent.classname}"> > </a>
+            <span>
+        <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
+      </span>
+        </div>
+        <div class="index2">
+            <form th:action="@{/store_goods_list.htm(gc_id=${gc.id})}" method="post" id="ListForm">
+                <div class="index2_list">
+                    <div class="opclass">
+                        <div class="classify" th:if="${gc.goodsType != null} ">
+                            <div class="chosen">
+                                <div class="chosena">您已经选择：</div>
+                                <div class="chosenb" th:if="${goods_property.size()>0}">
+                                  <span th:each="map : ${goods_property}" class="chose">
+                                    <strong class="hui2" th:text="${map.get('name')}">:</strong>
+                                    <strong class="orange" th:text="${map.get('value')}"></strong>
+                                    <strong class="close_chose"></strong>
+                                    <strong class="del_chose">
+                                      <img th:src="@{/style/system/front/default/images/close.jpg}" width="14"
+                                           height="14"
+                                           th:onclick="goods_property_remove(${map.get('type')},${map.get('id')},${map.get('value')})"/>
+                                    </strong>
+                                  </span>
+                                </div>
+                                <span class="chosen_sp">
+                                  <img th:src="@{/style/system/front/default/images/more_sp.gif}" width="26" height="26"
+                                       id="all_property_open"/>
+                                  <img th:src="@{/style/system/front/default/images/more_sp2.gif}" width="26"
+                                       height="26"
+                                       style="display:none" id="all_property_close"/>
+                                </span>
+                            </div>
+                            <div class="classia" th:if="${gc.goodsType.gss != null}"
+                                 th:each="info : ${gc.goodsType.gss}">
+                                <div class="classmore" th:if="${info.properties.size()>12}">
+                                    <a href="javascript:void(0);" class="class_more"
+                                       mark="gss${info.id}_${info.id}">更多</a>
+                                    <a href="javascript:void(0);" style="display:none" class="class_income">收起</a>
+                                </div>
+                                <div class="classa" th:text="${info.name}">:</div>
+                                <div class="classb">
+                                  <span th:if="${info.properties}" th:each="v_info : ${info.properties}">
+                                  <a href="javascript:void(0);"
+                                     onclick="goods_property_generic('gs','${v_info.id}','${v_info.value}')"
+                                     th:text="${v_info.value}"></a>
+                                  </span>
+                                </div>
+                            </div>
+                            <div th:if="${gc.goodsType.properties != null }" th:each="info : ${gc.goodsType.properties}"
+                                 class="classia">
+                                <div class="classmore">
+                                    <a href="javascript:void(0);" class="class_more"
+                                       mark="properties${info.id}_${info.id}">更多</a>
+                                    <a href="javascript:void(0);" style="display:none" class="class_income">收起</a>
+                                </div>
+                                <div class="classa" th:text="${info.name}"></div>
+                                <div class="classb">
+                                  <span th:each="v_info : ${info.values}">
+                                    <a href="javascript:void(0);" th:data-id="${info.id}" th:data="${v_info}"
+                                       onclick="goods_property_generic('properties',this.getAttribute('data-id'),this.getAttribute('data'))"
+                                       th:text="${v_info}"></a>
+                                  </span>
+                                </div>
+                            </div>
+                            <div th:if="${gc.goodsType.gbs != null }" class="classia">
+                                <div th:if="${gc.goodsType.gbs.size()>12}" class="classmore">
+                                    <a href="javascript:void(0);" class="class_more" mark="brand_0">更多</a>
+                                    <a href="javascript:void(0);" style="display:none" class="class_income">收起</a>
+                                </div>
+                                <div class="classa">品牌:</div>
+                                <div class="classb">
+                                  <span th:if="${gc.goodsType.gbs != null }" th:each="info : ${gc.goodsType.gbs}">
+                                    <a href="javascript:void(0);"
+                                       onclick="goods_property_generic('brand','${info.id}','${info.name}')"
+                                       th:text="${info.name}">
+
+                                    </a>
+                                  </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--商品列表开始-->
+                    <div class="allgoods">
+                        <div class="brandsort_screen" id="search_bar">
+                            <div class="brandsort_show">
+                                <a href="javascript:void(0);" goods_view="thumb" id="thumb_view"
+                                   class="brandsort_show_big"><i class="big_hide"></i>大图</a>
+                                <a href="javascript:void(0);" goods_view="list" id="list_view"
+                                   class="brandsort_show_list"><i class="list_hide"></i>列表</a>
+                            </div>
+                            <div class="brandsort_sort">
+                                <a href="javascript:void(0);" class="sort_a this" orderBy="addTime"
+                                   orderType="asc">默认排序</a>
+                                <a href="javascript:void(0);" class="sort_a" orderBy="goods_salenum" orderType="desc"><i
+                                        class="sort_a1">销量</i></a>
+                                <a href="javascript:void(0);" class="sort_a" orderBy="goods_collect" orderType="desc"><i
+                                        class="sort_a1">人气</i></a>
+                                <a href="javascript:void(0);" class="sort_a" orderBy="store_price" orderType="asc"><i
+                                        class="sort_a1">价格</i></a>
+                            </div>
+                            <div class="brandsort_fineprice">
+                                <div class="brandsort_price_top">
+                                    <input placeholder="¥" name="store_price_begin" th:value="${store_price_begin}"
+                                           type="text" title="按照价格区间筛选 最低价" class="brandsort_price_input"/>
+                                    <i>-</i>
+                                    <input placeholder="¥" name="store_price_end" th:value="${store_price_end}"
+                                           type="text" title="按照价格区间筛选 高价" class="brandsort_price_input"/>
+                                </div>
+                                <div class="brandsort_price_bottom" style="display:none">
+                                    <a href="javascript:void(0);" mark="clear" class="brandsort_btn_clear">清空</a>
+                                    <a href="javascript:void(0);" class="brandsort_btn_com">确定</a></div>
+                            </div>
+                            <div class="brandsort_sc_area">
+                <span class="brandsort_area_span" th:if="${area }">
+                  所在地
+                </span>
+                                <div class="area_detail" style="display:none">
+                                    <h1>所有地区</h1>
+                                    <div class="area_adress">
+                                        <input type="text" th:if="${area != null}" class="adre_sear" id="area_name"
+                                               name="area_name" placeholder="请输入地区名称" th:value="${area_name}"/>
+                                        <input class="adre_btn" type="submit" value="确定"/>
+                                    </div>
+                                    <ul class="areaul">
+                                        <li th:each="area : ${areas}">
+                                            <a href="javascript:void(0);" area_id="${area.id}"
+                                               th:text="${area.areaname}"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="brandsort_input">
+                                <input class="brandsort_input_txt" type="text" id="goods_name" name="goods_name"
+                                       th:value="${goods_name}" placeholder="搜索关键字"/>
+                                <input type="submit" style="cursor:pointer;" value="确定" class="brandsort_input_btn"/>
+                            </div>
+                        </div>
+                        <div th:if="${objs}" class="smallgoods">
+                            <ul th:each="obj : ${objs}" class="this">
+                                <li class="goodsimgs">
+                  <span class="goods_sp_span">
+                    <p>
+                      <a th:href="@{/goods.htm(id=${obj.id})}" target="_blank">
+                        <img th:if="${obj.goods_main_photo}"
+                             th:src="@{'/'+${obj.goods_main_photo.path} +'/'+${obj.goods_main_photo.name} }" width="160"
+                             height="160"/>
+                        <img th:unless="${obj.goods_main_photo}"
+                             th:src="@{'/'+${config.goodsImage.path} +'/'+${config.goodsImage.name}}" width="160"
+                             height="160"/>
+                      </a>
+                    </p>
+                  </span>
+                                </li>
+                                <li class="goodslook"><strong>商城价：¥ <span
+                                        th:text="${obj.goodsCurrentPrice}"></span></strong></li>
+                                <li class="goodslook"><span class="marketprice">市场价：¥ <span
+                                        th:text="${obj.goodsPrice}"></span></span></li>
+                                <li class="goodsnames">
+                                    <a th:href="@{/goods.htm(id=${obj.id})}" target="_blank">
+                                        <span th:if="${obj.groupBuy==2}" style="color:#F00;">[团购]</span>
+                                        <span th:if="${obj.activityStatus==2}" style="color:#F00;">[活动]</span>
+                                        <span th:if="${obj.combinStatus==2}" style="color:#F00;">[组合]</span>
+                                        <span th:if="${obj.bargainStatus==2}" style="color:#F00;">[特价]</span>
+                                        <span th:if="${obj.deliveryStatus==2}" style="color:#F00;">[买就送]</span>
+                                        <span th:text="${obj.goodsName}"></span>
+                                    </a>
+                                </li>
+                                <li class="recentgoodsok">最近成交<strong th:text="${obj.goodsSalenum}"></strong>笔</li>
+                                <li class="goodshidden" style="display:none">
+                  <span class="goods_description">
+                    与描述相符: <b style="color:#F00" th:text="${obj.descriptionEvaluate}"></b> 分
+                  </span>
+                                    <span class="goodshshop_name">
+                    店铺名称：<a th:href="@{/store.htm(id=${obj.goodsStoreId})}" target="_blank">
+                      <i th:text="${obj.goods_store.storeName}"></i>
+                    </a>
+                  </span>
+                                    <span class="goods_eva">
+                    <i>
+                      <em>累计评价</em>
+                      <p th:text="${obj.evaluates.size()}"></p>
+                    </i>
+                    <i>
+                      <em>店铺等级</em>
+                      <p th:text="${obj.goods_store.grade.gradename}"></p>
+                  </i></span></li>
+                            </ul>
+                        </div>
+                        <div class="goodstyletwo" style="display:none" th:if="${objs}" th:each="obj : ${objs}">
+                            <div class="goodstwo">
+                                <span class="goodtwoimg">
+                                  <span class="goodtwoimg_span">
+                                    <p>
+                                      <a th:href="@{/goods.htm(id=${obj.id})}" target="_blank">
+                                         <img th:if="${obj.goods_main_photo}"
+                                              th:src="@{'/'+${obj.goods_main_photo.path} +'/'+${obj.goods_main_photo.name} }"
+                                              width="140" height="140"/>
+                                         <img th:unless="${obj.goods_main_photo}"
+                                              th:src="@{'/'+${config.goodsImage.path} +'/'+${config.goodsImage.name} }" width="140"
+                                              height="140"/>
+                                      </a>
+                                    </p>
+                                  </span>
+                                </span>
+                                <ul class="goodsul">
+                                    <li class="goodsli1">
+                                        <span class="goods2name">
+                                          <span th:if="${obj.groupBuy==2}" style="color:#F00;">[团购]</span>
+                                          <span th:if="${obj.activityStatus==2}" style="color:#F00;">[活动]</span>
+                                          <span th:if="${obj.combinStatus==2}" style="color:#F00;">[组合]</span>
+                                          <span th:if="${obj.bargainStatus==2}" style="color:#F00;">[特价]</span>
+                                          <span th:if="${obj.deliveryStatus==2}" style="color:#F00;">[买就送]</span>
+                                          <a th:href="@{goods.htm(id=${obj.id})}" target="_blank" th:text="${obj.goodsName}"></a>
+                                        </span>
+                                        <span class="goods2market">
+                                            市场价：¥ <span th:text="${obj.goodsPrice}"></span>
+                                        </span>
+                                         <span class="goods2shop">
+                                          商城价：<strong th:text="'￥'+${obj.storePrice}"></strong>
+                                        </span>
+                                        <span class="recent">
+                                          累计售出<strong class="orange" th:text="${obj.goodsSalenum}"></strong>笔
+                                        </span>
+                                    </li>
+                                    <li class="goodsli2">
+                                        <p class="goodsli2_p2">
+                                          <span class="goodshopname">
+                                            店铺名称：<a th:href="@{/storehtm(id=${obj.goods_store.id})}"
+                                                    th:text="${obj.goods_store.storeName}"></a>
+                                          </span>
+                                            <span class="goods2send" th:text="'店铺等级：'+${obj.goods_store.grade.gradename}"></span>
+                                        </p>
+                                        <p class="goodsli2_p">
+                                            <span class="goodsli2_p_sp">
+                                                与描述相符：<b style="color:#F00" th:text="${obj.descriptionEvaluate}"></b> 分
+                                            </span>
+                                            <span class="goodsli2_p_eva">
+                                                累计评价：<i th:text="${obj.evaluates.size()}"></i>
+                                            </span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="starshop_list" th:unless="${objs}">
+                            <div class="sigh">
+                <span>
+                  <img th:src="@{/style/system/front/default/images/sigh.png}" width="120" height="109"/>
+                </span>
+                                <b>对不起，没有对应的数据!</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fenye">
+                        <div class="fenyes">
+                            <input th:if="${area}" name="area_id" type="hidden" id="area_id" th:value="${area.id}"/>
+                            <input th:if="${gs_ids}" name="gs_ids" type="hidden" id="gs_ids" th:value="${gs_ids}"/>
+                            <input th:if="${brand_ids}" name="brand_ids" type="hidden" id="brand_ids"
+                                   th:value="${brand_ids}"/>
+                            <input th:if="${properties}" name="properties" type="hidden" id="properties"
+                                   th:value="${properties}"/>
+                            <input th:if="${keyword}" name="keyword" type="hidden" id="keyword" th:value="${keyword}"/>
+                            <input th:if="${currentPage}" name="currentPage" type="hidden" id="currentPage"
+                                   th:value="${currentPage}"/>
+                            <input th:if="${goods_view}" type="hidden" name="goods_view" id="goods_view"
+                                   th:value="${goods_view}"/>
+                            <input th:if="${orderBy}" name="orderBy" type="hidden" id="orderBy" th:value="${orderBy}"/>
+                            <input th:if="${orderType}" name="orderType" type="hidden" id="orderType"
+                                   th:value="${orderType}"/>
+                            <input th:if="${all_property_status}" name="all_property_status" type="hidden"
+                                   id="all_property_status" th:value="${all_property_status}"/>
+                            <input th:if="detail_property_status" name="detail_property_status" type="hidden"
+                                   id="detail_property_status" th:value="${detail_property_status}"/>
+                            <span th:if="${gotoPageFormHTML}" th:utext="${gotoPageFormHTML}"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--直通车热卖商品-->
+            <div class="index2_left">
+                <h1>热卖商品 <a th:href="@{/ztc_goods_list.htm}" target="_blank"
+                            style="float:right; font-size:12px;">更多>></a></h1>
+                <div class="hotgoods">
+                    <ul >
+                        <span th:each="ztc_good : ${ztc_goods} ">
+                        <li>
+                            <a th:href="@{/goods.htm(id=${ztc_good.id})}" target="_blank">
+                                <img th:if="${ztc_good.goods_main_photo}"
+                                     th:src="@{${'/'+ztc_good.goods_main_photo.path+'/'+ztc_good.goods_main_photo.name} } "
+                                     width="160" height="160"/>
+                                <img th:unless="${ztc_good.goods_main_photo}"
+                                     th:src="@{'/'+${config.goodsImage.path}+'/'+ ${config.goodsImage.name}+}"
+                                     width="160" height="160"/>
+                            </a>
+                        </li>
+                        <li class="center"><strong class="orange" th:text="'￥'+${ztc_good.storePrice}"></strong></li>
+                        <li class="blue2">
+                            <a th:href="@{/goods.htm(id=${ztc_good.id})}" target="_blank" th:text="${ztc_good.goodsName}"></a>
+                        </li>
+                        <li class="center">最近成交 <span th:text="${ztc_good.goodsSalenum}"></span>件</li>
+                        </span>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <input type="hidden" id="order_by" th:value="orderBy">
+    <input type="hidden" id="all_property_status" th:value="${all_property_status}">
+</div>
+</body>
+<script>
+    jQuery(document).ready(function () {
+        jQuery(".brandsort_show a").click(function () {
+            var goods_view = jQuery(this).attr("goods_view");
+            if (goods_view == "list") {
+                jQuery(".goodstyletwo").show();
+                jQuery(".smallgoods").hide();
+                jQuery(this).addClass("brandsort_show_list2");
+                jQuery("#thumb_view").removeClass().addClass("brandsort_show_big");
+            }
+            if (goods_view == "thumb") {
+                jQuery(".smallgoods").show();
+                jQuery(".goodstyletwo").hide();
+                jQuery(this).addClass("brandsort_show_big2");
+                jQuery("#list_view").removeClass().addClass("brandsort_show_list");
+            }
+            jQuery("#goods_view").val(goods_view);
+        });
+        var goods_view = 'thumb';
+        if (goods_view == "list") {
+            jQuery(".goodstyletwo").show();
+            jQuery(".smallgoods").hide();
+            jQuery("#list_view").addClass("brandsort_show_list2");
+            jQuery("#thumb_view").removeClass().addClass("brandsort_show_big");
+        }
+
+//排序
+        jQuery(".brandsort_sort a").click(function () {
+            var orderBy = jQuery(this).attr("orderBy");
+            var orderType = jQuery(this).attr("orderType");
+            jQuery("#orderBy").val(orderBy);
+            jQuery("#orderType").val(orderType);
+            jQuery("#ListForm").submit();
+        });
+        var order_by = jQuery("#order_by").val();
+        if (order_by) {
+            jQuery(".brandsort_sort a").removeClass("this");
+            jQuery(".brandsort_sort a[orderBy='$!orderBy']").addClass("this");
+        }
+
+        jQuery(".smallgoods ul").hover(function () {
+            jQuery(this).addClass("this");
+            jQuery("li[class='goodshidden']").hide();
+            jQuery(this).find("li[class='goodshidden']").show();
+        }, function () {
+            jQuery(this).removeClass("this").find("li[class='goodshidden']").hide();
+        });
+        jQuery(".classia:gt(2)").hide();
+        if (jQuery(".classia").length <= 3) {
+            jQuery("#all_property_open").hide();
+            jQuery("#all_property_close").hide();
+        }
+        jQuery("#all_property_open").mouseover(function () {
+            jQuery(this).css("cursor", "pointer");
+        }).click(function () {
+            jQuery("#all_property_status").val("open");
+            jQuery(".classia").show();
+            jQuery("#all_property_close").show();
+            jQuery("#all_property_open").hide();
+        });
+        jQuery("#all_property_close").mouseover(function () {
+            jQuery(this).css("cursor", "pointer");
+        }).click(function () {
+            jQuery("#all_property_status").val("close");
+            jQuery(".classia:gt(2)").hide();
+            jQuery("#all_property_open").show();
+            jQuery("#all_property_close").hide();
+        });
+
+        var all_property_status = jQuery("#all_property_status").val();
+        if (all_property_status == "open") {
+            jQuery(".classia").show();
+            jQuery("#all_property_close").show();
+            jQuery("#all_property_open").hide();
+        }
+        if (all_property_status == "close") {
+            jQuery(".classia:gt(2)").hide();
+            jQuery("#all_property_open").show();
+            jQuery("#all_property_close").hide();
+        }
+
+        jQuery(".classia").each(function () {
+            jQuery(this).find(".classb span:gt(12)").hide();
+        });
+        jQuery(".classmore a").each(function () {
+            jQuery(this).click(function () {
+                if (jQuery(this).index() == 0) {
+                    var mark = jQuery(this).attr("mark");
+                    jQuery("#detail_property_status").val(jQuery("#detail_property_status").val() + "," + mark);
+                    jQuery(this).parent().parent().find(".classb span").show();
+                    jQuery(this).hide();
+                    jQuery(this).parent().find("a:last").show();
+                }
+                if (jQuery(this).index() == 1) {
+                    jQuery(this).parent().parent().find(".classb span:gt(12)").hide();
+                    jQuery(this).hide();
+                    jQuery(this).parent().find("a:first").show();
+                }
+            });
+        });
+
+        /*#foreach($list in $pro_list)
+        var key = "$!list";
+        var val = $!pro_map.get("$!list");
+        var mark =key+"_"+val;
+        jQuery(".classmore a[mark="+mark+"]").hide();
+        jQuery(".classmore a[mark="+mark+"]").parent().find("a").eq(1).show().parent().parent().find("span").show();
+        #end*/
+
+        jQuery(".goodsimgs img").lazyload({effect: "fadeIn", width: 178, height: 178});
+        jQuery(".goodstwo img").lazyload({effect: "fadeIn", width: 86, height: 86});
+
+        jQuery(".brandsort_sc_area").hover(function () {
+            jQuery(".area_detail").css("display", "block");
+        }, function () {
+            jQuery(".area_detail").css("display", "none");
+        });
+        jQuery(".brandsort_fineprice").hover(function () {
+            jQuery(".brandsort_price_bottom").css("display", "block");
+        }, function () {
+            jQuery(".brandsort_price_bottom").css("display", "none");
+        });
+        jQuery(".brandsort_price_bottom a").click(function () {
+            var mark = jQuery(this).attr("mark");
+            if (mark == "clear") {
+                jQuery(".brandsort_price_top input").val("");
+            }
+            jQuery("#ListForm").submit();
+        });
+
+        jQuery("ul.areaul").find("a").click(function () {
+            jQuery("#area_id").val(jQuery(this).attr("area_id"));
+            jQuery("#ListForm").submit();
+        });
+        //
+        var search_bar_top = jQuery("#search_bar").offset().top;
+        jQuery(window).scroll(function () {
+            var top = jQuery("#search_bar").offset().top;
+            var scrolla = jQuery(window).scrollTop();
+            var i = top - scrolla;
+            if (i <= 0) {
+                jQuery("#search_bar").addClass("brandsort_screen_top");
+            }
+            if (scrolla < search_bar_top) {
+                jQuery("#search_bar").removeClass("brandsort_screen_top");
+            }
+        });
+        //
+
+    });
+
+    function goods_property_remove(type, id) {
+        if (type == "brand") {
+            var brand_ids = jQuery("#brand_ids").val();
+            brand_ids = brand_ids.replace("|" + id, "");
+            jQuery("#brand_ids").val(brand_ids);
+            jQuery("#ListForm").submit();
+        }
+        if (type == "gs") {
+            var gs_ids = jQuery("#gs_ids").val();
+            gs_ids = gs_ids.replace("|" + id, "");
+            jQuery("#gs_ids").val(gs_ids);
+            jQuery("#ListForm").submit();
+        }
+        if (type == "properties") {
+            var properties = jQuery("#properties").val();
+            properties = properties.replace("|" + id, "");
+            jQuery("#properties").val(properties);
+            jQuery("#ListForm").submit();
+        }
+    }
+
+    function goods_property_generic(type, id, value) {
+        if (type == "brand") {
+            var brand_ids = jQuery("#brand_ids").val();
+            var s = "|" + id + "," + value;
+            if (brand_ids.indexOf(s) < 0) {
+                brand_ids = brand_ids + "|" + id + "," + value;
+                jQuery("#brand_ids").val(brand_ids);
+                jQuery("#ListForm").submit();
+            }
+        }
+        if (type == "gs") {
+            var gs_ids = jQuery("#gs_ids").val();
+            var s = "|" + id + "," + value;
+            if (gs_ids.indexOf(s) < 0) {
+                gs_ids = gs_ids + "|" + id + "," + value;
+                jQuery("#gs_ids").val(gs_ids);
+                jQuery("#ListForm").submit();
+            }
+        }
+        if (type == "properties") {
+            var properties = jQuery("#properties").val();
+            var s = "|" + id + "," + value;
+            if (properties.indexOf(s) < 0) {
+                properties = properties + "|" + id + "," + value;
+                jQuery("#properties").val(properties);
+                jQuery("#ListForm").submit();
+            }
+        }
+    }
+</script>
+</html>

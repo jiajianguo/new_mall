@@ -1,0 +1,108 @@
+.content_search {
+	height: 1.1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 .25rem 0 .25rem;
+	background-color: #ffffff;
+}
+
+.seinput {
+	width: 100%;
+	height: .7rem;
+	border-radius: 35px;
+	display: flex;
+	align-items: center;
+	padding: 0 .2rem 0 .2rem;
+	background-color: #f2f2f2;
+}
+
+.icon_left {
+	font-size: .5rem;
+	margin-right: .1rem;
+}
+
+.icon_search {
+	font-size: .32rem;
+	color: #c0c0c0;
+}
+
+.sebt {
+	font-size: .28rem;
+	color: #333333;
+	border: none;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.setext {
+	width: 100%;
+	height: 100%;
+	border: none;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+::-webkit-input-placeholder {
+	font-size: .28rem;
+	color: #c0c0c0;
+}
+
+.nav_top {
+	height: 1rem;
+	display: flex;
+	align-items: center;
+	margin-top: .1rem;
+	font-size: .28rem;
+	color: #999999;
+	background-color: #ffffff;
+}
+
+.nav_top>div {
+	width: 25%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.icon_sx{
+	font-size: .4rem;
+}
+.nav_text_act{
+	color: #ff7710;
+}
+.content_text{
+	padding: .25rem;
+	margin-top: 1px;
+	font-size: .28rem;
+	color: #333333;
+	display: flex;
+	align-items: center;
+	background-color: #ffffff;
+}
+.tu{
+	width: 2.2rem;
+	height: 2.2rem;
+}
+.text_zong{
+	height: 2.2rem;
+	margin-left: .2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.text1{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+.textbq{
+	font-size: .24rem;
+	color: #ff9900;
+}
+.yjpay{
+	color: #999999;
+}
+.paynumber{
+	font-size: .36rem;
+	color: #333333;
+}

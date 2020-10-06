@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingShippingMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingShipping">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="shipping_add_fee" jdbcType="DECIMAL" property="shippingAddFee" />
+    <result column="shipping_add_weight" jdbcType="INTEGER" property="shippingAddWeight" />
+    <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee" />
+    <result column="shipping_name" jdbcType="VARCHAR" property="shippingName" />
+    <result column="shipping_weight" jdbcType="INTEGER" property="shippingWeight" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="store_id" jdbcType="BIGINT" property="storeId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingShipping">
+    <result column="shipping_info" jdbcType="LONGVARCHAR" property="shippingInfo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, sequence, shipping_add_fee, shipping_add_weight, shipping_fee,
+    shipping_name, shipping_weight, status, store_id
+  </sql>
+  <sql id="Blob_Column_List">
+    shipping_info
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingShippingExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_shipping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingShippingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_shipping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_shipping
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_shipping
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingShippingExample">
+    delete from shopping_shipping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingShipping">
+    insert into shopping_shipping (id, addTime, deleteStatus,
+      sequence, shipping_add_fee, shipping_add_weight,
+      shipping_fee, shipping_name, shipping_weight,
+      status, store_id, shipping_info
+      )
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{sequence,jdbcType=INTEGER}, #{shippingAddFee,jdbcType=DECIMAL}, #{shippingAddWeight,jdbcType=INTEGER},
+      #{shippingFee,jdbcType=DECIMAL}, #{shippingName,jdbcType=VARCHAR}, #{shippingWeight,jdbcType=INTEGER},
+      #{status,jdbcType=INTEGER}, #{storeId,jdbcType=BIGINT}, #{shippingInfo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingShipping">
+    insert into shopping_shipping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="sequence != null">
+        sequence,
+      </if>
+      <if test="shippingAddFee != null">
+        shipping_add_fee,
+      </if>
+      <if test="shippingAddWeight != null">
+        shipping_add_weight,
+      </if>
+      <if test="shippingFee != null">
+        shipping_fee,
+      </if>
+      <if test="shippingName != null">
+        shipping_name,
+      </if>
+      <if test="shippingWeight != null">
+        shipping_weight,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="shippingInfo != null">
+        shipping_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="shippingAddFee != null">
+        #{shippingAddFee,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingAddWeight != null">
+        #{shippingAddWeight,jdbcType=INTEGER},
+      </if>
+      <if test="shippingFee != null">
+        #{shippingFee,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingName != null">
+        #{shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingWeight != null">
+        #{shippingWeight,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="shippingInfo != null">
+        #{shippingInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingShippingExample" resultType="java.lang.Long">
+    select count(*) from shopping_shipping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_shipping
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.sequence != null">
+        sequence = #{record.sequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.shippingAddFee != null">
+        shipping_add_fee = #{record.shippingAddFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shippingAddWeight != null">
+        shipping_add_weight = #{record.shippingAddWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.shippingFee != null">
+        shipping_fee = #{record.shippingFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shippingName != null">
+        shipping_name = #{record.shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shippingWeight != null">
+        shipping_weight = #{record.shippingWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shippingInfo != null">
+        shipping_info = #{record.shippingInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_shipping
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      shipping_add_fee = #{record.shippingAddFee,jdbcType=DECIMAL},
+      shipping_add_weight = #{record.shippingAddWeight,jdbcType=INTEGER},
+      shipping_fee = #{record.shippingFee,jdbcType=DECIMAL},
+      shipping_name = #{record.shippingName,jdbcType=VARCHAR},
+      shipping_weight = #{record.shippingWeight,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      shipping_info = #{record.shippingInfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_shipping
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      shipping_add_fee = #{record.shippingAddFee,jdbcType=DECIMAL},
+      shipping_add_weight = #{record.shippingAddWeight,jdbcType=INTEGER},
+      shipping_fee = #{record.shippingFee,jdbcType=DECIMAL},
+      shipping_name = #{record.shippingName,jdbcType=VARCHAR},
+      shipping_weight = #{record.shippingWeight,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      store_id = #{record.storeId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingShipping">
+    update shopping_shipping
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="shippingAddFee != null">
+        shipping_add_fee = #{shippingAddFee,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingAddWeight != null">
+        shipping_add_weight = #{shippingAddWeight,jdbcType=INTEGER},
+      </if>
+      <if test="shippingFee != null">
+        shipping_fee = #{shippingFee,jdbcType=DECIMAL},
+      </if>
+      <if test="shippingName != null">
+        shipping_name = #{shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingWeight != null">
+        shipping_weight = #{shippingWeight,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="shippingInfo != null">
+        shipping_info = #{shippingInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingShipping">
+    update shopping_shipping
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      sequence = #{sequence,jdbcType=INTEGER},
+      shipping_add_fee = #{shippingAddFee,jdbcType=DECIMAL},
+      shipping_add_weight = #{shippingAddWeight,jdbcType=INTEGER},
+      shipping_fee = #{shippingFee,jdbcType=DECIMAL},
+      shipping_name = #{shippingName,jdbcType=VARCHAR},
+      shipping_weight = #{shippingWeight,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      store_id = #{storeId,jdbcType=BIGINT},
+      shipping_info = #{shippingInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingShipping">
+    update shopping_shipping
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      sequence = #{sequence,jdbcType=INTEGER},
+      shipping_add_fee = #{shippingAddFee,jdbcType=DECIMAL},
+      shipping_add_weight = #{shippingAddWeight,jdbcType=INTEGER},
+      shipping_fee = #{shippingFee,jdbcType=DECIMAL},
+      shipping_name = #{shippingName,jdbcType=VARCHAR},
+      shipping_weight = #{shippingWeight,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      store_id = #{storeId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

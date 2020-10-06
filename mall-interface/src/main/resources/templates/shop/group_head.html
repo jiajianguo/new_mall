@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<script>
+jQuery(document).ready(function(){
+  jQuery(".bgsear li").click(function(){
+     jQuery(".bgsear li").removeClass("this");
+	 jQuery(this).addClass("this");
+	 jQuery("#type").val(jQuery(this).attr("type"));
+  }).mouseover(function(){
+     jQuery(this).css("cursor","pointer");
+  });
+  if(${type})
+  jQuery(".bgsear li").removeClass("this");
+  jQuery(".bgsear li[type=${type}]").addClass("this");
+
+  jQuery("#group_area_switch").css("cursor","pointer").click(function(){
+      var show=jQuery("#group_area_info").css("display");
+	  if(show=="none"){
+	   jQuery("#group_area_info").show();
+	   jQuery("#group_area_switch").attr("class","tuan_active");
+	   jQuery("#group_area_img").attr("src","/resources/style/system/front/default/images/group/tuansan.gif");
+	  }else{
+	   jQuery("#group_area_info").hide();
+	   jQuery("#group_area_switch").attr("class","tuan_rs");
+	   jQuery("#group_area_img").attr("src","/resources/style/system/front/default/images/group/tuansan2.gif");
+	  }
+  });
+  jQuery(".tuan_block_box a").click(function(){
+     jQuery("#group_area_info").hide();
+	 jQuery("#group_area_switch").attr("class","tuan_rs");
+	 jQuery("#group_area_img").attr("src","/resources/style/system/front/default/images/group/tuansan2.gif");
+  });
+   jQuery(".toph_bgsear li").mouseover(function(){
+      jQuery(".toph_bgsear>li").show();
+  }).mouseleave(function(){
+       jQuery(".toph_bgsear>li").last().hide();
+  }).click(function(){
+	 var index=jQuery(this).index();
+	 if(index==1){
+	   var f_text=jQuery(".toph_bgsear li").find("a").first().text();
+       jQuery(".toph_bgsear li").find("a").first().html(jQuery(this).find("a").text()+"<s></s>");
+	   jQuery(".toph_bgsear li").find("a").last().text(f_text);
+	   jQuery("#type").val(jQuery(this).attr("type"));
+	   jQuery(".toph_bgsear>li").last().hide();
+	 }
+  });
+});
+function search_form(){
+
+  var keyword=arguments[0];
+  var type=arguments[1];
+  if(keyword!=""&&keyword!=undefined){
+   jQuery("#keyword").val(keyword);
+  }
+  if(type!=""&&type!=undefined){
+    jQuery("#type").val(type);
+  }
+  jQuery("#searchForm").submit();
+  jQuery("#keyword").val("");
+}
+</script>
+
+<div class="head">
+
+  <div class="logo">
+  <a th:if="${config.websiteLogo}" th:href="@{/index.htm}">
+  <img th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60"/>
+  </a>
+   <a th:unless="${config.websiteLogo}" th:href="@{/index.htm}">
+     <img th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="60"/>
+   </a>
+  </div>
+  <div class="tuang">
+    <span class="tuan_span"></span>
+    <div class="tuan_spr">
+      <!--替换样式tuan_rs替换成tuan_active--三角图片tuansan2.gif-->
+      <div class="tuan_rs" id="group_area_switch">
+        <span>
+          <i class="tuantxt">$!ga</i>
+          <b class="tuanspan">
+            <img th:src="@{/style/system/front/default/images/group/tuansan2.gif}" width="9" height="6" id="group_area_img" />
+          </b>
+        </span>
+      </div>
+      <div class="tuan_block" id="group_area_info" style="display:none;">
+        <div class="tuan_block_box">
+          <em>
+            <a href="javascript:void(0);"></a>
+          </em>
+          <div class="tuan_address">
+            <i>
+              <a th:href="@{/group.htm}">全国</a>
+            </i>
+
+            <i th:each="ga :${gas}">
+              <a th:href="@{/group.htm(ga_id=${ga.id})}" th:text="ga.gaName"></a>
+            </i>
+
+          </div>
+        </div>
+        <div class="tuan_blockb"></div>
+      </div>
+    </div>
+  </div>
+
+  <form th:action="@{/search.htm}" method="post" id="searchForm">
+    <input name="type" type="hidden" id="type" value="goods" />
+    <div class="toph_bigsearch">
+      <div class="toph_sear">
+        <ul class="toph_bgsear">
+          <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+          <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+        </ul>
+        <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()" class="toph_sear_txt"/>
+        <input name="input" type="button" value="搜索" style="cursor:pointer;" onclick="search_form();" class="toph_sear_btn" />
+      </div>
+      <div class="keyword">
+
+        <a th:each="info :${CommUtil.splitByChar('${config.hotSearch}',',')}" href="javascript:void(0);" onclick="search_form('${info}','goods');" th:text="${info}"></a>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+</html>

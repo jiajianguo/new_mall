@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingGoodsCombinMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingGoodsCombin">
+    <result column="shopping_goods_id" jdbcType="BIGINT" property="shoppingGoodsId" />
+    <result column="combin_goods_id" jdbcType="BIGINT" property="combinGoodsId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    shopping_goods_id, combin_goods_id
+  </sql>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingGoodsCombinExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_goods_combin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingGoodsCombinExample">
+    delete from shopping_goods_combin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingGoodsCombin">
+    insert into shopping_goods_combin (shopping_goods_id, combin_goods_id)
+    values (#{shoppingGoodsId,jdbcType=BIGINT}, #{combinGoodsId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingGoodsCombin">
+    insert into shopping_goods_combin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shoppingGoodsId != null">
+        shopping_goods_id,
+      </if>
+      <if test="combinGoodsId != null">
+        combin_goods_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shoppingGoodsId != null">
+        #{shoppingGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="combinGoodsId != null">
+        #{combinGoodsId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingGoodsCombinExample" resultType="java.lang.Long">
+    select count(*) from shopping_goods_combin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_goods_combin
+    <set>
+      <if test="record.shoppingGoodsId != null">
+        shopping_goods_id = #{record.shoppingGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.combinGoodsId != null">
+        combin_goods_id = #{record.combinGoodsId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_goods_combin
+    set shopping_goods_id = #{record.shoppingGoodsId,jdbcType=BIGINT},
+      combin_goods_id = #{record.combinGoodsId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+</mapper>

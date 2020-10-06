@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<meta name="keywords" th:content="${config.keywords}" />
+<meta name="description" th:content="${config.description}" />
+<meta name="generator" content="shopping 2.0" />
+<meta name="author" content="www.shopping.com">
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/system/front/default/css/second.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet"/>
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+<script>
+jQuery(document).ready(function(){
+jQuery("#show_message").hover(
+			function(){
+			jQuery(this).addClass("top_nav_lf_hover").find(".details").show();
+				},function(){
+			jQuery(this).removeClass("top_nav_lf_hover").find(".details").hide();
+				});
+//图片切换
+	jQuery(".thumb_list ul li").click(function(){
+	jQuery(this).parent().find("li a").removeClass("this");
+	jQuery(this).find("a").addClass("this");
+	var mark =jQuery(this).attr("mark");
+	jQuery(".Detail_slider ul:first li").css("display","none");
+	jQuery(".Detail_slider ul:first li[mark='"+mark+"']").show();
+	});
+});
+</script>
+</head>
+<body>
+$!httpInclude.include("/top.htm")
+
+<div class="main">
+    $!httpInclude.include("/sparegoods_head.htm")
+</div>
+
+$!httpInclude.include("/sparegoods_nav.htm")
+
+<div class="main">
+  <div class="Detail">
+    <div class="top_nav">
+      <!--top_nav_lf-->
+      <div class="top_nav_lf" id="show_message">
+          <span class="name">
+              <i>
+                  <img th:if="${obj.user.phtot}" th:src="@{'/'+${obj.user.photo.path}+'/'+${obj.user.photo.name}}" width="30" height="30" />
+                  <img th:unless="${obj.user.phtot}" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="30" height="30" />
+              </i>
+              <a href="javascript:void(0);" th:text="${obj.user.username}"></a>
+          </span>
+
+              <b>
+                  <em>
+                      <img th:src="@{/style/system/front/default/images/icon_3.png}" />
+                  </em>
+              </b>
+        <div class="details" style="display:none">
+          <ul>
+            <li>注册时间：<span th:text="${#dates.format(obj.user.addtime,'yyyy-MM-dd')}"></span></li>
+            <li>真实姓名：<span th:text="${obj.user.truename!=''}?${obj.user.truename}:' 暂无'"></span></li>
+              <li>性别：
+                  <span th:switch="${obj.user.sex}">
+                  <span th:case="-1">保密</span>
+                  <span th:case="1">男</span>
+                  <span th:case="0">女</span>
+                  </span>
+              </li>
+            <li>所在地：<span th:text="${obj.area.parent.parent.areaname}+${obj.area.parent.areaname}+${obj.area.areaname}"></span></li>
+            <li>QQ：<span th:text="${obj.user.QQ!=''}?${obj.user.QQ}:' 暂无'"></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Detail_main">
+      <div class="Detail_sub">
+        <div class="Detail_slider">
+          <ul style="width:1460px; height:390px; position:absolute; overflow:hidden">
+            <li mark="1">
+                <a title="查看原图"  target="_blank" th:href="@{'/'+${obj.img1.path}+'/'+${obj.img1.name}}">
+                    <img th:src="@{'/'+${obj.img1.path}+'/'+${obj.img1.name}}" width="600" height="400" />
+                </a>
+            </li>
+            <li mark="2" style="display:none">
+                <a target="_blank" title="查看原图" th:href="@{'/'+${obj.img2.path}+'/'+${obj.img2.name}}">
+                    <img th:src="@{'/'+${obj.img2.path}+'/'+${obj.img2.name}}" width="600" height="400"/>
+                </a>
+            </li>
+            <li mark="3" style="display:none">
+                <a target="_blank" title="查看原图" th:href="@{'/'+${obj.img3.path}+'/'+${obj.img3.name}}">
+                    <img th:src="@{'/'+${obj.img3.path}+'/'+${obj.img3.name}}"width="600" height="400"/>
+                </a>
+            </li>
+            <li mark="4" style="display:none">
+                <a title="查看原图" target="_blank" th:href="@{'/'+${obj.img4.path}+'/'+${obj.img4.name}}">
+                    <img th:src="@{'/'+${obj.img4.path}+'/'+${obj.img4.name}}" width="600" height="400"/>
+                </a>
+            </li>
+            <li mark="5" style="display:none">
+                <a title="查看原图" target="_blank" th:href="@{'/'+${obj.img5.path}+'/'+${obj.img5.name}}">
+                    <img th:src="@{'/'+${obj.img5.path}+'/'+${obj.img5.name}}" width="600" height="400"/>
+                </a>
+            </li>
+          </ul>
+          <div class="thumb_list">
+            <ul>
+              <li  mark="1">
+                  <a class="this" href="javascript:void(0);"><img th:src="@{'/'+${obj.img1.path}+'/'+${obj.img1.name}}" width="92" height="55" /></a>
+              </li>
+              <li th:if="${obj.img2}"  mark="2">
+                  <a href="javascript:void(0);"><img th:src="@{'/'+${obj.img2.path}+'/'+${obj.img2.name}}" width="92" height="55" /></a>
+              </li>
+
+              <li th:if="${obj.img3}" mark="3">
+                  <a href="javascript:void(0);"><img th:src="@{'/'+${obj.img3.path}+'/'+${obj.img3.name}}" width="92" height="55" /></a>
+              </li>
+
+              <li th:if="${obj.img4}" mark="4">
+                  <a href="javascript:void(0);"><img th:src="@{'/'+${obj.img4.path}+'/'+${obj.img4.name}}" width="92" height="55" /></a>
+              </li>
+
+              <li th:if="${obj.img5}" mark="5">
+                  <a href="javascript:void(0);"><img th:src="@{'/'+${obj.img5.path}+'/'+${obj.img5.name}}" width="92" height="55" /></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="Detail_right">
+        <div class="h1">
+          <h1 th:text="${obj.title}"></h1>
+          <ul>
+            <li><span class="para"> 转&nbsp;&nbsp;卖&nbsp;&nbsp;价：</span> ¥<b th:text="${obj.goodsPrice}"></b> </li>
+            <li><span class="para"> 原&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：</span> ¥<s th:text="${obj.goodsOldPrice}"> </s> </li>
+          </ul>
+        </div>
+        <div class="h2">
+          <ul>
+            <li><span class="para">成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</span><span th:text="${obj.oldandnew==1}?'全新':'非全新'"></span></li>
+            <li><span class="para">所&nbsp;在&nbsp;地：</span><span th:text="${obj.area.parent.parent.areaname}+${obj.area.parent.areaname}+${obj.area.areaname}}"></span></li>
+            <li><span class="para">发&nbsp;布&nbsp;人：</span><span th:text="${obj.name}+'('+${obj.user.username}+')'"></span>
+
+                <i>
+                    <a th:if="${user}" th:href="@{/buyer/message_send.htm(userName=${obj.user.username})}" target="_blank">
+                        <img th:src="@{/style/system/front/default/images/usercenter/order_04.gif}" width="15" height="11" />
+                    </a>
+                    <a th:unless="${user}" href="javascript:void(0);"  th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">
+                        <img th:src="@{/style/system/front/default/images/usercenter/order_04.gif}" width="15" height="11" />
+                    </a>
+                </i>
+            </li>
+
+            <li><span class="para">Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q：</span>
+                <a th:if="${obj.QQ}" style="margin-top:8px; float:left;" target="_blank" th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${obj.QQ},Site=${obj.QQ},Menu=yes)}">
+                    <img th:src="@{http://wpa.qq.com/pap=2:${obj.QQ}:51}" />
+                </a>
+                <span th:unless="${obj.QQ}">暂无</span>
+            </li>
+
+            <li><span class="para">联系方式：</span><span th:text="${obj.phone}"></span></li>
+
+            <li th:if="${user}">
+                <a style=" margin-left:90px; margin-top:35px; float:left" href="javascript:void(0);" th:user_id="${obj.user.id}" th:id="'userDialog_img_contact_'+${obj.user.id}" th:user_name="${obj.user.username}">
+                    <img th:src="@{/style/system/front/default/images/message.jpg}"/>
+                </a>
+            </li>
+            <li th:unless="${user}">
+                <a style=" margin-left:90px; margin-top:35px; float:left" href="javascript:void(0);" th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">
+                    <img th:src="@{/style/system/front/default/images/message.jpg}"/>
+                </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="Detail_main">
+        <div class="tit">
+          <ul>
+            <li class="this"><a href="javascript:void(0);">宝贝介绍</a></li>
+          </ul>
+        </div>
+        <div class="baby_idle">
+          <div class="bady_h2"><b>宝贝介绍</b></div>
+          <div class="bady_p" th:text="${obj.content}"> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  $!httpInclude.include("/footer.htm")
+  #if($!user)
+
+  #end
+</div>
+</body>
+</html>

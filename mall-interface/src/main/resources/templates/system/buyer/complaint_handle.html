@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>投诉管理 - Powered by shopping</title>
+<meta name="keywords" content="$!config.keywords" />
+<meta name="description" content="$!config.description" />
+<meta name="generator" content="shopping 2.0" />
+<meta name="author" content="www.shopping.com">
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/user.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+<script>
+jQuery(document).ready(function(){
+   jQuery("#theForm").validate({
+	   rules:{
+			 img1:{accept:"$!config.imageSuffix"},
+			 img2:{accept:"$!config.imageSuffix"},
+			 img3:{accept:"$!config.imageSuffix"},
+			 from_user_content:{required:true}
+		   },
+	   messages:{
+			 img1:{accept:"不允许的图片类型"},
+			 img2:{accept:"不允许的图片类型"},
+			 img3:{accept:"不允许的图片类型"},
+			 from_user_content:{required:"投诉内容不能为空"}
+		   }
+	});
+   //
+});
+function save_form(){
+  var goods_ids="";
+  if(jQuery(":checkbox:checked").length==0){
+     alert("至少选择一件商品！");
+  }else{
+     jQuery(":checkbox:checked").each(function(){
+	    goods_ids=jQuery(this).val()+","+goods_ids;
+	 });
+  }
+  jQuery("#goods_ids").val(goods_ids);
+  jQuery("#theForm").submit();
+}
+</script>
+</head>
+<body>
+<div class="main">
+  <!--buyer-head-->
+  <form th:action="@{/search.htm}" method="post" id="SearchForm">
+    <input name="type" type="hidden" id="type" value="goods" />
+    <div class="head">
+      <div class="logo">
+        <a  th:href="@{/index.htm}">
+          <img th:if="${config.websiteLogo}" th:src="@{${'/'+ config.websiteLogo.path+'/'+config.websiteLogo.name }}" border="0" width="180" height="40"/>
+          <img th:unless="${config.websiteLogo}" th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="40"/>
+        </a>
+      </div>
+      <div class="usersearch">
+        <ul class="users_menu">
+          <li class="this">
+            <em>
+              <a th:href="@{/buyer/index.htm}">买家首页</a>
+            </em>
+          </li>
+          <li >
+            <em>
+              <a th:href="@{/buyer/homepage.htm}" target="_blank">个人主页</a>
+            </em>
+          </li>
+          <!--hover_use经过下拉样式class="hover_use"-->
+          <li>
+            <em>
+              <a th:href="@{/buyer/friend.htm}">好友<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none;">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/friend_add.htm}" target="_blank">找人</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/homepage/myattention.htm}" target="_blank">关注</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/homepage/myfans.htm}" target="_blank">粉丝</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <em>
+              <a href="javascript:void(0);">交易<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/goods_cart1.htm}">我的购物车</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/order.htm}">已买到的商品</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/favorite_goods.htm}">我的收藏</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/complaint.htm}">投诉管理</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <em>
+              <a href="javascript:void(0);">设置<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/account.htm}">个人资料</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/address.htm}">收货地址</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <em>
+              <a href="javascript:void(0);">消息<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/message.htm(type=0)}">系统消息</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/message.htm}">站内私信</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="user_ser">
+          <!--展开时加active-->
+          <div class="sear_type" id="search_type">
+            <ul>
+              <li><a href="javascript:void(0);">商品</a></li>
+              <li type="goods" style="display:none" >
+                <a href="javascript:void(0);">商品</a>
+              </li>
+              <li type="store" style="display:none">
+                <a href="javascript:void(0);">店铺</a>
+              </li>
+            </ul>
+            <s></s>
+          </div>
+
+          <div class="user_ser_box">
+            <input name="keyword" type="text" class="user_ser_txt" placeholder=" 搜索真的很简单！" id="keyword" x-webkit-speech lang="zh-CN" onwebkitspeechchange="jQuery('#SearchForm').submit()"/>
+            <input name="" type="button" class="user_ser_btn" style="cursor:pointer;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="user_center">
+    <form th:action="@{/buyer/complaint_save.htm}" method="post" enctype="multipart/form-data" id="theForm">
+      <table width="1000" border="0" cellspacing="0" cellpadding="0" class="user_table">
+        <tr>
+          <!-- /buyer/nav.htm  op=complaint-->
+          <td width="177" id="userbg" valign="top">
+            <div class="seller">
+              <!--店铺设置-->
+              <div class="product_manage2">
+                <div class="protitle_seller">我是买家</div>
+                <div class="user_photo">
+                  <dl>
+                    <dt>
+                      <img th:if="${user.photo}" th:src="@{${'/'+user.photo.path+'/'+user.photo.name}}" width="120" height="120" />
+                      <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}" width="120" height="120" />
+                    </dt>
+                    <dd>
+                      <b></b>
+                      <span>
+                                        <a  th:href="@{/buyer/account.htm}">编辑资料</a>
+                                    </span>
+                    </dd>
+                  </dl>
+                </div>
+
+                <ul class="sellul">
+                  <li>
+                    <a href="javascript:void(0);" child_show="true">
+                      <b>
+                        <img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" />
+                      </b>
+                      我的购物
+                    </a>
+                    <ul>
+                      <li op="order">
+                        <a th:href="@{/buyer/order.htm}">订单管理</a>
+                      </li>
+                      <li op="integral">
+                        <a th:href="@{/buyer/integral_order_list.htm}">积分兑换</a>
+                      </li>
+                      <li op="coupon">
+                        <a th:href="@{/buyer/coupon.htm}" class="other">我的优惠券</a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <a href="javascript:void(0);" child_show="true">
+                      <b>
+                        <img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" />
+                      </b>
+                      退款维权
+                    </a>
+                    <ul>
+                      <li op="report">
+                        <a th:href="@{/buyer/report.htm}">举报管理</a>
+                      </li>
+                      <li op="consult">
+                        <a th:href="@{/buyer/consult.htm}">咨询管理</a>
+                      </li>
+                      <li op="complaint">
+                        <a th:href="@{/buyer/complaint.htm}">投诉管理</a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <a href="javascript:void(0);" child_show="true">
+                      <b>
+                        <img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" />
+                      </b>
+                      收藏管理
+                    </a>
+                    <ul>
+                      <li op="favorite_store"><a th:href="@{/buyer/favorite_store.htm}">店铺收藏</a></li>
+                      <li op="favorite_goods"><a th:href="@{/buyer/favorite_goods.htm}">商品收藏</a></li>
+                    </ul>
+                  </li>
+
+                </ul>
+              </div>
+              <!--店铺设置-->
+            </div>
+            $!httpInclude.include("/chatting.htm")
+          </td>
+
+          <td id="centerbg" valign="top"><div class="productmain">
+           <div class="ordernav">
+              <ul class="orderul">
+                <li class="this"><a th:href="@{/buyer/complaint.htm}">发起投诉</a></li>
+              </ul>
+            </div>
+              <div class="ordercon">
+                <div class="complaint_one">
+                  <h1 class="complaint_h">投诉进程</h1>
+                  <div class="comp_poces">
+                    <ul>
+                      <li><b class="this">新投诉</b><em></em></li>
+                      <li><b>待申诉</b><em></em></li>
+                      <li><b>对话中</b><em></em></li>
+                      <li><b>待仲裁</b><em></em></li>
+                      <li><b>已完成</b></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="complaint_one">
+                  <h1 class="complaint_h">订单详情</h1>
+                  <div class="comp_goodetails">
+                    <dl class="comp_goodl">
+                      <dt>订单信息</dt>
+                      <dd>
+                        <ul class="comp_gdul">
+                          <li> 订单状态：
+                            <strong th:if="${obj.of.orderStatus==0}">已取消</strong>
+                            <strong th:if="${obj.of.orderStatus==10}">待付款</strong>
+                            <strong th:if="${obj.of.orderStatus==15}">线下支付待审核</strong>
+                            <strong th:if="${obj.of.orderStatus==20}">已付款</strong>
+                            <strong th:if="${obj.of.orderStatus==30}">已发货</strong>
+                            <strong th:if="${obj.of.orderStatus==40}">已收货</strong>
+                            <strong th:if="${obj.of.orderStatus==50}">已完成，已评价</strong>
+                            <strong th:if="${obj.of.orderStatus==60}">已结束</strong>
+                          </li>
+                          <li> 订单号：<b th:text="${obj.of.orderId}"> </b> </li>
+                          <li th:text="'下单时间：'+${#dates.format(obj.of.addtime,'yyyy-MM-dd HH:mm:ss')}"></li>
+                          <li th:text="'订单总额： ¥'+${obj.of.totalprice}"></li>
+                        </ul>
+                      </dd>
+                    </dl>
+                    <dl class="comp_goodl">
+                      <dt>卖家信息</dt>
+                      <dd>
+                        <ul class="comp_gdul">
+                          <li> 卖家店铺：<b><a th:href="@{/store.htm(id=${obj.of.store.id})}" target="_blank" th:text="${obj.of.store.storeName}"></a></b></li>
+                        </ul>
+                      </dd>
+                    </dl>
+                    <dl class="comp_goodl">
+                      <dt>买家信息</dt>
+                      <dd>
+                        <ul class="comp_gdul">
+                          <li th:text="'买家名称：'+${obj.of.user.username}"> </li>
+                        </ul>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="complaint_one">
+                  <h1 class="complaint_h">投诉详情</h1>
+                  <div class="comp_goodetails">
+                    <dl class="comp_goodl">
+                      <dt>投诉信息</dt>
+                      <dd>
+                        <ul class="comp_gdul">
+                          <li> 投诉状态：<strong>新投诉</strong></li>
+                          <li th:if="${obj.type=='buyer'}" >投诉类别：买家投诉</li>
+                          <li th:unless="${obj.type=='buyer'}" >投诉类别：卖家投诉</li>
+                          <li th:text="'投诉人：'+${obj.from_user.username}"> </li>
+                        </ul>
+                      </dd>
+                    </dl>
+                    <dl class="comp_goodl">
+                      <dt>选择投诉主题</dt>
+                      <dd>
+                        <table width="715" border="0" cellspacing="0" cellpadding="0" class="comp_table">
+                          <tr th:each="sc :${css}">
+                            <td bgcolor="#EEEEEE" width="200" class="comp_table_n">
+                              <input type="radio" name="cs_id" id="radio" th:value="${cs.id}" th:checked="${velocityCount==1?'checked':''}"/>
+                              <span th:text="${cs.title}"></span>
+                            </td>
+                            <td th:utext="${cs.content}"></td>
+                          </tr>
+                        </table>
+                      </dd>
+                    </dl>
+                    <dl class="comp_goodl">
+                      <dt>选择要投诉的商品</dt>
+                      <dd>
+                        <table width="715" border="0" cellspacing="0" cellpadding="0" class="compgoods_table">
+                          <tr class="compgoods_th">
+                            <td width="240">&nbsp;</td>
+                            <td width="180">商品信息</td>
+                            <td width="100" align="center">数量</td>
+                            <td align="center">价格</td>
+                          </tr>
+
+                          <div th:each="gc :${obj.of.gcs}">
+                          <tr>
+                            <td><b class="comp_tab_b">
+                              <input th:gc_id="${gc.id}" th:name="'goods_'+${gc.id}" type="checkbox" th:id="'goods_'+${gc.id}" th:value="${gc.goods.id}" />
+                              </b><em class="comp_tab_em"><span class="compimg_span tab_span">
+                              <p><img width="50" height="50" th:src="@{'/'+${gc.goods.goods_main_photo.path}+'/'+${gc.goods.goods_main_photo.name}+'_small.'+${gc.goods.goods_main_photo.ext}}" /></p>
+                              </span></em><span class="comp_tab_sp"><a href="" th:text="${gc.goods.goodsName}"></a></span></td>
+                            <td th:text="${gc.specInfo}"></td>
+                            <td align="center" th:text="${gc.count}"></td>
+                            <td align="center"><b class="red" th:text="'¥ '+${gc.goods.storePrice}"></b></td>
+                          </tr>
+                          <tr class="comp_noneb">
+                            <td colspan="4"><div class="comp_question"><em class="question_desp"><span>问题描述：</span><span>
+                                <input th:name="'content_'+${gc.goods.id}" type="text" th:id="'content_'+${gc.goods.id}" />
+                            </span></em></div></td>
+                          </tr>
+                          </div>>
+                        </table>
+                      </dd>
+                    </dl>
+                    <dl class="comp_goodl">
+                      <dt>投诉内容:</dt>
+                      <dd>
+                        <div class="comp_text">
+                          <textarea name="from_user_content" cols="" rows="" id="from_user_content"></textarea>
+                        </div>
+                      </dd>
+                    </dl>
+                    <dl class="comp_goodl">
+                      <dt>投诉图片<b class="orange fsize12">(图片必须是jpg/jpeg/gif/png格式)</b></dt>
+                      <dd>
+                        <div class="comp_uploadimg">
+                          <ul>
+                            <li>
+                              <input name="img1" type="file" id="img1" />
+                            </li>
+                            <li>
+                              <input name="img2" type="file" id="img2" />
+                            </li>
+                            <li>
+                              <input name="img3" type="file" id="img3" />
+                            </li>
+                          </ul>
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="comp_btn"> <span class="setsub">
+                  <input type="button"  value="提交" onclick="save_form();" style="cursor:pointer;"/>
+                  </span>
+                  <input name="order_id" type="hidden" id="order_id" th:value="${obj.of.id}" />
+                  <input type="hidden" name="goods_ids" id="goods_ids" />
+                  <input name="to_user_id" type="hidden" id="to_user_id" th:value="${obj.to_user_id}" />
+                  <input name="type" type="hidden" id="type" th:value="${obj.type}" />
+                </div>
+              </div>
+            </div></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="footer">
+    <div class="footerArea">
+      <ul>
+        <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+        </li>
+        <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+        <li class="hui2">Powered by shopping 2.x</li>
+        <li th:text="${config.codeStat}"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>正在支付</title>
+  <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+  <link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet" />
+  <script th:src="@{/js/jquery-1.6.2.js}"></script>
+</head>
+<body>
+<!--$!httpInclude.include("/top.htm")-->
+
+<div class="main">
+<!--  $!httpInclude.include("/head.htm")
+  $!httpInclude.include("/nav1.htm")-->
+
+  <div class="index">
+    <div class="index2">
+      <div class="paywaiting">
+        <!--<span>
+          <img th:src="@{/style/common/images/loading.gif}"  />
+        </span>
+        <span style="margin-top:10px;">正在为您跳转支付页面，请等待......</span>-->
+        <input type="hidden" id="type" name="type" th:value="${type}" >
+        <input type="hidden"  id="order_id"  name="" th:value="${order_id}" >
+        <input type="hidden" id="url" name="url" th:value="${url}" >
+        <input type="hidden" id="payment_id" th:value="${payment_id}">
+        <input type="hidden" id="payType" th:value="${payType}">
+        <input type="hidden" id="cash_id" th:value="${cash_id}">
+        <input type="hidden" id="gold_id" th:value="${gold_id}">
+        <input type="hidden" id="integral_order_id" th:value="${integral_order_id}">
+      </div>
+    </div>
+  </div>
+  <div id="paymsg">
+
+  </div>
+
+ <!-- $!httpInclude.include("/footer.htm")-->
+
+</div>
+</body>
+</html>
+<script>
+  jQuery(document).ready(function(){
+    var id;
+    var type =jQuery("#type").val();
+    var order_id =jQuery("#order_id").val();
+    console.log("order----"+order_id);
+    var url=jQuery("#url").val();
+    var payType =jQuery("#payType").val();
+    var payment_id =jQuery("#payment_id").val();
+    var cash_id=jQuery("#cash_id").val();
+    var gold_id =jQuery("#gold_id").val();
+    var integral_order_id =jQuery("#integral_order_id").val();
+    switch (type) {
+      case "goods":
+        console.log("order_1----"+order_id);
+        id = order_id;
+        break;
+      case "cash"  :
+        console.log("order_2----"+cash_id);
+        id = cash_id;
+        break;
+      case "gold" :
+        console.log("order_4----"+gold_id);
+        id = gold_id;
+        break;
+      case "integral" :
+        console.log("order_5----"+integral_order_id);
+        id = integral_order_id;
+        break;
+    }
+    console.log("order_3----"+id);
+    switch (payType) {
+      case "alipay" :
+        handlepay('genericAlipay',url,payment_id,type,id);
+        break;
+      case  "bill" :
+        handlepay('generic99Bill',url,payment_id,type,id);
+        break;
+      case  "chinabank" :
+        handlepay('genericChinaBank',url,payment_id,type,id);
+        break;
+      case  "paypal" :
+        handlepay('genericPaypal',url,payment_id,type,id);
+        break;
+      case  "tenpay" :
+        window.location.href='/tenpay.htm?type='+type+'&payment_id='+payment_id+'&id='+id;
+        break;
+    }
+  });
+  function handlepay(name,url,payment_id,type,id){
+    jQuery.ajax({type:'POST',url:"/"+name,async:false,data:{"url":url,payment_id:payment_id,type: type,id:id},success:function(html){
+
+        jQuery("#paymsg").html(html);
+        if(name == 'genericPaypal'){
+          jQuery("#paypalForm").submit();
+        }
+        //jQuery("#wxcodepay_overlay").show();
+      }});
+  }
+</script>
+

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>shopping cart</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="/wap/css/swiper.min.css" />
+	<link rel="stylesheet" type="text/css" href="/wap/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/wap/css/goods_intro.css" />
+	<script src="/wap/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/wap/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/wap/js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div class="ui-pane">
+		<div class="Nav"></div>
+		<div class="ui-header">
+			<a href="" class="header-button">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-left"></use>
+				</svg>
+			</a>
+			<div class="header-title">商品详情</div>
+		</div>
+		<div class="ui-content">
+			<div class="swiper1 swiper-container">
+				<div class="swiper-pagination"></div>
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+						<img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+					</div>
+					<div class="swiper-slide" th:if="${obj.goods_photos !=  null }"  th:each="img,iter: ${obj.goods_photos}">
+						<img th:src="@{'/'+${img.path}+'/'+${img.name}}">
+					</div>
+				</div>
+			</div>
+
+			<div class="intro_line flex-between">
+				<input type="hidden" id="gropBuy" name="gropBuy" th:value="${obj.groupBuy}">
+				<input type="hidden" id="store_id" name="store_id" th:value="${obj.goodsStoreId}">
+				<input type="hidden" id="user_store_id" name="user_store_id" th:value="${user.storeId}">
+				<input type="hidden" id="goodsId" name="goodsId" th:value="${obj.id}">
+				<div class="price_box">
+					<div class="price" th:if="${obj.groupBuy !=2}" >
+						<span id="store_price" th:text="${'￥'+obj.storePrice}"></span>
+					</div>
+					<div class="price" th:if="${obj.groupBuy ==2}" th:each="groupGood :${groupGoods}">
+						<span id="gg_price" th:text="${'￥'+groupGood.ggPrice}"></span>
+					</div>
+					<div class="price_del" >
+						<del th:text="${obj.goodsPrice}"></del>
+					</div>
+				</div>
+				<div class="collect_box" id="add_favorite">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-shoucang"></use>
+					</svg>
+					<p th:text="${obj.goodsCollect}"></p>
+				</div>
+			</div>
+			<div class="goods_tit" th:text="${obj.goodsName}">
+
+			</div>
+
+			<!--<div class="cuxiao">
+				<div class="cux_tit flex-between">
+					<div>促销</div>
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-right"></use>
+					</svg>
+				</div>
+				<div class="zhek flex-star">
+					<div>折扣</div><span>打折15%（合计超过3件）</span>
+				</div>
+				<div class="jiangli flex-star">
+					<div>奖励</div><span>打折15%（合计超过3件）</span>
+				</div>
+			</div>-->
+
+			<!--<div class="quan">
+				<div class="quan_card">
+					<div class="card_top flex-between">
+						<div class="yhq_cont">
+							<div>打折10%</div>
+							<span>超过￥203.10</span>
+						</div>
+						<input type="button" name="" id="" value="Claim" />
+					</div>
+					<p>APP新用户使用</p>
+				</div>
+			</div>-->
+
+			<div class="goods_spec">
+				<div class="spec_line" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
+					<div class="spec_tit">
+						<span th:text="${spec.name}"></span>
+						<b></b>
+					</div>
+					<div class="sepc_cont flex-star"  >
+						<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}"></div>
+					</div>
+				</div>
+				<div class="spec_line">
+					<div class="spec_tit">
+						数量
+					</div>
+					<div class="num_opt flex-star">
+						<div id="sub_count">-</div>
+						<input type="number" name="count" id="count" value="1" />
+						<div id="add_count">+</div>
+						&nbsp;&nbsp;&nbsp;
+						<div id="add_count" style="color: #CC3C1A;">库存</div>
+						&nbsp;&nbsp;&nbsp;
+						<input type="number" name="inventory" id="inventory" th:value="${obj.goodsInventory}" disabled="disabled" />
+					</div>
+				</div>
+			</div>
+			<div class="btn_cont">
+				<input type="button" class="btn" th:data-id="${obj.id}" name="" id="buy_goods" value="加入购物车" />
+			</div>
+
+			<div class="tips">
+				<p>处理时间:当项目被选中时计算</p>
+				<p>发货时间:加急快递3-7个工作日</p>
+			</div>
+
+			<div class="youguess" >
+				<div class="youguess_tit">
+					你可能会喜欢
+				</div>
+				<div class="swiper2 swiper-container">
+					<div class="swiper-pagination"></div>
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" th:each="goods : ${goods_recommend_list}">
+							<a th:href="@{/goods.htm(id=${goods.id})}">
+							<img th:if="${goods.goods_main_photo}"
+								 th:src="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}"
+								 original=""  onerror="this.src='/'+${config.goodsImage.path}+'/'+${config.goodsImage.name};" />
+							<img th:unless="${goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}"
+								 original="" th:onerror="this.src='/'+${config.goodsImage.path}+'/'+${config.goodsImage.name};"
+								 />
+							</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="Details_cont">
+				<div class="Details_tit flex-center">
+					<div></div><span>Details</span><div></div>
+				</div>
+				<div class="goods_intro_box">
+					<div th:utext="${obj.goodsDetails}"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+<script src="/wap/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+
+	$("#buy_goods").on('click',function (){
+		var  id= $(this).attr('data-id');
+		var count = $("#count").val();
+		var groupBuy =$("#gropBuy").val();
+		var price;
+		if(groupBuy == '2'){
+			price=$("#gg_price").text();
+		}else{
+			price=$("#store_price").text();
+		}
+		var gsp ="";
+		var load = true;
+		var gsps=$(".spec_line").find(".spec_tit b");
+		if(gsps.length >0){
+			gsps.each(function () {
+				if($(this).text()){
+					gsp=gsp+ $(this).text()+",";
+				}
+			})
+		}
+		if(gsp.length < 1){
+			load=false;
+			alert("请选择规格属性");
+		}
+		if(!count_verify(count)){
+			load= false;
+			alert('数量信息有误');
+		}
+		if(load){
+			add_goods_to_cart(id,count,price,gsp,true)
+		}else{
+			alert('购物失败');
+		}
+	});
+
+	$("#count").blur(function(){
+		var count = $(this).val();
+		var flag= count_verify(count);
+		if(!flag){
+			alert('商品数量填写有误');
+		}
+	});
+
+	function count_verify(count){
+		var inventory = parseInt($("#inventory").val());
+		if(!count){
+			return false;
+		}else{
+			count =parseInt(count);
+			if(count <1 ){
+				return false;
+			}
+			if(count>inventory){
+				return false;
+			}
+			return true;
+		}
+	}
+
+	jQuery("#add_favorite").click(function () {
+		var storeId=jQuery("#store_id").val();
+		var user_store_id=jQuery("#user_store_id").val();
+		if (storeId==user_store_id )
+			alert("不能收藏自己的商品");
+		else {
+			var goodsId=jQuery("#goodsId").val();
+			jQuery.post("/add_goods_favorite.htm", {"id": goodsId}, function (data) {
+				if (data == 0) {
+					alert("商品收藏成功！");
+				}
+				if (data == 1) {
+					alert("已经收藏该商品！");
+				}
+			}, "text");
+		}
+	});
+
+
+	/**
+	 * 添加到购物车
+	 * @param id
+	 * @param count
+	 * @param price
+	 * @param gsp
+	 * @param flag
+	 */
+	function add_goods_to_cart(id,count,price,gsp,flag){
+		console.log('gsp',gsp);
+		var type='';
+		var groupBuy = $("#groupBuy").val();
+		if(groupBuy == '2'){
+			price= $("#gg_price").text();
+		}
+		var combinStatus = $("#combinStatus").val();
+		if(combinStatus == '2'){
+			type='combin';
+		}
+		jQuery.post("/add_goods_cart.htm", {
+			"id": id,
+			"count": count,
+			"price": price,
+			"gsp": gsp,
+			'buy_type': type
+		}, function (res) {
+			//验证成功跳转购物车
+			if(flag){
+				window.location.href = "/goods_cart1.htm";
+			}else{
+				alert('添加到购物车成功');
+			}
+		});
+	}
+
+
+	$("#sub_count").click(function(){
+		var count = parseInt($("#count").val());
+		if(count >1){
+			count--;
+			$("#count").val(count)
+		}
+	});
+
+	$("#add_count").click(function(){
+		var count = parseInt($("#count").val());
+		var inventory = parseInt($("#inventory").val())
+		if(count < inventory){
+			count++;
+			$("#count").val(count)
+			console.info("----add_count-----",count);
+		}else{
+			alert("商品数量已超过库存");
+		}
+	});
+
+
+	new Swiper('.swiper1', {
+		autoplay: 5000,
+		pagination: {
+			el: '.swiper-pagination',
+		},
+		loop: true
+	})
+
+	new Swiper('.swiper2', {
+		autoplay: 5000,
+		pagination: {
+			el: '.swiper-pagination',
+		},
+		slidesPerView : 3,
+		centeredSlides : true,
+		centeredSlidesBounds: true,
+		spaceBetween : 10,
+		loop: true
+	});
+
+	$(".sepc_cont div").click(function(){
+		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
+		$(this).parents(".spec_line").find(".spec_tit b").text($(this).text());
+	});
+</script>
+</html>

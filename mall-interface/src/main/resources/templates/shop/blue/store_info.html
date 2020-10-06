@@ -1,0 +1,200 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>店铺信息</title>
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{'/style/shop/'+${store.template}+'/css/default.css'}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+<script th:if="${store.mapType=='baidu'}" th:src="@{http://api.map.baidu.com/api(v=1.4)}" type="text/javascript"></script>
+<script th:if="${store.mapType=='google'}" th:src="@{https://maps.googleapis.com/maps/api/js(v=3.exp ,sensor=true,libraries=places)}"></script>
+
+</head>
+<script>
+  jQuery(".shopnavul li").each(function(){
+    var nav_id=jQuery(this).attr("id");
+    if(nav_id=="$!{nav_id}"){
+      jQuery(this).addClass("this");
+    }else jQuery(this).removeClass("this");
+  });
+</script>
+<body>
+<div class="banner_width">
+  <div class="shopbanner">
+    <img th:if="${store.store_banner}" th:src="@{${store.store_banner.path}+'/'+${store.store_banner.name}}"  width="1002" height="100"/>
+  </div>
+</div>
+<div class="nav_width">
+  <div class="main">
+  <div class="nav_bg">
+    <div class="shopnav">
+
+          <div class="shopnavul">
+        <ul>
+          <li id="store_index">
+            <a th:href="@{/store.htm(id=${store.id})}" >首页</a>
+          </li>
+          <li th:if="${goods_view}==true" id="store_goods" class="this">
+            <a th:href="@{/store.htm(goods_id=${goods_id})}">商品详情</a>
+          </li>
+          <li th:if="${goods_list}==true" id="store_goods" class="this">
+            <a th:href="@{/goods_list.htm(sc_id=${store.id})}">商品列表</a>
+          </li>
+          <li id="store_credit">
+            <a th:href="@{/store_credit.htm(store_id=${store.id})}" >信用评价</a>
+          </li>
+          <li id="store_info">
+            <a th:href="@{/store_info.htm(id=${store.id})}">店铺详情</a>
+          </li>
+          <li th:each="nav : ${navs}" th:id="${nav.id}">
+            <a th:href="@{/store_url.htm(id=${nav.id})}"   target="_blank" th:text="${nav.title}"></a><!--#if($!nav.win_type=="new_win")-->
+            <a th:if="${nav.url != null &&nav.url !=''}" th:href="@{'/'+${nav.url}}"  target="_blank" th:text="${nav.title}"></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="shopnavs"></div>
+    </div>
+    </div>
+  </div>
+  <div class="navbotm"></div>
+</div>
+<div class="main">
+  <div class="shop">
+    <div class="shop_index">
+      <div class="shopindex_center">
+
+        <div class="shop_introduct" th:if="${store.storeInfo}">
+          <div class="shop_introt"></div>
+          <div class="shop_intromid">
+            <h1>店铺介绍</h1>
+            <div class="shop_introp" th:utext="${store.storeInfo}">
+            </div>
+          </div>
+          <div class="shop_introb"></div>
+        </div>
+
+        <div class="shopinfo_box">
+          <div class="shopinfo_top">
+            <div class="shopinfo_topbox">
+              <span class="code_2d">
+                <i>
+                  <img  th:src="@{${'/'+config.uploadfilepath+'/store/'+ store.id+'/code.png'}}" width="85" height="85" />
+                </i>
+                <b>二维码收藏店铺</b></span>
+              <dl class="shopcode_left">
+                <dt>
+                  <img th:if="${store.storeLogo}" th:src="@{${store.storeLogo.path+'/'+store.storeLogo.name }}" width="90" height="90" />
+                  <img th:unless="${store.storeLogo}" th:src="@{'/'+${config.storeImage.path+'/'+ config.storeImage.name}}" width="90" height="90" />
+                </dt>
+                <dd>
+                  <em th:text="${'店铺名称:'+ store.storeName }"></em>
+                  <em th:text="${'店铺等级：'+ store.grade.gradename}"></em>
+                  <em>
+                    认证信息：
+                    <i>
+                      <img  th:src="@{'/style/common/images/card_approve_'+${store.cardApprove}+'.gif'}" />
+                    </i>
+                    <i>
+                      <img th:src="@{'/style/common/images/realstore_approve_'+${store.realstoreApprove}+'.gif'}" />
+                    </i>
+                </em></dd>
+              </dl>
+            </div>
+            <div class="shopinfo_center"></div>
+          </div>
+          <h6 class="shopinfo_h6">基本信息</h6>
+          <ul class="shop_info">
+            <li th:text="'创店时间：'+${#dates.format(store.addtime,'yyyy-MM-dd')}"></li>
+            <li th:text="'所在地区：'+ ${store.area.parent.areaname+store.area.areaname}"></li>
+            <li th:text="'详细地址：'+ ${store.storeAddress}"></li>
+            <li><strong class="blue" th:text="${'商品数量：'+goods_counts}"></strong>件商品</li>
+            <li><strong class="blue" th:text="${'店铺收藏：'+store.favoriteCount}"></strong>人收藏</li>
+            <li th:text="${'联系电话：'+store.storeTelephone}"></li>
+            <li th:text="${'店铺QQ：'+store.storeQq }"></li>
+            <li th:text="${'店铺MSN：'+store.storeMsn}"></li>
+          </ul>
+          <div class="shopinfo_bottom"></div>
+        </div>
+        <div class="shop_map">
+          <input type="hidden" id="mapType" th:value="${store.mapType}">
+          <input type="hidden" id="storeLat" th:value="${store.storeLat}">
+          <input type="hidden" id="storeLng" th:value="${store.storeLng}">
+          <input type="hidden" id="storeName" th:value="${store.storeName}">
+          <div class="shop_add_map" id="map" style="height:500px;">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+
+ <script th:if="${store.mapType=='baidu'}" type="text/javascript">
+   var storeLng=jQuery("#storeLng").val();
+   var storeLat=jQuery("#storeLat").val();
+   var storeName=jQuery("#storeName").val();
+   var map = new BMap.Map("map");
+   if(storeLat!=null&&storeLng!=null) {
+     map.centerAndZoom(new BMap.Point(storeLng, storeLat), 16);
+     var sContent = "<h4 style='margin:0 0 5px 0;padding:0.2em 0' >"+storeName+"</h4>" +
+             "<img style='float:right;margin:4px' id='imgDemo' src='$!store_logo' width='100' height='100' title='"+storeName+"/></div>";
+     var point = new BMap.Point(storeLng, storeLat);
+     var marker = new BMap.Marker(point);
+     var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+     map.centerAndZoom(point, 15);
+     map.addOverlay(marker);
+     marker.enableDragging();
+     marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+     marker.openInfoWindow(infoWindow);
+     marker.addEventListener("click", function () {
+       this.openInfoWindow(infoWindow);
+     });
+     //
+   }else{
+     map.centerAndZoom(new BMap.Point(123.425329,41.792454), 11);
+   }
+
+   map.enableScrollWheelZoom();
+   map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+ </script>
+
+<script th:if="${store.mapType=='google'}">
+var map;
+var marker;
+function initialize() {
+  var storeLng=jQuery("#storeLng").val();
+  var storeLat=jQuery("#storeLat").val();
+  var storeName=jQuery("#storeName").val();
+if(storeLng&&storeLat){
+  var pyrmont = new google.maps.LatLng(storeLat,storeLng);
+}else{
+  var pyrmont = new google.maps.LatLng(39.92,116.46);
+}
+  map = new google.maps.Map(document.getElementById('map'), {
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center: pyrmont,
+      zoom: 15
+    });
+    marker = new google.maps.Marker({
+      position: pyrmont,
+      title:"$!{store.store_name}"
+    });
+// To add the marker to the map, call setMap();
+marker.setMap(map);
+var infowindow = new google.maps.InfoWindow({
+    content:"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>$!{store.store_name}</h4><img style='float:right;margin:4px' id='imgDemo' src='$!store_logo' width='100' height='100' title='$!{store.store_name}'/>"
+});
+google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(marker.get('map'), marker);
+});
+//
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</html>

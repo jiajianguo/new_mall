@@ -1,0 +1,25 @@
+.content_title{
+		height: .9rem;
+		line-height: 1.1rem;
+		font-size: .32rem;
+		padding-left: .22rem;
+		color: #333333;
+}
+.text{
+	height: .76rem;
+	padding: 0 .22rem 0 .22rem;
+	font-size: .28rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 1px;
+	color: #333333;
+	background-color: #ffffff;
+}
+.icon_right{
+	color: #999999;
+}
+.textname{
+	font-size: .28rem;
+	color: #999999;
+}

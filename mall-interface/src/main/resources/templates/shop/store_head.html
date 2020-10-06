@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="page_width">
+  <div class="main_top">
+    <div class="head">
+      <div class="logo">
+        <a th:if="${config.websiteLogo}" th:href="@{/index.htm}">
+          <img th:src="@{${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60"/>
+        </a>
+        <a th:href="@{/index.htm}">
+          <img th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="60"/>
+        </a>
+      </div>
+      <div class="shop_top_search">
+        <div class="top_search_left">
+          <div class="filter_z">
+            <div class="top_searleft"></div>
+            <div class="top_nofilter">
+              <div class="top_sear_kf">
+                <a th:href="@{/store.htm(id=${store.id})}" th:text="${store.store_name}"></a>
+                <a target="_blank" th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${store.storeQq},Site=${store.storeQq},Menu=yes)}">
+                  <img  alt="点击这里给我发消息" th:src="@{http://wpa.qq.com/pa(p='2:'+${store.storeQq} +':51')}"/>
+                </a>
+              </div>
+
+              <div class="top_sear_star">
+                <a href="javascript:void(0);" class="top_sc" th:if="${user}"  >点击收藏</a>
+                <a href="javascript:void(0);" class="top_sc" th:unless="${user}" dialog_uri="/user_dialog_login.htm"
+                   dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">点击收藏</a>
+                <span th:if="${credit==0}">
+                     <img th:src="@{/style/common/images/level_-1.gif}"/>
+                 </span>
+                <span th:unless="${credit==0}">
+                    <img th:each="c : ${credits}" style="margin-left:1px;" th:src="@{style/common/images/level_2.gif}"/>
+                 </span>
+              </div>
+            </div>
+          </div>
+          <b class="top_b"></b>
+          <b class="top_b2" style="display:none"></b>
+          <div class="top_sear_bom" style="display:none;">
+            <dl class="top_dl">
+              <dt><b>店铺动态评分</b><i>与同行业相比</i></dt>
+              <dd>
+                <ul class="top_dl_ul">
+                  <li>
+                    <i>描述相符：</i>
+                    <b th:text="${store.point.descriptionEvaluate}"></b>
+                    <em class="description_css">
+                      <strong th:text="${description_type}"></strong>
+                    </em>
+                  </li>
+                  <li>
+                    <i>服务态度：</i>
+                    <b th:text="${store.point.serviceEvaluate}"></b>
+                    <em th:class="${service_css}">
+                      <strong th:text="${service_type}"></strong>
+                      <span th:text="${service_result}"></span>
+                    </em>
+                  </li>
+                  <li>
+                    <i>发货速度：</i>
+                    <b th:text="${store.point.shipEvaluate}"></b>
+                    <em th:class="${ship_css}">
+                      <strong th:text="${ship_type}"></strong>
+                      <span th:text="${ship_result}"></span>
+                    </em>
+                  </li>
+                </ul>
+              <dd>
+            </dl>
+            <dl class="top_dl">
+              <dt>店铺认证</dt>
+              <dd>
+                <span>
+                  <img th:src="@{'/style/common/images/card_approve_'+${store.card_approve}+'.gif'}"/>
+                </span>
+                <span>
+                <img th:src="@{'/style/common/images/realstore_approve_'+${store.realstore_approve}+'.gif'}"/>
+                </span>
+              <dd>
+            </dl>
+            <dl class="top_dl">
+              <dt>店铺信息</dt>
+              <dd>
+                <span class="top_dl_width">
+                  商品数量：<span th:text="${goods_counts}"></span>件
+                </span>
+                <span class="top_dl_width">
+                  好评率：<span th:text="${store_evaluate1}"></span>
+                </span>
+                <span class="top_dl_width">
+                  创店时间：<span  th:text="${#dates.format(store.addtime,'yyyy-MM-dd')}"></span>
+                </span>
+                <span class="top_dl_width">
+                  收藏人气：<span th:text="${store.favoriteCount}"></span>
+                </span>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <form method="post" target="_blank" id="store_top_search_form">
+          <input name="store_id" type="hidden" th:value="${store.id}"/>
+          <div class="top_search_right">
+            <div class="top_search_bg"></div>
+            <div class="top_shop_seacher"> <span class="sear_shop">
+              <input name="keyword" type="text" id="keyword"/>
+              </span><span class="all_sear_btn">
+              <input name="" type="button" value="搜全站" search_area="site" style="cursor:pointer;"/>
+              </span><span class="shop_sear_btn">
+              <input name="" type="button" value="搜本店" search_area="store" style="cursor:pointer;"/>
+              </span></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+#if($!user)
+
+#end
+<script>
+  jQuery(function (jQuery) {
+    #if ($!user)
+    jQuery(".top_sc").click(function () {
+      #if ($!user.id == $ !obj.goods_store.user.id)
+        alert("不能收藏自己的店铺");
+      #else
+        jQuery.post("/add_store_favorite.htm", {"id": "$!store.id"}, function (data) {
+          if (data == 0) {
+            alert("店铺收藏成功！");
+          }
+          if (data == 1) {
+            alert("该店铺已经被收藏！");
+          }
+        }, "text");
+      #end
+    });
+    #end
+    jQuery(".top_shop_seacher input[type=button]").click(function () {
+      var search_area = jQuery(this).attr("search_area");
+      if (search_area == "site") {
+        jQuery("#store_top_search_form").attr("action", "/search.htm");
+      }
+      if (search_area == "store") {
+        jQuery("#store_top_search_form").attr("action", "/store_goods_search.htm");
+      }
+      jQuery("#store_top_search_form").submit();
+    });
+    jQuery(".top_nofilter").mouseover(function () {
+      jQuery(".top_b").hide();
+      jQuery(".top_b2").show();
+      jQuery(".top_sear_bom").fadeIn("normal");
+    })
+    jQuery(".top_search_left").css("cursor", "pointer").mouseleave(function () {
+      jQuery(".top_b").show();
+      jQuery(".top_b2").hide();
+      jQuery(".top_sear_bom").fadeOut("normal");
+    });
+  });
+</script>
+</html>

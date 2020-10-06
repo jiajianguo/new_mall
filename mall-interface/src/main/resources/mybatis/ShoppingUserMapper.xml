@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingUserMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="MSN" jdbcType="VARCHAR" property="msn" />
+    <result column="QQ" jdbcType="VARCHAR" property="qq" />
+    <result column="WW" jdbcType="VARCHAR" property="ww" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="availableBalance" jdbcType="DECIMAL" property="availablebalance" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="freezeBlance" jdbcType="DECIMAL" property="freezeblance" />
+    <result column="gold" jdbcType="INTEGER" property="gold" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="lastLoginDate" jdbcType="TIMESTAMP" property="lastlogindate" />
+    <result column="lastLoginIp" jdbcType="VARCHAR" property="lastloginip" />
+    <result column="loginCount" jdbcType="INTEGER" property="logincount" />
+    <result column="loginDate" jdbcType="TIMESTAMP" property="logindate" />
+    <result column="loginIp" jdbcType="VARCHAR" property="loginip" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="report" jdbcType="INTEGER" property="report" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="trueName" jdbcType="VARCHAR" property="truename" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="userRole" jdbcType="VARCHAR" property="userrole" />
+    <result column="user_credit" jdbcType="INTEGER" property="userCredit" />
+    <result column="photo_id" jdbcType="BIGINT" property="photoId" />
+    <result column="store_id" jdbcType="BIGINT" property="storeId" />
+    <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid" />
+    <result column="sina_openid" jdbcType="VARCHAR" property="sinaOpenid" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="years" jdbcType="INTEGER" property="years" />
+    <result column="area_id" jdbcType="BIGINT" property="areaId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingUser">
+    <result column="store_quick_menu" jdbcType="LONGVARCHAR" property="storeQuickMenu" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, MSN, QQ, WW, address, availableBalance, birthday, email,
+    freezeBlance, gold, integral, lastLoginDate, lastLoginIp, loginCount, loginDate,
+    loginIp, mobile, password, report, sex, status, telephone, trueName, userName, userRole,
+    user_credit, photo_id, store_id, qq_openid, sina_openid, parent_id, years, area_id
+  </sql>
+  <sql id="Blob_Column_List">
+    store_quick_menu
+  </sql>
+
+  <select id="findByEmail" resultMap="BaseResultMap">
+     select * from shopping_user where email =#{email}
+  </select>
+
+  <select id="getUserByOpenId" resultMap="BaseResultMap">
+     select * from shopping_user where qq_openid =#{openId}
+  </select>
+
+  <select id="queryOneByStoreId" resultMap="BaseResultMap">
+    select * from shopping_user  where store_id=#{storeId}
+  </select>
+
+  <select id="findByUsername"  resultMap="BaseResultMap">
+    select * from shopping_user
+    <where>
+      1=1
+      <if test="username != null "> and username =#{username}</if>
+    </where>
+  </select>
+
+    <select id="getOne"  resultMap="BaseResultMap">
+        select * from shopping_user
+        <where>
+            1=1
+            <if test="userName != null "> and username =#{userName}</if>
+        </where>
+    </select>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select  * from shopping_user
+    <where>
+      1=1
+      <if test="userRole != null "> and userRole=#{userRole}</if>
+      <if test="userName != null "> and userName like #{userName}</if>
+      <if test="sex != null "> and  sex=#{sex}</if>
+      <if test="area_id != null "> and  area_id=#{area_id}</if>
+         <if test="years1!=null">and years &lt;=#{years1}</if>
+         <if test="years2!=null">and years &gt;=#{years2}</if>
+         <if test="years3!=null and years4!=null">and years between #{years3} and #{years4}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null"> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select  count(*) from shopping_user
+    <where>
+      1=1
+      <if test="userRole != null "> and userRole=#{userRole}</if>
+      <if test="userName != null "> and userName like #{userName}</if>
+      <if test="sex != null "> and  sex=#{sex}</if>
+      <if test="area_id != null "> and  area_id=#{area_id}</if>
+      <if test="years1!=null">and years &lt;=#{years1}</if>
+      <if test="years2!=null">and years &gt;=#{years2}</if>
+      <if test="years3!=null and years4!=null">and years between #{years3} and #{years4}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingUserExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingUserExample">
+    delete from shopping_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingUser">
+    insert into shopping_user (id, addTime, deleteStatus,
+      MSN, QQ, WW, address,
+      availableBalance, birthday, email,
+      freezeBlance, gold, integral,
+      lastLoginDate, lastLoginIp, loginCount,
+      loginDate, loginIp, mobile,
+      password, report, sex,
+      status, telephone, trueName,
+      userName, userRole, user_credit,
+      photo_id, store_id, qq_openid,
+      sina_openid, parent_id, years,
+      area_id, store_quick_menu)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{msn,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{ww,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{availablebalance,jdbcType=DECIMAL}, #{birthday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR},
+      #{freezeblance,jdbcType=DECIMAL}, #{gold,jdbcType=INTEGER}, #{integral,jdbcType=INTEGER},
+      #{lastlogindate,jdbcType=TIMESTAMP}, #{lastloginip,jdbcType=VARCHAR}, #{logincount,jdbcType=INTEGER},
+      #{logindate,jdbcType=TIMESTAMP}, #{loginip,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{report,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
+      #{status,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR}, #{truename,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{userrole,jdbcType=VARCHAR}, #{userCredit,jdbcType=INTEGER},
+      #{photoId,jdbcType=BIGINT}, #{storeId,jdbcType=BIGINT}, #{qqOpenid,jdbcType=VARCHAR},
+      #{sinaOpenid,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{years,jdbcType=INTEGER},
+      #{areaId,jdbcType=BIGINT}, #{storeQuickMenu,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingUser">
+    insert into shopping_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="msn != null">
+        MSN,
+      </if>
+      <if test="qq != null">
+        QQ,
+      </if>
+      <if test="ww != null">
+        WW,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="availablebalance != null">
+        availableBalance,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="freezeblance != null">
+        freezeBlance,
+      </if>
+      <if test="gold != null">
+        gold,
+      </if>
+      <if test="integral != null">
+        integral,
+      </if>
+      <if test="lastlogindate != null">
+        lastLoginDate,
+      </if>
+      <if test="lastloginip != null">
+        lastLoginIp,
+      </if>
+      <if test="logincount != null">
+        loginCount,
+      </if>
+      <if test="logindate != null">
+        loginDate,
+      </if>
+      <if test="loginip != null">
+        loginIp,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="report != null">
+        report,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="truename != null">
+        trueName,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="userrole != null">
+        userRole,
+      </if>
+      <if test="userCredit != null">
+        user_credit,
+      </if>
+      <if test="photoId != null">
+        photo_id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="qqOpenid != null">
+        qq_openid,
+      </if>
+      <if test="sinaOpenid != null">
+        sina_openid,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="years != null">
+        years,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="storeQuickMenu != null">
+        store_quick_menu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="msn != null">
+        #{msn,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="ww != null">
+        #{ww,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="availablebalance != null">
+        #{availablebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeblance != null">
+        #{freezeblance,jdbcType=DECIMAL},
+      </if>
+      <if test="gold != null">
+        #{gold,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null">
+        #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="lastlogindate != null">
+        #{lastlogindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastloginip != null">
+        #{lastloginip,jdbcType=VARCHAR},
+      </if>
+      <if test="logincount != null">
+        #{logincount,jdbcType=INTEGER},
+      </if>
+      <if test="logindate != null">
+        #{logindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginip != null">
+        #{loginip,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="report != null">
+        #{report,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null">
+        #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userrole != null">
+        #{userrole,jdbcType=VARCHAR},
+      </if>
+      <if test="userCredit != null">
+        #{userCredit,jdbcType=INTEGER},
+      </if>
+      <if test="photoId != null">
+        #{photoId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="qqOpenid != null">
+        #{qqOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="sinaOpenid != null">
+        #{sinaOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="years != null">
+        #{years,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="storeQuickMenu != null">
+        #{storeQuickMenu,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingUserExample" resultType="java.lang.Long">
+    select count(*) from shopping_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.msn != null">
+        MSN = #{record.msn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null">
+        QQ = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ww != null">
+        WW = #{record.ww,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.availablebalance != null">
+        availableBalance = #{record.availablebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freezeblance != null">
+        freezeBlance = #{record.freezeblance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gold != null">
+        gold = #{record.gold,jdbcType=INTEGER},
+      </if>
+      <if test="record.integral != null">
+        integral = #{record.integral,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastlogindate != null">
+        lastLoginDate = #{record.lastlogindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastloginip != null">
+        lastLoginIp = #{record.lastloginip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logincount != null">
+        loginCount = #{record.logincount,jdbcType=INTEGER},
+      </if>
+      <if test="record.logindate != null">
+        loginDate = #{record.logindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginip != null">
+        loginIp = #{record.loginip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.report != null">
+        report = #{record.report,jdbcType=INTEGER},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.telephone != null">
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.truename != null">
+        trueName = #{record.truename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null">
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userrole != null">
+        userRole = #{record.userrole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCredit != null">
+        user_credit = #{record.userCredit,jdbcType=INTEGER},
+      </if>
+      <if test="record.photoId != null">
+        photo_id = #{record.photoId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.qqOpenid != null">
+        qq_openid = #{record.qqOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sinaOpenid != null">
+        sina_openid = #{record.sinaOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.years != null">
+        years = #{record.years,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaId != null">
+        area_id = #{record.areaId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeQuickMenu != null">
+        store_quick_menu = #{record.storeQuickMenu,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_user
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      MSN = #{record.msn,jdbcType=VARCHAR},
+      QQ = #{record.qq,jdbcType=VARCHAR},
+      WW = #{record.ww,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      availableBalance = #{record.availablebalance,jdbcType=DECIMAL},
+      birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      freezeBlance = #{record.freezeblance,jdbcType=DECIMAL},
+      gold = #{record.gold,jdbcType=INTEGER},
+      integral = #{record.integral,jdbcType=INTEGER},
+      lastLoginDate = #{record.lastlogindate,jdbcType=TIMESTAMP},
+      lastLoginIp = #{record.lastloginip,jdbcType=VARCHAR},
+      loginCount = #{record.logincount,jdbcType=INTEGER},
+      loginDate = #{record.logindate,jdbcType=TIMESTAMP},
+      loginIp = #{record.loginip,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      report = #{record.report,jdbcType=INTEGER},
+      sex = #{record.sex,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      trueName = #{record.truename,jdbcType=VARCHAR},
+      userName = #{record.username,jdbcType=VARCHAR},
+      userRole = #{record.userrole,jdbcType=VARCHAR},
+      user_credit = #{record.userCredit,jdbcType=INTEGER},
+      photo_id = #{record.photoId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      qq_openid = #{record.qqOpenid,jdbcType=VARCHAR},
+      sina_openid = #{record.sinaOpenid,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
+      years = #{record.years,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=BIGINT},
+      store_quick_menu = #{record.storeQuickMenu,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_user
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      MSN = #{record.msn,jdbcType=VARCHAR},
+      QQ = #{record.qq,jdbcType=VARCHAR},
+      WW = #{record.ww,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      availableBalance = #{record.availablebalance,jdbcType=DECIMAL},
+      birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      freezeBlance = #{record.freezeblance,jdbcType=DECIMAL},
+      gold = #{record.gold,jdbcType=INTEGER},
+      integral = #{record.integral,jdbcType=INTEGER},
+      lastLoginDate = #{record.lastlogindate,jdbcType=TIMESTAMP},
+      lastLoginIp = #{record.lastloginip,jdbcType=VARCHAR},
+      loginCount = #{record.logincount,jdbcType=INTEGER},
+      loginDate = #{record.logindate,jdbcType=TIMESTAMP},
+      loginIp = #{record.loginip,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      report = #{record.report,jdbcType=INTEGER},
+      sex = #{record.sex,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      trueName = #{record.truename,jdbcType=VARCHAR},
+      userName = #{record.username,jdbcType=VARCHAR},
+      userRole = #{record.userrole,jdbcType=VARCHAR},
+      user_credit = #{record.userCredit,jdbcType=INTEGER},
+      photo_id = #{record.photoId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      qq_openid = #{record.qqOpenid,jdbcType=VARCHAR},
+      sina_openid = #{record.sinaOpenid,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
+      years = #{record.years,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingUser">
+    update shopping_user
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="msn != null">
+        MSN = #{msn,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        QQ = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="ww != null">
+        WW = #{ww,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="availablebalance != null">
+        availableBalance = #{availablebalance,jdbcType=DECIMAL},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeblance != null">
+        freezeBlance = #{freezeblance,jdbcType=DECIMAL},
+      </if>
+      <if test="gold != null">
+        gold = #{gold,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null">
+        integral = #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="lastlogindate != null">
+        lastLoginDate = #{lastlogindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastloginip != null">
+        lastLoginIp = #{lastloginip,jdbcType=VARCHAR},
+      </if>
+      <if test="logincount != null">
+        loginCount = #{logincount,jdbcType=INTEGER},
+      </if>
+      <if test="logindate != null">
+        loginDate = #{logindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginip != null">
+        loginIp = #{loginip,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="report != null">
+        report = #{report,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null">
+        trueName = #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userrole != null">
+        userRole = #{userrole,jdbcType=VARCHAR},
+      </if>
+      <if test="userCredit != null">
+        user_credit = #{userCredit,jdbcType=INTEGER},
+      </if>
+      <if test="photoId != null">
+        photo_id = #{photoId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="qqOpenid != null">
+        qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="sinaOpenid != null">
+        sina_openid = #{sinaOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="storeQuickMenu != null">
+        store_quick_menu = #{storeQuickMenu,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingUser">
+    update shopping_user
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      MSN = #{msn,jdbcType=VARCHAR},
+      QQ = #{qq,jdbcType=VARCHAR},
+      WW = #{ww,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      availableBalance = #{availablebalance,jdbcType=DECIMAL},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      freezeBlance = #{freezeblance,jdbcType=DECIMAL},
+      gold = #{gold,jdbcType=INTEGER},
+      integral = #{integral,jdbcType=INTEGER},
+      lastLoginDate = #{lastlogindate,jdbcType=TIMESTAMP},
+      lastLoginIp = #{lastloginip,jdbcType=VARCHAR},
+      loginCount = #{logincount,jdbcType=INTEGER},
+      loginDate = #{logindate,jdbcType=TIMESTAMP},
+      loginIp = #{loginip,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      report = #{report,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      trueName = #{truename,jdbcType=VARCHAR},
+      userName = #{username,jdbcType=VARCHAR},
+      userRole = #{userrole,jdbcType=VARCHAR},
+      user_credit = #{userCredit,jdbcType=INTEGER},
+      photo_id = #{photoId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+      sina_openid = #{sinaOpenid,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      years = #{years,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=BIGINT},
+      store_quick_menu = #{storeQuickMenu,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingUser">
+    update shopping_user
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      MSN = #{msn,jdbcType=VARCHAR},
+      QQ = #{qq,jdbcType=VARCHAR},
+      WW = #{ww,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      availableBalance = #{availablebalance,jdbcType=DECIMAL},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      freezeBlance = #{freezeblance,jdbcType=DECIMAL},
+      gold = #{gold,jdbcType=INTEGER},
+      integral = #{integral,jdbcType=INTEGER},
+      lastLoginDate = #{lastlogindate,jdbcType=TIMESTAMP},
+      lastLoginIp = #{lastloginip,jdbcType=VARCHAR},
+      loginCount = #{logincount,jdbcType=INTEGER},
+      loginDate = #{logindate,jdbcType=TIMESTAMP},
+      loginIp = #{loginip,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      report = #{report,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      trueName = #{truename,jdbcType=VARCHAR},
+      userName = #{username,jdbcType=VARCHAR},
+      userRole = #{userrole,jdbcType=VARCHAR},
+      user_credit = #{userCredit,jdbcType=INTEGER},
+      photo_id = #{photoId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+      sina_openid = #{sinaOpenid,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      years = #{years,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

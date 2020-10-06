@@ -1,0 +1,60 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<script>
+jQuery(document).ready(function(){
+	//
+	jQuery(".sellul>li>a").click(function(){
+	  var child_show=jQuery(this).attr("child_show");
+	  if(child_show=="true"){
+	    jQuery(this).parent().find("img").attr("src","/style/system/front/default/images/usercenter/menucontract.jpg");
+	    jQuery(this).parent().find("ul").slideUp('normal');
+	    jQuery(this).attr("child_show","false");
+	  }else{
+	    jQuery(this).parent().find("img").attr("src","/style/system/front/default/images/usercenter/menuspread.jpg");
+	    jQuery(this).parent().find("ul").slideDown('normal');
+	    jQuery(this).attr("child_show","true");
+	  }
+	});
+	//
+	jQuery(".sellul>ul>li").removeClass("this");
+    var op = jQuery("#op").val();
+    jQuery("li[op="+op+"]").addClass("this");
+});
+</script>
+<td width="177" id="userbg" valign="top">
+    <div class="user_photo">
+    <dl>
+      <dt>
+        <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}" width="120" height="120" />
+        <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}" width="120" height="120" />
+      </dt>
+      <dd><span><a th:href="@{/buyer/account.htm}">编辑资料</a></span></dd>
+    </dl>
+  </div>
+  <div class="seller">
+    <!--店铺设置-->
+    <div class="product_manage2">
+      <ul class="sellul">
+        <li><a href="javascript:void(0);" child_show="true"><b><img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" /></b>我的账户</a>
+          <ul>
+            <li op="account"><a th:href="@{/buyer/account.htm}">个人资料</a></li>
+            <li op="address"><a th:href="@{/buyer/address.htm}">收货地址</a></li>
+            <li op="friend"><a th:href="@{/buyer/friend.htm}">我的好友</a></li>
+            <li op="message"><a th:href='@{/buyer/message.htm}'>站内短信</a></li>
+            <li op="bind"><a th:href='@{/buyer/account_bind.htm}'>账号绑定</a></li>
+
+           <span th:if="${config.deposit}">
+            <li op="predeposit"><a th:href="@{/buyer/predeposit.htm}">充值管理</a></li>
+            <li op="buyer_cash"><a th:href="@{/buyer/buyer_cash.htm}">提现管理</a></li>
+            <li op="predeposit_log"><a th:href="@{/buyer/predeposit_log.htm}">收支明细</a></li>
+           </span>
+
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!--店铺设置-->
+  </div>
+</td>

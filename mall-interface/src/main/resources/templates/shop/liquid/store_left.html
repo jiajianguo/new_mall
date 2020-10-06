@@ -1,0 +1,279 @@
+<script>
+jQuery(function(jQuery){
+  jQuery(".collection a").click(function(){
+    if($user)
+     if($!user.id==$!obj.goods_store.user.id){
+      alert("不能收藏自己的店铺");
+    }else{
+      jQuery.post("/add_store_favorite.htm",{"id":"$!store.id"},function(data){
+        if(data==0){
+          alert("店铺收藏成功！");
+        }
+        if(data==1){
+          alert("该店铺已经被收藏！");
+        }
+      },"text");
+    }
+
+  });
+  //
+  jQuery("span[id^=ugc_]").css("cursor","pointer").click(function(){
+    var template = jQuery("#template").val();
+     var ugc_type=jQuery(this).attr("ugc_type");
+	 var ugc_id=jQuery(this).attr("ugc_id");
+	 if(ugc_type=="show"){
+	    jQuery(this).find("img").attr("src","/style/shop/"+template+"/images/add.jpg");
+		jQuery("#ugc_child_"+ugc_id).hide();
+	    jQuery(this).attr("ugc_type","hide");
+	 }else{
+	    jQuery(this).find("img").attr("src","/style/shop/"+template+"/images/add2.jpg");
+		jQuery("#ugc_child_"+ugc_id).show();
+	    jQuery(this).attr("ugc_type","show");
+	 }
+  });
+  //
+  jQuery(".twocoad").css("cursor","pointer").mouseover(function(){
+     jQuery(".shop_botmhbox").fadeIn('fast');
+  }).mouseleave(function(){
+     jQuery(".shop_botmhbox").fadeOut('fast');
+  });
+  //
+  jQuery(".shop_rank_top li").css("cursor","pointer").mouseover(function(){
+    var sort_id=jQuery(this).attr("sort_id");
+	jQuery(".shop_rank_top li").removeClass("this");
+	jQuery(this).addClass("this");
+	jQuery(".shop_rank_botm").hide();
+	jQuery("#"+sort_id).show();
+  });
+});
+</script>
+
+<div class="shopindex_left">
+  <div class="shoptop">
+    <h1 th:text="${store.storeName}"></h1>
+    <div class="shopvalue">
+      <dl class="shopvdl">
+        <dt>
+          <span>
+            <img th:if="${store.store_logo}" th:src="@{${'/'+store.store_logo.path+'/'+store.store_logo.name}}" width="60" height="60" />
+            <img th:unless="${store.store_logo}" th:src="@{'/'+${'/'+config.storeImage.path+'/'+config.storeImage.name}}" width="60" height="60" />
+          </span>
+        </dt>
+        <dd>
+          <span >
+            <a th:href="@{/buyer/message_send.htm(username=${store.user.username})}" target="_blank" class="shopemail">
+              <img src="/style/shop/green/images/mail.jpg" width="15" height="11" />
+            </a>
+          </span>
+          <span th:if="${credit==0}">
+            <img th:src="@{#{style/common/images/level_-1.gif}}" />
+            <img th:unless="${credit==0}" th:each="count : ${credits }" style="margin-left:1px;" src="$!img" />
+          </span>
+          <span th:unless="${credit==0}">
+            <img  th:each="count : ${credits }" style="margin-left:1px;" th:src="@{${creditsImg}}" />
+          </span>
+          <span class="hui2" th:text="${'好评率：'+storeEvaluate1+'%'}"></span>
+        </dd>
+      </dl>
+      <h1>动态评价<i>与同行比较</i></h1>
+      <ul class="shop_movepj">
+        <li>
+          <i>描述相符：</i>
+          <b th:text="${store.point.descriptionEvaluate}"></b>
+          <em class="$!description_css">
+            <strong th:text="${description_type}"></strong>
+            <span th:text="${description_result}"></span>
+          </em>
+        </li>
+        <li>
+          <i>服务态度：</i>
+          <b th:text="${store.point.serviceEvaluate}"></b>
+          <em th:class="${service_css}">
+            <strong th:text="${service_type }"></strong>
+            <span th:text="${service_result}"></span>
+          </em>
+        </li>
+        <li>
+          <i>发货速度：</i>
+          <b th:text="${store.point.shipEvaluate}"></b>
+          <em th:class="${ship_css}">
+            <strong th:text="${ship_type}"> </strong>
+            <span th:text="${ship_result}"></span>
+          </em>
+        </li>
+      </ul>
+      <h1>店铺信息</h1>
+      <ul>
+        <li th:text="${'创店时间：'+#dates.format(store.addTime,'yyyy-MM-dd')}"></li>
+        <li th:text="${'所在地区：'}"></li>
+        <li>
+          商品数量：
+          <strong class="blue" th:text="${goods_counts +'件商品'}"></strong>
+        </li>
+        <li>
+          店铺收藏：<strong class="blue"  th:text="${store.favoriteCount+ '人收藏' }"></strong>
+        </li>
+        <li th:text="${'联系电话：'+ store.storeTelephone }"></li>
+      </ul>
+      <h1>联系方式</h1>
+      <ul>
+        <li class="shopcusser">
+          <span>站内客服：</span>
+          <span>
+           <a  th:if="${user}" class="im_common" href="javascript:void(0);" user_id="$!store.user.id" th:id="${'userDialog_img_contact_'+store.user.id}" user_name="$!store.user.username"> 咨询客服</a>
+           <a th:unless="${user}" class="im_common" href="javascript:void(0);" dialog_uri="/user_dialog_login.htm" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">咨询客服 </a>
+          </span>
+        </li>
+        <li class="shopcusser">
+          <span>站外客服：</span>
+          <span>
+           <a target="_blank" th:href="@{${'http://wpa.qq.com/msgrd?v=3&uin='+store.storeQq+'&Site='+store.storeQq +'&Menu=yes'}}">
+             <img alt="点击这里给我发消息" th:src="@{${'http://wpa.qq.com/pa?p=2:'+store.storeQ+'q:51'}}" />
+           </a>
+         </span>
+        </li>
+      </ul>
+    </div>
+    <div class="shop_botm_hid">
+      <ul class="shopboh">
+        <li class="collection">
+          <a href="javascript:void(0);" id="store_fav" #if(!$!user) dialog_uri="/user_dialog_login.htm" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login"#end>
+            <span>收藏店铺</span>
+          </a>
+        </li>
+        <li class="this">
+          <span class="twocoad">
+            店铺二维码
+            <div class="shop_botmhbox" style="display:none;">
+              <span>
+                <img th:src="@{${config.uploadFilePath +'/store/'+store.id+'/code.png'}}" width="140" height="140" />
+              </span>
+              <i>手机扫描二维码<br />快速收藏店铺</i>
+            </div>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <form action="/store_goods_search.htm" method="post" id="store_search_form">
+    <div class="shopsearch">
+      <ul>
+        <li>
+          <span class="searspan">关键字：</span>
+          <span class="shopsear1">
+            <input name="keyword" type="text" id="keyword" />
+          </span>
+        </li>
+        <li>
+          <span class="searspan">&nbsp;</span>
+          <span class="searbtns">
+            <input name="input2" type="submit"  value="搜索"  style="cursor:pointer;"/>
+          </span>
+          <input name="store_id" type="hidden" id="store_id" th:value="${store.id}" />
+        </li>
+      </ul>
+    </div>
+  </form>
+  <div class="shopclassify">
+    <h1>商品分类</h1>
+    <!--箭头sort_a,sort_b-->
+    <div class="shop_sort">
+      <a th:href="/goods_list.htm(store_id=${store.id},orderBy=addTime,orderType=desc)">按默认</a>
+      <a th:href="/goods_list.htm(store_id=${store.id},orderBy=store_price,orderType=desc)">按价格</a>
+      <a th:href="/goods_list.htm(store_id=${store.id},orderBy=goods_salenum,orderType=desc)">按销量</a>
+      <a th:href="/goods_list.htm(store_id=${store.id},orderBy=goods_click,orderType=desc)">按人气</a></div>
+    <ul class="shopcul">
+      <li>
+        <span>
+          <img th:src="@{${'/style/shop/'+store.template+'/images/add2.jpg'}}" width="15" height="15" />
+        </span>
+        <a th:href="@{/goods_list.htm(store_id=${store.id})}" class="oneclass">所有商品</a>
+      </li>
+      <li th:each="ugc : ${ugcs}" th:if="${ugc.display == true}">
+        <span th:id="${'ugc_'+ugc.id}" ugc_type="show" th:attr="ugc_id=${ugc.id}">
+          <img th:src="@{${'/style/shop/'+store.template +'/images/add2.jpg'}}" width="15" height="15" />
+        </span>
+        <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${store.id})}" class="oneclass" th:text="${ugc.className}"></a>
+        <ul th:if="${ugc.childs}"  th:id="${'ugc_child_'+ugc.id}">
+          <li th:each="cugc : ${ugc.childs}" th:if="${cugc.display == true}">
+            <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${store.id})}" th:text="${cugc.className}"></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="shop_rank">
+    <h3>商品排行</h3>
+    <div class="shop_rank_box">
+      <div class="shop_rank_top">
+        <ul>
+          <li class="this" sort_id="sort_sale_goods">热销商品排行</li>
+          <li sort_id="sort_collect_goods">热门收藏排行</li>
+        </ul>
+      </div>
+      <div class="shop_rank_botm" id="sort_sale_goods">
+        <dl th:each="goods :  ${sale_goods}">
+          <dt>
+            <span class="imgcenter_span ">
+              <p>
+                <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                  <img width="58" height="58" src="$!img" />
+                </a>
+              </p>
+            </span>
+          </dt>
+          <dd>
+            <span class="shop_rank_name">
+              <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a>
+            </span>
+            <span class="shop_rank_money">
+              <b th:text="${'¥'+goods.storePrice}"></b>
+            </span>
+            <span class="shop_rank_show">
+              <strong th:text="${'出售：'+goods.goodsSalenum+'笔'}"></strong>
+            </span>
+          </dd>
+        </dl>
+      </div>
+
+      <div class="shop_rank_botm" style="display:none;" id="sort_collect_goods">
+        #foreach($goods in $goodsViewTools.sort_collect_goods("$!store.id",5))
+
+        <dl th:each="goods : ${}">
+          <dt>
+            <span class="imgcenter_span ">
+              <p>
+                <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                  <img th:if="${goods.goods_main_photo}" width="58" height="58" th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}" />
+                  <img th:unless="${goods.goods_main_photo}" width="58" height="58" th:src="@{${'/'+config.goodsImage.path+'/'+config.goodsImage.name}}" />
+                </a>
+              </p>
+            </span>
+          </dt>
+          <dd>
+            <span class="shop_rank_name">
+              <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a>
+            </span>
+            <span class="shop_rank_money">
+              <b th:text="${'¥'+goods.storePrice}"></b>
+            </span>
+            <span class="shop_rank_show">
+             <strong th:text="${' 收藏：'+goods.goodsCollect+'次'}"> </strong>
+            </span>
+          </dd>
+        </dl>
+      </div>
+    </div>
+    <div class="shop_check">
+      <a th:href="@{/goods_list.htm(store_id=${store.id})}" class="shop_check_a">查看本店其他商品</a>
+    </div>
+  </div>
+  <div class="shopf">
+    <h1>友情链接</h1>
+    <ul>
+      <li th:each="partner : ${$partners}">
+        <a th:href="@{${partner.url}}" target="_blank" th:text="${partner.title}"></a>
+      </li>
+    </ul>
+  </div>
+</div>

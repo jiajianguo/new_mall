@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingActivityGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingActivityGoods">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="ag_status" jdbcType="INTEGER" property="agStatus" />
+    <result column="act_id" jdbcType="BIGINT" property="actId" />
+    <result column="ag_admin_id" jdbcType="BIGINT" property="agAdminId" />
+    <result column="ag_goods_id" jdbcType="BIGINT" property="agGoodsId" />
+    <result column="ag_price" jdbcType="DECIMAL" property="agPrice" />
+  </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, ag_status, act_id, ag_admin_id, ag_goods_id, ag_price
+  </sql>
+
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from shopping_activity_goods sag
+    left  join  shopping_activity act  on sag.act_id = act.id
+    left join shopping_goods sg on sag.ag_goods_id =sg.id
+    <where>
+      1=1
+      <if test="ag_status != null"> and sag.ag_status =#{ag_status}</if>
+      <if test="ac_begin_time != null ">and act.ac_begin_time &lt;= #{ac_begin_time}</if>
+      <if test="ac_end_time != null "> and  act.ac_end_time &gt;=#{ac_end_time}</if>
+      <if test="goods_status != null "> and sg.goods_status =#{goods_status}</if>
+      <if test="act_id != null "> and sag.act_id =#{act_id}</if>
+      <if test="ac_status != null "> and act.ac_status=#{ac_status}</if>
+
+    </where>
+  </select>
+
+  <select id="pageList" resultMap="BaseResultMap">
+       select sag.* from shopping_activity_goods sag
+        left  join  shopping_activity act  on sag.act_id = act.id
+        left join shopping_goods sg on sag.ag_goods_id =sg.id
+        <where>
+          1=1
+          <if test="ag_status != null"> and sag.ag_status =#{ag_status}</if>
+          <if test="ac_begin_time != null ">and act.ac_begin_time &lt;= #{ac_begin_time}</if>
+          <if test="ac_end_time != null "> and  act.ac_end_time &gt;=#{ac_end_time}</if>
+          <if test="goods_status != null "> and sg.goods_status =#{goods_status}</if>
+          <if test="act_id != null "> and sag.act_id =#{act_id}</if>
+          <if test="ac_status != null "> and act.ac_status=#{ac_status}</if>
+          <if test="orderBy != null and sort != null "> order by concat("sag.",#{orderBy}) ${sort}</if>
+          <if test="start != null and pageSize !=  null "> limit #{start},#{pageSize}</if>
+        </where>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingActivityGoodsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_activity_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_activity_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_activity_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingActivityGoodsExample">
+    delete from shopping_activity_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingActivityGoods">
+    insert into shopping_activity_goods (id, addTime, deleteStatus,
+      ag_status, act_id, ag_admin_id,
+      ag_goods_id, ag_price)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{agStatus,jdbcType=INTEGER}, #{actId,jdbcType=BIGINT}, #{agAdminId,jdbcType=BIGINT},
+      #{agGoodsId,jdbcType=BIGINT}, #{agPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingActivityGoods">
+    insert into shopping_activity_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="agStatus != null">
+        ag_status,
+      </if>
+      <if test="actId != null">
+        act_id,
+      </if>
+      <if test="agAdminId != null">
+        ag_admin_id,
+      </if>
+      <if test="agGoodsId != null">
+        ag_goods_id,
+      </if>
+      <if test="agPrice != null">
+        ag_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="agStatus != null">
+        #{agStatus,jdbcType=INTEGER},
+      </if>
+      <if test="actId != null">
+        #{actId,jdbcType=BIGINT},
+      </if>
+      <if test="agAdminId != null">
+        #{agAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="agGoodsId != null">
+        #{agGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="agPrice != null">
+        #{agPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingActivityGoodsExample" resultType="java.lang.Long">
+    select count(*) from shopping_activity_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_activity_goods
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.agStatus != null">
+        ag_status = #{record.agStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.actId != null">
+        act_id = #{record.actId,jdbcType=BIGINT},
+      </if>
+      <if test="record.agAdminId != null">
+        ag_admin_id = #{record.agAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="record.agGoodsId != null">
+        ag_goods_id = #{record.agGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.agPrice != null">
+        ag_price = #{record.agPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_activity_goods
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ag_status = #{record.agStatus,jdbcType=INTEGER},
+      act_id = #{record.actId,jdbcType=BIGINT},
+      ag_admin_id = #{record.agAdminId,jdbcType=BIGINT},
+      ag_goods_id = #{record.agGoodsId,jdbcType=BIGINT},
+      ag_price = #{record.agPrice,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingActivityGoods">
+    update shopping_activity_goods
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="agStatus != null">
+        ag_status = #{agStatus,jdbcType=INTEGER},
+      </if>
+      <if test="actId != null">
+        act_id = #{actId,jdbcType=BIGINT},
+      </if>
+      <if test="agAdminId != null">
+        ag_admin_id = #{agAdminId,jdbcType=BIGINT},
+      </if>
+      <if test="agGoodsId != null">
+        ag_goods_id = #{agGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="agPrice != null">
+        ag_price = #{agPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingActivityGoods">
+    update shopping_activity_goods
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ag_status = #{agStatus,jdbcType=INTEGER},
+      act_id = #{actId,jdbcType=BIGINT},
+      ag_admin_id = #{agAdminId,jdbcType=BIGINT},
+      ag_goods_id = #{agGoodsId,jdbcType=BIGINT},
+      ag_price = #{agPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

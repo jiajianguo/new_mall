@@ -1,0 +1,478 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>好友管理 - Powered by shopping</title>
+  <meta name="keywords" th:content="${config.keywords}" />
+  <meta name="description" th:content="${config.description}"/>
+<meta name="generator" content="shopping 2.0" />
+<meta name="author" content="www.shopping.com">
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/user.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.poshytip.min.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+  <script th:src="@{/js/buyer_head.js}"></script>
+  <script th:src="@{/js/account_nav.js}"></script>
+  <script th:src="@{/js/top.js}"></script>
+<script>
+jQuery(document).ready(function(){
+//获取下级地区信息
+	  jQuery("select[id^=areas_]").change(function(){
+	        console.log("执行这里");
+			var areaMark = jQuery(this).attr("areaMark");
+			var parent_id = jQuery("#areas_"+areaMark).val();
+        console.log("执行这里"+areaMark);
+			jQuery.post("/buyer/account_getAreaChilds.htm",{
+						"parent_id":parent_id,
+						"areaMark":areaMark
+						},function(data){
+
+							if(areaMark=="province"){
+                              jQuery("#area_id").html("<option value=''>县（区）</option>");
+                              jQuery("#areas_city").html(data);
+							}
+							if(areaMark=="city"){
+                                jQuery("#area_id").html(data);
+                            }
+            },"text");
+      });
+      var area=jQuery("#area").val();
+	 if(area) {
+	 	 if(area.areaname){
+              jQuery("#area_id").html("<option value="+area.id+">"+area.areaname+"</option>");
+         }
+	 	 if(area.parent){
+             jQuery("#areas_city").html("<option value="+area.parentId+">"+area.parent.areaname+"</option>");
+         }
+         if(area.parent.parent){
+             jQuery("#areas_province").val(area.parent.parent.id);
+         }
+      }
+
+	  	 	 /*jQuery("#userName").val("$!userName");
+		 	 jQuery("#years").val("$!years");
+		     jQuery("#sex").val("$!sex");
+			 jQuery("#area_id").val("$!area.id");
+			//加好友事件*/
+			jQuery("a[id^=add_friend_]").click(function(){
+					var uid = jQuery("#uid").val();
+					var user_id = jQuery("#obj_id").val();
+					if(uid==user_id){
+						  showDialog("adderror","系统提示","自己不能添加自己为好友！",0,"warning",3);
+						}else{
+					jQuery.post("/buyer/friend_add_save.htm",
+							{
+							"user_id":user_id
+							},function(data){
+								if(data=="true"){
+									  showDialog("addFriend","系统提示","添加成功，TA已经成为你的好友！",0,"succeed",3);
+									}else{
+									  showDialog("addFriend","系统提示","添加失败，TA已经是您的好友！",0,"error",3);
+										}
+								},"text");
+					}
+				});
+			//关注事件
+			jQuery("a[id^=add_attention_]").click(function(){
+				jQuery.post("/buyer/homepage_add_attention.htm",
+						{
+						"user_id":jQuery("#obj_id").val()
+						},function(data){
+							if(data=="true"){
+								  showDialog("addAttention","系统提示","关注成功！",0,"succeed",3);
+								}else{
+								  showDialog("addAttention","系统提示","关注失败，您已经关注过TA了！",0,"error",3);
+									}
+							},"text");
+				 });
+});
+</script>
+</head>
+<body>
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/seller/index.htm}" rel="nofollow">商家中心</a>
+                <a th:href="@{/seller/order.htm}" rel="nofollow">商家订单</a>
+                <a th:href="@{/seller/goods.htm}" rel="nofollow">商家商品</a>
+                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+                  <span class="menu-hd" id="cart_goods_top_menu" >
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+
+                  </span>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}">
+          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">更多链接<b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+<div class="main">
+  <!--buyer-head-->
+  <form th:action="@{/search.htm}" method="post" id="SearchForm">
+    <input name="type" type="hidden" id="type" value="goods" />
+    <div class="head">
+      <div class="logo">
+        <a  th:href="@{/index.htm}">
+          <img th:if="${config.websiteLogo}" th:src="@{${'/'+ config.websiteLogo.path+'/'+config.websiteLogo.name }}" border="0" width="180" height="40" />
+          <img th:unless="${config.websiteLogo}" th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="40" />
+        </a>
+      </div>
+      <div class="usersearch">
+        <ul class="users_menu">
+          <li class="this">
+            <em>
+              <a th:href="@{/buyer/index.htm}">买家首页</a>
+            </em>
+          </li>
+          <li >
+            <em>
+              <a th:href="@{/buyer/homepage.htm}" target="_blank">个人主页</a>
+            </em>
+          </li>
+          <!--hover_use经过下拉样式class="hover_use"-->
+          <li>
+            <em>
+              <a th:href="@{/buyer/friend.htm}">好友<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none;">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/friend_add.htm}" target="_blank">找人</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/homepage/myattention.htm}" target="_blank">关注</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/homepage/myfans.htm}" target="_blank">粉丝</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <em>
+              <a href="javascript:void(0);">交易<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/goods_cart1.htm}">我的购物车</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/order.htm}">已买到的商品</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/favorite_goods.htm}">我的收藏</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/complaint.htm}">投诉管理</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <em>
+              <a href="javascript:void(0);">设置<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/account.htm}">个人资料</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/address.htm}">收货地址</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <em>
+              <a href="javascript:void(0);">消息<s></s></a>
+            </em>
+            <div class="users_navh" style="display:none">
+              <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/message.htm(type=0)}">系统消息</a>
+                                </span>
+                <span>
+                                    <a th:href="@{/buyer/message.htm}">站内私信</a>
+                                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="user_ser">
+          <!--展开时加active-->
+          <div class="sear_type" id="search_type">
+            <ul>
+              <li><a href="javascript:void(0);">商品</a></li>
+              <li type="goods" style="display:none" >
+                <a href="javascript:void(0);">商品</a>
+              </li>
+              <li type="store" style="display:none">
+                <a href="javascript:void(0);">店铺</a>
+              </li>
+            </ul>
+            <s></s>
+          </div>
+
+          <div class="user_ser_box">
+            <input name="keyword" type="text" class="user_ser_txt" placeholder=" 搜索真的很简单！" id="keyword" x-webkit-speech lang="zh-CN" onwebkitspeechchange="jQuery('#SearchForm').submit()"/>
+            <input name="" type="button" class="user_ser_btn" style="cursor:pointer;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="user_center">
+    <table width="1000" border="0" cellspacing="0" cellpadding="0" class="user_table">
+      <tr>
+        <!--account_nav-->
+        <td width="177" id="userbg" valign="top">
+          <div class="user_photo">
+            <dl>
+              <dt>
+                <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}" width="120" height="120" />
+                <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}" width="120" height="120" />
+              </dt>
+              <dd><span><a th:href="@{/buyer/account.htm}">编辑资料</a></span></dd>
+            </dl>
+          </div>
+          <div class="seller">
+            <!--店铺设置-->
+            <div class="product_manage2">
+              <ul class="sellul">
+                <li><a href="javascript:void(0);" child_show="true"><b><img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" /></b>我的账户</a>
+                  <ul>
+                    <li op="account"><a th:href="@{/buyer/account.htm}">个人资料</a></li>
+                    <li op="address"><a th:href="@{/buyer/address.htm}">收货地址</a></li>
+                    <li op="friend"><a th:href="@{/buyer/friend.htm}">我的好友</a></li>
+                    <li op="message"><a th:href='@{/buyer/message.htm}'>站内短信</a></li>
+                    <li op="bind"><a th:href='@{/buyer/account_bind.htm}'>账号绑定</a></li>
+
+                    <span th:if="${config.deposit}">
+                      <li op="predeposit"><a th:href="@{/buyer/predeposit.htm}">充值管理</a></li>
+                      <li op="buyer_cash"><a th:href="@{/buyer/buyer_cash.htm}">提现管理</a></li>
+                      <li op="predeposit_log"><a th:href="@{/buyer/predeposit_log.htm}">收支明细</a></li>
+                     </span>
+
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <!--店铺设置-->
+          </div>
+        </td>
+
+        <td id="centerbg" valign="top"><div class="buyer_position">
+            <div class="buyer_p_box"><a th:href="@{/buyer/account.htm}">我的账户</a> > <span>添加好友</span></div>
+          </div>
+          <div class="productmain">
+            <div class="friends_box">
+              <div class="friends_search">
+                <form th:action="@{/buyer/account_friend_search.htm}" id="theForm" name="theForm" method="post">
+                  <div class="friends_search_n"> <span>
+                    <input type="text" id="userName" placeholder="请输入会员名字" name="userName" class="sr" />
+                   <!-- <input type="hidden" id="area"  th:value="${area}"/>-->
+                    <input type="submit" value="搜索"  id="search" name="search" class="sc" />
+                    </span> <span>
+                    <select id="areas_province" areaMark="province">
+                      <option>省份</option>
+                      <option th:each="area :${areas}" th:value="${area.id}" th:text="${area.areaname}"></option>
+                    </select>
+                    <select id="areas_city" areaMark="city">
+                      <option value="">城市</option>
+                    </select>
+                    <select id="area_id" name="area_id">
+                      <option value="">县(区)</option>
+                    </select>
+                    <select id="years" name="years">
+                      <option value="">年龄</option>
+                      <option value="18">18岁以下</option>
+                      <option value="18~25">18~25岁</option>
+                      <option value="26~30">26~30岁</option>
+                      <option value="31~35">31~35岁</option>
+                      <option value="36~40">36~40岁</option>
+                      <option value="41~45">41~45岁</option>
+                      <option value="50">50岁以上</option>
+                    </select>
+                    <select id="sex" name="sex">
+                      <option value="">性别</option>
+                      <option value="1">男</option>
+                      <option value="0">女</option>
+                      <option value="-1">保密</option>
+                    </select>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <div id="friends_list">
+
+                <form th:if="${objs != null}" method="post" id="ListForm" name="ListForm" th:action="@{/buyer/account_friend_search.htm}">
+                  <div class="friends_list" >
+                    <ul>
+
+                      <li th:each="obj :${objs}">
+                        <span class="img_left">
+                          <a th:href="@{/buyer/homepage.htm(uid=${obj.id})}" target="_blank">
+                            <img th:if="${obj.photo}" th:src="@{'/'+${obj.photo.path}+'/'+${obj.photo.name}}" width="60" height="60" />
+                            <img th:unless="${obj.photo}" th:src="@{${config.memberIcon.path+'/'+config.memberIcon.name}}" width="60" height="60" />
+                          </a>
+                        </span>
+                        <span class="font_right">
+                          <strong th:text="${obj.username}+${obj.truename!=''?obj.truename:''}+'| '+${obj.years}+'岁'"></strong>
+                          <i th:if="${obj.area}" th:text="${obj.area.parent.parent == null ? obj.area.parent.areaname:obj.area.parent.parent.areaname }+${obj.area.parent.areaname}+${obj.area.areaname}"></i>
+                          <i th:unless="${obj.area}" >暂无</i>
+                          <input type="hidden" id="obj_id" th:value="${obj.id}">
+                          <a href="javascript:void(0);" th:id="'add_attention_'+${obj.id}" ><b>♥ </b>关注TA</a>
+                          <a href="javascript:void(0);" th:id="'add_friend_'+${obj.id}" ><b>+</b> 加为好友</a>
+                        </span>
+                      </li>
+
+                    </ul>
+                  </div>
+                  <div class="alldel">
+                    <div  class="userfenye">
+                      <input name="currentPage" id="currentPage" type="hidden"  th:value="${currentPage}" />
+                      <input name="userName" type="hidden"  th:value="${userName}" />
+                      <input name="sex2" type="hidden"  th:value="${sex}" />
+                      <input name="area_id" type="hidden" th:if="${area}" th:value="${area.id}" />
+                      <input name="years" type="hidden"  th:value="${years}" />
+                      <div th:utext="${gotoPageFormHTML}"></div>
+                      </div>
+                  </div>
+                </form>
+
+                <div th:unless="${objs!=null}" class="friends_war">
+                	<div class="friends_war_m">
+                       <i><img th:src="@{/style/common/images/warning.gif}"/></i><span>没有您要查找的数据！</span>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div></td>
+      </tr>
+    </table>
+</div>
+
+  <div class="footer">
+    <div class="footerArea">
+      <ul>
+        <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+        </li>
+        <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+        <li class="hui2">Powered by shopping 2.x</li>
+        <li th:text="${config.codeStat}"></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingAdvertMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingAdvert">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="ad_begin_time" jdbcType="DATE" property="adBeginTime" />
+    <result column="ad_click_num" jdbcType="INTEGER" property="adClickNum" />
+    <result column="ad_end_time" jdbcType="DATE" property="adEndTime" />
+    <result column="ad_gold" jdbcType="INTEGER" property="adGold" />
+    <result column="ad_slide_sequence" jdbcType="INTEGER" property="adSlideSequence" />
+    <result column="ad_status" jdbcType="INTEGER" property="adStatus" />
+    <result column="ad_text" jdbcType="VARCHAR" property="adText" />
+    <result column="ad_title" jdbcType="VARCHAR" property="adTitle" />
+    <result column="ad_url" jdbcType="VARCHAR" property="adUrl" />
+    <result column="ad_acc_id" jdbcType="BIGINT" property="adAccId" />
+    <result column="ad_ap_id" jdbcType="BIGINT" property="adApId" />
+    <result column="ad_user_id" jdbcType="BIGINT" property="adUserId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, ad_begin_time, ad_click_num, ad_end_time, ad_gold, ad_slide_sequence,
+    ad_status, ad_text, ad_title, ad_url, ad_acc_id, ad_ap_id, ad_user_id
+  </sql>
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select * from shopping_advert
+    <where>
+      1=1
+      <if test="ad_ap_id != null "> and ad_ap_id =#{ad_ap_id}</if>
+      <if test="startTime != null "> and ad_begin_time &lt;= #{startTime}</if>
+      <if test="endTime != null "> and ad_end_time &gt;= #{endTime}</if>
+      <if test="orderBy != null and sort !=  null"> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null"> limit #{start} ,#{pageSize}</if>
+    </where>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingAdvertExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_advert
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_advert
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_advert
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingAdvertExample">
+    delete from shopping_advert
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingAdvert">
+    insert into shopping_advert (id, addTime, deleteStatus,
+      ad_begin_time, ad_click_num, ad_end_time,
+      ad_gold, ad_slide_sequence, ad_status,
+      ad_text, ad_title, ad_url,
+      ad_acc_id, ad_ap_id, ad_user_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{adBeginTime,jdbcType=DATE}, #{adClickNum,jdbcType=INTEGER}, #{adEndTime,jdbcType=DATE},
+      #{adGold,jdbcType=INTEGER}, #{adSlideSequence,jdbcType=INTEGER}, #{adStatus,jdbcType=INTEGER},
+      #{adText,jdbcType=VARCHAR}, #{adTitle,jdbcType=VARCHAR}, #{adUrl,jdbcType=VARCHAR},
+      #{adAccId,jdbcType=BIGINT}, #{adApId,jdbcType=BIGINT}, #{adUserId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingAdvert">
+    insert into shopping_advert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="adBeginTime != null">
+        ad_begin_time,
+      </if>
+      <if test="adClickNum != null">
+        ad_click_num,
+      </if>
+      <if test="adEndTime != null">
+        ad_end_time,
+      </if>
+      <if test="adGold != null">
+        ad_gold,
+      </if>
+      <if test="adSlideSequence != null">
+        ad_slide_sequence,
+      </if>
+      <if test="adStatus != null">
+        ad_status,
+      </if>
+      <if test="adText != null">
+        ad_text,
+      </if>
+      <if test="adTitle != null">
+        ad_title,
+      </if>
+      <if test="adUrl != null">
+        ad_url,
+      </if>
+      <if test="adAccId != null">
+        ad_acc_id,
+      </if>
+      <if test="adApId != null">
+        ad_ap_id,
+      </if>
+      <if test="adUserId != null">
+        ad_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="adBeginTime != null">
+        #{adBeginTime,jdbcType=DATE},
+      </if>
+      <if test="adClickNum != null">
+        #{adClickNum,jdbcType=INTEGER},
+      </if>
+      <if test="adEndTime != null">
+        #{adEndTime,jdbcType=DATE},
+      </if>
+      <if test="adGold != null">
+        #{adGold,jdbcType=INTEGER},
+      </if>
+      <if test="adSlideSequence != null">
+        #{adSlideSequence,jdbcType=INTEGER},
+      </if>
+      <if test="adStatus != null">
+        #{adStatus,jdbcType=INTEGER},
+      </if>
+      <if test="adText != null">
+        #{adText,jdbcType=VARCHAR},
+      </if>
+      <if test="adTitle != null">
+        #{adTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="adUrl != null">
+        #{adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="adAccId != null">
+        #{adAccId,jdbcType=BIGINT},
+      </if>
+      <if test="adApId != null">
+        #{adApId,jdbcType=BIGINT},
+      </if>
+      <if test="adUserId != null">
+        #{adUserId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingAdvertExample" resultType="java.lang.Long">
+    select count(*) from shopping_advert
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_advert
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.adBeginTime != null">
+        ad_begin_time = #{record.adBeginTime,jdbcType=DATE},
+      </if>
+      <if test="record.adClickNum != null">
+        ad_click_num = #{record.adClickNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.adEndTime != null">
+        ad_end_time = #{record.adEndTime,jdbcType=DATE},
+      </if>
+      <if test="record.adGold != null">
+        ad_gold = #{record.adGold,jdbcType=INTEGER},
+      </if>
+      <if test="record.adSlideSequence != null">
+        ad_slide_sequence = #{record.adSlideSequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.adStatus != null">
+        ad_status = #{record.adStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.adText != null">
+        ad_text = #{record.adText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adTitle != null">
+        ad_title = #{record.adTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adUrl != null">
+        ad_url = #{record.adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adAccId != null">
+        ad_acc_id = #{record.adAccId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adApId != null">
+        ad_ap_id = #{record.adApId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adUserId != null">
+        ad_user_id = #{record.adUserId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_advert
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ad_begin_time = #{record.adBeginTime,jdbcType=DATE},
+      ad_click_num = #{record.adClickNum,jdbcType=INTEGER},
+      ad_end_time = #{record.adEndTime,jdbcType=DATE},
+      ad_gold = #{record.adGold,jdbcType=INTEGER},
+      ad_slide_sequence = #{record.adSlideSequence,jdbcType=INTEGER},
+      ad_status = #{record.adStatus,jdbcType=INTEGER},
+      ad_text = #{record.adText,jdbcType=VARCHAR},
+      ad_title = #{record.adTitle,jdbcType=VARCHAR},
+      ad_url = #{record.adUrl,jdbcType=VARCHAR},
+      ad_acc_id = #{record.adAccId,jdbcType=BIGINT},
+      ad_ap_id = #{record.adApId,jdbcType=BIGINT},
+      ad_user_id = #{record.adUserId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingAdvert">
+    update shopping_advert
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="adBeginTime != null">
+        ad_begin_time = #{adBeginTime,jdbcType=DATE},
+      </if>
+      <if test="adClickNum != null">
+        ad_click_num = #{adClickNum,jdbcType=INTEGER},
+      </if>
+      <if test="adEndTime != null">
+        ad_end_time = #{adEndTime,jdbcType=DATE},
+      </if>
+      <if test="adGold != null">
+        ad_gold = #{adGold,jdbcType=INTEGER},
+      </if>
+      <if test="adSlideSequence != null">
+        ad_slide_sequence = #{adSlideSequence,jdbcType=INTEGER},
+      </if>
+      <if test="adStatus != null">
+        ad_status = #{adStatus,jdbcType=INTEGER},
+      </if>
+      <if test="adText != null">
+        ad_text = #{adText,jdbcType=VARCHAR},
+      </if>
+      <if test="adTitle != null">
+        ad_title = #{adTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="adUrl != null">
+        ad_url = #{adUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="adAccId != null">
+        ad_acc_id = #{adAccId,jdbcType=BIGINT},
+      </if>
+      <if test="adApId != null">
+        ad_ap_id = #{adApId,jdbcType=BIGINT},
+      </if>
+      <if test="adUserId != null">
+        ad_user_id = #{adUserId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingAdvert">
+    update shopping_advert
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ad_begin_time = #{adBeginTime,jdbcType=DATE},
+      ad_click_num = #{adClickNum,jdbcType=INTEGER},
+      ad_end_time = #{adEndTime,jdbcType=DATE},
+      ad_gold = #{adGold,jdbcType=INTEGER},
+      ad_slide_sequence = #{adSlideSequence,jdbcType=INTEGER},
+      ad_status = #{adStatus,jdbcType=INTEGER},
+      ad_text = #{adText,jdbcType=VARCHAR},
+      ad_title = #{adTitle,jdbcType=VARCHAR},
+      ad_url = #{adUrl,jdbcType=VARCHAR},
+      ad_acc_id = #{adAccId,jdbcType=BIGINT},
+      ad_ap_id = #{adApId,jdbcType=BIGINT},
+      ad_user_id = #{adUserId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

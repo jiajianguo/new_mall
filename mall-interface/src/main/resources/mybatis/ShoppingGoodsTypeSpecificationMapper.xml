@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.GoodsTypeSpcificationMapper">
+    <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingGoodsspecification">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+        <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sequence" jdbcType="INTEGER" property="sequence" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+    </resultMap>
+
+    <select id="queryByCondition" resultMap="BaseResultMap">
+        select spec.* from  shopping_goodsspecification spec
+        left join  shopping_goodstype_spec s on spec.id = s.spec_id
+
+        <where>
+            1=1
+            <if test="type_id != null "> and s.type_id =#{type_id}</if>
+        </where>
+    </select>
+</mapper>

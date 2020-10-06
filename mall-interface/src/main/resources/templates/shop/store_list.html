@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>店铺列表 - Powered by shopping</title>
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/goodshidden.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jcarousellite_1.0.1.min.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/top.js}"></script>
+<script th:src="@{/js/head.js}"></script>
+
+</head>
+<body>
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+              <span class="menu-hd" id="cart_goods_top_menu">
+                <s></s>购物车
+                  <span id="cart_goods_count_top" class="top_car">0</span>
+                     种商品<b></b>
+              </span>
+          <div class="menu-bd" id="cart_goods_top_info">
+            <div class="menu-bd-panel">
+              <div style="text-align:center;">
+                <img th:src="@{/style/common/images/loader.gif}"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}">
+          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+  <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+<div class="main">
+  <!--$!httpInclude.include("/head.htm?type=$!type")-->
+  <div id="header_form">
+    <div id="head_h" class="head_width">
+      <div class="head clearFix">
+        <div class="logo">
+          <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+            <img width="180" height="60"
+                 th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+          </a>
+          <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
+            <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"
+                 border="0"/>
+          </a>
+        </div>
+        <div class="searchForm">
+          <form action="/search.htm" method="post" target="_blank" id="searchForm">
+            <input name="type" type="hidden" id="type" value="${type}"/>
+            <div class="toph_bigsearch">
+              <div class="toph_sear">
+                <ul class="toph_bgsear">
+                  <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+                  <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                </ul>
+                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                       class="toph_sear_txt"/>
+                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                       onclick="search_form();" class="toph_sear_btn"/>
+              </div>
+              <div class="keyword">
+						   <span th:each="info : ${config.hotsearch.split(',')}">
+							   <a href="javascript:void(0);" th:data="${info}" onclick="search_form(this.getAttribute('data'),'goods');"
+                                  th:text="${info}"></a>
+						   </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--热门分类start-->
+  <div class="Hot_cf">
+    <h1>热门分类</h1>
+    <div class="Hot_cf_list">
+      <ul >
+        <li th:each="storeClass : ${scs}">
+          <span>
+            <a href="javascript:void(0);" th:id="'sc_search_'+${storeClass.id}" th:sc="${storeClass.id}" th:text="${storeClass.classname}"></a>
+          </span>
+          <a th:if="${storeClass.childs}"   th:each="child: ${storeClass.childs}" href="javascript:void(0);" th:id="'sc_search_'+${child.id}" th:sc="${child.id}" th:text="${child.classname}"></a>
+        </li>
+      </ul>
+    </div>
+    <form th:action="@{/search.htm}" name="ListForm" id="ListForm" method="post">
+      <input type="hidden" id="type" name="type" th:value="${type}" />
+      <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}" />
+      <input type="hidden" id="orderType" name="orderType" th:value="${orderType}" />
+      <input type="hidden" id="orderBy" name="orderBy" th:value="${orderBy}" />
+      <input type="hidden" id="sc_id" name="sc_id" th:value="${sc_id}"/>
+      <input type="hidden" id="storeGrade_id" name="storeGrade_id" th:value="${storeGrade_id}"/>
+      <input type="hidden" id="checkbox_id" name="checkbox_id" th:value="${checkbox_id}"/>
+      <input type="hidden" id="storepoint" name="storepoint" th:value="${storepoint}"/>
+      <input type="hidden" id="keyword2" name="keyword" th:value="${store_name}" />
+      <input type="hidden" id="area_id" name="area_id" th:value="${area_id}" />
+      <div class="Hot_cf_store_top">
+        <div class="Hot_cf_store_top_sort">
+          <a title="默认排序" href="javascript:void(0);" id="search_orderby_addTime" mark="addTime">默认</a>
+          <a title="按收藏人气排序" href="javascript:void(0);" id="search_orderby_favorite_count" mark="favorite_count">收藏</a>
+          <b class="tb_sortbar_ul_d"></b>
+          <a title="按信用额度排序" href="javascript:void(0);" id="search_orderby_store_credit" mark="store_credit">信用</a>
+          <b class="tb_sortbar_ul_d"></b>
+        </div>
+
+        <div class="Hot_cf_store_top_input">
+          <span>
+            <input type="checkbox" id="store_recommend" />
+            <label for="store_recommend" >商城推荐</label>
+          </span>
+          <span>
+            <input type="checkbox"  id="realstore_approve"/>
+            <label for="realstore_approve">实体认证</label>
+          </span>
+          <span>
+            <input type="checkbox" id="card_approve" />
+            <label for="card_approve" >实名认证</label>
+          </span>
+          <span class="hot_bt" style="margin-left:70px"> 关键字：
+            <input id="" name="" size="12" style="cursor:auto;"  th:value="${store_name}" type="text"/>
+            <input class="hot_btn" type="button" value="确定" />
+          </span>
+        </div>
+
+        <div class="Hot_cf_store_top_panel"  >
+
+          <div class="Hot_cf_store_top_panel_pr">
+            <span class="select" id="storepoint">
+              <span>好评率</span>
+            </span>
+            <ul class="Hot_cf_store_top_panel_pr_ul" style="display:none;">
+              <li><a href="javascript:void(0);" mark="1">100%</a></li>
+              <li><a href="javascript:void(0);" mark="0.99">99%以上</a></li>
+              <li><a href="javascript:void(0);" mark="0.98">98%以上</a></li>
+              <li><a href="javascript:void(0);" mark="0.97">97%以上</a></li>
+              <li><a href="javascript:void(0);" mark="0.96">96%以上</a></li>
+              <li><a href="javascript:void(0);" mark="0.95">95%以上</a></li>
+              <li><a href="javascript:void(0);" mark="0">不限</a></li>
+            </ul>
+          </div>
+
+          <div class="Hot_cf_store_top_panel_pr">
+            <span class="select">
+              <span>所在地</span>
+            </span>
+            <div class="tb_home_box" style="display:none;">
+              <h1>
+                <span>所在地</span>
+              </h1>
+              <div class="loc_2">
+                <input type="text" id="area_name" name="area_name" th:value="${area_name}"  class="ip1" placeholder="输入地区名称" />
+                <span class="i">
+                  <input type="button" id="searchBy_areaName" value="确定" class="ip2"/>
+                </span>
+              </div>
+              <ul class="loc_3" >
+                <li th:each="area: ${areas}">
+                  <a href="javascript:void(0);" th:id="'searchBy_area_'+${area.id}" th:area_id="${area.id}" th:text="${area.areaname}"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="Hot_cf_store_top_panel_pr">
+            <span class="select">
+              <span id="grade_name">店铺等级</span>
+            </span>
+            <ul class="Hot_cf_store_top_panel_pr_ul" style="display:none;" th:each="grade: ${storeGrades}">
+              <li >
+                <a href="javascript:void(0);" th:id="'grade_'+${grade.id}" th:attr="grade_id=${grade.id}" th:text="${grade.gradename}"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="Hot_cf_main">
+        <!--店铺列表开始-->
+        <div  th:each="obj,iter :${objs}" th:class="'Hot_cf_main_list'+${iter.index==1? '_c':''}">
+          <!--左侧 start-->
+          <div class="Hot_cf_main_list_left">
+            <ul>
+              <li class="li_left">
+                <a th:href="@{/store.htm(id=${obj.id})}" target="_blank">
+                  <img th:if="${obj.storeLogo}" th:src="@{${obj.storeLogo.path}+'/'+${obj.storeLogo.name}}" width="70" height="70" />
+                  <img th:unless="${obj.storeLogo}" th:src="@{'/'+${config.storeImage.path}+'/'+${config.storeImage.name}}" width="70" height="70" />
+                </a>
+              </li>
+              <li class="li_right">
+                <h4>
+                  <a class="hc" th:href="@{/store.htm(id=${obj.id})}" target="_blank" th:text="${obj.storeName}"></a>
+                  <a class="hg" href="#"></a>
+                  <img th:if="${credit==0}" th:src="@{/style/common/images/level_-1.gif}" class="hg"/>
+                  <img th:unless="${credit==0}" style="margin-left:1px;" th:each="c : ${credits}" th:src="@{/style/common/images/level_2.gif}"  width="16px" height="16px" class="hg"/>
+                </h4>
+                <p class="describe ">
+                  <strong>主营：</strong>
+                  <span class="Hot_color" th:if="${obj.sc.parent}" th:text="${obj.sc.parent.classname}"></span>
+                  <span class="Hot_color" th:unless="${obj.sc.parent}"th:text="${obj.sc.classname}"> </span>
+                </p>
+                <p class="mail">
+                  <span th:text="'店主：'+${obj.storeOwer}"></span>&nbsp;
+                  <a class="shopemail" th:if="${user}"   target="_blank" th:href="@{/buyer/message_send.htm(userName=${obj.user.username})}">
+                    <img width="15" height="11" th:src="@{/style/system/front/default/images/mail.jpg}">
+                  </a>
+                  <a class="shopemail" th:unless="${user}" dialog_uri="/user_dialog_login.htm" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" href="javascript:void(0);" target="_blank" >
+                    <img width="15" height="11" th:src="@{/style/system/front/default/images/mail.jpg}">
+                  </a>
+                </p>
+              </li>
+              <li class="li_mid">
+                <div class="good_comt" th:if="${credit==0}" > 好评率: 0%</div>
+                <div class="good_comt" th:unless="${credit==0}" th:text="'好评率: '+${obj.point.storeEvaluate1 *100}+'%'"></div>
+                <div class="descr"  th:text="${obj.point.descriptionEvaluate}">
+                  <!--下拉 start-->)
+                  <div class="descr_xl" style="display:none;">
+                    <div class="hd">
+                      <div class="descr_b">
+                        <div class="bl">
+                          <ul>
+                            <li><em>描述相符：</em><a href="javascript:void(0);" th:text="${obj.point.descriptionEvaluate}"> 分</a></li>
+                            <li><em>服务态度：</em><a href="javascript:void(0);" th:text="${obj.point.serviceEvaluate}">分</a></li>
+                            <li><em>发货速度：</em><a href="javascript:void(0);" th:text="${obj.point.shipEvaluate}"> 分</a></li>
+                          </ul>
+                        </div>
+                        <div class="br">
+                          <ul>
+                            <li>
+                              <em th:class="${description_css}">
+                                <strong th:text="${description_type}"></strong>
+                                <span th:text="${description_result}"></span>
+                              </em>
+                            </li>
+                            <li>
+                              <em th:class="${service_css}">
+                                <strong th:text="${service_type }"></strong>
+                                <span th:text="${service_result}"></span>
+                              </em>
+                            </li>
+                            <li>
+                              <em th:class="${ship_css}">
+                                <strong th:text="${ship_type}"> </strong>
+                                <span th:text="${ship_result}"></span>
+                              </em>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--下拉 end-->
+                </div>
+                <div class="icon_list" style="display:none"> <a href="javascript:void(0);" title="卖家承诺消费者保障服务"></a> <a href="javascript:void(0);" title="卖家承诺消费者保障服务"></a> </div>
+                <div class="place" th:text="${obj.area.parent.parent.areaname}+${obj.area.parent.areaname}+${obj.area.areaname}"></div>
+              </li>
+              <li class="li_mid"> <span class="lf">共<strong th:text="${obj.goods_list.size()}"></strong>件宝贝</span>
+               <span th:if="${obj.storeQq!=null&&obj.storeQq !=''}" class="rg">
+                 <i>
+                   <a target="_blank" th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${obj.storeQq},Site=${obj.storeQq},Menu=yes)}">
+                     <img th:src="@{'http://wpa.qq.com/pa(p=2:'+${obj.storeQq}+':51)'}" />
+                   </a>
+                 </i>
+               </span>
+              </li>
+            </ul>
+          </div>
+          <!--右侧 start-->
+          <!--#set($recommend_goods=$!storeViewTools.query_recommend_store_goods($!obj,-1,-1))-->
+          <script >
+		        jQuery(function(){
+                  var objid=jQuery("#objid").val();
+			       jQuery("#store_goods_img_"+objid).jCarouselLite({
+	                    btnNext: "#to_right_"+objid,
+　　                     btnPrev: "#to_left_"+objid,
+	                    auto: null,
+	                    speed: 2000,
+	                    visible:5,
+				        scroll:1
+                    });
+			     })
+          </script>
+          <div class="Hot_cf_main_list_right">
+            <div class="right_list_bt">
+              <input type="hidden" id="objid" th:value="${obj.id}">
+              <div class="right_list" th:id="'store_goods_img_'+${obj.id}" th:store_id="${obj.id}">
+                <ul>
+                  <div th:each="goods : ${obj.recommend_goods}">
+                  <li th:if="${goods!=null}">
+                    <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                      <img th:if="${goods.goods_main_photo}" th:src="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}" width="120" height="102" />
+                    </a>
+                    <span th:text="'￥'+${goods.storePrice}"></span>
+                  </li>
+                  <li th:unless="${goods!=null}">
+                    <a href="javascript:void(0);">
+                      <img th:src="@{/style/common/images/thumb.jpg}" width="120" height="102" />
+                    </a>
+                  </li>
+                  </div>
+                </ul>
+                <a href="javascript:void(0);" th:id="'to_left_'+${obj.id}" th:attr="obj_id=${obj.id}" type="left"  class="to_left" ></a>
+                <a href="javascript:void(0);" th:id="'to_right_'+${obj.id}" th:obj_id="${obj.id}" type="right"  class="to_right" ></a>
+              </div>
+               <a th:href="@{/search.htm(type='store',sc_id=${obj.sc.id})}" class="bt_r">相似店铺》</a> </div>
+          </div>
+        </div>
+        <!--店铺相邻不同样式-->
+        <!--#if($!store_list_class_count== 2)
+        #set($store_list_class_count=0)
+        #end
+        #end-->
+      </div>
+      <div class="fenye">
+        <div class="fenyes"> <span th:utext="${gotoPageFormHTML}"></span> </div>
+      </div>
+    </form>
+  </div>
+  <div class="footer">
+    <div class="footerArea">
+      <ul>
+        <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+        </li>
+        <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+        <li class="hui2">Powered by shopping 2.x</li>
+        <li th:text="${config.codeStat}"></li>
+      </ul>
+    </div>
+  </div>F
+</div>
+</body>
+<script>
+  jQuery(document).ready(function () {
+    var orderBy = jQuery("#orderBy").val();
+    if (orderBy == "addTime") {
+      jQuery("#search_orderby_addTime").addClass("this");
+    } else {
+      jQuery("#search_orderby_" + orderBy).parent().find("a").removeClass("this");
+      jQuery("#search_orderby_" + orderBy).addClass("this");
+    }
+    var checkbox_id = jQuery("#checkbox_id").val();
+    if (checkbox_id != null) {
+      jQuery("#" + checkbox_id).attr("checked", "checked");
+    }
+
+    var storeGrade_id = jQuery("#storeGrade_id").val();
+    if (storeGrade_id != "") {
+      jQuery("#grade_name").html(jQuery("#grade_" + storeGrade_id).html());
+    }
+    jQuery(".Hot_cf_store_top_panel_pr").hover(
+            function () {
+              jQuery(this).find("ul").css("display", "block");
+              jQuery(this).find(".tb_home_box").css("display", "block");
+            },
+            function () {
+              jQuery(this).find("ul").css("display", "none");
+              jQuery(this).find(".tb_home_box").css("display", "none");
+            });
+  });
+  jQuery(".descr").mouseover(function () {
+    jQuery(this).find(".descr_xl").show();
+  })
+  jQuery(".descr").mouseleave(function () {
+    jQuery(this).find(".descr_xl").hide();
+  });
+
+  jQuery("a[id^=sc_search_]").click(function () {
+    var sc = jQuery(this).attr("sc");
+    jQuery("#sc_id").val(sc);
+    jQuery("#type").val("store");
+    jQuery("#ListForm").submit();
+  });
+
+  jQuery("a[id^=search_orderby_]").click(function () {
+    var mark = jQuery(this).attr("mark");
+    var mark_id = jQuery(this).attr("mark_id");
+    jQuery("#orderBy").val(mark);
+    if (mark == "addTime") {
+      jQuery("#checkbox_id").val("");
+      jQuery("#sc_id").val("");
+      jQuery("#storepoint").val("");
+    }
+    jQuery("#ListForm").submit();
+  });
+
+  jQuery("input[type='checkbox']").click(function () {
+    var checked = jQuery(this).attr("checked");
+    if (checked == "checked") {
+      jQuery("#checkbox_id").val(jQuery(this).attr("id"));
+    } else {
+      jQuery(this).removeAttr("checked");
+      jQuery("#checkbox_id").val("");
+    }
+    jQuery("#ListForm").submit();
+  });
+
+  jQuery("a[id^=grade_]").click(function () {
+    var grade_id = jQuery(this).attr("grade_id");
+    jQuery("#storeGrade_id").val(grade_id);
+    jQuery("#ListForm").submit();
+  });
+
+  jQuery("#storepoint").parent().find("ul[class='Hot_cf_store_top_panel_pr_ul'] li a").click(function () {
+    var mark = jQuery(this).attr("mark");
+    jQuery("#storepoint").val(mark);
+    jQuery("#ListForm").submit();
+  });
+
+  jQuery("span.hot_bt").find("input[type='button']").click(function () {
+    jQuery("#keyword2").val(jQuery(this).parent().find("input:first").val());
+    jQuery("#ListForm").submit();
+  });
+  jQuery("a[id^=searchBy_area_]").click(function () {
+    var area_id = jQuery(this).attr("area_id");
+    jQuery("#area_id").val(area_id);
+    jQuery("#ListForm").submit();
+  });
+  jQuery("#searchBy_areaName").click(function () {
+    jQuery("#ListForm").submit();
+  });
+  var search_bar_top = jQuery(".Hot_cf_store_top").offset().top;
+  jQuery(window).scroll(function () {
+    var top = jQuery(".Hot_cf_store_top").offset().top;
+    var scrolla = jQuery(window).scrollTop();
+    var i = top - scrolla;
+    if (i <= 0) {
+      jQuery(".Hot_cf_store_top").addClass("Hot_cf_store_top_add");
+    }
+    if (scrolla < search_bar_top) {
+      jQuery(".Hot_cf_store_top").removeClass("Hot_cf_store_top_add");
+      ;
+    }
+  });
+</script>
+
+</html>

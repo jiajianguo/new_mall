@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+	<head>
+		<meta charset="UTF-8">
+		<title>订单详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/order1.css"/>
+		<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="ui-pane">
+			<div class="ui-header">
+				<a href="" class="header-button">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-left"></use>
+					</svg>
+				</a>
+				<div class="header-title">订单详情</div>
+			</div>
+			<div class="ui-content">
+				<div class="container">
+					<div class="order">
+						<div>
+							<span>订单编号：</span>
+							<span class="identifier" th:text="${obj.orderId}"></span>
+						</div>
+						<div>
+							<span>下单时间：</span>
+							<span class="timer" th:text="${#dates.format(obj.addtime,'yyyy-MM-dd HH:mm:ss')}">2020-9-14 11:49:00</span>
+						</div>
+						<div>
+							<span>交易状态：</span>
+							<span  th:switch="${obj.orderStatus}">
+								<span class="state" th:case=" 0" th:text="${'已取消'}"></span>
+								<span class="state" th:case="10" th:text="${'待付款'}"></span>
+								<span class="state" th:case="15" th:text="${'线下支付待审核'}"></span>
+								<span class="state" th:case="16" th:text="${'货到付款待发货'}"></span>
+								<span class="state" th:case="20" th:text="${'待发货'}"></span>
+								<span class="state" th:case="30" th:text="${'待收货'}"></span>
+								<span class="state" th:case="40" th:text="${'已收货'}"></span>
+								<span class="state" th:case="45" th:text="${'买家申请退货'}"></span>
+								<span class="state" th:case="46" th:text="${'退货中'}"></span>
+								<span class="state" th:case="47" th:text="${'退货完成，已结束'}"></span>
+								<span class="state" th:case="48" th:text="${'卖家拒绝退货'}"></span>
+								<span class="state" th:case="49" th:text="${'退货失败'}"></span>
+								<span class="state" th:case="50" th:text="${'已完成,已评价'}"></span>
+								<span class="state" th:case="60" th:text="${'已结束'}"></span>
+								<span class="state" th:case="50" th:text="${'已结束，不可评价'}"></span>
+								<span class="state" th:case="50" th:text="${'已收货'}"></span>
+							</span>
+						</div>
+					</div>
+					<div class="text_title texttop1">收货人信息</div>
+					<div class="takeover-content">
+						<div>
+							<span class="sh11">收货人：</span>
+							<span class="identifier" th:text="${obj.addr.truename}"></span>
+						</div>
+						<div>
+							<span  class="sh11">联系方式：</span>
+							<span class="timer" th:text="${obj.addr.telephone}"></span>
+						</div>
+						<div>
+							<span  class="sh11">收货地址：</span>
+							<span class="state" th:text="${obj.addr.countries+obj.addr.city+obj.addr.areaInfo}"></span>
+						</div>
+					</div>
+					<div class="spnew">
+						<div class="text_title">商品信息</div>
+						<div class="spnew_text" th:each="gc : ${obj.gcs}">
+							<a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
+								<img class="spnew_text_img" th:if="${gc.goods.goods_main_photo}" th:src="@{${'/'+gc.goods.goods_main_photo.path+'/'+gc.goods.goods_main_photo.name}}" width="62" height="62" />
+								<img class="spnew_text_img" th:unless="${gc.goods.goods_main_photo}" th:src="@{${'/'+config.goodsImage.path+'/'+config.goodsImage.name}}" width="62" height="62" />
+							</a>
+							<div class="text">
+								<div class="text_row">
+									<div><a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" th:text="${gc.goods.goodsName}"></a></div>
+									<span class="spec_box" th:text="${gc.specInfo}"></span>
+									<div class="text_row_pay" th:text="${'$'+gc.goods.storePrice}"></div>
+								</div>
+								<div class="textnumber">x<span th:text="${gc.count}"></span> </div>
+							</div>
+						</div>
+					</div>
+					<div class="zfpay">
+						<div class="text_title">支付内容</div>
+						<div class="zfpay_text">
+							<div class="zfpay_row zfpay_row1">
+								<div>支付方式：</div>
+								<div>paypal支付</div>
+							</div>
+							<div class="zfpay_row">
+								<div>商品总额：</div>
+								<div><span th:text="${obj.totalprice}"></span> <span class="fontd">USD</span></div>
+							</div>
+							<div class="zfpay_row">
+								<div>本地运费：</div>
+								<div>+￥0</div>
+							</div>
+							<div class="zfpay_row">
+								<div>服务费用：</div>
+								<div>+￥0</div>
+							</div>
+							<div class="zfpay_row color1">
+								<div></div>
+								<div>实付：<span th:text="${obj.totalprice}"></span> <span class="fontd">USD</span></div>
+							</div>
+						</div>
+					</div>
+					<div class="text_title texttop1">物流信息</div>
+					<div class="logistics-content">
+						<div>
+							<span>物流单号：</span>
+							<span class="identifier" th:text="${obj.shipcode}"></span>
+						</div>
+						<div>
+							<span>物流公司：</span>
+							<span class="identifier" th:if="${obj.ec}" th:text="${obj.ec.companyName}"></span>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	</script>
+</html>

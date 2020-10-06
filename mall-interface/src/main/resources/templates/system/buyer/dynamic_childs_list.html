@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script>
+jQuery(document).ready(function(){
+	//好友评论点击回复按钮ajax
+	jQuery("a[id^=child_reply_]").click(function(){
+	   var child_name = jQuery(this).attr("child_name");
+	    var parent_id = jQuery(this).attr("parent_id");
+		jQuery("#reply_content_"+parent_id).val("回复"+child_name+":");
+		 
+		});
+	//动态显示评论的回复与删除
+	jQuery("dl[id^=id_dl_]").hover(
+			function(){
+			 var hide_child_id =jQuery(this).attr("child_id");	
+			 jQuery("#hide_span_"+hide_child_id).show(); 
+							},
+			function(){
+			 var hide_child_id =jQuery(this).attr("child_id");	
+			 jQuery("#hide_span_"+hide_child_id).hide();
+		});
+		//删除动态下方的评论
+	jQuery("a[id^=reply_dele_ajax_]").click(function(){										 
+			jQuery("#hidden_dynamic_id").val(jQuery(this).attr("child_id"));
+			jQuery("#hidden_parent_dynamic_id").val(jQuery(this).attr("parent_id"));
+			showDialog("share_sns","系统提示","删除后不可恢复，是否继续？",1,"question",10,dele_dynamic_reply);
+			});	
+});
+
+	//删除动态下方评论
+function dele_dynamic_reply(){
+	var child_id = jQuery("#hidden_dynamic_id").val();
+	var parent_id = jQuery("#hidden_parent_dynamic_id").val();	
+ 	jQuery.post("/buyer/dynamic_reply_del.htm",
+					   {    
+						"id":child_id,
+						"parent_id":parent_id
+					   },
+					   function(data){
+						   if(data){
+							   jQuery("#child_list_"+parent_id).html(data);
+							   showDialog("share_sns","系统提示","删除成功！",0,"succeed",3);
+							   }
+	   							},"text");
+	
+}
+</script>
+
+<dl th:each="child :${obj.childs}" th:id="'id_dl_'+${child.id}" th:child_id="${child.id}">
+  <dt>
+    <img th:if="${child.user.photo}" th:src="@{'/'+${child.user.photo.path}+'/'+${child.user.photo.name}}" width="40" height="40" />
+    <img th:unless="${child.user.photo}" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="40" height="40" />
+  </dt>
+  <dd>
+    <div class="enjoy_rptext">
+      <a href="javascript:void(0);" class="blue2" th:text="${child.user.username}+' :'"></a>
+     <span th:utext="${child.content}"></span>
+    </div>
+    <div class="enjoy_fbtime" th:text="${#dates.format(child.addtime,'yyyy-MM-dd HH:mm:ss')}">
+      <span class="reply_fun" th:id="'hide_span_'+${child.id}"  style="display:none">
+        <a th:if="${child.user.id!=user.id}" href="javascript:void(0);" th:id="'child_reply_'+${child.id}" th:parent_id="${obj.id}"  th:child_name="${child.user.username}" >回复</a>
+        <a th:if="${child.user.id==user.id}" href="javascript:void(0);"  th:id="reply_dele_ajax_'+${child.id}" th:child_id="${child.id}" th:parent_id="${obj.id}">删除</a>
+      </span>
+    </div>
+  </dd>
+</dl>
+
+
+</html>

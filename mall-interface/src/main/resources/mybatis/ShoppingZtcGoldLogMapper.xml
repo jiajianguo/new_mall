@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingZtcGoldLogMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingZtcGoldLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="zgl_content" jdbcType="VARCHAR" property="zglContent" />
+    <result column="zgl_gold" jdbcType="INTEGER" property="zglGold" />
+    <result column="zgl_type" jdbcType="INTEGER" property="zglType" />
+    <result column="zgl_goods_id" jdbcType="BIGINT" property="zglGoodsId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, zgl_content, zgl_gold, zgl_type, zgl_goods_id
+  </sql>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingZtcGoldLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_ztc_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_ztc_gold_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_ztc_gold_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingZtcGoldLogExample">
+    delete from shopping_ztc_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingZtcGoldLog">
+    insert into shopping_ztc_gold_log (id, addTime, deleteStatus,
+      zgl_content, zgl_gold, zgl_type,
+      zgl_goods_id)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{zglContent,jdbcType=VARCHAR}, #{zglGold,jdbcType=INTEGER}, #{zglType,jdbcType=INTEGER},
+      #{zglGoodsId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingZtcGoldLog">
+    insert into shopping_ztc_gold_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="zglContent != null">
+        zgl_content,
+      </if>
+      <if test="zglGold != null">
+        zgl_gold,
+      </if>
+      <if test="zglType != null">
+        zgl_type,
+      </if>
+      <if test="zglGoodsId != null">
+        zgl_goods_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="zglContent != null">
+        #{zglContent,jdbcType=VARCHAR},
+      </if>
+      <if test="zglGold != null">
+        #{zglGold,jdbcType=INTEGER},
+      </if>
+      <if test="zglType != null">
+        #{zglType,jdbcType=INTEGER},
+      </if>
+      <if test="zglGoodsId != null">
+        #{zglGoodsId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingZtcGoldLogExample" resultType="java.lang.Long">
+    select count(*) from shopping_ztc_gold_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_ztc_gold_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.zglContent != null">
+        zgl_content = #{record.zglContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zglGold != null">
+        zgl_gold = #{record.zglGold,jdbcType=INTEGER},
+      </if>
+      <if test="record.zglType != null">
+        zgl_type = #{record.zglType,jdbcType=INTEGER},
+      </if>
+      <if test="record.zglGoodsId != null">
+        zgl_goods_id = #{record.zglGoodsId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_ztc_gold_log
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      zgl_content = #{record.zglContent,jdbcType=VARCHAR},
+      zgl_gold = #{record.zglGold,jdbcType=INTEGER},
+      zgl_type = #{record.zglType,jdbcType=INTEGER},
+      zgl_goods_id = #{record.zglGoodsId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingZtcGoldLog">
+    update shopping_ztc_gold_log
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="zglContent != null">
+        zgl_content = #{zglContent,jdbcType=VARCHAR},
+      </if>
+      <if test="zglGold != null">
+        zgl_gold = #{zglGold,jdbcType=INTEGER},
+      </if>
+      <if test="zglType != null">
+        zgl_type = #{zglType,jdbcType=INTEGER},
+      </if>
+      <if test="zglGoodsId != null">
+        zgl_goods_id = #{zglGoodsId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingZtcGoldLog">
+    update shopping_ztc_gold_log
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      zgl_content = #{zglContent,jdbcType=VARCHAR},
+      zgl_gold = #{zglGold,jdbcType=INTEGER},
+      zgl_type = #{zglType,jdbcType=INTEGER},
+      zgl_goods_id = #{zglGoodsId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

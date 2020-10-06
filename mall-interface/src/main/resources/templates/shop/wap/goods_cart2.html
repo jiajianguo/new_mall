@@ -1,0 +1,198 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>shopping message</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+		<link rel="stylesheet" type="text/css" href="/asset/css/order.css" />
+		<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="ui-pane">
+			<div class="ui-header">
+				<a href="" class="header-button">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-left"></use>
+					</svg>
+				</a>
+				<div class="header-title">add order</div>
+			</div>
+			<div class="ui-content">
+
+				<div class="content">
+					<div class="pushdz">
+						<div>
+							<div class="push_title">收货地址</div>
+							<div th:each="addr : ${addrs}" th:data-id="${addr.id}" class="address_id" >
+								<span id="person" th:text="${addr.truename } "></span>
+								<span id="mobile" th:text="${addr.mobile}"></span>
+								<div class="pushdz_text"   th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>
+							</div>
+						</div>
+						<input class="pushdzbt" id="user_address" type="button" value="设置地址" />
+
+					</div>
+					<div class="spnew" th:each="data : ${cartData} ">
+						<div class="text_title">
+							<a th:href="@{/store.htm(id=${data.store.id})}" target="_blank" th:text="${data.store.storeName}"></a>
+						</div>
+						<div class="spnew_text" th:each="gc :${data.carts}">
+							<input type="hidden" name="" th:value="${gc.id}">
+							<a th:href="@{/goods.htm(id=${gc.goodsId})}" target="_blank">
+								<img class="spnew_text_img" th:if="${gc.goods.goods_main_photo}"
+									 th:src="@{'/'+${gc.goods.goods_main_photo.path}+'/'+${gc.goods.goods_main_photo.name}}"/>
+							</a>
+							<div class="text">
+								<div class="text_row">
+									<div>
+										<a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" th:text="${gc.goods.goodsName}"></a>
+										<span th:if="${gc.goods.groupBuy==2}" style="color:#F00">(团购)</span>
+										<span th:if="${gc.goods.bargainStatus==2}" style="color:#F00">(特价)</span>
+										<span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span>
+									</div>
+									<div class="text_row_pay" th:text="${gc.price}"></div>
+								</div>
+								<div class="textnumber" th:text="${'x'+gc.count}"></div>
+							</div>
+						</div>
+						<div class="zfpay_text">
+							<div class="fptext">
+								<div class="fptextzong">
+									开具发票：
+									<div>
+										<span>是</span>
+										<input class="fpinput" type="radio" name="fp" />
+									</div>
+									<div>
+										<span>否</span>
+										<input class="fpinput" type="radio" name="fp"/>
+									</div>
+								</div>
+								<div>查看详情></div>
+							</div>
+							<div class="zfpay_row">
+								<div>商品总额：</div>
+								<div>
+									<span th:text="'$'+ ${data.totalPrice }"></span>
+									<span class="fontd"></span>
+								</div>
+							</div>
+							<div class="zfpay_row">
+								<div>本地运费：</div>
+								<div>+￥0</div>
+							</div>
+							<div class="zfpay_row">
+								<div>服务费用：</div>
+								<div>+￥0</div>
+							</div>
+							<div class="zfpay_row color1">
+								<div></div>
+								<div>
+									实付：<span th:text="'$'+${data.totalPrice }"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="zfmode">
+						<div class="text_title">支付方式</div>
+						<div class="zfmode_text">
+							<input type="hidden" id="orderNO" name="orderNo" th:value="${orderNo}">
+							<div class="zfmode_row" th:each="pay : ${pays}">
+								<div class="zfmode_left">
+									<img class="zfmode_leftimg" src="asset/img/pay1.png" >
+									<div th:text="${pay.name}">
+										<!--
+										<span class="paycolor">$0.00</span>
+										<span class="tscolor">余额不足，</span>
+										<a class="czbt" href="#">去充值></a>-->
+									</div>
+								</div>
+								<input type="radio" name="zf"  value="stampsToPay" th:data-id="${pay.id}" th:value="${pay.id}"/>
+							</div>
+							<!--<div class="zfmode_row">
+								<div class="zfmode_left">
+									<img class="zfmode_leftimg" src="asset/img/pay1.png" >
+									<div>
+										邮票支付
+										&lt;!&ndash;
+										<span class="paycolor">$0.00</span>
+										<span class="tscolor">余额不足，</span>
+										<a class="czbt" href="#">去充值></a>&ndash;&gt;
+									</div>
+								</div>
+								<input type="radio" name="zf" id="stampsToPay" value="stampsToPay"/>
+							</div>-->
+							<!--<div class="zfmode_row">
+								<div class="zfmode_left">
+									<img class="zfmode_leftimg" src="asset/img/zf_1.png" >
+									<div>
+										paypal支付
+										&lt;!&ndash;<span class="paycolor">手续费率4.4%；固定    费用$0.3</span>&ndash;&gt;
+									</div>
+								</div>
+								<input type="radio" name="zf"/>
+							</div>-->
+						</div>
+					</div>
+					
+					<div class="btzong">
+						<input class="content_bt" type="button" id="orderPay" value="立即支付" />
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$("#user_address").click(function (){
+			window.location.href="/buyer/address.htm";
+		});
+		$("#orderPay").click(function (){
+           var orderNO=$("#orderNO").val();
+           var addr_id=$(".address_id");
+           var coupon_id ='';
+           var payIds =$(".zfmode_text .zfmode_row").find("input[type =radio]");
+           var payid;
+           var flag= true;
+           var addr;
+           if(addr_id){
+           	 addr_id.each(function(){
+				 addr=$(this).attr('data-id');
+			 })
+		   }
+           payIds.each(function(){
+           	if($(this).is(":checked")){
+				payid = $(this).val();
+			}
+		   });
+           if(!verify(orderNO)){
+           		alert("订单信息有误");
+           		flag =false;
+		   }
+           if(!verify(addr)){
+           	 alert("选择收货地址");
+           	 flag =false;
+		   }
+           if(!verify(payid)){
+           	 alert("请选择支付方式");
+           	 flag =false;
+		   }
+           if(flag){
+           	 window.location.href="/goods_cart3?addr_id="+addr+"&payId="+payid+"&orderNo="+orderNO;
+		   }
+		});
+
+		function verify(s){
+			if(s){
+				if(s.length >0){
+					return true;
+				}
+			}
+			return false;
+		}
+	</script>
+</html>
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>主页</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="/wap/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/wap/css/index.css"/>
+	<script src="/wap/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/wap/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/wap/js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div class="ui-pane">
+		<div class="Nav"></div>
+		<div class="ui-content">
+			<div class="search_box flex-between">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-caidan"></use>
+				</svg>
+				<div class="input_box flex-star">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-sousuo"></use>
+					</svg>
+					<input type="text" placeholder="请输入您要搜索的内容" class="search_input" name="keyword" id="keyword" value="">
+				</div>
+				<a href="/buyer/message.htm?type=0">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-xiaoxi1"></use>
+				</svg>
+				</a>
+				<a href="/goods_cart1.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-gouwuche"></use>
+					</svg>
+				</a>
+			</div>
+			<div class="dianp_box flex-between">
+				<div class="dianp_left">
+					<div th:text="${goodsStore.storeName}"></div>
+					<span th:text="${'粉丝：'+goodsStore.favoriteCount}"></span>
+				</div>
+				<button type="button" id="collect_store" th:data-id="${goodsStore.id}">+关注</button>
+			</div>
+			<div class="page_nav flex-star">
+				<div class="page_nav_act">
+					<a  th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='addTime',orderType='desc')}">综合</a>
+				</div>
+				<div>
+					<a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='goods_salenum',orderType='desc')}"> 销量</a>
+				</div>
+				<div>
+					<a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='addTime',orderType='desc')}"> 上新</a>
+				</div>
+				<div class="flex-star">
+					<span>
+						<a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='store_price',orderType='desc')}">按价格</a>
+					</span>
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-shangxia"></use>
+					</svg>
+				</div>
+			</div>
+			<div class="goods_list flex-star">
+				<div class="goods_item" th:each="goods : ${goods_new}">
+					<a th:href="@{/goods.htm(id=${goods.id})}">
+						<img th:if="${goods.goods_main_photo}"  th:src="@{${goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}" >
+						<img th:unless="${goods.goods_main_photo}"  th:src="@{${config.goodsImage.path+'/'+config.goodsImage.name}}" >
+						<div class="price_box">
+							<span th:text="${goods.storePrice}"></span>
+							<del th:text="${goods.goodsCurrentPrice}"></del>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$("#keyword").blur(function (){
+		var keyword=$(this).val();
+		window.location.href="/app_store_goods_search.htm?type=goods&keyword="+keyword;
+	});
+	$("#collect_store").click(function(){
+		var store_id = $(this).attr("data-id");
+
+	});
+	jQuery(function(jQuery){
+		jQuery(".collection a").click(function(){
+			var usere ={};
+			user= jQuery("#user").val();
+			var storeId = jQuery("storeId").val();
+			if(user){
+				if(user.storeId == storeId){
+					alert("不能收藏自己的店铺");
+				}else{
+					jQuery.post("/add_store_favorite.htm",{"id":"$!store.id"},function(data){
+						if(data==0){
+							alert("店铺收藏成功！");
+						}
+						if(data==1){
+							alert("该店铺已经被收藏！");
+						}
+					},"text");
+				}
+			}
+		});
+		//
+		jQuery(".twocoad").css("cursor","pointer").mouseover(function(){
+			jQuery(".shop_botmhbox").fadeIn('fast');
+		}).mouseleave(function(){
+			jQuery(".shop_botmhbox").fadeOut('fast');
+		});
+		//
+	});
+</script>
+</html>

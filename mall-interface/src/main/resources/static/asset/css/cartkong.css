@@ -1,0 +1,12 @@
+.content_text{
+	font-size: .28rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 50%;
+	color: #222222;
+}
+.cartimg{
+	width: 1.86rem;
+	margin-bottom: .2rem;
+}

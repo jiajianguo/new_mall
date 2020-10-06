@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>分类</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/classify.css"/>
+	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div class="ui-pane">
+		<div class="Nav"></div>
+		<div class="ui-content">
+			<div class="search_box flex-star">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-sousuo"></use>
+				</svg>
+				<input type="text" name="" id="" placeholder="请输入您要搜索的内容" />
+			</div>
+			<div class="page_main flex-between">
+				<div class="mian_left">
+					<!--<div class="mian_left_act">所有商品</div>-->
+					<div th:each="gc :${gcs}" th:text="${gc.classname}">
+						<div class="main_right">
+							<img class="right_banner" src="asset/img/class_banner.png" >
+							<div class="classify_box flex-star">
+								<div th:each="gc1 :${gc.childs}" >
+								<div class="ify_item" th:each="gc2 :${gc1.childs}">
+									<img th:if="${gc.iconType==0   }" width="16" height="16"
+										 th:src="@{'/style/common/images/icon/icon_'+ ${gc.iconSys}+'.png'}">
+									<img th:unless="${gc.iconType==0   }" width="16" height="16"
+										 th:src="@{'/'+${gc.icon_acc.path} +'/'+${gc.icon_acc.name}}">
+									<!--<div class="item_img flex-center">
+										<img src="asset/img/化妆品.png" >
+									</div>-->
+									<a th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}" th:text="${gc2.classname}"></a>
+								</div>
+							</div>
+						</div>
+							<div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

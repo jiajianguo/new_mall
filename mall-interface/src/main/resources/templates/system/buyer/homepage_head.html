@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<script>
+//添加关注
+jQuery(document).ready(function(){
+	jQuery("#add_atten").click(function(){
+	var user_id= jQuery(this).attr("user_id");
+		 jQuery.post("/buyer/homepage_add_attention.htm",
+				   {
+				    "user_id":user_id
+				   },
+				   function(data){
+					 if(data=="true"){
+						 showDialog("share_sns","系统提示","关注成功！",0,"succeed",3);
+						 }else{
+						showDialog("share_sns","系统提示","您已经关注过该用户！",0,"error",3);
+							 }
+	   					},"text");
+	});
+
+	//点击发布按钮
+	jQuery("#fabu").click(function(){
+		jQuery("#share_select_mark").val("");
+		showDialog("share_sns","我要发布","",2,"succeed",3,select_method);
+	});
+
+});
+//个人主页选择分享方式，三种分享方式，分享宝贝，分享店铺，分享新鲜事
+function select_method(){
+	var mark = jQuery("#share_select_mark").val();
+	if(mark==3){
+	jQuery("#over").show();
+	jQuery(".black_overlay").css("height",jQuery(document).height());
+	query_babys();
+	}
+	if(mark==4){
+	jQuery("#over").show();
+	jQuery(".black_overlay").css("height",jQuery(document).height());
+	query_stores();
+	}
+	if(mark==5){
+		showDialog("select_dynamic_mark_5","分享新鲜事","",5,"succeed","",select_dynamic_save);//第四个参数为5，弹出分享新鲜事窗口
+		}
+	};
+//个人主页分享保存方法
+function select_dynamic_save(){
+	var content =jQuery("#share_select_content").val();
+ 		jQuery.post("/buyer/dynamic_save.htm",
+				   {
+				    "content":content
+				   },
+				   function(data){
+					   if(data){
+                          showDialog("share_sns","系统提示","发布成功！",0,"succeed",5);
+						   }
+	   					},"text");
+	};
+//查询已经购买的宝贝和已经收藏的宝贝
+function query_babys(){
+		jQuery.post("/buyer/homepage_query_goods.htm",
+				   function(data){
+					   if(data){
+						 jQuery("#over").hide();
+                        jQuery("body").append(data);
+						   }
+	   					},"text");
+			};
+function query_stores(){
+		jQuery.post("/buyer/homepage_query_stores.htm",
+				   {
+				   },
+				   function(data){
+					   if(data){
+						jQuery("#over").hide();
+                        jQuery("body").append(data);
+						   }
+	   					},"text");
+	};
+</script>
+<input id="share_select_mark"  name="share_select_mark" type="hidden" value=""/>
+<input id="share_select_content"  name="share_select_content" type="hidden" value=""/>
+<div style="width:100%; background:url(/style/system/front/default/images/usercenter/top_bg.jpg) no-repeat top center; height:232px; padding-top:20px; clear:both;">
+  <div class="main">
+    <div class="head">
+      <div class="logo">
+          <a th:href="@{/index.htm}">
+              <img th:if="${config.websiteLogo}" th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}"  width="180" height="40"/>
+              <img th:unless="${config.websiteLogo}" th:src="@{/style/system/front/default/images/logo.png}" width="180" height="40" />
+          </a>
+      </div>
+        <div th:if="${owner.id==user.id}" class="release">
+            <a href="javascript:void(0);" id="fabu"><strong> +</strong> <i>发布</i></a>
+        </div>
+        <div th:unless="${owner.id==user.id}" class="release_ta">
+            <a th:href="@{/buyer/homepage.htm}"><strong> « </strong> <i>返回我的个人主页</i></a>
+        </div>
+
+
+      <div class="attention">
+        <div class="attention_hd">
+
+            <a th:if="${owner.id!=user.id}" th:href="@{/buyer/homepage.htm(uid=${owner.id})}">
+                  <img th:if="${owner.photo}" class="attention_hd_pic" th:src="@{'/'+${owner.photo.path}+'/'+${owner.photo.name}}" width="69" height="79" />
+                  <img th:unless="${owner.photo}" class="attention_hd_pic" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="69" height="79" />
+            </a>
+            <a th:if="${owner.id==user.id}" th:href="@{/buyer/homepage.htm}">
+                <img th:if="${owner.photo}" class="attention_hd_pic" th:src="@{'/'+${owner.photo.path}+'/'+${owner.photo.name}}" width="69" height="79" />
+                <img th:unless="${owner.photo}" class="attention_hd_pic" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="69" height="79" />
+            </a>
+
+          </div>
+        <div class="attention_mid">
+          <div class="attention_mid_left">
+            <p><strong th:text="${owner.username}"> </strong></p>
+            <div class="attention_mid_left_bt">
+                <span th:text="'性别：'+${owner.sex==-1 ? '男' :(owner.sex==0? '女':'暂无信息')}"></span></br>
+                <i th:text="'生日：'+${owner.birthday==null ?'暂无信息': #dates.format(owner.birthday,'yyyy-MM-dd') }"></i>
+            </div>
+          </div>
+          <div class="attention_right">
+
+            <p th:if="${owner.id!=user.id}" class="attention_btn"> <i><a href="javascript:void(0);" id="add_atten" user_id = $!owner.id><strong>+</strong>加关注</a></i> </p>
+
+            <ul th:if="${owner.id!=user.id}" class="attention_fans">
+              <li><a th:href="@{/buyer/homepage/myfans.htm(uid=${owner.id})}"><strong th:text="${fans_num}"></strong><span>粉丝</span></a></li>
+              <p></p>
+              <li><a th:href="@{/buyer/homepage/myattention.htm(uid=${owner.id})}"><strong th:text="${attentions_num}"></strong><span>关注</span></a></li>
+            </ul>
+
+
+              <ul class="attention_fans">
+
+                  <li>
+                  <a th:href="@{/buyer/homepage/myfans.htm}"><strong th:text="${fans_num}"></strong><span>粉丝</span></a></li>
+                  <p></p>
+                  <li><a th:href="@{/buyer/homepage/myattention.htm}"><strong th:text="${attentions_num}"></strong><span>关注</span></a></li>
+              </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="over" style="display:none">
+    <div class="black_overlay">
+        <img style="top:20%; left:50%; z-index:999; position:absolute;" th:src="@{/style/common/images/loading.gif}" />
+    </div>
+</div>
+
+</html>

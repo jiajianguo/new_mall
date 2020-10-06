@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>商品列表</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/wareslist.css" />
+	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://at.alicdn.com/t/font_2092067_ooza9xsgo4e.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div class="ui-pane">
+	<div class="ui-content">
+
+		<div class="content">
+
+			<div class="content_search">
+				<svg class="icon icon_left" aria-hidden="true">
+					<use xlink:href="#icon-left"></use>
+				</svg>
+				<div class="seinput">
+					<svg class="icon icon_search" aria-hidden="true">
+						<use xlink:href="#icon-search"></use>
+					</svg>
+					<input class="setext" type="text" placeholder="搜索商品标题" />
+				</div>
+				<input class="sebt" type="button" name="" id="" value="搜索" />
+			</div>
+
+			<div class="nav_top">
+				<div class="nav_text nav1 nav_text_act">
+					<span><a th:href="@{/store_goods_list.htm(store_id = ${store.id},orderBy='addTime',orderType='desc')}">综合</a> </span>
+					<div>
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-sanjiao"></use>
+						</svg>
+					</div>
+				</div>
+				<div class="nav_text nav_text1" data-select="0">
+							<span><a th:href="@{/store_goods_list.htm(store_id = ${store.id},orderBy='goods_salenum',orderType='desc')}">
+								销量</a></span>
+					<svg class="icon icon_nav" aria-hidden="true">
+						<use xlink:href="#icon-shangxia1-copy-copy"></use>
+					</svg>
+				</div>
+				<div class="nav_text nav_text1" data-select="0">
+					<span><a th:href="@{/store_goods_list.htm(store_id = ${store.id},orderBy='store_price',orderType='asc')}">价格</a> </span>
+					<svg class="icon icon_nav" aria-hidden="true">
+						<use xlink:href="#icon-shangxia1-copy-copy"></use>
+					</svg>
+				</div>
+				<div class="nav_text nav1">
+					<span>筛选</span>
+					<svg class="icon icon_sx" aria-hidden="true">
+						<use xlink:href="#icon-shaixuan"></use>
+					</svg>
+				</div>
+			</div>
+
+			<div class="content_text" th:if="${objs}" th:each="goods :${objs}">
+				<a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+					<img class="tu" th:if="${goods.goods_main_photo}"
+						 th:src="@{${goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"/>
+					<img class="tu" th:unless="${goods.goods_main_photo}"
+						 th:src="@{${config.goodsImage.path+'/'+config.goodsImage.name}}"/>
+				</a>
+				<div class="text_zong">
+					<div>
+						<div class="text1"> <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a></div>
+						<div class="textbq" th:text="${'出售：'+goods.goodsSalenum+'笔'}"></div>
+					</div>
+					<div>
+						<del class="yjpay" th:text="'$'+${goods.goodsPrice}"></del>
+						<div class="paynumber" th:text="'$'+${goods.storePrice}"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function() {
+		$(".nav_text").click(function() {
+			$(this).addClass("nav_text_act").siblings().removeClass("nav_text_act")
+			$(".icon_nav use").attr("xlink:href", "#icon-shangxia1-copy-copy")
+		})
+
+		$(".nav1").click(function() {
+			$(".nav_text1").attr("data-select", 0)
+		})
+
+		$(".nav_text1").click(function() {
+			$(this).addClass("select1").siblings().removeClass("select1")
+			$(".icon_nav use").attr("xlink:href", "#icon-shangxia1-copy-copy")
+			if ($(this).attr("class").indexOf("select1") > 0 && $(this).attr("data-select") != 1) {
+				$(this).find(".icon_nav use").attr("xlink:href", "#icon-shangxia1")
+				$(this).attr("data-select", 1)
+			} else if ($(this).attr("class").indexOf("select1") > 0 && $(this).attr("data-select") == 1) {
+				$(this).attr("data-select", 2)
+				$(this).find(".icon_nav use").attr("xlink:href", "#icon-shangxia1-copy")
+			}
+		})
+	})
+</script>
+</html>

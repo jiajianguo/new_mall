@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>用户注册 - Powered by shopping</title>
+    <meta name="keywords" th:content="${config.keywords}"/>
+    <meta name="description" th:content="${config.description}"/>
+    <meta name="generator" content="shopping 2.0"/>
+    <meta name="author" content="www.shopping.com">
+    <meta name="copyright" content="shopping Inc. All Rights Reserved">
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/js/top.js}"></script>
+    <script th:src="@{/js/nav.js}"></script>
+    <script th:src="@{js/head.js}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            //
+            jQuery.validator.addMethod("verify", function (value, element) {
+                var re = /^[0-9a-zA-Z]*$/;
+                if (re.test(jQuery("#userName").val())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            jQuery("#theForm").validate({
+                errorPlacement: function (error, element) {
+                    element.parent().parent("td").next("td").html("");
+                    error.appendTo(element.parent().parent("td").next("td"));
+                },
+                rules: {
+                    userName: {
+                        required: true,
+                        verify: true,
+                        remote: {
+                            url: "/verify_username.htm",     //后台处理程序
+                            type: "post",               //数据发送方式
+                            dataType: "json",           //接受数据格式
+                            data: {                     //要传递的数据
+                                "userName": function () {
+                                    return jQuery("#userName").val();
+                                }
+                            }
+                        }
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 20
+                    },
+                    repassword: {
+                        required: true,
+                        equalTo: "#password"
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        remote: {
+                            url: "/verify_email.htm",     //后台处理程序
+                            type: "post",               //数据发送方式
+                            dataType: "json",           //接受数据格式
+                            data: {                     //要传递的数据
+                                "email": function () {
+                                    return jQuery("#email").val();
+                                }
+                            }
+                        }
+                    },
+                    agree: {
+                        required: true
+                    },
+                    code: {
+                        required: true,
+                        remote: {
+                            url: "/verify_code.htm",     //后台处理程序
+                            type: "post",               //数据发送方式
+                            dataType: "json",           //接受数据格式
+                            data: {                     //要传递的数据
+                                "code": function () {
+                                    return jQuery("#code").val();
+                                }
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    userName: {
+                        required: "用户名不能为空",
+                        verify: "不可使用特殊字符",
+                        remote: "用户名已存在"
+                    },
+                    password: {
+                        required: "密码不能为空",
+                        minlength: "密码不能小于{0}个字符",
+                        maxlength: "密码不能大于{0}个字符"
+                    },
+                    repassword: {
+                        required: "重复密码不能为空",
+                        equalTo: "两次输入密码不一致"
+                    },
+                    email: {
+                        required: "email不能为空",
+                        email: "email格式不正确",
+                        remote: "该email已经存在"
+                    },
+                    agree: {
+                        required: "请接受用户协议"
+                    },
+                    /*code: {
+                        required: "验证码不能为空",
+                        remote: "验证码不正确"
+                    }*/
+                }
+            });
+            //
+        });
+    </script>
+</head>
+<body>
+<div class="top_page">
+    <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+            <li class="mytaobao menu-item menupx">
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="search menu-item menupx">
+                <div class="menu" id="cart_menu">
+                    <span class="menu-hd" id="cart_goods_top_menu">
+                        <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+                    </span>
+                </div>
+            </li>
+            <li class="menupx">
+                <a th:href="@{/buyer/message.htm}">
+                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            </li>
+            <li class="menupx" th:if="${navs != null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="menupx" style="background:none;" th:if="${navs == null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+                <div class="menu">
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+                    <div class="menu-bd" style="height:auto;">
+                        <div class="menu-bd-panel">
+                            <div th:each="nav : ${navs}">
+                                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+    </div>
+</div>
+
+<div class="main">
+    <div id="header_form">
+        <div id="head_h" class="head_width">
+            <div class="head clearFix">
+                <div class="logo">
+                    <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+                        <img width="180" height="60"
+                             th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+                    </a>
+                    <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
+                        <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"
+                             border="0"/>
+                    </a>
+                </div>
+                <div class="searchForm">
+                    <form action="/search.htm" method="post" target="_blank" id="searchForm">
+                        <input name="type" type="hidden" id="type" value="${type}"/>
+                        <div class="toph_bigsearch">
+                            <div class="toph_sear">
+                                <ul class="toph_bgsear">
+                                    <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+                                    <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                                </ul>
+                                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                                       class="toph_sear_txt"/>
+                                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                                       onclick="search_form();" class="toph_sear_btn"/>
+                            </div>
+                            <div class="keyword">
+						   <span th:each="info : ${config.hotsearch.split(',')}">
+							   <a href="javascript:void(0);" th:onclick="search_form(${info},'goods');"
+                                  th:text="${info}"></a>
+						   </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="index">
+        <div class="index2">
+            <div class="login_user">
+                <div class="login_user_left">
+                    <div class="login_user_in">
+                        <h1>用户注册<span>REGISTER</span></h1>
+                        <h2>填写用户注册信息</h2>
+                        <div class="login_user_bottom">
+                            <form th:action="@{/register_finish.htm}" method="post" name="theForm" id="theForm">
+                                <table width="500" border="0" cellspacing="0" cellpadding="0" class="user_zc_table">
+                                    <tr>
+                                        <td width="95" class="login_nameu">用户名：</td>
+                                        <td width="200">
+                                            <span class="login_user_input input_size">
+                                                <input name="userName" type="text" id="userName"/>
+                                            </span>
+                                        </td>
+                                        <td class="login_nameu2">登录用户名</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="login_nameu">密码：</td>
+                                        <td>
+                                            <span class="login_user_input input_size">
+                                                <input name="password" type="password" id="password"/>
+                                            </span>
+                                        </td>
+                                        <td class="login_nameu2">登录密码,6位以上字母数字组合，不区分大小写</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="login_nameu">确认密码：</td>
+                                        <td>
+                                            <span class="login_user_input input_size">
+                                                <input name="repassword" type="password" id="repassword"/>
+                                            </span>
+                                        </td>
+                                        <td class="login_nameu2">再次输入您的密码</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="login_nameu">电子邮件：</td>
+                                        <td>
+                                            <span class="login_user_input input_size">
+                                                <input name="email" type="text" id="email"/>
+                                            </span>
+                                        </td>
+                                        <td class="login_nameu2">录入后不可修改</td>
+                                    </tr>
+                                    <tr th:if="${config.securitycoderegister}">
+                                        <td class="login_nameu">验证码：</td>
+                                        <td>
+                                            <span class="login_user_input input_size2">
+                                                <input name="code" type="text" id="code" style="text-transform:uppercase;"/>
+                                            </span>
+                                            <span class="yzm">
+                                                <img style="cursor:pointer;" th:src="@{/verify.htm}" id="code_img" onclick="refreshCode();" width="59" height="27"/>
+                                            </span>
+                                            <span class="yzm">
+                                                <a th:if="${config.securitycodetype=='voice'}"  href="javascript:void(0);" onclick="readCode('player')" title="朗读验证码">
+                                                    <img th:src="@{/style/common/images/speaker.gif}" border="0"/>
+                                                </a>
+                                            </span>
+                                            <span id="player"></span>
+                                            <script>
+                                                jQuery("input[name='userName']").blur(function(){
+                                                    var userName=jQuery(this).val();
+                                                    jQuery.post('/verify_username.htm',{'userName': userName},function(res){
+                                                        if(res === 'false'){
+                                                            jQuery(".login_nameu2").text('用户名已存在');
+                                                        }
+                                                    });
+                                                });
+                                                function readCode(id) {
+                                                    var s = "<embed id='sound_play' name='sound_play' src='flash/soundPlayer.swf?" + (new Date().getTime()) + "' FlashVars='url=" + "' width='0'   height='0' allowScriptAccess='always' type='application/x-shockwave-flash' pluginspage='http://www.macromedia.com/go/getflashplayer' /></embed>";
+                                                    jQuery("#" + id).html(s);
+                                                }
+                                            </script>
+                                        </td>
+                                        <td class="login_nameu2">点击图片更新验证码</td>
+                                    </tr>
+                                    <script>
+                                        function refreshCode() {
+                                            jQuery("#code_img").attr("src", "/verify.htm?d" + new Date().getTime());
+                                        }
+                                    </script>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td class="login_nameu2">
+                                            <span>
+                                                <input name="agree" type="checkbox" id="agree" value="true"/>
+                                                <label for="agree">  &nbsp;我已阅读并同意&nbsp;</label>
+                                                <a th:href="@{/doc_agree.htm}" target="_blank" class="s_red">用户服务协议</a>
+                                            </span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <span class="login_user_btn_free">
+                                              <input name="save" type="submit" id="save" style="cursor:pointer;" value=""/>
+                                            </span>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="login_user_right">
+                    <h1 class="login_user_h">emode提示</h1>
+                    <h2 class="login_user_h2">所有会员享受</h2>
+                    <ul class="login_user_ul">
+                        <li>
+                            <span class="login_user_span">
+                                <img th:src="@{/style/system/front/default/images/user3.jpg}"  width="25" height="25"/>
+                            </span>
+                            <span  class="login_user_span2">免费开设店铺销售商品</span>
+                        </li>
+                        <li>
+                            <span class="login_user_span">
+                                <img th:src="@{/style/system/front/default/images/user1.jpg}" width="25" height="25"/>
+                            </span>
+                            <span class="login_user_span2">提交完善您的个人资料</span>
+                        </li>
+                        <li>
+                            <span class="login_user_span">
+                                <img th:src="@{/style/system/front/default/images/user4.jpg}"  width="25" height="25"/>
+                            </span>
+                            <span  class="login_user_span2">在线购买商城任意商品</span>
+                        </li>
+                        <li>
+                            <span class="login_user_span">
+                                <img th:src="@{/style/system/front/default/images/user2.jpg}"   width="25" height="25"/>
+                            </span>
+                            <span class="login_user_span2">收藏关注的商及品店铺</span>
+                        </li>
+                    </ul>
+                    <h1 class="login_user_h">如果已经拥有账户</h1>
+                    <div class="login_sys"><span class="login_user_free"><a th:href="@{/user/login.htm}"><img
+                            th:src="@{/style/system/front/default/images/loginde.jpg}" width="98" height="32"
+                            border="0"/> </a></span>
+                    </div>
+                    <!--#if($!{config.sina_login}||$!{config.qq_login})-->
+                    <h1 class="login_user_h2">使用其他账户登录：</h1>
+                    <div class="login_sys2">
+                        <span class="login_qq">
+                           <a th:if="${config.qqLogin}" th:href="@{/qq_login_api.htm}">
+                               <img th:src="@{/style/system/front/default/images/userqq.jpg}" width="101" height="24"/>
+                           </a>
+                        </span>
+                        <span class="login_wb">
+                           <a th:if="${config.sinaLogin}" th:href="@{/sina_login_api.htm}">
+                               <img th:src="@{/style/system/front/default/images/wb.jpg}" width="101" height="24"/>
+                           </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footerArea">
+            <ul>
+                <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+                </li>
+                <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+                <li class="hui2">Powered by shopping 2.x</li>
+                <li th:text="${config.codeStat}"></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>

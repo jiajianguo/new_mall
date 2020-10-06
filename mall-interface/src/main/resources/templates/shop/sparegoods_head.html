@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<script>
+function search_form(){
+  var keyword=arguments[0];
+  var type=arguments[1];
+  if(keyword!=""&&keyword!=undefined){
+   jQuery("#keyword").val(keyword);
+  }
+  if(type!=""&&type!=undefined){
+    jQuery("#type").val(type);
+  }
+  jQuery("#searchtheForm").submit();
+  jQuery("#keyword").val("");
+}
+
+function queryInSite(){
+	jQuery("form").attr("action","/search.htm").attr("id","searchForm");
+	jQuery("#searchForm").submit();
+	}
+function querySpare(){
+	jQuery("form").attr("action","/sparegoods_search.htm").attr("id","searchtheForm");
+	jQuery("#searchtheForm").submit();
+	}
+</script>
+
+<form th:action="@{/sparegoods_search.htm}" method="post" id="searchtheForm">
+<div class="head">
+        <div class="logo">
+
+            <a th:if="${config.websiteLogo}" th:href="@{/index.htm}">
+                <img th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60" />
+            </a>
+            <a th:unless="${config.websiteLogo}" th:href="@{/index.htm}">
+                <img th:src="@{/style/system/front/default/images/logo.png}" border="0" width="180" height="60" />
+            </a>
+
+        </div>
+
+        <div class="bigsearch">
+            <div class="search_box">
+                <span class="search_box_sp">
+                    <input th:if="${keyword}" name="keyword" type="text" id="keyword" th:value="${keyword}" placeholder="这里就可以找到您需要的二手商品！" />
+                </span>
+                    <input type="submit" onclick="querySpare()" class="search_btn_a" value="搜二手" style="cursor:pointer;"/>
+                    <input type="button" onclick="queryInSite()" class="search_btn_b" value="搜全站" style="cursor:pointer;"/>
+            </div>
+
+          <div class="keyword">
+              <a th:each="info :${CommUtil.splitByChar('${config.hotSearch}',',')}" href="javascript:void(0);" onclick="search_form('${info}','goods');" th:text="${info}"></a>
+          </div>
+        </div>
+  </div>
+  </form>

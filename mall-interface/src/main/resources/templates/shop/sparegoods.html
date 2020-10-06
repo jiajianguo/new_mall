@@ -1,0 +1,427 @@
+﻿<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> 闲置商品 - Powered by shopping</title>
+<meta name="keywords" th:content="${config.keywords}"/>
+<meta name="description" th:content="${config.description}"/>
+<meta name="generator" content="shopping 2.0" />
+<meta name="author" content="www.shopping.com">
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/system/front/default/css/second.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/system/front/default/css/second_auto.css}" type="text/css" rel="stylesheet"/>
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+<script th:src="@{/js/jquery.KinSlideshow.min.js}"></script>
+<script th:src="@{/js/jquery.lazyload.js}"></script>
+</head>
+<script>
+  function search_form(){
+    var keyword=arguments[0];
+    var type=arguments[1];
+    if(keyword!=""&&keyword!=undefined){
+      jQuery("#keyword").val(keyword);
+    }
+    if(type!=""&&type!=undefined){
+      jQuery("#type").val(type);
+    }
+    jQuery("#searchtheForm").submit();
+    jQuery("#keyword").val("");
+  }
+
+  function queryInSite(){
+    jQuery("form").attr("action","/search.htm").attr("id","searchForm");
+    jQuery("#searchForm").submit();
+  }
+  function querySpare(){
+    jQuery("form").attr("action","/sparegoods_search.htm").attr("id","searchtheForm");
+    jQuery("#searchtheForm").submit();
+  }
+</script>
+
+<body>
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+              <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+
+              </span>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}">
+          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">更多链接<b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+  <div class="pageleft">
+    <input type="hidden" id="userr" th:value="${user}">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+<div class="main">
+  <form th:action="@{/sparegoods_search.htm}" method="post" id="searchtheForm">
+    <div class="head">
+      <div class="logo">
+
+        <a th:if="${config.websiteLogo}" th:href="@{/index.htm}">
+          <img th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60"/>
+        </a>
+        <a th:unless="${config.websiteLogo}" th:href="@{/index.htm}">
+          <img th:src="@{/style/system/front/default/images/logo.png}" border="0" width="180" height="60"/>
+        </a>
+
+      </div>
+
+      <div class="bigsearch">
+        <div class="search_box">
+                <span class="search_box_sp">
+                    <input name="keyword" type="text" id="keyword" th:value="${keyword!=null?keyword :''}" placeholder="这里就可以找到您需要的二手商品！" />
+                </span>
+          <input type="submit" onclick="querySpare()" class="search_btn_a" value="搜二手" style="cursor:pointer;"/>
+          <input type="button" onclick="queryInSite()" class="search_btn_b" value="搜全站" style="cursor:pointer;"/>
+        </div>
+
+        <div class="keyword">
+          <a th:each="info :${searchs}" href="javascript:void(0);" th:data-name="${info}" th:onclick="search_form(this.getAttribute('data-name'),'goods')" th:text="${info}"></a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="Idle_nav" >
+  <div class="Idle_menu">
+    <div class="index_Classify">
+      <a href="javascript:void(0);">热门二手分类</a>
+    </div>
+    <ul class="index_navigation">
+      <li th:each="nav :${navs}">
+        <a th:href="@{'/'+${nav.url}}" th:if="${nav.newWin==1}" target="_blank" th:text="${nav.title}"></a>
+      </li>
+    </ul>
+
+    <div class="My_idle">
+      <a href="javascript:void(0);" th:user_id="${user.id}"
+         th:if="${user}" th:dialog_uri="@{/user_dialog_login.htm}"
+         dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" >我的闲置
+      </a>
+      <div class="My_idle_list" style="display:none">
+        <ul>
+          <li><a th:href="@{/seller/spare_goods.htm(type=0)}" target="_blank">出售中: <span th:text="${selling}"> </span>件</a></li>
+          <li><a th:href="@{/seller/spare_goods.htm(type=-1)}" target="_blank">下架中: <span th:text="${down}"></span>件</a></li>
+          <li><a th:href="@{/seller/spare_goods.htm}" target="_blank">违规中: <span th:text="${drops}"></span>件</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="release"><a th:href="@{/seller/add_spare_goods.htm}" target="_blank">发布宝贝</a></div>
+    <!--所有分类下拉 start-->
+    <div class="index_nav_list">
+      <ul>
+        <li th:each="sgc :${sgcs}" class="item">
+          <div class="div_left">
+            <a class="font_14" th:href="@{/sparegoods_search.htm(cid=${sgc.id})}" target="_blank" th:text="${sgc.classname}"></a>
+
+            <span th:each="child :${sgc.childs}">
+            <a th:if="${velocitycount<=2}" class="font_12" th:href="@{/sparegoods_search.htm(cid=${child.id})}" target="_blank" th:text="${child.classname}"></a>
+            </span>
+
+          </div>
+
+          <div class="div_right" style="display:none;">
+            <dl th:each="child : ${sgc.childs}">
+              <dt>
+                <a th:href="@{/sparegoods_search.htm(cid=${child.id})}"  target="_blank" th:text="${child.classname}"></a>
+              </dt>
+              <dd>
+                <ul>
+                  <li th:each="c :${child.childs}">
+                    <a th:href="@{/sparegoods_search.htm(cid=${c.id})}" target="_blank" th:text="${c.classname}"></a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!--$!httpInclude.include("/sparegoods_nav2.htm?op=index")-->
+
+<div class="main">
+  <div class="Banner_line">
+    <div class="index_slider">
+     <!-- <script th:src="@{/advert_invoke.htm(id=262146)}"></script>-->
+      <div class="hdp" id="shopping_advert" style="visibility: visible; width: 729px; height: 249px; overflow: hidden; position: relative;">
+        <ul>
+          <div id="KinSlideshow_moveBox" style="width: 729px; height: 249px; overflow: hidden; position: relative;">
+            <div id="KinSlideshow_XposBox" style="float: left; width: 2000%;">
+              <div id="KinSlideshow_content" style="float: left;">
+                <a th:each="adv : ${spareInvoke.advs}"  th:href="@{/advert_redirect.htm(id=${adv.id},url=${adv.adUrl})}" target="_blank" id="">
+                  <img th:src="@{'/'+${adv.adAcc.path}+'/'+${adv.adAcc.name} }" width="729" height="249" style="border: 0px;">
+                </a>
+              </div>
+              <div id="KinSlideshow_contentClone" style="float: left;">
+                <a th:each="adv : ${spareInvoke.advs}"  th:href="@{/advert_redirect.htm(id=${adv.id},url=${adv.adUrl})}" target="_blank">
+                  <img th:src="@{'/'+${adv.adAcc.path}+'/'+${adv.adAcc.name} }" width="729" height="249" style="border: 0px;">
+                </a>
+              </div>
+            </div>
+          </div>
+        </ul>
+        <div class="KinSlideshow_titleBar" style="height: 40px; width: 100%; position: absolute; bottom: 0px; left: 0px; background: rgb(0, 0, 0); opacity: 0.5;">
+          <h2 class="title" style="margin: 3px 0px 0px 6px; padding: 0px; font-size: 12px; color: rgb(255, 255, 255); font-family: Verdana; font-weight: bold;"></h2>
+        </div>
+        <div class="KinSlideshow_btnBox" style="position:absolute;right:10px;bottom:5px; z-index:100">
+          <ul id="btnlistID" style="margin:0;padding:0; overflow:hidden">
+            <li th:each="adv,index : ${spareInvoke.advs}" style="list-style:none;float:left;width:18px;height: 18px; border-width: 1px; border-color: rgb(255, 255, 255); border-style: solid; background: rgb(255, 137, 33); text-align: center; cursor: pointer; margin-left: 3px; font-size: 12px; font-family: Verdana; line-height: 18px; opacity: 0.7; color: rgb(238, 238, 238);"
+                th:text="${index.count}">
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slider_right">
+      <div class="slider_right_top">
+        <h4>低碳生活从卖二手开始</h4>
+        <span><a th:href="@{/seller/add_spare_goods.htm}" target="_blank">发布闲置</a></span> </div>
+      <div class="silder_botm_img">
+        <!--<script th:src="@{advert_invoke.htm(id=262147)}"></script>-->
+        <a th:href="@{/index.htm}" target="_blank">
+          <img th:src="@{'/'+${advPos2.apAcc.path}+'/'+${advPos2.apAcc.name}}"  th:width="${advPos2.apWidth}" th:height="${advPos2.apHeight}"/>
+        </a>
+      </div>
+    </div>
+    <div class="banner_img_hidden">
+      <script th:src="@{/advert_invoke.htm(id=262152)}"></script>
+      <script th:src="@{/advert_invoke.htm(id=262153)}"></script>
+    </div>
+  </div>
+
+  <div th:each="floor :${floors}" class="index_floor">
+    <h1><a href="javascript:void(0);" th:text="${floor.title}"></a></h1>
+    <div class="list">
+      <div class="left_list">
+        <a th:if="${floor.f_class}" th:each="f_class :${floor.f_class}" th:href="@{/sparegoods_search.htm(cid=${f_class.id})}" target="_blank" th:text="${f_class.classname}"></a>
+        <!--<script th:src="@{/advert_invoke.htm(id=262154)}"></script>-->
+        <a th:href="@{/index.htm}" target="_blank">
+          <img th:src="@{'/'+${advPos1.apAcc.path}+'/'+${advPos1.apAcc.name}}"  th:width="${advPos1.apWidth}" th:height="${advPos1.apHeight}"/>
+        </a>
+      </div>
+
+      <div class="mid_list">
+        <ul>
+          <!--velocitycount<=10 && sg.viewinfloor==true-->
+          <li th:each="sg : ${floor.sgs}" th:if="${sg.viewinfloor}" class="item">
+            <a th:href="@{/sparegoods.htm(id=${sg.id})}" target="_blank">
+              <img th:src="@{'/'+${sg.main_img.path}+'/'+${sg.main_img.name}}"  width="145" height="145"/>
+            </a>
+            <p th:text="${sg.title}"></p>
+            <div class="price">¥<span th:text="${sg.goodsPrice}"></span></div>
+            <div th:if="${sg.oldandnew==1}" class="new">全新闲置</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="index_floor">
+    <h1><a href="javascript:void(0);">所有宝贝都在这里</a></h1>
+    <div class="list">
+      <div th:each="sgc :${sgcs}" class="all_list">
+        <h1><a th:href="@{/sparegoods_search.htm(cid=${sgc.id})}" target="_blank" th:text="${sgc.classname}"></a></h1>
+        <div class="list_ul">
+          <a th:each="class :${sgc.childs}" th:href="@{/sparegoods_search.htm(cid=${class.id})}" target="_blank" th:text="${class.classname}"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footerArea">
+      <ul>
+        <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+        </li>
+        <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+        <li class="hui2">Powered by shopping 2.x</li>
+        <li th:text="${config.codeStat}"></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+
+<script>
+  jQuery(document).ready(function () {
+    jQuery(window).scroll(function () {
+      var top = jQuery(document).scrollTop();
+      if (top == 0) {
+        jQuery(".back_box").hide();
+      } else {
+        jQuery(".back_box").show();
+      }
+    });
+  });
+</script>
+
+<script>
+  function search_form(){
+    var keyword=arguments[0];
+    var type=arguments[1];
+    if(keyword!=""&&keyword!=undefined){
+      jQuery("#keyword").val(keyword);
+    }
+    if(type!=""&&type!=undefined){
+      jQuery("#type").val(type);
+    }
+    jQuery("#searchtheForm").submit();
+    jQuery("#keyword").val("");
+  }
+
+  function queryInSite(){
+    jQuery("form").attr("action","/search.htm").attr("id","searchForm");
+    jQuery("#searchForm").submit();
+  }
+  function querySpare(){
+    jQuery("form").attr("action","/sparegoods_search.htm").attr("id","searchtheForm");
+    jQuery("#searchtheForm").submit();
+  }
+</script>
+
+<script>
+  jQuery(document).ready(function(){
+
+    var user=jQuery("#userr").val();
+    if(user!=null){
+      jQuery(".My_idle").hover(function(){
+        if(jQuery(this).find("a:first").attr("user_id")!=""){
+          var dis =jQuery(".My_idle_list").css("display");
+          jQuery(".My_idle_list").show();
+        }
+      },function(){
+        if(jQuery(this).find("a:first").attr("user_id")!=""){
+          var dis =jQuery(".My_idle_list").css("display");
+          jQuery(".My_idle_list").hide();
+        }
+      });
+    }
+    jQuery(".index_nav_list ul li").hover(
+            function(){
+              jQuery(this).parent().find(".div_left").removeClass("hover");
+              jQuery(this).find(".div_left").addClass("hover");
+              jQuery(this).parent().find("li .div_right").hide();
+              jQuery(this).find(".div_right").show();
+            },function(){
+              jQuery(this).find(".div_right").hide();
+
+            });
+
+  });
+</script>
+</html>

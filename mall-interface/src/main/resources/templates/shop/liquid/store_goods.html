@@ -1,0 +1,1232 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-dpr="1" style="font-size: 40px;">
+<head>
+    <meta charset="UTF-8">
+    <title>Goods Details - </title>
+    <!-- 只在详情页展示-->
+   <!-- <meta property="og:price:amount" content="12.00">
+    <meta property="og:price:currency" content="USD">-->
+    <meta property="og:url"           content="https://emode.xdjplus.com/goods.htm" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         th:content="${obj.goodsName}"/>
+    <meta property="og:description"   content="description" />
+    <meta property="og:image"         th:content="'https://www.your-domain.com/shopping/upload/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}"/>
+
+
+    <!-- 只在详情页和列表页展示-->
+    <meta property="og:image" content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
+    <meta property="og:image:secure_url"
+          content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
+    <meta name="twitter:image" content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
+
+
+    <meta name="baidu-site-verification" content="ipKHZuNHRp">
+    <meta name="360-site-verification" content="1cbc8ac732b3cff1a60147d4698401f3">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <meta name="applicable-device" content="mobile">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" cosntent="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="liquid">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="aplus-terminal" content="1">
+    <meta name="format-detection" content="telephone=no, email=no">
+
+    <script type="text/javascript" src="https://lib.baomitu.com/jquery/3.5.0/jquery.js"></script>
+    <link rel="icon"
+          href="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+          type="image/x-icon">
+    <script async="" th:src="@{js/scevent.min.js}"></script>
+    <script src="https://bat.bing.com/bat.js" async=""></script>
+    <!--<script async="" src="https://s.pinimg.com/ct/core.js"></script>-->
+    <script type="text/javascript" th:src="@{/js/init.js}"></script>
+    <script th:src="@{js/checkout.min.js}"></script>
+    <script async="true" id="xo-pptm" th:src="@{js/pptm.js}"></script>                <!-- Pinterest Code -->
+    <script type="text/javascript">
+        !function (e) {
+            if (!window.pintrk) {
+                window.pintrk = function () {
+                    window.pintrk.queue.push(Array.prototype.slice.call(arguments))
+                };
+                var n = window.pintrk;
+                n.queue = [],
+                    n.version = "3.0";
+                var t = document.createElement("script");
+                t.async = !0,
+                    t.src = e;
+                var r = document.getElementsByTagName("script")[0];
+                r.parentNode.insertBefore(t, r)
+            }
+        }("https://s.pinimg.com/ct/core.js");
+        pintrk('load', '', {em: ''});
+        pintrk('page');
+    </script>
+
+    <script type="text/javascript">
+        (function (e, t, n) {
+            if (e.snaptr) return;
+            var a = e.snaptr = function () {
+                a.handleRequest ? a.handleRequest.apply(a, arguments) : a.queue.push(arguments)
+            };
+            a.queue = [];
+            var s = 'script';
+            r = t.createElement(s);
+            r.async = !0;
+            r.src = n;
+            var u = t.getElementsByTagName(s)[0];
+            u.parentNode.insertBefore(r, u);
+        })(window, document,
+            'https://sc-static.net/scevent.min.js');
+
+        snaptr('init', '', {
+            'user_email': ''
+        });
+
+        snaptr('track', 'PAGE_VIEW');
+    </script>
+    <!-- End Snap Pixel Code -->
+
+    <link rel="stylesheet" href="/style/common/css/styles.min.css">
+    <link rel="stylesheet" href="/style/common/css/sail006.comm.min.css">
+    <style type="text/css">@font-face {
+        font-family: "Arapey";
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/arapey-italic.ttf?v=liquid.xshoppy.shop);
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-Regular.ttf?v=liquid.xshoppy.shop);
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-SemiBold.ttf?v=liquid.xshoppy.shop);
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "OldStandard";
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/OldStandard-Regular.ttf?v=liquid.xshoppy.shop);
+    }</style>
+    <style type="text/css" class="buyer-font-style">@font-face {
+        font-family: HelveticaNeue;
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
+    }
+
+    @font-face {
+        font-family: HelveticaNeue;
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
+    }
+
+    @font-face {
+        font-family: HelveticaNeue;
+        src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
+    }
+
+    .sl-main-title, .sl-main-title a {
+        font-family: HelveticaNeue !important;
+        font-size: 30px !important;
+        line-height: 34px !important
+    }
+
+    .banner .sl-main-title {
+        font-size: 50px !important;
+        line-height: 54px !important
+    }
+
+    .sl-subhead-title, .sl-subhead-title a {
+        font-family: HelveticaNeue !important
+    }
+
+    body, input, .product-details * {
+        font-family: HelveticaNeue !important;
+        font-size: 16px !important
+    }</style>
+    <title>Liquid模板</title>
+</head>
+<body class="template6-body" style="">
+<div class="nav-model-mask J-Mask" style="display: none;"></div>
+<h1 style="display: none">Character Sport Bike Helmet</h1>
+<input type="hidden" class="preview-hide-code" value="1">
+<input type="hidden" class="sail-event-page-location" value="collections">
+<input type="hidden" class="sail-event-page-handler" value="character-sport-bike-helmet">
+<input type="hidden" class="sail-event-recommend-product" value="0">
+<input type="hidden" class="J-isPreview" value="0">
+<input type="hidden" class="sail-event-referer" value="https://liquid.xshoppy.shop/">
+<input type="hidden" class="J-PaypalClientId" value="0">
+<input type="hidden" class="J-getCurrentState" value="HK" data-flag="https://static.xshoppy.shop/country_image/HK.png">
+<!-- 访客地区 -->
+<input type="hidden" class="J-IsRenovation" value="0">
+<input type="hidden" class="J-language" value="en">
+<input type="hidden" class="J-TemplateStyle" value="general">
+<div class="PageContainer J-PageContainer" style="padding-top: 136px;">
+    <!--
+    <div class="domain-tips">
+        <span class="iconfont icon-gantanhao"></span>
+        店铺仅供体验使用,请尽快绑定您的域名.
+        <a href="/admin/domainSettings">去绑定</a>
+    </div>
+-->
+    <input type="hidden" class="JH-page-location" value="PAGE_PRODUCT_DETAIL">
+    <input type="hidden" value="1" class="JH-currency-tag">
+    <input type="hidden" class="JH-Event-Name" value="product-detail">
+    <input type="hidden" class="J-isOpenCurrency" value="1">
+    <input type="hidden" class="J-CurrentStateCode" value="USD" data-symbol="$" data-rate-value="1.0000">
+    <input type="hidden" class="J-currency-code" value="USD" data-symbol="$" data-rate-value="1.0000">
+    <div class="JH-Columns">
+        <!--头部 ==> 开始-->
+        <div class="header J-Header fixed-top" style="transform: translate3d(0px, 0px, 0px);">
+
+            <!--LOGO & 搜索 & 自定义图标-->
+            <div class="logo-box">
+                <!-- LOGO -->
+                <div class="logo" itemscope="" itemtype="http://schema.org/Organization">
+
+                    <a th:href="@{/store.htm(id=${goodsStore.id})}" itemprop="url">
+                        <img th:if="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
+                             th:data-original="${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}"
+                             th:src="${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}"
+                             alt="" itemprop="logo">
+                        <img th:unless="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
+                             th:data-original="${config.websiteLogo.path+'/'+config.websiteLogo.name}"
+                             th:src="${config.websiteLogo.path+'/'+config.websiteLogo.name}+'?x-oss-process=image/interlace,1/format,webp'"
+                             alt="" itemprop="logo">
+                    </a>
+                </div>
+
+                <!-- 搜索 -->
+                <div class="search-box ">
+                    <form th:action="@{/store_goods_search.htm}" method="post" autocomplete="off">
+                        <input name="store_id" type="hidden" id="store_id" th:value="${goodsStore.id}"/>
+                        <input type="hidden" id="gropBuy" th:value="${obj.groupBuy}"/>
+                        <input name="keyword" type="text" placeholder="Start Typing Here" class="search"
+                               id="search_box"/>
+                    </form>
+                    <!--<div class="search-select" data-search-type="2">
+                        <select>
+                            <option data-tag="All categories" value="0">All categories</option>
+                            <option th:each="ugc : ${ugcaccsorry}" th:data-tag="${ugc.classname}" th:value="${ugc.id}" th:text="${ugc.classname}">
+                            </option>
+                        </select>
+
+                        <label>All categories</label>
+                    </div>-->
+                    <div class="search-icon">
+                        <span class="iconfont icon-sousuo"></span>
+                    </div>
+
+
+                    <!--<div class="search-link">
+                        <div class="link-title">Quick Links</div>
+                        <a href="/products?handler=cycling-1">cycling</a>
+                        <a href="/products?handler=fitness">fitness</a>
+                        <a href="/products?handler=rubby">rubby</a>
+                        <a href="/products?handler=outdoor">outdoor</a>
+                        <a href="/products?handler=skiing">skiing</a>
+                    </div>-->
+                </div>
+
+                <script type="application/javascript">
+
+                    $(document).on('click', '.search-box .search-icon', function () {
+                        var sort = "";
+                        var search_keyword = $(this).siblings().find('input').val();
+                        var type = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').data('search-type')) : 1;
+                        var val = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').find('option:selected').val()) : '';
+                        var url = '/store_goods_search.htm';
+                        var store_id = jQuery("#store_id").val();
+
+                        window.location = url + '?keyword=' + search_keyword + type + '&store_id=' + store_id;
+                    });
+
+                    $(document).on('click', '.search-box .icon-sousuo', function () {
+                        var sort = "";
+                        var search_keyword = $(this).parent().find('input').val();
+                        var type = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').data('search-type')) : 1;
+                        var val = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').find('option:selected').val()) : '';
+                        var url = '/store_goods_search.htm';
+                        var store_id = jQuery("#store_id").val();
+
+                        window.location = url + '?keyword=' + search_keyword + type + '&store_id=' + store_id;
+                    });
+
+                    $('#search_box').bind('keydown', function (event) {
+                        if (event.keyCode == "13") {
+                            //回车执行查询
+                            $('.search-box .search-icon').click();
+                            return false;
+                        }
+
+                    });
+
+                </script>
+
+                <!-- 自定义图标 -->
+                <div class="custom-icon">
+                    <span class="iconfont icon-L_wuliu"></span>
+                    <div class="text">
+                        <span>Free Shipping</span>
+                        <span>on all orders over $29</span>
+                    </div>
+                </div>
+
+            </div>
+            <!--菜单 & 货币转换 & 购物车图标-->
+            <div class="menu-box">
+                <div class="nav-icon J-NavMenu">
+                    <span class="nav-icon-show top"></span>
+                    <span class="nav-icon-show center"></span>
+                    <span class="nav-icon-show bottom"></span>
+                </div>
+                <div class="nav-box">
+                    <div class="currency-select">
+                        <select>
+                            <option data-currency-code="USD">
+                                USD
+                            </option>
+                            <option data-currency-code="EUR">
+                                EUR
+                            </option>
+                        </select>
+                    </div>
+                    <div class="iconfont icon-next-copy to-left" style="display: none;"></div>
+                    <div class="J-NavWrap nav-wrap">
+                        <div class="background" style="width: 0px; left: 0px;"></div>
+                        <ul class="nav sl-subhead-title J-NavList">
+                            <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
+                                <a href="http://emode.xdjplus.com/index.htm">
+                                    Home </a>
+                            </li>
+
+                            <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
+                                <a th:href="@{/goods_list.htm(store_id=${goodsStore.id})}">
+                                    All products </a>
+                            </li>
+
+                            <li class="nav-item J-SubMenu"> <!-- nav-single 没有二级菜单class -->
+                                <a href="javascript:;">
+                                    All categories </a>
+                                <div class="nav-item-down-menu">
+                                    <div>
+                                        <!--二级菜单==>广告位前-->
+
+                                        <!--二级菜单-->
+                                        <div class="submenu">
+                                            <a th:each="ugc : ${ugcaccsorry}"
+                                               th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
+                                               th:text="${ugc.classname}"></a>
+                                        </div>
+
+                                        <!--二级菜单==>广告位后-->
+                                        <a class="submenu-ad" href="javascript:;">
+                                            <img src="https://img.xshoppy.shop/uploader/268e66424c2368522153eed21223d6da.png"
+                                                 alt="">
+                                            <div>harging through ledges, gaps, and huge</div>
+                                        </a>
+                                        <a class="submenu-ad" href="javascript:;">
+                                            <img src="https://img.xshoppy.shop/uploader/f6859e584f9c6184c14afa3ed8bfb93d.png"
+                                                 alt="">
+                                            <div>Save 15% with promo code "GARDEN15" Brow</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="nav-item nav-single" th:each="ugc,iter : ${ugcaccsorry}"
+                                th:if="${iter.count<=10}"> <!-- nav-single 没有二级菜单class -->
+                                <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
+                                   th:text="${ugc.classname}"></a>
+                            </li>
+
+                            <!--会员中心==登陆&注册-->
+
+                            <li class="nav-item nav-single nav-member">
+                                <input type="hidden" id="userId" th:if="${user!=null}" th:value="${user.id}">
+                                <a th:if="${user==null}" th:href="@{user/login.htm}">Log in </a>
+                                <a th:if="${user!=null}" href="/buyer/index.htm"
+                                   class="iconfont icon-gerenzhongxin-1 head-customer"></a>
+                            </li>
+                            <li class="nav-item nav-single nav-member">
+                                <a th:href="@{/register.htm}">Create Account </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="iconfont icon-next-copy to-right" style="display: none;"></div>
+                </div>
+
+                <div class="operat">
+                    <!--店铺装修==> 移动端不显示搜索时，前台只显示搜索图标-->
+                    <a class="head-customer iconfont icon-gerenzhongxin-1" th:if="${user==null}"
+                       th:href="@{user/login.htm}"></a>
+                    <a class="head-customer iconfont icon-gerenzhongxin-1" th:if="${user!=null}"
+                       href="/buyer/index.htm"></a>
+                    <a class="head-buycart iconfont icon-gouwu " th:href="@{/goods_cart1.htm}">
+                        <i style="display: none;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!--加购弹窗-->
+            <div class="add-cart-popup">
+                <div class="title">
+                    <div>
+                        <span class="desc">Add to your cart</span>
+                        <span class="iconfont icon-close J-closeCartPop"></span>
+                    </div>
+                </div>
+                <div class="add-info">
+                    <div class="product-info J-CurrentAddProInfo"></div>
+                    <div class="cart-info">
+                        <div class="cart-total">
+                            Cart subtotal <span class="J-Total" data-price="0.00"></span>
+                        </div>
+                        <div class="cart-btn ">
+                            <a th:href="@{/goods_cart1.htm}" class="jh-btn sl-secondary-btn">View cart (<span
+                                    class="cart-num"></span>)</a>
+                            <button class="jh-btn sl-main-btn J-Gopay jh-btn-disabled" disabled="disabled">Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--移动端搜索弹窗-->
+        <div class="search-popup">
+            <div class="search-box">
+                <form th:action="@{/store_goods_search.htm}" method="get" autocomplete="off">
+                    <input type="search" name="keyword" class="search" placeholder="Start Typing Here" value="">
+                </form>
+                <div class="cancel J-CancelSearch">
+                    Cancel
+                </div>
+                <div class="search-link" style="display: none;">
+                    <div class="link-title">Quick Links</div>
+                    <a th:each="ugc,iter : ${ugcaccsorry}" th:if="${iter.count<=5}"
+                       th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
+                       th:text="${ugc.classname}"></a>
+                </div>
+            </div>
+        </div>
+        <!--头部 ==> 结束-->
+    </div>
+    <script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js?v=0517"></script>
+    <input type="hidden" class="J-isOpenRecommend" value="1">
+    <input type="hidden" class="J-isShowComment" value="1">
+    <input type="hidden" class="J-SwitchType" value="select">
+    <input type="hidden" class="product-handler" value="character-sport-bike-helmet">
+    <input type="hidden" class="JH-product-handler" value="character-sport-bike-helmet">
+    <input type="hidden" class="JH-product-title" value="Character  Sport  Bike Helmet">
+    <input type="hidden" class="product-id" value="10079549">
+    <input type="hidden" class="product-code" value="gFDi45">
+    <input type="hidden" class="J-ShareSource" value="">
+    <input type="hidden" class="J-holidayStyle" value="default">
+    <input type="hidden" class="J-AddCartAction" value="pop">
+    <input type="hidden" class="J-isShowInventory" value="0">
+    <input type="hidden" class="J-recent-order-names" value="">
+
+
+    <div class="JH-Columns main recommend product " itemscope="" itemtype="http://schema.org/Product">
+        <meta itemprop="name" content="Character  Sport  Bike Helmet">
+        <meta itemprop="url" content="https://liquid.xshoppy.shop/products/character-sport-bike-helmet">
+        <meta itemprop="image" content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
+        <div class="breadcrumb">
+            <a href="http://emode.xdjplus.com/index.htm">Home</a> / <span>Goods Details</span>
+        </div>
+        <div class="big-image" style="display: none; top: 0px;">
+            <div class="show-img"
+                 style="background-image: url(&quot;https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png&quot;); background-size: 1824.24px 1824.24px; background-position: -1224.24px 0px;"></div>
+        </div>
+        <!--左侧==>商品图片模块-->
+        <div class="recom-item thumbnail">
+            <div class="product-details-banner">
+                <div class="swiper-container swiper-no-swiping gallery-top JH-GalleryTop gallery_top_XRm swiper-container-horizontal swiper-container-autoheight">
+                    <!-- 查看大图 -->
+                    <!--<div class="expand-img J-ExpandImg">
+                        <span class="iconfont icon-search"></span>
+                        Click to expand
+                    </div>-->
+                    <div class="swiper-wrapper "
+                         style="height: 519px; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+
+                        <div th:if="${obj.goods_main_photo != null}" class="swiper-slide swiper-slide-duplicate-active"
+                             th:data-id="${obj.id}" style="width: 519px;" data-swiper-slide-index="1">
+                            <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}"
+                                 alt="Character  Sport  Bike Helmet">
+                            <!-- 放大镜 -->
+                            <div class="cover"></div>
+                        </div>
+
+                        <div th:if="${obj.goods_photos !=  null && obj.goods_photos.size() >0 }"
+                             th:each="img,iter: ${obj.goods_photos}" class="swiper-slide swiper-slide-duplicate-active"
+                             th:data-id="${obj.id}" style="width: 519px;" data-swiper-slide-index="1">
+                            <img th:src="@{'/'+${img.path}+'/'+${img.name}}" alt="Character  Sport  Bike Helmet"
+                                 th:data-index="${iter.count}">
+                            <!-- 放大镜 -->
+                            <div class="cover"></div>
+                        </div>
+
+
+                    </div>
+                    <div class="swiper-pagination swiper-pagination-fraction"><span
+                            class="swiper-pagination-current">2</span> / <span class="swiper-pagination-total">2</span>
+                    </div>
+                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                <div class="swiper-container gallery-thumbs JH-GalleryThumbs gallery_thumb_T8f swiper-container-horizontal swiper-container-ios swiper-container-thumbs">
+                    <div class="swiper-wrapper"
+                         style="height: 100px; transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+                        <!--177.667-->
+
+                        <div th:if="${obj.goods_main_photo != null}"
+                             class="swiper-slide swiper-slide-min swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
+                             th:data-id="${obj.id}" style="width: 74.8333px; margin-right: 14px;">
+                            <div>
+                                <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}"
+                                     alt="Character  Sport  Bike Helmet">
+                            </div>
+                        </div>
+                        <div th:if="${obj.goods_photos !=  null && obj.goods_photos.size() >0 }"
+                             th:each="img,iter: ${obj.goods_photos}"
+                             class="swiper-slide swiper-slide-min swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
+                             th:data-id="${obj.id}" style="width: 74.8333px; margin-right: 14px;">
+                            <div>
+                                <img th:src="@{'/'+${img.path}+'/'+${img.name}}" alt="Character  Sport  Bike Helmet">
+                            </div>
+                        </div>
+
+                    </div>
+                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                <div class="swiper-button-prev iconfont icon-back-copy JH-Prev swiper-button-disabled swiper-button-lock"
+                     tabindex="0" role="button" aria-label="Previous slide" aria-disabled="true"></div>
+                <div class="swiper-button-next iconfont icon-next-copy JH-Next swiper-button-disabled swiper-button-lock"
+                     tabindex="0" role="button" aria-label="Next slide" aria-disabled="true"></div>
+                <script type="text/javascript">
+                    var thumbsSwiper = new Swiper('.gallery_thumb_T8f', {
+                        watchOverflow: true,
+                        spaceBetween: 14,
+                        slidesPerView: 6,
+                        slidesPerGroup: 6,
+                        watchSlidesVisibility: true,
+                        initialSlide: 0,
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                        breakpoints: {
+                            768: {
+                                slidesPerView: 4.5,
+                                slidesPerGroup: 1
+                            }
+                        },
+                        centerInsufficientSlides: true,
+                    });
+                    var gallerySwiper = new Swiper('.gallery_top_XRm', {
+                        watchOverflow: true,
+                        autoplay: false,
+                        slidesPerView: 1,
+                        loop: true,
+                        autoHeight: true,
+                        initialSlide: 0,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            type: 'fraction',
+                        },
+                        breakpoints: {
+                            768: {
+                                navigation: {
+                                    nextEl: '.recom-item .swiper-button-next',
+                                    prevEl: '.recom-item .swiper-button-prev',
+                                },
+                            }
+                        },
+                        thumbs: {
+                            swiper: thumbsSwiper,
+                        },
+                    });
+                    var objTop = $('.gallery_top_XRm .swiper-slide');
+                    var bannerSlide = function (banner_id) {
+                        for (var i = 0; i < objTop.length; i++) {
+                            if ($(objTop[i]).attr("data-id") === banner_id) {
+                                gallerySwiper.slideTo(i, 500, false);
+                                return
+                            }
+                        }
+                    };
+                </script>
+            </div>
+        </div>
+        <!--右侧==>商品信息价格模块-->
+        <div class="recom-item paddL80 J-Product" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+            <div class="flipclock">
+
+            </div>
+            <meta itemprop="priceCurrency" content="USD">
+            <link itemprop="availability" href="http://schema.org/InStock">
+            <h4 class="title sl-main-title" itemprop="name" th:text="${obj.goodsName}"></h4>
+
+
+            <div class="product-price">
+                <ul>
+                    <li>
+                        <span class="detbt">  商品原价：</span>
+                        <span class="through">
+                                        <span th:text="'¥'+${obj.goodsPrice}"></span>
+                                    </span>
+                    </li>
+
+                    <li th:unless="${obj.groupBuy==2}">
+                        <span class="detbt" >店铺价格：</span>
+                        <span class="pricedata">
+                                        <strong class="orange" id="store_price" th:text="${'￥'+ obj.storePrice}">
+                                        </strong>
+                                    </span>
+                        <div class="sale-tag sl-subhead-title">
+                            Save
+                            <span class="save-price" data-price="4.00"
+                                  th:text="${'¥ '+obj.goodsPrice.subtract(obj.storePrice)}">25%</span>
+                        </div>
+
+                    </li>
+
+                    <li th:if="${obj.groupBuy==2}" th:each="groupGood :${groupGoods}">
+                        <input type="hidden" id="ggMaxCount" th:value="${groupGood.ggMaxCount}"/>
+                        <input type="hidden" id="ggCount" th:value="${groupGood.ggCount}"/>
+                        <span class="detbt">团购价格：</span>
+                        <span class="pricedata">
+                                        <strong class="orange" id="group_price"><span
+                                                th:text="${'¥'+groupGood.ggPrice}"></span></strong>
+                                    </span>
+                        <div class="sale-tag sl-subhead-title">
+                            Save
+                            <span class="save-price" data-price="4.00"
+                                  th:text="${obj.goodsPrice.subtract(groupGood.ggPrice)}">25%</span>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="products-tisp J-ProductsTisp" style="display: none">
+                <span></span>
+            </div>
+
+            <!-- 规格属性 -->
+
+            <div class="types-item J-Attribute" id="specification" th:if="${obj.specification != null}"
+                 th:each="spec : ${obj.specification}" >
+                <span th:text="${spec.name+':'}"></span>
+                <div class="product-types-select">
+                    <select class="gsp">
+                        <option disabled="" selected="" value="0">Select</option>
+                        <option  th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}"
+                                th:value="${gsp.id}"
+                                th:text="${gsp.value}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="select-tips J-SelectTips"></div>
+
+            <div class="types-btn">
+                <!-- 数量 -->
+                <div class="types-item quantity ">
+                    <label>Quantity</label>
+                    <div class="jh-input-number jh-input-number-min">
+                        <span class="jh-input-number-decrease is-disabled iconfont icon-move J-ProductReduce"></span>
+                        <span class="jh-input-number-increase iconfont icon-add J-ProductAdd"></span>
+                        <div class="jh-input-box">
+                            <input  name="goods_count" type="text" id="goods_count" class="jh-input J-ProductNumber" pattern="[0-9]*"
+                                   data-inventory-quantity="100000"
+                                   onkeyup="value = value ==0 ? 1 : (value.replace(/[^0-9]/g, ''))" value="1">
+                        </div>
+                    </div>
+                    <span class="stockparts">
+                                            <span th:if="${obj.groupBuy==2}" th:text="${'团购剩余:'}"></span>
+                                            <span th:unless="${obj.groupBuy==2}" th:text="${'库存:'}"></span>
+                                            <span th:if="${obj.groupBuy==2}">
+                                                <span th:each="gg_info : ${groupGoods}">
+                                                        <b id="goodsInventory" style="font-weight:normal;"  th:text="${gg_info.ggCount}"></b>
+                                                </span>
+                                            </span>
+                                            <span th:unless="${obj.groupBuy==2}">
+                                                <b id="goodsInventory" style="font-weight:normal;" th:text="${obj.goodsInventory}"></b>
+                                            </span>
+                     </span>
+                </div>
+                <!-- 加购  paypal -->
+                <div>
+                    <button class="jh-btn sl-subhead-title sl-secondary-btn JH-Event-BuyCart JH-BuyCart"> <!-- class="btn-text" data-handler="character-sport-bike-helmet"-->
+                        <span th:data-id="${obj.id}" th:data-name="${obj.goodsStoreId}" th:onclick="add_cart(this.getAttribute('data-id'),this.getAttribute('data-name'))">Add To Cart </span>
+                        <span class="iconfont icon-jiazai loading"></span>
+                    </button>
+
+                    <input type="hidden" class="J-isSetPaypalPayment" value="0">
+
+                    <button class="jh-btn sl-subhead-title sl-secondary-btn JH-Event-BuyCart JH-BuyCart" style="" >
+                        <span th:data-name="${obj.id }" th:data-id="${obj.goodsStoreId}" th:onclick="buy_goods(this.getAttribute('data-name'),this.getAttribute('data-id'))">Buy It Now</span>
+                    </button>
+
+                    <div class="J-PaypalBtn" style="display: none">
+                        <div class="paypal-btn">
+                            <div id="Paypal-buy-now-gFDi45" class="Paypal-buy-now realbtn" style="display: none;"></div>
+                            <div class="Paypal-buy-now">
+                                Buy With <img src="https://static.xshoppy.shop/buyer/public/img/paypal.png" alt="">
+                            </div>
+                        </div>
+                        <div class="payment-options">More payment options</div>
+                    </div>
+
+                    <div class="buy-now-mask"></div>
+                    <div class="buy-now-main">
+                        <h3 class="buy-now-title">
+                            Order summary <span class="iconfont icon-close J-BuyNowClose"></span>
+                        </h3>
+                        <div class="buy-now-inform">
+                            <div class="buy-now-list">
+                                <div class="buy-now-item">
+                                    <div class="buy-now-img">
+                                        <div>
+                                            <img src="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png"
+                                                 alt="">
+                                        </div>
+                                        <span class="fr"></span>
+                                    </div>
+                                    <div class="buy-now-iform">
+                                        <div class="buy-now-name">Character Sport Bike Helmet</div>
+                                        <div class="buy-now-types">green / X</div>
+                                        <div class="buy-now-price">12.00</div>
+                                    </div>
+                                </div>
+                                <div class="buy-now-tips-box">
+                                    <span class="buy-now-tips">Have a discount code?</span>
+                                    <div>
+                                        <div class="buy-now-coupon-box">
+                                            <input type="text" class="jh-input J-GetBuyNowCouponVal"
+                                                   placeholder="Discount code">
+                                            <button class="jh-btn sl-subhead-title sl-main-btn jh-btn-disabled fr J-GetBuyNowCoupon"
+                                                    disabled="disabled">
+                                                Apply
+                                            </button>
+                                        </div>
+                                        <p class="buy-now-coupon-tips J-BuyNowCouponTips"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="buy-now-total">
+                                <div>
+                                    Subtotal
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="order-p J-BuyNowDiscountInfo"></div>
+                            <div class="buy-now-total">
+                                <div>Shipping calculated at checkout.</div>
+                                <div class="J-Shipping"></div>
+                            </div>
+                            <div class="buy-now-submit">
+                                <button class="jh-btn sl-subhead-title sl-main-btn J-add-event-buynew JH-BuyPayCart JH-Event-BuyPayCart">
+                                    CHECK OUT
+                                </button>
+                                <p>OR</p>
+                                <div class="paypal-btn">
+                                    <div class="Paypal-buy-now-popup realbtn" id="Paypal-buy-now-popup-gFDi45"></div>
+                                    <div class="Paypal-buy-now-popup">
+                                        Buy With <img src="https://static.xshoppy.shop/buyer/public/img/paypal.png"
+                                                      alt="">
+                                    </div>
+                                </div>
+                                <div id="paypal-button-funding-gFDi45" class="paypal-button-funding"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        if (window.paypalisremembered && window.paypalisremembered.paypal) {
+                            $('.J-BuyNowBtn').hide();
+                            $('.J-PaypalBtn').show();
+                        } else {
+                            $('.J-BuyNowBtn').show();
+                            $('.J-PaypalBtn').hide();
+                        }
+                    </script>
+                </div>
+
+            </div>
+
+            <div class="good-quantity-tips J-InventoryQuantity"></div>
+            <div class="share-this">
+                <span>share this:</span>
+                <div class="share-box">
+                    <a href="https://www.facebook.com/sharer.php?u=${url}"
+                       target="_blank">
+                        <span class="iconfont icon-share-facebook"></span>
+                    </a>
+                    <a href="https://twitter.com/share?text=http://emode.xdjplus.com/products/character-sport-bike-helmet"
+                       target="_blank">
+                        <span class="iconfont icon-share-twitter"></span>
+                    </a>
+                    <a href="https://pinterest.com/pin/create/button/?url=http://emode.xdjplus.com/products/character-sport-bike-helmet"
+                       target="_blank">
+                        <span class="iconfont icon-share-pinterest"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <!--商品详情模块-->
+        <div class="product-details-box">
+            <div class="tab-menu J-TabMenu">
+                <div class="active">Details</div>
+            </div>
+            <div class="tab-content">
+                <div class="content">
+                    <div class="accordion-menu active J-AccordionMenu">Details</div>
+                    <div class="product-details" th:utext="${obj.goodsDetails}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 详情内容下方组合商品 -->
+
+    <!-- 推荐商品 -->
+    <!-- 轮波 -->
+    <div class="main model-recommend">
+        <h3 class="title J-title sl-main-title"><span>YOU MIGHT ALSO LIKE</span>
+           <!-- <em class="J-refreshRecommend">Don't
+            like these?</em>-->
+        </h3>
+        <div class="model-recommend-container">
+            <div class="swiper-container swiper-container-horizontal" style="height: 300px;">
+                <ul class="swiper-wrapper J-productList" style="transform: translate3d(0px, 0px, 0px);">
+                    <li th:each="goods : ${goods_recommend_list}" class="swiper-slide swiper-slide-active" data-product-id="10079546"
+                        style="width: 261px; margin-right: 20px;">
+
+                        <div class="grid-picture" >
+                            <a th:href="@{/goods.htm(id=${goods.id})}" target="_self">
+                                <img class="J-LazyLoad lazy-load-show"
+                                     th:if="${goods.goods_main_photo}"
+                                     th:src="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}"
+                                     data-widths="[]"
+                                     th:attr="data-original=@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}"
+                                     alt="">
+                            </a>
+                            <div class="sale-tag" th:text="'Save'+${#numbers.formatDecimal((obj.goodsPrice - obj.storePrice)/obj.goodsPrice*100,1,2)}+'%'"></div>
+                            <button class="jh-btn sl-subhead-title sl-secondary-btn J-BuyRecommendCart " data-sku-id="10079548" >
+                                Add To Cart
+                            </button>
+                        </div>
+                        <p class="price">
+                            <span class="pay-price" th:data-price="${goods.storePrice}" th:data-seller-price="${goods.storePrice}" th:text="${goods.storePrice}"></span>
+                            <span class="orig-price" th:data-price="${goods.goodsPrice}" th:text="${goods.goodsPrice}"></span>
+                        </p>
+                        <div class="attribute select-hide">
+                            <select class="J-recommendAttribute">
+                            <option data-id="10079548" data-inventory-quantity="100000" data-desc="" data-title=""
+                                    data-image-url="https://img.xshoppy.shop/uploader/9bd903deb7d55ce00990f266b4c13c6f.png"
+                                    data-price="12.00" data-orig-price="12.00" data-compare-at-price="16.00"
+                                    data-orig-compare-at-price="16.00" data-limitoffer-open="0" selected=""></option>
+                        </select></div>
+                        <div class="star">
+                            <div class="score"></div>
+                        </div>
+                    </li>
+                </ul>
+
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+            <div class="swiper-button-prev swiper-button-disabled" tabindex="0" role="button"
+                 aria-label="Previous slide" aria-disabled="true"><span class="iconfont icon-back-copy"></span></div>
+            <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false">
+                <span class="iconfont icon-next-copy"></span></div>
+        </div>
+    </div>
+
+
+    <!-- 商品评论 -->
+
+    <!-- 快捷加购按钮 -->
+
+    <!-- 产品查看大图弹窗(评论) -->
+    <div class="product-big-img">
+        <div class="layer-img"><img src="" alt=""></div>
+        <span class="iconfont icon-close J-bigImgClose"></span>
+        <span class="iconfont icon-left J-bigImgPrev"></span>
+        <span class="iconfont icon-right J-bigImgNext"></span>
+    </div>
+
+    <!-- 点击查看大图 轮博图 -->
+    <div class="click-bigimg" style="display: none;">
+
+        <script>
+            $('.J-ExpandImg').click(function () {
+                var index = $(".swiper-slide.swiper-slide-active").index();
+                $('.click-bigimg').css({
+                    display: 'block'
+                });
+
+                var thumbsSwiper_3mc6ac = new Swiper('.click-bigimg .gallery_thumb_uHe', {
+                    watchOverflow: true,
+                    slidesPerView: 6,
+                    spaceBetween: 10,
+                    watchSlidesVisibility: true,
+                    direction: 'vertical',
+                    slidesPerColumnFill: 'column',
+                    initialSlide: 0,
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 4,
+                            slidesPerGroup: 1
+                        }
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    }
+                });
+                var gallerySwiper_3mc6ac = new Swiper('.click-bigimg .gallery_top_JAa', {
+                    watchOverflow: true,
+                    autoplay: false,
+                    slidesPerView: 1,
+                    autoHeight: false,
+                    initialSlide: index, //默认第几个
+                    thumbs: {
+                        swiper: thumbsSwiper_3mc6ac,
+                    },
+                });
+            });
+
+            $('.click-bigimg .icon-close').click(function () {
+                $('.click-bigimg').css({
+                    display: 'none'
+                });
+            })
+        </script>
+    </div>
+
+    <!-- 最近购买 -->
+    <div class="J-lastSale-wrap"></div>
+
+    <!-- 激励分享弹窗 -->
+
+    <!-- 详情页数据上报 -->
+    <script type="text/javascript">
+        typeof fbq == 'function' && fbq('track', 'ViewContent', {
+            "content_ids": [10079549],
+            "content_type": "product_group",
+            "content_name": "Character  Sport  Bike Helmet",
+            "content_category": "",
+            "currency": "USD",
+            "value": "12.00"
+        });
+    </script>
+
+
+    <!-- 放大镜 -->
+    <script>
+        $(function () {
+            // 获取dom
+            var number = 3;
+            var slide = $('.product .gallery-top .swiper-slide'); // slide
+            var bigimg = $('.product .big-image .show-img'); // 大图
+            var bigbox = $('.product .big-image'); // 大图的父级容器
+            var cover = '';
+            var index = 0;
+            slide.mouseover(function (e) {
+                index = $(this).index();
+                console.log(index);
+
+
+                cover = $(this).find('.cover'); // 放大镜
+                number = bigbox.width() / cover.width(); // 大图容器与放大镜的比例
+                var width = $(this).width() * number, height = $(this).height() * number;
+
+
+                // 获取当前hover图片的src
+                var src = $(this).find('img').attr("src");
+                // 把当前hover的src给大图
+                bigimg.css({
+                    "background-image": "url(" + src + ")",
+                    "background-size": `${width}px ${height}px`
+                });
+                // 展示放大镜和大图
+                cover.show();
+                bigbox.show();
+
+                // 计算大图距顶部距离
+                var top = $(this).offset().top - $('.product-details-banner').offset().top;
+                if (index !== 0 && index !== 1) {
+                    bigbox.css({
+                        top: top + 'px'
+                    })
+                } else {
+                    bigbox.css({
+                        top: 0
+                    })
+                }
+            });
+            slide.mousemove(function (e) {
+                var e = e || window.event;
+                // 鼠标坐标
+                var x = e.pageX;
+                var y = e.pageY;
+                // slide坐标（距页面左侧及顶部）
+                var picCoverX = $(this).offset().left;
+                var picCoverY = $(this).offset().top;
+
+                // 放大镜坐标
+                var minusX = x - picCoverX - cover.width() / 2;
+                var minusY = y - picCoverY - cover.height() / 2;
+
+                // 放大镜移动的最大值
+                var maxX = $(this).width() - cover.width();
+                var maxY = $(this).height() - cover.height();
+
+                if (minusX < 0) minusX = 0;
+                if (minusY < 0) minusY = 0;
+                if (minusX > maxX) minusX = maxX;
+                if (minusY > maxY) minusY = maxY;
+
+                cover.css({
+                    left: minusX,
+                    top: minusY
+                });
+
+                bigimg.css("background-position", -(minusX * number) + "px " + (-minusY * number) + "px");
+            });
+            slide.mouseout(function () {
+                //遮盖层隐藏
+                cover.hide();
+                bigbox.hide();
+            });
+        })
+    </script>
+
+    <footer class="JH-Columns footer J-footer" style="padding-bottom: 0px;">
+        <div class="footer-main">
+            <div>
+                <div class="footer-share">
+                    <h4>Follow Us</h4>
+                    <a href="https://facebook.com" target="_blank">
+                        <span class="iconfont icon-facebook"></span>
+                        <em>Facebook</em>
+                    </a>
+                    <a href="https://twitter.com" target="_blank">
+                        <span class="iconfont icon-twittersquare"></span>
+                        <em>Twitter</em>
+                    </a>
+                    <a href="https://instagram.com" target="_blank">
+                        <span class="iconfont icon-instagram"></span>
+                        <em>Instagram</em>
+                    </a>
+                    <a href="https://pinterest.com" target="_blank">
+                        <span class="iconfont icon-pinterest-circular-l"></span>
+                        <em>Pinterest</em>
+                    </a>
+                </div>
+                <div class="footer-menu">
+                    <h4 class="J-FooterMenu">Footer menu</h4>
+                    <div>
+                        <a th:each="item : ${partners}" th:href="@{'/'+${item.url}}" target="_blank" th:text="${item.title}"></a>
+                    </div>
+
+                </div>
+                <div class="footer-menu">
+                    <h4 class="J-FooterMenu">Footer menu</h4>
+
+                        <a href="/">
+                            Home </a>
+                        <a href="/search">
+                            Search </a>
+                    </div>
+                </div>
+
+                <div class="footer-text">
+                    <h4>Rich text</h4>
+                    <div>Use this section to welcome customers to your store, say a bit about your brand, or share news
+                        and seasonal promotions.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-main">
+            <div>
+                <div class="reserved">© 2020 liquid</div>
+                <div class="payment-method">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/paypal.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/visa1.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/mastercard.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/maestro.svg" alt="Payment">
+                    <img src="https://static.xshoppy.shop/buyer/public/img/payment/AmericanExpress.svg" alt="Payment">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="backtop J-GoTop" style="display: none;">
+        <span class="iconfont icon-huidingbu1"></span>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="js/Swiper.js"></script>
+<script type="text/javascript" src="js/jhPlugin.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/lib/event.js?v=20200904145152"></script>
+<script>
+    var time = 0;
+    var time_id;
+
+    function add_cart(id,storeId) {
+        var groupBuy = jQuery("#gropBuy").val();
+        var userstoreId = jQuery("#userstoreId").val();
+        var userId = jQuery("#userId").val();
+        if (groupBuy == '2') {
+            var price=jQuery("#group_price").text();
+            var ggMaxCount=jQuery("#ggMaxCount").val();
+            if (ggMaxCount>0){
+                var goods_inventory=ggMaxCount;
+            }else{
+                var goods_inventory=jQuery("#ggCount").val();
+            }
+
+        }else{
+            var price=jQuery("#store_price").text();
+            var goods_inventory = jQuery("#goodsInventory").text();
+        }
+        if (userId !=null ){
+            if (userstoreId == storeId) {
+                alert("不能购买自己的商品！");
+            } else {
+                var add = true;
+                var gsp="";
+                if($("#specification").length==0){
+                    add=true;
+                }else{
+                    jQuery("#specification").each(function () {
+                        jQuery.each($(".gsp option:selected"), function () {
+                            gsp =$(this).val() + "," + gsp;
+                        });
+                        if ($(".gsp option:selected").val() == 0){
+                            add = false;
+                        }
+                    });
+                }
+                console.log(gsp);
+                var count = jQuery("#goods_count").val();
+                if (count == 0) {
+                    add = false;
+                    alert("至少购买一件商品!");
+                    return;
+                }
+                console.log("---库存----"+goods_inventory);
+                if (goods_inventory == 0) {
+                    add = false;
+                    alert("商品库存为0,不能购买!");
+                    return;
+                }
+                if (add) {
+                    console.log("------可以购物----");
+                    console.log("------添加到购物车的价格----"+price);
+                    jQuery.post("/add_goods_cart.htm", {
+                        "id": id,
+                        "count": count,
+                        "price": price,
+                        "gsp": gsp
+                    }, function (res) {
+                        alert("添加购物车成功！");
+                        var data =JSON.parse(res);
+                        jQuery("#cart_goods_count").html(data.count);
+                        jQuery("#cart_goods_totalprice").html(data.total_price);
+                        jQuery(".goodscar").fadeIn();
+                        //更新顶部购物车信息
+                        jQuery("#cart_goods_count_top").html(data.count);
+                    });
+                } else {
+                    jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
+                    jQuery("#goods_spec_info_close").show();
+                    jQuery("#goods_spec_chose").show();
+                }
+            }
+        } else {
+            alert("请登录再添加");
+        }
+
+    }
+
+    function buy_goods(id,storeId) {
+        var userId = jQuery("#userId").val();
+        var groupBuy = jQuery("#gropBuy").val();
+        var userstoreId = jQuery("#userstoreId").val();
+        if (groupBuy == '2') {
+            var price=jQuery("#group_price").text();
+            var ggMaxCount=jQuery("#ggMaxCount").val();
+            if (ggMaxCount>0){
+                var goods_inventory=ggMaxCount;
+            }else{
+                var goods_inventory=jQuery("#ggCount").val();
+            }
+
+        }else{
+            var price=jQuery("#store_price").text();
+            var goods_inventory = jQuery("#goodsInventory").text();
+        }
+
+        if (userstoreId == storeId){
+            alert("不能购买自己的商品！");
+        }else {
+            var add = true
+            var gsp="";
+            if($("#specification").length==0){
+                add=true;
+            }else{
+                jQuery("#specification").each(function () {
+                    jQuery.each($(".gsp option:selected"), function () {
+                        gsp =$(this).val() + "," + gsp;
+                    });
+                    if ($(".gsp option:selected").val() == 0){
+                        add = false;
+                    }
+                });
+            }
+            var count = jQuery("#goods_count").val();
+            if (count == 0) {
+                add = false;
+                alert("至少购买一件商品!");
+                return;
+            }
+            if (goods_inventory == 0) {
+                add = false;
+                alert("商品库存为0,不能购买!");
+                return;
+            }
+            var buy_type = arguments[4];
+            console.log("购买类型---"+buy_type);
+            if (add) {
+                jQuery.post("/add_goods_cart.htm", {
+                    "id": id,
+                    "count": count,
+                    "price": price,
+                    "gsp": gsp,
+                    "buy_type": buy_type
+                }, function (data) {
+                    jQuery("#cart_goods_count").html(data.count);
+                    jQuery("#cart_goods_totalprice").html(data.total_price);
+                    window.location.href = "/goods_cart1.htm";
+                }, "json");
+            } else {
+                jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
+                jQuery("#goods_spec_info_close").show();
+                jQuery("#goods_spec_chose").show();
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingIntegralGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingIntegralGoods">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="ig_begin_time" jdbcType="TIMESTAMP" property="igBeginTime" />
+    <result column="ig_click_count" jdbcType="INTEGER" property="igClickCount" />
+    <result column="ig_content" jdbcType="VARCHAR" property="igContent" />
+    <result column="ig_end_time" jdbcType="TIMESTAMP" property="igEndTime" />
+    <result column="ig_exchange_count" jdbcType="INTEGER" property="igExchangeCount" />
+    <result column="ig_goods_count" jdbcType="INTEGER" property="igGoodsCount" />
+    <result column="ig_goods_integral" jdbcType="INTEGER" property="igGoodsIntegral" />
+    <result column="ig_goods_name" jdbcType="VARCHAR" property="igGoodsName" />
+    <result column="ig_goods_price" jdbcType="DECIMAL" property="igGoodsPrice" />
+    <result column="ig_goods_sn" jdbcType="VARCHAR" property="igGoodsSn" />
+    <result column="ig_goods_tag" jdbcType="VARCHAR" property="igGoodsTag" />
+    <result column="ig_limit_count" jdbcType="INTEGER" property="igLimitCount" />
+    <result column="ig_limit_type" jdbcType="BIT" property="igLimitType" />
+    <result column="ig_recommend" jdbcType="BIT" property="igRecommend" />
+    <result column="ig_seo_description" jdbcType="VARCHAR" property="igSeoDescription" />
+    <result column="ig_seo_keywords" jdbcType="VARCHAR" property="igSeoKeywords" />
+    <result column="ig_sequence" jdbcType="INTEGER" property="igSequence" />
+    <result column="ig_show" jdbcType="BIT" property="igShow" />
+    <result column="ig_time_type" jdbcType="BIT" property="igTimeType" />
+    <result column="ig_transfee" jdbcType="DECIMAL" property="igTransfee" />
+    <result column="ig_transfee_type" jdbcType="INTEGER" property="igTransfeeType" />
+    <result column="ig_goods_img_id" jdbcType="BIGINT" property="igGoodsImgId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, ig_begin_time, ig_click_count, ig_content, ig_end_time,
+    ig_exchange_count, ig_goods_count, ig_goods_integral, ig_goods_name, ig_goods_price,
+    ig_goods_sn, ig_goods_tag, ig_limit_count, ig_limit_type, ig_recommend, ig_seo_description,
+    ig_seo_keywords, ig_sequence, ig_show, ig_time_type, ig_transfee, ig_transfee_type,
+    ig_goods_img_id
+  </sql>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select *  from shopping_integral_goods
+    <where>
+      1=1
+      <if test="ig_recommend != null "> and ig_recommend =#{ig_recommend}</if>
+      <if test="ig_show != null "> and ig_show=#{ig_show}</if>
+      <if test="integral_start != null "> and ig_goods_integral &gt;= #{integral_start}</if>
+      <if test="integral_end != null "> and ig_goods_integral &lt;= #{integral_end}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_integral_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_integral_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_integral_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsExample">
+    delete from shopping_integral_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingIntegralGoods">
+    insert into shopping_integral_goods (id, addTime, deleteStatus,
+      ig_begin_time, ig_click_count, ig_content,
+      ig_end_time, ig_exchange_count, ig_goods_count,
+      ig_goods_integral, ig_goods_name, ig_goods_price,
+      ig_goods_sn, ig_goods_tag, ig_limit_count,
+      ig_limit_type, ig_recommend, ig_seo_description,
+      ig_seo_keywords, ig_sequence, ig_show,
+      ig_time_type, ig_transfee, ig_transfee_type,
+      ig_goods_img_id)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{igBeginTime,jdbcType=TIMESTAMP}, #{igClickCount,jdbcType=INTEGER}, #{igContent,jdbcType=VARCHAR},
+      #{igEndTime,jdbcType=TIMESTAMP}, #{igExchangeCount,jdbcType=INTEGER}, #{igGoodsCount,jdbcType=INTEGER},
+      #{igGoodsIntegral,jdbcType=INTEGER}, #{igGoodsName,jdbcType=VARCHAR}, #{igGoodsPrice,jdbcType=DECIMAL},
+      #{igGoodsSn,jdbcType=VARCHAR}, #{igGoodsTag,jdbcType=VARCHAR}, #{igLimitCount,jdbcType=INTEGER},
+      #{igLimitType,jdbcType=BIT}, #{igRecommend,jdbcType=BIT}, #{igSeoDescription,jdbcType=VARCHAR},
+      #{igSeoKeywords,jdbcType=VARCHAR}, #{igSequence,jdbcType=INTEGER}, #{igShow,jdbcType=BIT},
+      #{igTimeType,jdbcType=BIT}, #{igTransfee,jdbcType=DECIMAL}, #{igTransfeeType,jdbcType=INTEGER},
+      #{igGoodsImgId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingIntegralGoods">
+    insert into shopping_integral_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="igBeginTime != null">
+        ig_begin_time,
+      </if>
+      <if test="igClickCount != null">
+        ig_click_count,
+      </if>
+      <if test="igContent != null">
+        ig_content,
+      </if>
+      <if test="igEndTime != null">
+        ig_end_time,
+      </if>
+      <if test="igExchangeCount != null">
+        ig_exchange_count,
+      </if>
+      <if test="igGoodsCount != null">
+        ig_goods_count,
+      </if>
+      <if test="igGoodsIntegral != null">
+        ig_goods_integral,
+      </if>
+      <if test="igGoodsName != null">
+        ig_goods_name,
+      </if>
+      <if test="igGoodsPrice != null">
+        ig_goods_price,
+      </if>
+      <if test="igGoodsSn != null">
+        ig_goods_sn,
+      </if>
+      <if test="igGoodsTag != null">
+        ig_goods_tag,
+      </if>
+      <if test="igLimitCount != null">
+        ig_limit_count,
+      </if>
+      <if test="igLimitType != null">
+        ig_limit_type,
+      </if>
+      <if test="igRecommend != null">
+        ig_recommend,
+      </if>
+      <if test="igSeoDescription != null">
+        ig_seo_description,
+      </if>
+      <if test="igSeoKeywords != null">
+        ig_seo_keywords,
+      </if>
+      <if test="igSequence != null">
+        ig_sequence,
+      </if>
+      <if test="igShow != null">
+        ig_show,
+      </if>
+      <if test="igTimeType != null">
+        ig_time_type,
+      </if>
+      <if test="igTransfee != null">
+        ig_transfee,
+      </if>
+      <if test="igTransfeeType != null">
+        ig_transfee_type,
+      </if>
+      <if test="igGoodsImgId != null">
+        ig_goods_img_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="igBeginTime != null">
+        #{igBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="igClickCount != null">
+        #{igClickCount,jdbcType=INTEGER},
+      </if>
+      <if test="igContent != null">
+        #{igContent,jdbcType=VARCHAR},
+      </if>
+      <if test="igEndTime != null">
+        #{igEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="igExchangeCount != null">
+        #{igExchangeCount,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsCount != null">
+        #{igGoodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsIntegral != null">
+        #{igGoodsIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsName != null">
+        #{igGoodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="igGoodsPrice != null">
+        #{igGoodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="igGoodsSn != null">
+        #{igGoodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="igGoodsTag != null">
+        #{igGoodsTag,jdbcType=VARCHAR},
+      </if>
+      <if test="igLimitCount != null">
+        #{igLimitCount,jdbcType=INTEGER},
+      </if>
+      <if test="igLimitType != null">
+        #{igLimitType,jdbcType=BIT},
+      </if>
+      <if test="igRecommend != null">
+        #{igRecommend,jdbcType=BIT},
+      </if>
+      <if test="igSeoDescription != null">
+        #{igSeoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="igSeoKeywords != null">
+        #{igSeoKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="igSequence != null">
+        #{igSequence,jdbcType=INTEGER},
+      </if>
+      <if test="igShow != null">
+        #{igShow,jdbcType=BIT},
+      </if>
+      <if test="igTimeType != null">
+        #{igTimeType,jdbcType=BIT},
+      </if>
+      <if test="igTransfee != null">
+        #{igTransfee,jdbcType=DECIMAL},
+      </if>
+      <if test="igTransfeeType != null">
+        #{igTransfeeType,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsImgId != null">
+        #{igGoodsImgId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingIntegralGoodsExample" resultType="java.lang.Long">
+    select count(*) from shopping_integral_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_integral_goods
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.igBeginTime != null">
+        ig_begin_time = #{record.igBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.igClickCount != null">
+        ig_click_count = #{record.igClickCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.igContent != null">
+        ig_content = #{record.igContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igEndTime != null">
+        ig_end_time = #{record.igEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.igExchangeCount != null">
+        ig_exchange_count = #{record.igExchangeCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.igGoodsCount != null">
+        ig_goods_count = #{record.igGoodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.igGoodsIntegral != null">
+        ig_goods_integral = #{record.igGoodsIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.igGoodsName != null">
+        ig_goods_name = #{record.igGoodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igGoodsPrice != null">
+        ig_goods_price = #{record.igGoodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.igGoodsSn != null">
+        ig_goods_sn = #{record.igGoodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igGoodsTag != null">
+        ig_goods_tag = #{record.igGoodsTag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igLimitCount != null">
+        ig_limit_count = #{record.igLimitCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.igLimitType != null">
+        ig_limit_type = #{record.igLimitType,jdbcType=BIT},
+      </if>
+      <if test="record.igRecommend != null">
+        ig_recommend = #{record.igRecommend,jdbcType=BIT},
+      </if>
+      <if test="record.igSeoDescription != null">
+        ig_seo_description = #{record.igSeoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igSeoKeywords != null">
+        ig_seo_keywords = #{record.igSeoKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.igSequence != null">
+        ig_sequence = #{record.igSequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.igShow != null">
+        ig_show = #{record.igShow,jdbcType=BIT},
+      </if>
+      <if test="record.igTimeType != null">
+        ig_time_type = #{record.igTimeType,jdbcType=BIT},
+      </if>
+      <if test="record.igTransfee != null">
+        ig_transfee = #{record.igTransfee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.igTransfeeType != null">
+        ig_transfee_type = #{record.igTransfeeType,jdbcType=INTEGER},
+      </if>
+      <if test="record.igGoodsImgId != null">
+        ig_goods_img_id = #{record.igGoodsImgId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_integral_goods
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ig_begin_time = #{record.igBeginTime,jdbcType=TIMESTAMP},
+      ig_click_count = #{record.igClickCount,jdbcType=INTEGER},
+      ig_content = #{record.igContent,jdbcType=VARCHAR},
+      ig_end_time = #{record.igEndTime,jdbcType=TIMESTAMP},
+      ig_exchange_count = #{record.igExchangeCount,jdbcType=INTEGER},
+      ig_goods_count = #{record.igGoodsCount,jdbcType=INTEGER},
+      ig_goods_integral = #{record.igGoodsIntegral,jdbcType=INTEGER},
+      ig_goods_name = #{record.igGoodsName,jdbcType=VARCHAR},
+      ig_goods_price = #{record.igGoodsPrice,jdbcType=DECIMAL},
+      ig_goods_sn = #{record.igGoodsSn,jdbcType=VARCHAR},
+      ig_goods_tag = #{record.igGoodsTag,jdbcType=VARCHAR},
+      ig_limit_count = #{record.igLimitCount,jdbcType=INTEGER},
+      ig_limit_type = #{record.igLimitType,jdbcType=BIT},
+      ig_recommend = #{record.igRecommend,jdbcType=BIT},
+      ig_seo_description = #{record.igSeoDescription,jdbcType=VARCHAR},
+      ig_seo_keywords = #{record.igSeoKeywords,jdbcType=VARCHAR},
+      ig_sequence = #{record.igSequence,jdbcType=INTEGER},
+      ig_show = #{record.igShow,jdbcType=BIT},
+      ig_time_type = #{record.igTimeType,jdbcType=BIT},
+      ig_transfee = #{record.igTransfee,jdbcType=DECIMAL},
+      ig_transfee_type = #{record.igTransfeeType,jdbcType=INTEGER},
+      ig_goods_img_id = #{record.igGoodsImgId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingIntegralGoods">
+    update shopping_integral_goods
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="igBeginTime != null">
+        ig_begin_time = #{igBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="igClickCount != null">
+        ig_click_count = #{igClickCount,jdbcType=INTEGER},
+      </if>
+      <if test="igContent != null">
+        ig_content = #{igContent,jdbcType=VARCHAR},
+      </if>
+      <if test="igEndTime != null">
+        ig_end_time = #{igEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="igExchangeCount != null">
+        ig_exchange_count = #{igExchangeCount,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsCount != null">
+        ig_goods_count = #{igGoodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsIntegral != null">
+        ig_goods_integral = #{igGoodsIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsName != null">
+        ig_goods_name = #{igGoodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="igGoodsPrice != null">
+        ig_goods_price = #{igGoodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="igGoodsSn != null">
+        ig_goods_sn = #{igGoodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="igGoodsTag != null">
+        ig_goods_tag = #{igGoodsTag,jdbcType=VARCHAR},
+      </if>
+      <if test="igLimitCount != null">
+        ig_limit_count = #{igLimitCount,jdbcType=INTEGER},
+      </if>
+      <if test="igLimitType != null">
+        ig_limit_type = #{igLimitType,jdbcType=BIT},
+      </if>
+      <if test="igRecommend != null">
+        ig_recommend = #{igRecommend,jdbcType=BIT},
+      </if>
+      <if test="igSeoDescription != null">
+        ig_seo_description = #{igSeoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="igSeoKeywords != null">
+        ig_seo_keywords = #{igSeoKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="igSequence != null">
+        ig_sequence = #{igSequence,jdbcType=INTEGER},
+      </if>
+      <if test="igShow != null">
+        ig_show = #{igShow,jdbcType=BIT},
+      </if>
+      <if test="igTimeType != null">
+        ig_time_type = #{igTimeType,jdbcType=BIT},
+      </if>
+      <if test="igTransfee != null">
+        ig_transfee = #{igTransfee,jdbcType=DECIMAL},
+      </if>
+      <if test="igTransfeeType != null">
+        ig_transfee_type = #{igTransfeeType,jdbcType=INTEGER},
+      </if>
+      <if test="igGoodsImgId != null">
+        ig_goods_img_id = #{igGoodsImgId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingIntegralGoods">
+    update shopping_integral_goods
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ig_begin_time = #{igBeginTime,jdbcType=TIMESTAMP},
+      ig_click_count = #{igClickCount,jdbcType=INTEGER},
+      ig_content = #{igContent,jdbcType=VARCHAR},
+      ig_end_time = #{igEndTime,jdbcType=TIMESTAMP},
+      ig_exchange_count = #{igExchangeCount,jdbcType=INTEGER},
+      ig_goods_count = #{igGoodsCount,jdbcType=INTEGER},
+      ig_goods_integral = #{igGoodsIntegral,jdbcType=INTEGER},
+      ig_goods_name = #{igGoodsName,jdbcType=VARCHAR},
+      ig_goods_price = #{igGoodsPrice,jdbcType=DECIMAL},
+      ig_goods_sn = #{igGoodsSn,jdbcType=VARCHAR},
+      ig_goods_tag = #{igGoodsTag,jdbcType=VARCHAR},
+      ig_limit_count = #{igLimitCount,jdbcType=INTEGER},
+      ig_limit_type = #{igLimitType,jdbcType=BIT},
+      ig_recommend = #{igRecommend,jdbcType=BIT},
+      ig_seo_description = #{igSeoDescription,jdbcType=VARCHAR},
+      ig_seo_keywords = #{igSeoKeywords,jdbcType=VARCHAR},
+      ig_sequence = #{igSequence,jdbcType=INTEGER},
+      ig_show = #{igShow,jdbcType=BIT},
+      ig_time_type = #{igTimeType,jdbcType=BIT},
+      ig_transfee = #{igTransfee,jdbcType=DECIMAL},
+      ig_transfee_type = #{igTransfeeType,jdbcType=INTEGER},
+      ig_goods_img_id = #{igGoodsImgId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

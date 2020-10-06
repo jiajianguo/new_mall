@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingDynamicMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingDynamic">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="discussNum" jdbcType="INTEGER" property="discussnum" />
+    <result column="praiseNum" jdbcType="INTEGER" property="praisenum" />
+    <result column="turnNum" jdbcType="INTEGER" property="turnnum" />
+    <result column="dissParent_id" jdbcType="BIGINT" property="dissparentId" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="turnParent_id" jdbcType="BIGINT" property="turnparentId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <result column="img_id" jdbcType="BIGINT" property="imgId" />
+    <result column="store_id" jdbcType="BIGINT" property="storeId" />
+    <result column="display" jdbcType="BIT" property="display" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingDynamic">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, discussNum, praiseNum, turnNum, dissParent_id, goods_id,
+    turnParent_id, user_id, locked, img_id, store_id, display
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from shopping_dynamic
+    <where >
+      1=1
+      <if test="display != null"> and display =#{display}</if>
+      <if test="user_id != null"> and user_id =#{user_id}</if>
+      <if test="to_user_ids != null and to_user_ids.size > 0 ">
+        and  user_id in
+        <foreach collection="to_user_ids" index="index" item="item" open="(" separator="," close=")" >
+          #{item}
+        </foreach>
+      </if>
+      <if test="store_id != null"> and store_id ${store_id}</if>
+      <if test="locked != null"> and locked =#{locked}</if>
+      <if test="dissParent_id != null"> and dissParent_id ${dissParent_id}</if>
+    </where>
+  </select>
+
+  <select id="pageList" resultMap="ResultMapWithBLOBs">
+    select * from shopping_dynamic
+    <where >
+      1=1
+      <if test="display != null"> and display =#{display}</if>
+      <if test="user_id != null"> and user_id =#{user_id}</if>
+      <if test="to_user_ids != null  and to_user_ids.size > 0 ">
+      and  user_id in
+         <foreach collection="to_user_ids" item="item" open="(" close=")" separator=",">
+                #{item}
+         </foreach>
+       </if>
+      <if test="store_id != null"> and store_id ${store_id}</if>
+      <if test="locked != null"> and locked =#{locked}</if>
+      <if test="dissParent_id != null"> and dissParent_id ${dissParent_id}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingDynamicExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_dynamic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingDynamicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_dynamic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_dynamic
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_dynamic
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingDynamicExample">
+    delete from shopping_dynamic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingDynamic">
+    insert into shopping_dynamic (id, addTime, deleteStatus,
+      discussNum, praiseNum, turnNum,
+      dissParent_id, goods_id, turnParent_id,
+      user_id, locked, img_id, store_id,
+      display, content)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{discussnum,jdbcType=INTEGER}, #{praisenum,jdbcType=INTEGER}, #{turnnum,jdbcType=INTEGER},
+      #{dissparentId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{turnparentId,jdbcType=BIGINT},
+      #{userId,jdbcType=BIGINT}, #{locked,jdbcType=BIT}, #{imgId,jdbcType=BIGINT}, #{storeId,jdbcType=BIGINT},
+      #{display,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingDynamic">
+    insert into shopping_dynamic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="discussnum != null">
+        discussNum,
+      </if>
+      <if test="praisenum != null">
+        praiseNum,
+      </if>
+      <if test="turnnum != null">
+        turnNum,
+      </if>
+      <if test="dissparentId != null">
+        dissParent_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="turnparentId != null">
+        turnParent_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+      <if test="imgId != null">
+        img_id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="display != null">
+        display,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="discussnum != null">
+        #{discussnum,jdbcType=INTEGER},
+      </if>
+      <if test="praisenum != null">
+        #{praisenum,jdbcType=INTEGER},
+      </if>
+      <if test="turnnum != null">
+        #{turnnum,jdbcType=INTEGER},
+      </if>
+      <if test="dissparentId != null">
+        #{dissparentId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="turnparentId != null">
+        #{turnparentId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
+      </if>
+      <if test="imgId != null">
+        #{imgId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="display != null">
+        #{display,jdbcType=BIT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingDynamicExample" resultType="java.lang.Long">
+    select count(*) from shopping_dynamic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_dynamic
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.discussnum != null">
+        discussNum = #{record.discussnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.praisenum != null">
+        praiseNum = #{record.praisenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.turnnum != null">
+        turnNum = #{record.turnnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.dissparentId != null">
+        dissParent_id = #{record.dissparentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.turnparentId != null">
+        turnParent_id = #{record.turnparentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.locked != null">
+        locked = #{record.locked,jdbcType=BIT},
+      </if>
+      <if test="record.imgId != null">
+        img_id = #{record.imgId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.display != null">
+        display = #{record.display,jdbcType=BIT},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_dynamic
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      discussNum = #{record.discussnum,jdbcType=INTEGER},
+      praiseNum = #{record.praisenum,jdbcType=INTEGER},
+      turnNum = #{record.turnnum,jdbcType=INTEGER},
+      dissParent_id = #{record.dissparentId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      turnParent_id = #{record.turnparentId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      locked = #{record.locked,jdbcType=BIT},
+      img_id = #{record.imgId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      display = #{record.display,jdbcType=BIT},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_dynamic
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      discussNum = #{record.discussnum,jdbcType=INTEGER},
+      praiseNum = #{record.praisenum,jdbcType=INTEGER},
+      turnNum = #{record.turnnum,jdbcType=INTEGER},
+      dissParent_id = #{record.dissparentId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      turnParent_id = #{record.turnparentId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      locked = #{record.locked,jdbcType=BIT},
+      img_id = #{record.imgId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      display = #{record.display,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingDynamic">
+    update shopping_dynamic
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="discussnum != null">
+        discussNum = #{discussnum,jdbcType=INTEGER},
+      </if>
+      <if test="praisenum != null">
+        praiseNum = #{praisenum,jdbcType=INTEGER},
+      </if>
+      <if test="turnnum != null">
+        turnNum = #{turnnum,jdbcType=INTEGER},
+      </if>
+      <if test="dissparentId != null">
+        dissParent_id = #{dissparentId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="turnparentId != null">
+        turnParent_id = #{turnparentId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
+      </if>
+      <if test="imgId != null">
+        img_id = #{imgId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="display != null">
+        display = #{display,jdbcType=BIT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingDynamic">
+    update shopping_dynamic
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      discussNum = #{discussnum,jdbcType=INTEGER},
+      praiseNum = #{praisenum,jdbcType=INTEGER},
+      turnNum = #{turnnum,jdbcType=INTEGER},
+      dissParent_id = #{dissparentId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      turnParent_id = #{turnparentId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      locked = #{locked,jdbcType=BIT},
+      img_id = #{imgId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      display = #{display,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingDynamic">
+    update shopping_dynamic
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      discussNum = #{discussnum,jdbcType=INTEGER},
+      praiseNum = #{praisenum,jdbcType=INTEGER},
+      turnNum = #{turnnum,jdbcType=INTEGER},
+      dissParent_id = #{dissparentId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      turnParent_id = #{turnparentId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      locked = #{locked,jdbcType=BIT},
+      img_id = #{imgId,jdbcType=BIGINT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      display = #{display,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

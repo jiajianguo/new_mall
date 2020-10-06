@@ -1,0 +1,130 @@
+.topnav {
+	padding-top: .35rem;
+	background-color: #ffffff;
+}
+
+.navtb {
+	padding-right: .3rem;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.icon_topnav {
+	font-size: .5rem;
+	color: #222222;
+}
+
+.navname {
+	display: flex;
+	align-items: center;
+	padding-left: .35rem;
+}
+
+.navimg {
+	width: 1.22rem;
+	height: 1.22rem;
+	border-radius: 50%;
+}
+
+.logonbt {
+	margin-left: .2rem;
+	font-size: .28rem;
+	padding: .1rem .25rem .1rem .25rem;
+	background-color: #222222;
+	border-radius: 3px;
+	color: #ffffff;
+}
+
+.new1 {
+	display: flex;
+	align-items: center;
+	font-size: .36rem;
+	color: #333333;
+}
+
+.new1>div {
+	width: 25%;
+	padding: .5rem 0 .5rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.new_text {
+	font-size: .24rem;
+	color: #999999;
+}
+
+.order {
+	margin-top: .1rem;
+}
+
+.text_title {
+	height: .86rem;
+	padding: 0 .25rem 0 .25rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #ffffff;
+}
+
+.text_title_row {
+	display: flex;
+	align-items: center;
+	font-size: .32rem;
+	color: #333333;
+}
+
+.text_title_row>div {
+	width: 3px;
+	height: .3rem;
+	margin-right: 5px;
+	background-color: #333333;
+}
+
+.text_titlebt {
+	font-size: .24rem;
+	color: #999999;
+}
+
+.order_text {
+	margin-top: 1px;
+	display: flex;
+	align-items: center;
+	background-color: #ffffff;
+}
+
+.order_text>div {
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	padding: .35rem 0 .35rem 0;
+}
+.order_bttext{
+	margin-top: .1rem;
+	font-size: .24rem;
+	color: #999999;
+}
+.icon_order{
+	font-size: .5rem;
+	color: #333333;
+}
+.orderbq{
+	width: .3rem;
+	height: .3rem;
+	position: absolute;
+	font-size: .2rem;
+	top: .2rem;
+	right: calc(50% - .4rem);
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #333333;
+	color: #ffffff;
+}
+.serve{
+	margin-top: .1rem;
+}

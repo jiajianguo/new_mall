@@ -1,0 +1,9 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:if="${childs ==null}">
+ <option >请选择...</option>
+</div>
+<option >请选择...</option>
+<option th:each="area :${childs}"  th:value="${area.id}" th:text="${area.areaname}"></option>
+</html>

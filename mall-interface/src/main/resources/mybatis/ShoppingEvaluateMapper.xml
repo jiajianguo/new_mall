@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingEvaluateMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingEvaluate">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="evaluate_buyer_val" jdbcType="INTEGER" property="evaluateBuyerVal" />
+    <result column="evaluate_seller_time" jdbcType="TIMESTAMP" property="evaluateSellerTime" />
+    <result column="evaluate_seller_val" jdbcType="INTEGER" property="evaluateSellerVal" />
+    <result column="evaluate_status" jdbcType="INTEGER" property="evaluateStatus" />
+    <result column="evaluate_type" jdbcType="VARCHAR" property="evaluateType" />
+    <result column="evaluate_goods_id" jdbcType="BIGINT" property="evaluateGoodsId" />
+    <result column="evaluate_seller_user_id" jdbcType="BIGINT" property="evaluateSellerUserId" />
+    <result column="evaluate_user_id" jdbcType="BIGINT" property="evaluateUserId" />
+    <result column="of_id" jdbcType="BIGINT" property="ofId" />
+    <result column="description_evaluate" jdbcType="DECIMAL" property="descriptionEvaluate" />
+    <result column="service_evaluate" jdbcType="DECIMAL" property="serviceEvaluate" />
+    <result column="ship_evaluate" jdbcType="DECIMAL" property="shipEvaluate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingEvaluateWithBLOBs">
+    <result column="evaluate_admin_info" jdbcType="LONGVARCHAR" property="evaluateAdminInfo" />
+    <result column="evaluate_info" jdbcType="LONGVARCHAR" property="evaluateInfo" />
+    <result column="evaluate_seller_info" jdbcType="LONGVARCHAR" property="evaluateSellerInfo" />
+    <result column="goods_spec" jdbcType="LONGVARCHAR" property="goodsSpec" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, evaluate_buyer_val, evaluate_seller_time, evaluate_seller_val,
+    evaluate_status, evaluate_type, evaluate_goods_id, evaluate_seller_user_id, evaluate_user_id,
+    of_id, description_evaluate, service_evaluate, ship_evaluate
+  </sql>
+  <sql id="Blob_Column_List">
+    evaluate_admin_info, evaluate_info, evaluate_seller_info, goods_spec
+  </sql>
+
+  <select id="queryByCondition" resultMap="ResultMapWithBLOBs">
+    select se.* from shopping_evaluate se
+    left join shopping_orderform so on se.of_id=so.id
+    <where>
+      1=1
+      <if test="evaluate_goods_id != null "> and se.evaluate_goods_id=#{evaluate_goods_id} </if>
+      <if test="store_id != null "> and so.store_id=#{store_id} </if>
+      <if test="evaluate_type != null "> and se.evaluate_type=#{evaluate_type}</if>
+      <if test="orderBy != null and sort != null"> order by ${orderBy} ${sort} </if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+  <select id="queryCount" resultType="java.lang.Integer">
+    select count(*) from shopping_evaluate se
+    left join shopping_goods g on se.evaluate_goods_id=g.id
+    <where>
+      1=1
+      <if test="store_id != null "> and g.goods_store_id=#{store_id} </if>
+      <if test="evaluate_type != null "> and se.evaluate_type=#{evaluate_type}</if>
+      <if test="evaluate_buyer_val != null "> and se.evaluate_buyer_val=#{evaluate_buyer_val}</if>
+      <if test="symbolTime != null and symbol != 'than' "> and se.addTime &gt;= #{symbolTime} </if>
+      <if test="symbolTime != null and symbol != 'less' "> and se.addTime &lt;= #{symbolTime} </if>
+    </where>
+  </select>
+
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from shopping_evaluate se
+    left join shopping_orderform so on se.of_id=so.id
+    <where>
+      1=1
+      <if test="evaluate_goods_id != null "> and se.evaluate_goods_id=#{evaluate_goods_id} </if>
+      <if test="store_id != null "> and so.store_id=#{store_id} </if>
+      <if test="evaluate_type != null "> and se.evaluate_type=#{evaluate_type}</if>
+    </where>
+  </select>
+
+  <select id="queryBySg" resultMap="ResultMapWithBLOBs">
+    select se.*,sg.* from shopping_evaluate se
+    left join shopping_goods sg on se.evaluate_goods_id=sg.id
+    <where>
+      1=1
+      <if test="store_id != null "> and sg.goods_store_id=#{store_id} </if>
+      <if test="evaluate_buyer_val != null "> and se.evaluate_buyer_val=#{evaluate_buyer_val}</if>
+      <if test="orderBy != null and sort != null"> order by #{orderBy} #{sort} </if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+  <select id="countSg" resultType="java.lang.Integer">
+    select count(*) from shopping_evaluate se
+    left join shopping_goods sg on se.evaluate_goods_id=sg.id
+    <where>
+      1=1
+      <if test="store_id != null "> and sg.goods_store_id=#{store_id} </if>
+      <if test="evaluate_buyer_val != null "> and se.evaluate_buyer_val=#{evaluate_buyer_val}</if>
+      <if test="orderBy != null and sort != null"> order by #{orderBy} #{sort} </if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingEvaluateExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingEvaluateExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_evaluate
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_evaluate
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingEvaluateExample">
+    delete from shopping_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingEvaluateWithBLOBs">
+    insert into shopping_evaluate (id, addTime, deleteStatus,
+      evaluate_buyer_val, evaluate_seller_time,
+      evaluate_seller_val, evaluate_status, evaluate_type,
+      evaluate_goods_id, evaluate_seller_user_id, evaluate_user_id,
+      of_id, description_evaluate, service_evaluate,
+      ship_evaluate, evaluate_admin_info, evaluate_info,
+      evaluate_seller_info, goods_spec)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{evaluateBuyerVal,jdbcType=INTEGER}, #{evaluateSellerTime,jdbcType=TIMESTAMP},
+      #{evaluateSellerVal,jdbcType=INTEGER}, #{evaluateStatus,jdbcType=INTEGER}, #{evaluateType,jdbcType=VARCHAR},
+      #{evaluateGoodsId,jdbcType=BIGINT}, #{evaluateSellerUserId,jdbcType=BIGINT}, #{evaluateUserId,jdbcType=BIGINT},
+      #{ofId,jdbcType=BIGINT}, #{descriptionEvaluate,jdbcType=DECIMAL}, #{serviceEvaluate,jdbcType=DECIMAL},
+      #{shipEvaluate,jdbcType=DECIMAL}, #{evaluateAdminInfo,jdbcType=LONGVARCHAR}, #{evaluateInfo,jdbcType=LONGVARCHAR},
+      #{evaluateSellerInfo,jdbcType=LONGVARCHAR}, #{goodsSpec,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingEvaluateWithBLOBs">
+    insert into shopping_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="evaluateBuyerVal != null">
+        evaluate_buyer_val,
+      </if>
+      <if test="evaluateSellerTime != null">
+        evaluate_seller_time,
+      </if>
+      <if test="evaluateSellerVal != null">
+        evaluate_seller_val,
+      </if>
+      <if test="evaluateStatus != null">
+        evaluate_status,
+      </if>
+      <if test="evaluateType != null">
+        evaluate_type,
+      </if>
+      <if test="evaluateGoodsId != null">
+        evaluate_goods_id,
+      </if>
+      <if test="evaluateSellerUserId != null">
+        evaluate_seller_user_id,
+      </if>
+      <if test="evaluateUserId != null">
+        evaluate_user_id,
+      </if>
+      <if test="ofId != null">
+        of_id,
+      </if>
+      <if test="descriptionEvaluate != null">
+        description_evaluate,
+      </if>
+      <if test="serviceEvaluate != null">
+        service_evaluate,
+      </if>
+      <if test="shipEvaluate != null">
+        ship_evaluate,
+      </if>
+      <if test="evaluateAdminInfo != null">
+        evaluate_admin_info,
+      </if>
+      <if test="evaluateInfo != null">
+        evaluate_info,
+      </if>
+      <if test="evaluateSellerInfo != null">
+        evaluate_seller_info,
+      </if>
+      <if test="goodsSpec != null">
+        goods_spec,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="evaluateBuyerVal != null">
+        #{evaluateBuyerVal,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateSellerTime != null">
+        #{evaluateSellerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="evaluateSellerVal != null">
+        #{evaluateSellerVal,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateStatus != null">
+        #{evaluateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateType != null">
+        #{evaluateType,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateGoodsId != null">
+        #{evaluateGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="evaluateSellerUserId != null">
+        #{evaluateSellerUserId,jdbcType=BIGINT},
+      </if>
+      <if test="evaluateUserId != null">
+        #{evaluateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="ofId != null">
+        #{ofId,jdbcType=BIGINT},
+      </if>
+      <if test="descriptionEvaluate != null">
+        #{descriptionEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceEvaluate != null">
+        #{serviceEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="shipEvaluate != null">
+        #{shipEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluateAdminInfo != null">
+        #{evaluateAdminInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="evaluateInfo != null">
+        #{evaluateInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="evaluateSellerInfo != null">
+        #{evaluateSellerInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="goodsSpec != null">
+        #{goodsSpec,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingEvaluateExample" resultType="java.lang.Long">
+    select count(*) from shopping_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_evaluate
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.evaluateBuyerVal != null">
+        evaluate_buyer_val = #{record.evaluateBuyerVal,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluateSellerTime != null">
+        evaluate_seller_time = #{record.evaluateSellerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.evaluateSellerVal != null">
+        evaluate_seller_val = #{record.evaluateSellerVal,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluateStatus != null">
+        evaluate_status = #{record.evaluateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluateType != null">
+        evaluate_type = #{record.evaluateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateGoodsId != null">
+        evaluate_goods_id = #{record.evaluateGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.evaluateSellerUserId != null">
+        evaluate_seller_user_id = #{record.evaluateSellerUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.evaluateUserId != null">
+        evaluate_user_id = #{record.evaluateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.ofId != null">
+        of_id = #{record.ofId,jdbcType=BIGINT},
+      </if>
+      <if test="record.descriptionEvaluate != null">
+        description_evaluate = #{record.descriptionEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.serviceEvaluate != null">
+        service_evaluate = #{record.serviceEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.shipEvaluate != null">
+        ship_evaluate = #{record.shipEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluateAdminInfo != null">
+        evaluate_admin_info = #{record.evaluateAdminInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.evaluateInfo != null">
+        evaluate_info = #{record.evaluateInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.evaluateSellerInfo != null">
+        evaluate_seller_info = #{record.evaluateSellerInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.goodsSpec != null">
+        goods_spec = #{record.goodsSpec,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_evaluate
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      evaluate_buyer_val = #{record.evaluateBuyerVal,jdbcType=INTEGER},
+      evaluate_seller_time = #{record.evaluateSellerTime,jdbcType=TIMESTAMP},
+      evaluate_seller_val = #{record.evaluateSellerVal,jdbcType=INTEGER},
+      evaluate_status = #{record.evaluateStatus,jdbcType=INTEGER},
+      evaluate_type = #{record.evaluateType,jdbcType=VARCHAR},
+      evaluate_goods_id = #{record.evaluateGoodsId,jdbcType=BIGINT},
+      evaluate_seller_user_id = #{record.evaluateSellerUserId,jdbcType=BIGINT},
+      evaluate_user_id = #{record.evaluateUserId,jdbcType=BIGINT},
+      of_id = #{record.ofId,jdbcType=BIGINT},
+      description_evaluate = #{record.descriptionEvaluate,jdbcType=DECIMAL},
+      service_evaluate = #{record.serviceEvaluate,jdbcType=DECIMAL},
+      ship_evaluate = #{record.shipEvaluate,jdbcType=DECIMAL},
+      evaluate_admin_info = #{record.evaluateAdminInfo,jdbcType=LONGVARCHAR},
+      evaluate_info = #{record.evaluateInfo,jdbcType=LONGVARCHAR},
+      evaluate_seller_info = #{record.evaluateSellerInfo,jdbcType=LONGVARCHAR},
+      goods_spec = #{record.goodsSpec,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_evaluate
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      evaluate_buyer_val = #{record.evaluateBuyerVal,jdbcType=INTEGER},
+      evaluate_seller_time = #{record.evaluateSellerTime,jdbcType=TIMESTAMP},
+      evaluate_seller_val = #{record.evaluateSellerVal,jdbcType=INTEGER},
+      evaluate_status = #{record.evaluateStatus,jdbcType=INTEGER},
+      evaluate_type = #{record.evaluateType,jdbcType=VARCHAR},
+      evaluate_goods_id = #{record.evaluateGoodsId,jdbcType=BIGINT},
+      evaluate_seller_user_id = #{record.evaluateSellerUserId,jdbcType=BIGINT},
+      evaluate_user_id = #{record.evaluateUserId,jdbcType=BIGINT},
+      of_id = #{record.ofId,jdbcType=BIGINT},
+      description_evaluate = #{record.descriptionEvaluate,jdbcType=DECIMAL},
+      service_evaluate = #{record.serviceEvaluate,jdbcType=DECIMAL},
+      ship_evaluate = #{record.shipEvaluate,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingEvaluateWithBLOBs">
+    update shopping_evaluate
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="evaluateBuyerVal != null">
+        evaluate_buyer_val = #{evaluateBuyerVal,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateSellerTime != null">
+        evaluate_seller_time = #{evaluateSellerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="evaluateSellerVal != null">
+        evaluate_seller_val = #{evaluateSellerVal,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateStatus != null">
+        evaluate_status = #{evaluateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateType != null">
+        evaluate_type = #{evaluateType,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateGoodsId != null">
+        evaluate_goods_id = #{evaluateGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="evaluateSellerUserId != null">
+        evaluate_seller_user_id = #{evaluateSellerUserId,jdbcType=BIGINT},
+      </if>
+      <if test="evaluateUserId != null">
+        evaluate_user_id = #{evaluateUserId,jdbcType=BIGINT},
+      </if>
+      <if test="ofId != null">
+        of_id = #{ofId,jdbcType=BIGINT},
+      </if>
+      <if test="descriptionEvaluate != null">
+        description_evaluate = #{descriptionEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceEvaluate != null">
+        service_evaluate = #{serviceEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="shipEvaluate != null">
+        ship_evaluate = #{shipEvaluate,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluateAdminInfo != null">
+        evaluate_admin_info = #{evaluateAdminInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="evaluateInfo != null">
+        evaluate_info = #{evaluateInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="evaluateSellerInfo != null">
+        evaluate_seller_info = #{evaluateSellerInfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="goodsSpec != null">
+        goods_spec = #{goodsSpec,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingEvaluateWithBLOBs">
+    update shopping_evaluate
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      evaluate_buyer_val = #{evaluateBuyerVal,jdbcType=INTEGER},
+      evaluate_seller_time = #{evaluateSellerTime,jdbcType=TIMESTAMP},
+      evaluate_seller_val = #{evaluateSellerVal,jdbcType=INTEGER},
+      evaluate_status = #{evaluateStatus,jdbcType=INTEGER},
+      evaluate_type = #{evaluateType,jdbcType=VARCHAR},
+      evaluate_goods_id = #{evaluateGoodsId,jdbcType=BIGINT},
+      evaluate_seller_user_id = #{evaluateSellerUserId,jdbcType=BIGINT},
+      evaluate_user_id = #{evaluateUserId,jdbcType=BIGINT},
+      of_id = #{ofId,jdbcType=BIGINT},
+      description_evaluate = #{descriptionEvaluate,jdbcType=DECIMAL},
+      service_evaluate = #{serviceEvaluate,jdbcType=DECIMAL},
+      ship_evaluate = #{shipEvaluate,jdbcType=DECIMAL},
+      evaluate_admin_info = #{evaluateAdminInfo,jdbcType=LONGVARCHAR},
+      evaluate_info = #{evaluateInfo,jdbcType=LONGVARCHAR},
+      evaluate_seller_info = #{evaluateSellerInfo,jdbcType=LONGVARCHAR},
+      goods_spec = #{goodsSpec,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingEvaluate">
+    update shopping_evaluate
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      evaluate_buyer_val = #{evaluateBuyerVal,jdbcType=INTEGER},
+      evaluate_seller_time = #{evaluateSellerTime,jdbcType=TIMESTAMP},
+      evaluate_seller_val = #{evaluateSellerVal,jdbcType=INTEGER},
+      evaluate_status = #{evaluateStatus,jdbcType=INTEGER},
+      evaluate_type = #{evaluateType,jdbcType=VARCHAR},
+      evaluate_goods_id = #{evaluateGoodsId,jdbcType=BIGINT},
+      evaluate_seller_user_id = #{evaluateSellerUserId,jdbcType=BIGINT},
+      evaluate_user_id = #{evaluateUserId,jdbcType=BIGINT},
+      of_id = #{ofId,jdbcType=BIGINT},
+      description_evaluate = #{descriptionEvaluate,jdbcType=DECIMAL},
+      service_evaluate = #{serviceEvaluate,jdbcType=DECIMAL},
+      ship_evaluate = #{shipEvaluate,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

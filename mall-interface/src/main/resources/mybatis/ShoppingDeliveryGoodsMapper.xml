@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingDeliveryGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingDeliveryGoods">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="d_status" jdbcType="INTEGER" property="dStatus" />
+    <result column="d_admin_user_id" jdbcType="BIGINT" property="dAdminUserId" />
+    <result column="d_delivery_goods_id" jdbcType="BIGINT" property="dDeliveryGoodsId" />
+    <result column="d_goods_id" jdbcType="BIGINT" property="dGoodsId" />
+    <result column="d_begin_time" jdbcType="DATE" property="dBeginTime" />
+    <result column="d_end_time" jdbcType="DATE" property="dEndTime" />
+    <result column="d_audit_time" jdbcType="TIMESTAMP" property="dAuditTime" />
+    <result column="d_refuse_time" jdbcType="TIMESTAMP" property="dRefuseTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, d_status, d_admin_user_id, d_delivery_goods_id, d_goods_id,
+    d_begin_time, d_end_time, d_audit_time, d_refuse_time
+  </sql>
+
+  <select id="queryByGoodsId" resultMap="BaseResultMap">
+        select * from  shopping_delivery_goods where d_goods_id=#{goodsId}
+
+  </select>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select * from shopping_delivery_goods
+    <where>
+      1=1
+      <if test="d_status != null "> and d_status=#{d_status}</if>
+      <if test="d_begin_time != null "> and d_begin_time &lt;= #{d_begin_time}</if>
+      <if test="d_end_time != null "> and d_end_time &gt;= #{d_end_time}</if>
+      <if test="orderBy != null and sort != null"> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from shopping_delivery_goods
+    <where>
+      1=1
+      <if test="d_status != null "> and d_status=#{d_status}</if>
+      <if test="d_begin_time != null "> and d_begin_time &lt;= #{d_begin_time}</if>
+      <if test="d_end_time != null "> and d_end_time &gt;= #{d_end_time}</if>
+    </where>
+  </select>
+  <select id="pageList" resultMap="BaseResultMap">
+    select * from shopping_delivery_goods
+    <where>
+      1=1
+      <if test="d_status != null "> and d_status=#{d_status}</if>
+      <if test="d_begin_time != null "> and d_begin_time &lt;= #{d_begin_time}</if>
+      <if test="d_end_time != null "> and d_end_time &gt;= #{d_end_time}</if>
+      <if test="orderBy != null and sort != null"> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingDeliveryGoodsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_delivery_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_delivery_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_delivery_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingDeliveryGoodsExample">
+    delete from shopping_delivery_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingDeliveryGoods">
+    insert into shopping_delivery_goods (id, addTime, deleteStatus,
+      d_status, d_admin_user_id, d_delivery_goods_id,
+      d_goods_id, d_begin_time, d_end_time,
+      d_audit_time, d_refuse_time)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{dStatus,jdbcType=INTEGER}, #{dAdminUserId,jdbcType=BIGINT}, #{dDeliveryGoodsId,jdbcType=BIGINT},
+      #{dGoodsId,jdbcType=BIGINT}, #{dBeginTime,jdbcType=DATE}, #{dEndTime,jdbcType=DATE},
+      #{dAuditTime,jdbcType=TIMESTAMP}, #{dRefuseTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingDeliveryGoods">
+    insert into shopping_delivery_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="dStatus != null">
+        d_status,
+      </if>
+      <if test="dAdminUserId != null">
+        d_admin_user_id,
+      </if>
+      <if test="dDeliveryGoodsId != null">
+        d_delivery_goods_id,
+      </if>
+      <if test="dGoodsId != null">
+        d_goods_id,
+      </if>
+      <if test="dBeginTime != null">
+        d_begin_time,
+      </if>
+      <if test="dEndTime != null">
+        d_end_time,
+      </if>
+      <if test="dAuditTime != null">
+        d_audit_time,
+      </if>
+      <if test="dRefuseTime != null">
+        d_refuse_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="dStatus != null">
+        #{dStatus,jdbcType=INTEGER},
+      </if>
+      <if test="dAdminUserId != null">
+        #{dAdminUserId,jdbcType=BIGINT},
+      </if>
+      <if test="dDeliveryGoodsId != null">
+        #{dDeliveryGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="dGoodsId != null">
+        #{dGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="dBeginTime != null">
+        #{dBeginTime,jdbcType=DATE},
+      </if>
+      <if test="dEndTime != null">
+        #{dEndTime,jdbcType=DATE},
+      </if>
+      <if test="dAuditTime != null">
+        #{dAuditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dRefuseTime != null">
+        #{dRefuseTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingDeliveryGoodsExample" resultType="java.lang.Long">
+    select count(*) from shopping_delivery_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_delivery_goods
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.dStatus != null">
+        d_status = #{record.dStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.dAdminUserId != null">
+        d_admin_user_id = #{record.dAdminUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dDeliveryGoodsId != null">
+        d_delivery_goods_id = #{record.dDeliveryGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dGoodsId != null">
+        d_goods_id = #{record.dGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dBeginTime != null">
+        d_begin_time = #{record.dBeginTime,jdbcType=DATE},
+      </if>
+      <if test="record.dEndTime != null">
+        d_end_time = #{record.dEndTime,jdbcType=DATE},
+      </if>
+      <if test="record.dAuditTime != null">
+        d_audit_time = #{record.dAuditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dRefuseTime != null">
+        d_refuse_time = #{record.dRefuseTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_delivery_goods
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      d_status = #{record.dStatus,jdbcType=INTEGER},
+      d_admin_user_id = #{record.dAdminUserId,jdbcType=BIGINT},
+      d_delivery_goods_id = #{record.dDeliveryGoodsId,jdbcType=BIGINT},
+      d_goods_id = #{record.dGoodsId,jdbcType=BIGINT},
+      d_begin_time = #{record.dBeginTime,jdbcType=DATE},
+      d_end_time = #{record.dEndTime,jdbcType=DATE},
+      d_audit_time = #{record.dAuditTime,jdbcType=TIMESTAMP},
+      d_refuse_time = #{record.dRefuseTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingDeliveryGoods">
+    update shopping_delivery_goods
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="dStatus != null">
+        d_status = #{dStatus,jdbcType=INTEGER},
+      </if>
+      <if test="dAdminUserId != null">
+        d_admin_user_id = #{dAdminUserId,jdbcType=BIGINT},
+      </if>
+      <if test="dDeliveryGoodsId != null">
+        d_delivery_goods_id = #{dDeliveryGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="dGoodsId != null">
+        d_goods_id = #{dGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="dBeginTime != null">
+        d_begin_time = #{dBeginTime,jdbcType=DATE},
+      </if>
+      <if test="dEndTime != null">
+        d_end_time = #{dEndTime,jdbcType=DATE},
+      </if>
+      <if test="dAuditTime != null">
+        d_audit_time = #{dAuditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dRefuseTime != null">
+        d_refuse_time = #{dRefuseTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingDeliveryGoods">
+    update shopping_delivery_goods
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      d_status = #{dStatus,jdbcType=INTEGER},
+      d_admin_user_id = #{dAdminUserId,jdbcType=BIGINT},
+      d_delivery_goods_id = #{dDeliveryGoodsId,jdbcType=BIGINT},
+      d_goods_id = #{dGoodsId,jdbcType=BIGINT},
+      d_begin_time = #{dBeginTime,jdbcType=DATE},
+      d_end_time = #{dEndTime,jdbcType=DATE},
+      d_audit_time = #{dAuditTime,jdbcType=TIMESTAMP},
+      d_refuse_time = #{dRefuseTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

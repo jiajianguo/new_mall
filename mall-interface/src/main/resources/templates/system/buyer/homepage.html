@@ -1,0 +1,638 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/user.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+    <script th:src="@{/js/jquery.shop.common.js}"></script>
+    <script th:src="@{/js/buyer_head.js}"></script>
+    <script th:src="@{/js/buyer_nav.js}"></script>
+    <script th:src="@{/js/top.js}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            var type = jQuery("#type").val();
+            //查询状态设置选项卡
+            if (!type) {
+                jQuery("div.like_tab_box").attr("style", "display:block;");
+                jQuery("#li_baby").attr("class", "current_b");
+                jQuery("#li_store").attr("class", "current_d").find("div").css("display", "none");
+                jQuery("#li_dy").attr("class", "current_w").find("div").css("display", "none");
+            }
+
+            if (type == 1) {
+                jQuery("#li_baby").attr("class", "current_bb").find("div").css("display", "none");
+                jQuery("#li_store").attr("class", "current_dd").find("div").css("display", "block");
+                jQuery("#li_dy").attr("class", "current_w").find("div").css("display", "none");
+            }
+
+            if (type == 2){
+                jQuery("#li_baby").attr("class", "current_bb").find("div").css("display", "none");
+                jQuery("#li_store").attr("class", "current_d").find("div").css("display", "none");
+                jQuery("#li_dy").attr("class", "current_ww").find("div").css("display", "block");
+            }
+
+            jQuery("ul[id^=per_enby_]").mouseover(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#per_fun_do_" + obj_id).show();
+            });
+            jQuery("ul[id^=per_enby_]").mouseleave(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#per_fun_do_" + obj_id).hide();
+            });
+//动态设置
+            jQuery("div[id^=dy_set_]").click(
+                function () {
+                    var obj_id = jQuery(this).attr("obj_id");
+                    var display = jQuery("#dy_ul_" + obj_id).css("display");
+                    if (display == "block") {
+                        jQuery("#dy_ul_" + obj_id).slideUp();
+                    } else {
+                        jQuery("#dy_ul_" + obj_id).slideDown();
+                    }
+                });
+//鼠标移出动态事件
+            jQuery("div[id^=div_content_]").mouseleave(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#dy_ul_" + obj_id).hide();
+            });
+
+//新鲜事加密
+            jQuery("a[id^=dy_lock_]").click(function () {
+                var lock_mark = jQuery(this).attr("lock_mark");
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#obj_id").val(obj_id);
+                var lock_message = "";
+                if (lock_mark == "false") {
+                    lock_message = "私密";
+                } else {
+                    lock_message = "公开";
+                }
+                showDialog("dynamic_lock_switch", "系统提示", "亲，您确定要将该信息设置为" + lock_message + "？", 1, "question", "", dynamic_locked);
+            });
+            //删除动态
+            jQuery("a[id^=dy_delete_]").click(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#obj_id").val(obj_id);
+                showDialog("dynamic_delete", "系统提示", "删除后数据不可恢复，是否删除？", 1, "question", "", dynamic_delete);
+            });
+
+            //个人主页显示删除访客按钮
+            jQuery("li[id^=visit_list_]").hover(
+                function () {
+                    jQuery(this).find("div.per_interview_x").show();
+                },
+                function () {
+                    jQuery(this).find("div.per_interview_x").hide();
+                });
+            //个人主页删除访客ajax
+            jQuery("a[id^=visit_dele_]").click(function () {
+
+                jQuery("#visit_dele_id").val(jQuery(this).attr("visit_id"));
+                showDialog("dele_visit", "系统提示", "删除后不可恢复，是否删除该条访问记录？", 1, "question", "", visit_dele);
+            });
+            //点击评论
+            jQuery("a[id^=dis_]").click(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#per_enby_" + obj_id).slideUp();
+                jQuery("#dis_ul_" + obj_id).fadeIn(800);
+            });
+            //点击返回
+            jQuery("input[id^=comeback_]").click(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                jQuery("#dis_ul_" + obj_id).hide();
+                jQuery("#per_enby_" + obj_id).fadeIn();
+            });
+
+            //点击评论提交事件
+            jQuery("input[id^=dis_button_]").click(function () {
+                var obj_id = jQuery(this).attr("obj_id");
+                var content = jQuery("#dis_content_" + obj_id).val();
+                if (content.length > 0) {
+                    jQuery.post("/buyer/dynamic_ajax_reply.htm",
+                        {
+                            "reply_content": content,
+                            "parent_id": obj_id
+                        },
+                        function (data) {
+                            if (data) {
+                                jQuery("textarea[id^=dis_content_]").val("");
+                                showDialog("share_sns", "系统提示", "评论成功！", 0, "succeed", 3);
+                            } else {
+                                showDialog("share_sns", "系统提示", "评论失败！", 0, "error", 3);
+                            }
+                        }, "text");
+                } else {
+                    jQuery("#dis_content_" + obj_id).attr("placeholder", "请输入内容！")
+                }
+
+            });
+
+        });
+
+        function dynamic_delete() {
+            var obj_id = jQuery("#obj_id").val();
+            jQuery.post("/buyer/homepage_dynamic_del.htm",
+                {
+                    "id": obj_id,
+                    "currentPage": jQuery("#currentPage").val(),
+                    "type": jQuery("#type").val()
+                },
+                function (data) {
+                    if (data == "true") {
+                        jQuery("#div_content_" + obj_id).hide(300);
+                    } else {
+                        showDialog("dele_err", "系统提示", "删除失败！", 0, "error", 3);
+                    }
+                }, "text");
+        };
+
+
+        function dynamic_locked() {
+            var obj_id = jQuery("#obj_id").val();
+            jQuery.post("/buyer/homepage_dynamic_lock.htm",
+                {
+                    "dynamic_id": jQuery("#obj_id").val()
+                }, function (data) {
+                    if (data == "false") {
+                        jQuery("#dy_lock_" + obj_id).attr("lock_mark", "false").html("√ 公开");
+                    } else {
+                        jQuery("#dy_lock_" + obj_id).attr("lock_mark", "true").html("⊙ 私密");
+                    }
+                }, "text");
+        };
+
+        function visit_dele() {
+            var visit_id = jQuery("#visit_dele_id").val();
+            jQuery.post("/buyer/homepage_visit_dele.htm",
+                {
+                    "visit_id": visit_id
+                },
+                function (data) {
+                    if (data == "true") {
+                        jQuery("#visit_list_" + visit_id).slideUp();
+                    } else {
+                        showDialog("share_sns", "系统提示", "删除失败！", 0, "error", 3);
+                    }
+                }, "text");
+        };
+    </script>
+</head>
+<body>
+<div class="top_page">
+    <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+            <li class="mytaobao menu-item menupx">
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/seller/index.htm}" rel="nofollow">商家中心</a>
+                                <a th:href="@{/seller/order.htm}" rel="nofollow">商家订单</a>
+                                <a th:href="@{/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="search menu-item menupx">
+                <div class="menu" id="cart_menu">
+                  <span class="menu-hd" id="cart_goods_top_menu" >
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+
+                  </span>
+                </div>
+            </li>
+            <li class="menupx">
+                <a th:href="@{/buyer/message.htm}">
+                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            </li>
+            <li class="menupx" th:if="${navs != null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="menupx" style="background:none;" th:if="${navs == null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">更多链接<b></b></a>
+                    <div class="menu-bd" style="height:auto;">
+                        <div class="menu-bd-panel">
+                            <div th:each="nav : ${navs}">
+                                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+    </div>
+</div>
+<!--通栏蓝色导航-->
+<div style="width:100%; height:40px; background-color:#ff8800">
+    <div class="main">
+        <div class="home_nav">
+            <ul class="home_nav_ul">
+                <li th:if="${owner.id !=user.id}" class="nav_this">
+                    <a th:href="@{/buyer/homepage.htm(uid=${owner.id})}">TA的主页</a>
+                </li>
+                <li th:unless="${owner.id !=user.id}" class="nav_this">
+                    <a th:href="@{/buyer/homepage.htm}">我的主页</a></li>
+
+                <li th:if="${owner.id !=user.id}">
+                    <a th:href="@{/buyer/homepage/myfriends.htm(uid=${owner.id})}">好友</a>
+                </li>
+                <li th:unless="${owner.id !=user.id}">
+                    <a th:href="@{/buyer/homepage/myfriends.htm}">好友</a></li>
+
+                <li th:if="${owner.id !=user.id}">
+                    <a th:href="@{/buyer/homepage/myattention.htm(uid=${owner.id})}">关注</a></li>
+                <li th:unless="${owner.id !=user.id}">
+                    <a th:href="@{/buyer/homepage/myattention.htm}">关注</a>
+                </li>
+
+                <li th:if="${owner.id !=user.id}">
+                    <a th:href="@{/buyer/homepage/myfans.htm(uid=${owner.id})}">粉丝</a>
+                </li>
+                <li th:unless="${owner.id !=user.id}"><a th:href="@{/buyer/homepage/myfans.htm}">粉丝</a></li>
+
+            </ul>
+            <div class="home_nav_right">
+                <span th:text="${user.username}+'你好，欢迎来到！'+${config.websitename}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--宝贝导航-->
+<div class="tab_nav">
+    <!--选项卡 开始-->
+    <div class="like_tab">
+        <ul class="like_tab_list">
+            <li id="li_baby" class="current_b">
+                <div class="num_tips" th:text="${allnum==null ? 0 : allnum}"></div>
+                <a th:if="${owner.id !=user.id}" th:href="@{/buyer/homepage.htm(uid=${owner.id})}"><span>宝贝</span></a>
+                <a th:unless="${owner.id !=user.id}" th:href="@{/buyer/homepage.htm}"><span>宝贝</span></a>
+            </li>
+
+            <li id="li_store" class="current_dd">
+                <div class="num_tips" th:text="${allnum==null ? 0 : allnum}"></div>
+                <a th:if="${owner.id != user.id}"
+                   th:href="@{/buyer/homepage.htm(type=1,uid=${owner.id})}"><span>店铺</span></a>
+                <a th:unless="${owner.id != user.id}" th:href="@{/buyer/homepage.htm(type=1)}"><span>店铺</span></a>
+            </li>
+            <li class="current_ww" id="li_dy">
+                <div class="num_tips" th:text="${allnum==null ? 0 : allnum}"></div>
+                <a th:if="${owner.id !=user.id}" th:href="@{/buyer/homepage.htm(type=2,uid=${owner.id})}"><span>新鲜事</span></a>
+                <a th:unless="${owner.id !=user.id}" th:href="@{/buyer/homepage.htm(type=2)}"><span>新鲜事</span></a>
+
+            </li>
+
+        </ul>
+    </div>
+    <!--选项卡 结束-->
+    <!--标签列表 开始-->
+    <div class="like_tab_box" style="display:none">
+        <div class="like_tab_list_ul">
+            <ul>
+                <li th:class="${goodclassId==null ?'this':''}" }>
+                    <a th:href="@{/buyer/homepage.htm(uid=${owner.id})}">全部</a>
+                </li>
+                <li th:each="hgc :${hgcs}" th:class="${hgc.gc.id == goodclassId ?'this':''}">
+                    <a th:href="@{/buyer/homepage.htm(goodclass_id=${hgc.gc.id},uid=${owner.id})}"
+                       th:text="${hgc.gc.classname}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--标签列表 结束-->
+
+
+</div>
+
+<!--个人主页开始-->
+<div class="per_homepage_bg">
+    <div class="per_homepg_box">
+        <div class="per_home_page">
+            <div class="per_page_right">
+                <div class="per_right_box">
+                    <form id="ListForm" name="ListForm" method="post" th:action="@{/buyer/homepage.htm}">
+                        <input id="type" name="type" th:value="${type}" type="hidden"/>
+                        <input th:if="${owner.id !=user.id}" id="uid" name="uid" value="$!owner.id" type="hidden"/>
+                        <div class="per_enjoy_box">
+                            <!--已购买-->
+                            <div class="per_enjoy_buyed">
+                                <div th:if="${objs}" th:each="obj :${objs}" >
+                                    <div th:id="'div_content_'+${obj.id}"  th:obj_id="${obj.id}" style="width:210px; height:270px; float:left; margin-left:30px; _margin-left:15px; margin-right:5px; margin-top:20px; border:2px solid #DCDCDC;">
+                                        <ul class="per_enby" th:id="'per_enby_'+${obj.id}" th:obj_id="${obj.id}">
+                                            <li class="per_enby_img">
+                                                <span class="compimg_span">
+                                                  <p>
+                                                      <a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank">
+                                                          <img th:if="${type==null}"  th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" width="210" height="210"/>
+                                                      </a>
+                                                  </p>
+                                                </span>
+                                                <div th:if="${owner.id ==user.id}" class="per_fun_do"  th:id="'per_fun_do_'+${obj.id}" style="display:none">
+                                                    <div class="per_fun_twt" style="cursor:pointer"
+                                                         th:id="'dy_set_'+${obj.id}" th:obj_id="${obj.id}">设置
+                                                    </div>
+                                                    <div class="per_fun_xiala" style="display:none"
+                                                         th:id="'dy_ul_'+${obj.id}">
+                                                        <ul>
+                                                            <li><a href="javascript:void(0);" th:id="'dy_lock_'+${obj.id}"
+                                                                   lock_mark="$!obj.locked" th:obj_id="${obj.id}"
+                                                                   th:text="${obj.locked==false ? '√ 公开' :'⊙ 私密' }"></a>
+                                                            </li>
+                                                            <li><a href="javascript:void(0);" th:id="'dy_delete_'+${obj.id}"
+                                                                   th:obj_id="${obj.id}">X 删除</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="per_enby_discuss" th:utext="${obj.content}"></li>
+                                            <li class="per_enby_collect">
+                                                <a href="javascript:void(0);" th:id="'dis_'+${obj.id}" th:obj_id="${obj.id}" class="linksee"></a>
+                                                <span class="collect_object">
+                                                <b>收藏<strong th:text="${obj.goods.goodsCollect}"></strong></b>
+                                            </span>
+                                            </li>
+                                        </ul>
+
+                                        <div class=".per_enby_comments" th:id="'dis_ul_'+${obj.id}" style="display:none">
+                                            <ul class="per_enby_comments_ul">
+                                                <li th:each="child:${obj.childs}" class="per_enby_comments_ul_li">
+                                                <span class="pic">
+                                                    <img th:if="${child.user != null && child.user.photo != null}"
+                                                         th:src="@{'/'+${child.user.photo.path}+'/'+${child.user.photo.name}}" width="24"
+                                                         height="24"/>
+                                                    <img th:unless="${ child.user != null && child.user.photo != null }"
+                                                         th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="24"
+                                                         height="24"/>
+                                                </span>
+                                                    <span class="word" th:text="${child.content}"></span>
+                                                </li>
+
+                                            </ul>
+                                            <div class="per_enby_comments_com">
+                                            <textarea th:id="'dis_content_'+${obj.id}"
+                                                      th:name="'dis_content_'+${obj.id}"></textarea>
+                                                <input type="button" value="◀返回" th:id="'comeback_'+${obj.id}"
+                                                       th:obj_id="${obj.id}" class="back"/>
+                                                <input type="button" value="评论" th:id="'dis_button_'+${obj.id}" class="com"
+                                                       th:obj_id="${obj.id}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${type==1}" th:id="'div_content_'+${obj.id}" th:obj_id="${obj.id}"
+                                         style="width:210px; height:270px; float:left; margin-left:30px; _margin-left:15px; margin-right:5px; margin-top:20px; border:2px solid #DCDCDC;">
+                                        <ul class="per_enby" th:id="'per_enby_'+${obj.id}" th:obj_id="${obj.id}">
+                                            <li class="per_enby_img">
+                                                <span class="compimg_span">
+                                                    <p>
+                                                        <a th:href="@{/store.htm(id=${obj.store.id})}" target="_blank">
+                                                            <img th:if="${obj.store.store_logo}"
+                                                                 th:src="@{'/'+${obj.store.store_logo.path}+'/'+${obj.store.store_logo.name}}"
+                                                                 width="120" height="120"/>
+                                                            <img th:unless="${obj.store.store_logo}"
+                                                                 th:src="@{'/'+${config.storeImage.path}+'/'+${config.storeImage.name}}" width="120"
+                                                                 height="120"/>
+                                                        </a>
+                                                    </p>
+                                                </span>
+                                                <div th:if="${owner.id ==user.id}" class="per_fun_do"
+                                                     th:id="'per_fun_do_'+${obj.id}" style="display:none">
+
+                                                    <div class="per_fun_twt" style="cursor:pointer"
+                                                         th:id="'dy_set_'+${obj.id}" th:obj_id="${obj.id}">设置
+                                                    </div>
+                                                    <div class="per_fun_xiala" style="display:none"
+                                                         th:id="'dy_ul_'+${obj.id}">
+                                                        <ul>
+                                                            <li><a href="javascript:void(0);" th:id="'dy_lock_'+${obj.id}"
+                                                                   th:lock_mark="${obj.locked}" th:obj_id="${obj.id}"
+                                                                   th:text="${obj.locked==false ? '√ 公开' :'⊙ 私密' }"></a>
+                                                            </li>
+                                                            <li><a href="javascript:void(0);" th:id="'dy_delete_'+${obj.id}"
+                                                                   th:obj_id="${obj.id}">X 删除</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+                                            <li class="per_enby_discuss" th:utext="${obj.content}"></li>
+                                            <li class="per_enby_collect">
+                                                <a href="javascript:void(0);" th:id="'dis_'+${obj.id}" th:obj_id="${obj.id}"
+                                                   class="linksee"></a>
+                                                <span class="collect_object"><b>收藏<strong
+                                                        th:text="${obj.store.favoriteCount}"></strong></b> </span>
+                                            </li>
+                                        </ul>
+
+                                        <div class=".per_enby_comments" th:id="'dis_ul_'+${obj.id}" style="display:none">
+                                            <ul class="per_enby_comments_ul">
+                                                <li th:each="child :${obj.childs}" class="per_enby_comments_ul_li">
+                                                <span class="pic">
+                                                    <img th:if="${child.user.photo}"
+                                                         th:src="@{'/'+${child.user.photo.path}+'/'+${child.user.photo.name}}" width="24" height="24"/>
+                                                    <img th:unless="${child.user.photo}" th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="24" height="24"/>
+                                                </span>
+                                                    <span class="word" th:utext="${child.content}"></span>
+                                                </li>
+
+                                            </ul>
+                                            <div class="per_enby_comments_com">
+                                            <textarea th:id="${'dis_content_'+obj.id} " th:name="'dis_content_'+${obj.id}"></textarea>
+                                                <input type="button" value="◀返回" th:id="'comeback_'+${obj.id}" th:obj_id="${obj.id}" class="back"/>
+                                                <input type="button" value="评论" th:id="'dis_button_'+${obj.id}" class="com" th:obj_id="${obj.id}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div  th:text="${type==2}" th:id="'div_content_'+${obj.id}"  th:obj_id="${obj.id}"  style="width:210px; height:270px; float:left; margin-left:30px; _margin-left:15px; margin-right:5px; margin-top:20px; border:2px solid #DCDCDC;">
+                                        <ul class="per_enby" th:id="'per_enby_'+${obj.id}" th:obj_id="${obj.id}">
+                                            <li class="per_enby_img">
+                                                <span class="compimg_span">
+                                                  <div class="per_enby_font" th:utext="${obj.content}"></div>
+                                                </span>
+                                                <div th:if="${owner.id ==user.id}" class="'per_fun_do" th:id="'per_fun_do_'+${obj.id}" style="display:none">
+                                                    <div class="per_fun_twt" style="cursor:pointer"
+                                                         th:id="'dy_set_'+${obj.id}" th:obj_id="${obj.id}">设置
+                                                    </div>
+                                                    <div class="per_fun_xiala" style="display:none" th:id="'dy_ul_'+${obj.id}">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0);" th:id="'dy_lock_'+${obj.id}"  th:lock_mark="${obj.locked}" th:obj_id="${obj.id}" th:text="${obj.locked==false ? '√ 公开' :'⊙ 私密' }"></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0);" th:id="'dy_delete_'+${obj.id}" th:obj_id="${obj.id}">X 删除</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+                                            <li class="per_enby_discuss"></li>
+                                            <li class="per_enby_collect">
+                                                <a href="javascript:void(0);" th:id="'dis_'+${obj.id}" th:obj_id="${obj.id}"
+                                                   class="linksee"></a>
+                                                    <span class="collect_object">
+                                                        <b>评论<strong th:text="${obj.childs.size()}"></strong></b>
+                                                    </span>
+                                            </li>
+                                            </ul>
+
+                                        <div class=".per_enby_comments" th:id="'dis_ul_'+${obj.id}" style="display:none">
+                                            <ul class="per_enby_comments_ul">
+                                                <li th:each="child :${obj.childs}" class="per_enby_comments_ul_li">
+                                                    <span class="pic">
+                                                        <img th:if="${child.user.photo}"
+                                                             th:src="@{'/'+${child.user.photo.path}+'/'+${child.user.photo.name}}" width="24"
+                                                             height="24"/>
+                                                        <img th:unless="${child.user.photo}"
+                                                             th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="24"
+                                                             height="24"/>
+                                                    </span>
+                                                    <span class="word" th:utext="${child.content}"></span>
+                                                </li>
+                                            </ul>
+                                            <div class="per_enby_comments_com">
+                                            <textarea th:id="'dis_content_'+${obj.id}"
+                                                      th:name="'dis_content_'+${obj.id}"></textarea>
+                                                <input type="button" value="◀返回" th:id="comeback_'+${obj.id}"
+                                                       th:obj_id="${obj.id}" class="back"/>
+                                                <input type="button" value="评论" th:id="dis_button_'+${obj.id}" class="com"
+                                                       th:obj_id="${obj.id}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alldel">
+                                <div class="userfenye" th:utext="${gotoPageFormHTML}"></div>
+                            </div>
+                        </div>
+                        <input id="obj_id" name="obj_id" th:value="${obj_id}" type="hidden"/>
+                        <input id="goodclass_id" name="goodclass_id" th:value="${goodclassId}" type="hidden"/>
+                        <input id="lock_text" name="lock_text" value="" type="hidden"/>
+                        <input id="currentPage" name="currentPage" th:value="${currentPage}" type="hidden"/>
+                    </form>
+                </div>
+            </div>
+
+            <div class="per_page_left">
+                <div class="per_interview">
+                    <h3><span class="in_left">最近访问</span> <span class="in_right" th:text="'浏览总量：'+${visits.size()+'次'}"></span></h3>
+                    <ul>
+
+                        <li th:each="obj :${visits}" th:id="'visit_list_'+${obj.user.id}" th:visit_id="${obj.user.id}">
+                            <span>
+                                <a th:href="@{/buyer/homepage.htm(uid=${obj.user.id})}">
+                                    <img th:if="${obj.user.photo}"
+                                         th:src="@{${obj.user.photo.path}+'/'+${obj.user.photo.name}}" width="50"
+                                         height="50"/>
+                                    <img th:unless="${obj.user.photo}"
+                                         th:src="@{${config.memberIcon.path}+'/'+${config.memberIcon.name}}" width="50"
+                                         height="50"/>
+                                </a>
+                            </span>
+                            <b th:text="${obj.user.username}">
+                                <div class="per_interview_x" style="display:none; ">
+                                    <a th:if="${owner.id==user.id}" href="javascript:void(0);" th:id="'visit_dele_'+${obj.user.id}"
+                                       th:visit_id="${obj.user.id}">x</a>
+                                </div>
+                            </b>
+                            <i th:text="${#dates.format(obj.addtime,'MM月dd日HH:mm')}"></i>
+                        </li>
+                        <input id="visit_dele_id" name="visit_dele_id" type="hidden" value=""/>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer-->
+    <div class="footer">
+        <div class="footerArea">
+            <ul>
+                <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+                </li>
+                <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+                <li class="hui2">Powered by shopping 2.x</li>
+                <li th:text="${config.codeStat}"></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

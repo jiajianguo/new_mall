@@ -1,0 +1,431 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>积分商城  - Powered by shopping</title>
+<meta name="keywords" th:content="${config.keywords}"/>
+<meta name="description" th:content="${config.description}"/>
+<meta name="generator" content="shopping 2.0" />
+<meta name="author" content="www.shopping.com">
+<meta name="copyright" content="shopping Inc. All Rights Reserved">
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/style/system/front/default/css/integral.css}" type="text/css" rel="stylesheet"/>
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+  <script th:src="@{/js/nav.js}"></script>
+  <script th:src="@{/js/top.js}"></script>
+  <script th:src="@{/js/head.js}"></script>
+<script>
+jQuery(document).ready(function(){
+  jQuery(":radio[id^=addr_id]").click(function(){
+    if(jQuery(this).val()=="new"){
+	  jQuery("#new_address").show();
+	}else{
+      jQuery("#new_address").hide();
+	}
+  });
+  //
+  jQuery("#theForm").validate({
+    rules:{
+	  trueName:{required :true},
+	  area_id:{required :true},
+	  area_info:{required :true},
+	  telephone:{required :true},
+	  mobile:{required :true}
+	 },
+	messages:{
+	  trueName:{required :"收货人不能为空"},
+	  area_id:{required :"请选择详细区域"},
+	  area_info:{required :"详细地址不能为空"},
+	  telephone:{required :"联系电话不能为空"},
+	  mobile:{required :"手机号码不能为空"}
+	}
+  });
+  //
+  jQuery("select").change(function(){
+     var level=jQuery(this).attr("level");
+	 var id=jQuery(this).val();
+	 if(id!=""){
+	  jQuery.post("/load_area.htm",{"pid":id},function(data){
+	     jQuery("#area"+level).empty();
+		  jQuery("#area"+level).append("<option value=''>请选择</option>");
+	    jQuery.each(data, function(index,item){
+		  jQuery("#area"+level).append("<option value='"+item.id+"'>"+item.areaName+"</option>");
+		  jQuery("#area"+level).show();
+		});
+	  },"json");
+	 }else{
+	   for(var i=level;i<=3;i++){
+	    jQuery("#area"+i).empty();
+	    jQuery("#area"+i).hide();
+	   }
+	 }
+  });
+  //
+ jQuery("#area3").change(function(){
+   var id=jQuery(this).val();
+   jQuery("#area_id").val(id);
+ });
+});
+</script>
+</head>
+<body>
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu"><a class="menu-hd" th:href="@{/}" rel="nofollow">我的订单<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+              <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+              </span>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}">
+          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+  <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+<div class="main">
+    <div id="header_form">
+      <div id="head_h" class="head_width">
+        <div class="head clearFix">
+          <div class="logo">
+            <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+              <img width="180" height="60"  th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+            </a>
+            <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
+              <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"  border="0"/>
+            </a>
+          </div>
+          <div class="searchForm">
+            <form action="/search.htm" method="post" target="_blank" id="searchForm">
+              <input name="type" type="hidden" id="type" value="${type}"/>
+              <div class="toph_bigsearch">
+                <div class="toph_sear">
+                  <ul class="toph_bgsear">
+                    <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+                    <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                  </ul>
+                  <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                         lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                         class="toph_sear_txt"/>
+                  <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                         onclick="search_form();" class="toph_sear_btn"/>
+                </div>
+                <div class="keyword">
+						   <span th:each="info : ${config.hotsearch.split(',')}">
+							   <a href="javascript:void(0);" th:data="${info}" onclick="search_form(this.getAttribute('data'),'goods');"
+                                  th:text="${info}"></a>
+						   </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="nav_center">
+        <div class="nav_left">
+          <h2>
+            <a th:href="@{/goods_class.htm}">
+                <span>
+                    全部分类
+                    <em>
+                        <img th:src="@{/style/system/front/default/images/nav_left.png}">
+                    </em>
+                </span>
+            </a>
+          </h2>
+          <div id="other_menu" class="other_menu" style="display:none;">
+            <div id="left_menu" class="left_menu">
+              <dl th:each="gc : ${navgcs}" sc_color="#E60012" style="position:relative;" th:id="${gc.id}"
+                  th:child_count="${gc.childs == null ?0 :gc.childs.size() }" class="left_menu_dl">
+                <dt id="dts_15" class="left_menu_dt">
+                  <i class="left_menu_i">
+                    <img th:if="${gc.iconType==0   }" width="16" height="16"
+                         th:src="@{'/style/common/images/icon/icon_'+ ${gc.iconSys}+'.png'}">
+                    <img th:unless="${gc.iconType==0   }" width="16" height="16"
+                         th:src="@{'/'+${gc.icon_acc.path} +'/'+${gc.icon_acc.name}}">
+                  </i>
+                  <strong class="left_menu_str">
+                    <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
+                  </strong>
+                </dt>
+                <dd th:id="${'child_'+gc.id}" style="display: none;" class="left_menu_dd">
+                  <div id="left_menu_con_15" class="left_menu_con this ">
+                                  <span class="left_menu_sp">
+                                      <div class="left_menu_con_center">
+                                          <div class="menu_con_right_top" style="background-color: rgb(230, 0, 18);">
+                                          <dl>
+                                            <dt>
+                                                <span th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                  <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}" target="_blank"
+                                                     th:text="${gc1.classname}"></a>
+                                                </span>
+                                            </dt>
+                                          </dl>
+                                        </div>
+                                        <div class="left_menu_con_center_left">
+                                                    <dl th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                        <dt>
+                                                          <b> &gt; </b>
+                                                          <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}"
+                                                             target="_blank" th:text="${gc1.classname}"></a>
+                                                        </dt>
+                                                        <dd>
+                                                            <a th:each="gc2 : ${gc1.childs}" th:if="${gc2.display}"
+                                                               th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}"
+                                                               target="_blank"
+                                                               th:text="${gc2.classname}"></a>
+                                                        </dd>
+                                                    </dl>
+                                         </div>
+                                      </div>
+                                  </span>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+
+          </div>
+        </div>
+
+        <ul id="navul">
+          <!--#set($navs=$!navTools.queryNav(0,-1))-->
+          <li th:each="nav : ${navs}">
+            <a th:id="${nav.id}" th:if="${nav.newWin==1}" target="_blank" th:original_url="${nav.originalUrl}"
+               th:href="@{${nav.url}}"><span th:text="${nav.title}"></span></a>
+            <a th:id="${nav.id}" th:unless="${nav.newWin==1}" th:original_url="${nav.originalUrl}"
+               th:href="@{${nav.url}"><span th:text="${nav.title}"></span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  <div class="index">
+    <div class="inte_step">
+      <div class="stepcenter">
+        <span class="inte_step1a"></span>
+        <span class="inte_step2a"></span>
+        <span class="inte_step3"></span>
+      </div>
+    </div>
+    <div class="integ_transport">
+    <form th:action="@{/integral_exchange3.htm}" method="post" id="theForm">
+      <div class="trans_left">
+        <h1>
+          <span class="trans_sp">
+            <i class="transa"></i>收货人地址
+          </span>
+        </h1>
+        <ul class="trans_ads">
+           <li th:each="addr :${addrs}">
+            <b>
+              <input th:if="${velocitycount==1}" name="addr_id" id="addr_id" type="radio" th:value="${addr.id}"  checked="checked"/>
+              <input th:unless="${velocitycount ==1}" name="addr_id" id="addr_id" type="radio" th:value="${addr.id}"  />
+            </b>
+            <span class="transad">
+              <span th:text="${addr.area.parent.parent ==null?addr.area.parent.areaname:addr.area.parent.parent.areaname} + ${addr.area.parent.areaname + addr.area.areaname + addr.areaInfo}"></span>
+            </span>
+             <span class="transuser"> <span th:text="${'收货人姓名:'+addr.truename}"></span></span>
+             <span class="transtel"> <span th:text="${'电话:'+addr.mobile}"></span></span>
+            </li>
+          <li class="this"><b>
+            <input name="addr_id" id="addr_id" type="radio" value="new" />
+            </b><span>使用新的收货地址</span></li>
+        </ul>
+        <div class="transtable" id="new_address" style="display:none;">
+          <table width="740" border="0" cellspacing="0" cellpadding="0" class="trans_table">
+            <tr>
+              <td width="90"><span class="transtab_name"><strong>*</strong>填写真实姓名:</span></td>
+              <td>
+                <input name="trueName" type="text" id="trueName" size="30" />
+             </td>
+            </tr>
+            <tr>
+              <td><span class="transtab_name"><strong>*</strong>所在地区:</span></td>
+              <td>
+                <select name="area1" id="area1" level="2" style="width:100px;">
+                    <option value="" selected="selected">请选择地区</option>
+                     <option th:each="area :${areas}" th:value="${area.id}" th:text="${area.areaname}"></option>
+                   </select>
+                    <select name="area2" id="area2" style="display:none;width:60px;" level="3">
+                  </select>
+                <select name="area3" id="area3" style="display:none;width:60px;" level="4">
+                  </select>
+                  <input name="area_id" type="hidden" id="area_id"  value=""/>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="transtab_name">邮政编码</span></td>
+              <td>
+                <input name="zip" type="text" id="zip" size="30" />
+              </td>
+            </tr>
+             <tr>
+              <td><span class="transtab_name"><strong>*</strong>手机号码:</span></td>
+              <td>
+                <input name="mobile" type="text" id="mobile" size="30" />
+              </td>
+            </tr>
+            <tr>
+              <td><span class="transtab_name"><strong>*</strong>电话号码:</span></td>
+              <td>
+                <input name="telephone" type="text" id="telephone" size="30" />
+              </td>
+            </tr>
+            <tr>
+              <td><span class="transtab_name"><strong>*</strong>详细地址:</span></td>
+              <td>
+                <input name="area_info" type="text" id="area_info" size="50" />
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <h1>
+          <span class="trans_sp">
+            <i class="transb"></i>我要留言
+          </span>
+        </h1>
+        <div class="trans_text">
+          <textarea name="msg" cols="" rows="" id="msg" ></textarea>
+        </div>
+        <div class="trans_integ">
+          <strong th:text="${'所需总积分:'+total_integral+'分,'}"></strong>
+          <strong th:text="${'运费：'+trans_fee+'元'}"></strong>
+        </div>
+        <div class="trans_integ">
+          <span class="trans_submit">
+            <input name="" type="submit"  value="兑换完成" style="cursor:pointer;"/>
+          </span>
+          <input name="trans_fee" type="hidden" id="trans_fee" th:value="${trans_fee}" />
+          <input name="integral_order_session" type="hidden" id="integral_order_session" th:value="${integral_order_session}" />
+        </div>
+      </div>
+      </form>
+      <div class="trans_right">
+        <h1><span class="trans_sp"><i class="transc"></i>已选礼品</span></h1>
+        <ul>
+          <li th:each="igc :${igcs}">
+            <span th:if="${igc.goods}">
+              <a th:href="@{/integral_view.htm(id=${igc.goods.id})}" target="_blank">
+                <img th:if="${igc.goods.igGoodsImg}" th:src="@{'/'+${igc.goods.igGoodsImg.path}+'/'+${igc.goods.igGoodsImg.name}+'_small.'+${igc.goods.igGoodsImg.ext}}" width="65" height="65" />
+                <img th:unless="${igc.goods.igGoodsImg}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" width="65" height="65" />
+              </a>
+            </span>
+            <h2>
+              <a th:href="@{/integral_view.htm(id=${igc.goods.id})}" target="_blank" th:text="${igc.goods.igGoodsName}"></a>
+            </h2>
+            <i th:text="${igc.count}">个=<strong th:text="${igc.integral}">分</strong></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  $!httpInclude.include("/footer.htm")
+
+</div>
+</body>
+</html>

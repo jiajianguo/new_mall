@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingWatermarkMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingWatermark">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="wm_image_alpha" jdbcType="REAL" property="wmImageAlpha" />
+    <result column="wm_image_open" jdbcType="BIT" property="wmImageOpen" />
+    <result column="wm_image_pos" jdbcType="INTEGER" property="wmImagePos" />
+    <result column="wm_text" jdbcType="VARCHAR" property="wmText" />
+    <result column="wm_text_color" jdbcType="VARCHAR" property="wmTextColor" />
+    <result column="wm_text_font" jdbcType="VARCHAR" property="wmTextFont" />
+    <result column="wm_text_font_size" jdbcType="INTEGER" property="wmTextFontSize" />
+    <result column="wm_text_open" jdbcType="BIT" property="wmTextOpen" />
+    <result column="wm_text_pos" jdbcType="INTEGER" property="wmTextPos" />
+    <result column="store_id" jdbcType="BIGINT" property="storeId" />
+    <result column="wm_image_id" jdbcType="BIGINT" property="wmImageId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, wm_image_alpha, wm_image_open, wm_image_pos, wm_text,
+    wm_text_color, wm_text_font, wm_text_font_size, wm_text_open, wm_text_pos, store_id,
+    wm_image_id
+  </sql>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingWatermarkExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_watermark
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shopping_watermark
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_watermark
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingWatermarkExample">
+    delete from shopping_watermark
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingWatermark">
+    insert into shopping_watermark (id, addTime, deleteStatus,
+      wm_image_alpha, wm_image_open, wm_image_pos,
+      wm_text, wm_text_color, wm_text_font,
+      wm_text_font_size, wm_text_open, wm_text_pos,
+      store_id, wm_image_id)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{wmImageAlpha,jdbcType=REAL}, #{wmImageOpen,jdbcType=BIT}, #{wmImagePos,jdbcType=INTEGER},
+      #{wmText,jdbcType=VARCHAR}, #{wmTextColor,jdbcType=VARCHAR}, #{wmTextFont,jdbcType=VARCHAR},
+      #{wmTextFontSize,jdbcType=INTEGER}, #{wmTextOpen,jdbcType=BIT}, #{wmTextPos,jdbcType=INTEGER},
+      #{storeId,jdbcType=BIGINT}, #{wmImageId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingWatermark">
+    insert into shopping_watermark
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="wmImageAlpha != null">
+        wm_image_alpha,
+      </if>
+      <if test="wmImageOpen != null">
+        wm_image_open,
+      </if>
+      <if test="wmImagePos != null">
+        wm_image_pos,
+      </if>
+      <if test="wmText != null">
+        wm_text,
+      </if>
+      <if test="wmTextColor != null">
+        wm_text_color,
+      </if>
+      <if test="wmTextFont != null">
+        wm_text_font,
+      </if>
+      <if test="wmTextFontSize != null">
+        wm_text_font_size,
+      </if>
+      <if test="wmTextOpen != null">
+        wm_text_open,
+      </if>
+      <if test="wmTextPos != null">
+        wm_text_pos,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="wmImageId != null">
+        wm_image_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="wmImageAlpha != null">
+        #{wmImageAlpha,jdbcType=REAL},
+      </if>
+      <if test="wmImageOpen != null">
+        #{wmImageOpen,jdbcType=BIT},
+      </if>
+      <if test="wmImagePos != null">
+        #{wmImagePos,jdbcType=INTEGER},
+      </if>
+      <if test="wmText != null">
+        #{wmText,jdbcType=VARCHAR},
+      </if>
+      <if test="wmTextColor != null">
+        #{wmTextColor,jdbcType=VARCHAR},
+      </if>
+      <if test="wmTextFont != null">
+        #{wmTextFont,jdbcType=VARCHAR},
+      </if>
+      <if test="wmTextFontSize != null">
+        #{wmTextFontSize,jdbcType=INTEGER},
+      </if>
+      <if test="wmTextOpen != null">
+        #{wmTextOpen,jdbcType=BIT},
+      </if>
+      <if test="wmTextPos != null">
+        #{wmTextPos,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="wmImageId != null">
+        #{wmImageId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingWatermarkExample" resultType="java.lang.Long">
+    select count(*) from shopping_watermark
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_watermark
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.wmImageAlpha != null">
+        wm_image_alpha = #{record.wmImageAlpha,jdbcType=REAL},
+      </if>
+      <if test="record.wmImageOpen != null">
+        wm_image_open = #{record.wmImageOpen,jdbcType=BIT},
+      </if>
+      <if test="record.wmImagePos != null">
+        wm_image_pos = #{record.wmImagePos,jdbcType=INTEGER},
+      </if>
+      <if test="record.wmText != null">
+        wm_text = #{record.wmText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wmTextColor != null">
+        wm_text_color = #{record.wmTextColor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wmTextFont != null">
+        wm_text_font = #{record.wmTextFont,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wmTextFontSize != null">
+        wm_text_font_size = #{record.wmTextFontSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.wmTextOpen != null">
+        wm_text_open = #{record.wmTextOpen,jdbcType=BIT},
+      </if>
+      <if test="record.wmTextPos != null">
+        wm_text_pos = #{record.wmTextPos,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.wmImageId != null">
+        wm_image_id = #{record.wmImageId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_watermark
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      wm_image_alpha = #{record.wmImageAlpha,jdbcType=REAL},
+      wm_image_open = #{record.wmImageOpen,jdbcType=BIT},
+      wm_image_pos = #{record.wmImagePos,jdbcType=INTEGER},
+      wm_text = #{record.wmText,jdbcType=VARCHAR},
+      wm_text_color = #{record.wmTextColor,jdbcType=VARCHAR},
+      wm_text_font = #{record.wmTextFont,jdbcType=VARCHAR},
+      wm_text_font_size = #{record.wmTextFontSize,jdbcType=INTEGER},
+      wm_text_open = #{record.wmTextOpen,jdbcType=BIT},
+      wm_text_pos = #{record.wmTextPos,jdbcType=INTEGER},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      wm_image_id = #{record.wmImageId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingWatermark">
+    update shopping_watermark
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="wmImageAlpha != null">
+        wm_image_alpha = #{wmImageAlpha,jdbcType=REAL},
+      </if>
+      <if test="wmImageOpen != null">
+        wm_image_open = #{wmImageOpen,jdbcType=BIT},
+      </if>
+      <if test="wmImagePos != null">
+        wm_image_pos = #{wmImagePos,jdbcType=INTEGER},
+      </if>
+      <if test="wmText != null">
+        wm_text = #{wmText,jdbcType=VARCHAR},
+      </if>
+      <if test="wmTextColor != null">
+        wm_text_color = #{wmTextColor,jdbcType=VARCHAR},
+      </if>
+      <if test="wmTextFont != null">
+        wm_text_font = #{wmTextFont,jdbcType=VARCHAR},
+      </if>
+      <if test="wmTextFontSize != null">
+        wm_text_font_size = #{wmTextFontSize,jdbcType=INTEGER},
+      </if>
+      <if test="wmTextOpen != null">
+        wm_text_open = #{wmTextOpen,jdbcType=BIT},
+      </if>
+      <if test="wmTextPos != null">
+        wm_text_pos = #{wmTextPos,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="wmImageId != null">
+        wm_image_id = #{wmImageId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingWatermark">
+    update shopping_watermark
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      wm_image_alpha = #{wmImageAlpha,jdbcType=REAL},
+      wm_image_open = #{wmImageOpen,jdbcType=BIT},
+      wm_image_pos = #{wmImagePos,jdbcType=INTEGER},
+      wm_text = #{wmText,jdbcType=VARCHAR},
+      wm_text_color = #{wmTextColor,jdbcType=VARCHAR},
+      wm_text_font = #{wmTextFont,jdbcType=VARCHAR},
+      wm_text_font_size = #{wmTextFontSize,jdbcType=INTEGER},
+      wm_text_open = #{wmTextOpen,jdbcType=BIT},
+      wm_text_pos = #{wmTextPos,jdbcType=INTEGER},
+      store_id = #{storeId,jdbcType=BIGINT},
+      wm_image_id = #{wmImageId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

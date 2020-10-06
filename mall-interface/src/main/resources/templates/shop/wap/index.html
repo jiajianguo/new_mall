@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-wap-web-app-capable">
+    <meta content="black-translucent" name="apple-wap-web-app-status-bar-style">
+    <title>mode hone</title>
+
+    <link href="/style/system/front/wap/css/style.css" rel="stylesheet" type="text/css">
+    <script src="/style/system/front/wap/js/jquery-1.10.2.min.js"></script>
+    <script src="/style/system/front/wap/js/TouchSlide.1.1.js"></script>
+    <script src="/style/system/front/wap/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script>
+        function timeCount(remain_id) {
+            function _fresh() {
+                var nowDate = new Date(), //当前时间
+                    endDate = new Date($('#' + remain_id).attr('endtime')), //截止时间
+                    totalS = parseInt((endDate.getTime() - nowDate.getTime()) / 1000); //总秒数
+                _day = parseInt(totalS / 3600 / 24) + "";
+                _hour = parseInt(totalS / 3600 % 24) + "";
+                _minute = parseInt((totalS / 60) % 60) + "";
+                _second = parseInt(totalS % 60) + "";
+                d_html = "";
+                if (_day.length < 2) {
+                    d_html = "<b>0</b>";
+                }
+                for (var n = 0; n < _day.length; n++) {
+                    var q = _day.substring(n, n + 1);
+                    d_html = d_html + '<b>' + q + '</b>';
+                }
+                d_html = d_html + "<b>天</b>"
+                h_html = "";
+                if (_hour.length < 2) {
+                    h_html = "<b>0</b>";
+                }
+                for (var n = 0; n < _hour.length; n++) {
+                    var q = _hour.substring(n, n + 1);
+                    h_html = h_html + '<b>' + q + '</b>';
+                }
+                m_html = "";
+                if (_minute.length < 2) {
+                    m_html = "<b>0</b>";
+                }
+                for (var n = 0; n < _minute.length; n++) {
+                    var q = _minute.substring(n, n + 1);
+                    m_html = m_html + '<b>' + q + '</b>'
+                }
+                s_html = "";
+                if (_second.length < 2) {
+                    s_html = "<b>0</b>";
+                }
+                for (var n = 0; n < _second.length; n++) {
+                    var q = _second.substring(n, n + 1);
+                    s_html = s_html + '<b>' + q + '</b>'
+                }
+                jQuery('#' + remain_id).html(
+                    d_html + '<strong>:</strong>' + h_html
+                    + '<strong>:</strong>' + m_html
+                    + '<strong>:</strong>' + s_html);
+                if (totalS <= 0) {
+                    jQuery('#' + remain_id).html('该0元试用已结束');
+                    clearInterval(sh);
+                }
+            }
+
+            _fresh();
+            var sh = setInterval(_fresh, 1000);
+        }
+
+        jQuery(document).ready(function () {
+            jQuery("li[id=gc_]").each(function (index, element) {
+                if (jQuery(this).find(".fl").html().length > 5) {
+                    var a = jQuery(this).find(".fl").html().substring(0, 5);
+                    jQuery(this).find(".fl").html(a);
+                }
+            });
+
+            timeCount("time_down_info");
+            if (isWeiXin()) {
+                jQuery(".phone_top").hide();
+            } else {
+                jQuery(".phone_top").show();
+            }
+        });
+
+        function search_form() {
+            jQuery("#theForm").submit();
+        }
+
+        function isWeiXin() {
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<body class="index_bg">
+
+<div class="phone_main">
+    <!--顶部-->
+    <div class="phone_top">
+        <a href="/wap/index.htm">
+            <img src="/style/system/front/wap/images/download.jpg">
+        </a>
+        <a class="close" href="javascript:void(0);" onclick="jQuery('.phone_top').remove();">
+            <img src="/style/system/front/wap/images/close.png" width="30" height="30">
+        </a>
+    </div>
+    <div class="logo_line">
+        <a th:href="@{/wap/index.htm}" th:if="${config.websiteLogo != null}">
+            <img width="180" height="30"
+                 th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+        </a>
+        <!--<img src="/style/system/front/wap/images/wap_logo.png">-->
+        <span class="log">
+            <a th:if="${user}" href="/shopping_logout.htm">退出</a>
+			<a th:unless="${user}" href="/user/login.htm">登录</a>
+		</span>
+        <span class="log">
+			<a th:if="${user}" href="javascript:void(0);" th:text="${user.username+'您好'}"></a>
+			<a th:unless="${user}" href="/register.htm">注册</a>
+		</span>
+
+    </div>
+
+    <form name="theForm" id="theForm" action="/search.htm" method="post">
+        <div class="search_line">
+				<span>
+				<input type="hidden" name="type" value="goods"/>
+				<input type="text" placeholder="搜索商品" name="keyword" id="keyword">
+				</span>
+            <b><img src="/style/system/front/wap/images/search_icon.png" width="25" height="25"
+                    onclick="search_form();"></b>
+        </div>
+    </form>
+
+    <!--幻灯-->
+    <div class="focusBox" id="focusBox">
+        <!--<script src="/advert_invoke.htm?id=262157"></script>-->
+
+        <div style='float:left;overflow:hidden;' th:if="${wapslide.apType=='img' }">
+            <a th:href='@{/advert_redirect.htm(url=${obj.apAccUrl},id=${obj.advId})}' target='_blank'>
+                <img th:width='${obj.apWidth}' th:height='${obj.apHeight}' th:src="@{'/'+${obj.adAcc.path}+'/'+${obj.adAcc.name}" style='border:none;' />
+            </a>
+        </div>
+        <script th:if="${wapslide.apType=='slide'}">
+            jQuery('document').ready(function(){
+                jQuery('#shopping_advert').KinSlideshow(
+                    { btn:{btn_bgColor:'#FFFFFF',btn_bgHoverColor:'#FF8921',btn_fontColor:'#000000',btn_fontHoverColor:'#EEEEEE',btn_borderColor:'#666666',btn_borderHoverColor:'#FFFFFF',btn_borderWidth:1}
+                    }
+                );
+            });
+        </script>
+        <div class='hdp' id='shopping_advert' style='visibility:hidden;' th:if="${wapslide.apType=='slide'}">
+            <ul th:each="adv : ${wapslide.advs}">
+                <a th:href="@{/advert_redirect.htm(url=${adv.adUrl},id=${adv.id})}" target='_blank'>
+                    <img th:src="@{'/'+${adv.adAcc.path+'/'+adv.adAcc.name}}" th:width='${adv.apWidth}' th:height='${adv.apHeight}' />
+                </a>
+            </ul>
+        </div>
+        <div class='conti_left' id='advert_left' th:if="${wapslide.apType=='scroll'}">
+            <span></span>
+        </div>
+        <div class='conti' th:if="${wapslideapType=='scroll'}">
+            <ul>
+                <li th:each="adv : ${wapslide.advs} ">
+                    <a th:href="@{/advert_redirect.htm(url=${adv.adUrl},id=${adv.id})}" target='_blank'>
+                        <img th:src="@{'/'+${adv.ad_acc.path+'/'+adv.ad_acc.name}}" th:width='${adv.apWidth}' th:height='${adv.apHeight}' />
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class='conti_right' id='advert_right' th:if="${wapslide.apType=='scroll'}">
+            <span></span>
+        </div>
+        <div th:if="${wapslide.apType=='text'}" th:style="${'width:'+wapslide.apWidth +';height:'+ wapslide.apHeight+';float:left;overflow:hidden;'}">
+            <a th:href="@{/advert_redirect.htm(url=${wapslide.apAccUrl},id=${wapslide.advId})}" target='_blank'></a>
+        </div>
+        <div id='focus' class='focus' th:if="${wapslide.apType=='wapslide'}">
+            <div class='hd'>
+                <ul></ul>
+            </div>
+            <div class='bd'>
+                <div class='tempWrap' style='overflow: hidden; position: relative;'>
+                    <ul>
+                        <li th:each="adv : ${wapslide.advs}">
+                            <a th:href="@{/advert_redirect.htm(url=${adv.adUrl},id=${adv.id})}" target='_blank'>
+                                <img th:src="@{${'/'+adv.adAcc.path+'/'+adv.adAcc.name}}" width='100%' height='150' />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <script>
+                TouchSlide({slideCell:'#focus',titCell:'.hd ul',mainCell:'.bd ul',effect:'leftLoop',autoPlay:true,autoPage:true});
+            </script>
+        </div>
+
+    </div>
+
+    <!--导航菜单-->
+    <div class="nav">
+        <ul>
+            <li>
+                <a href="/goodsclass.htm">
+                    <img src="/style/system/front/wap/images/nav_fl.png">
+                    <p>分类</p>
+                </a>
+            </li>
+            <li>
+                <a href="/brand.htm">
+                    <img  src="/style/system/front/wap/images/nav_pp.png">
+                    <p>品牌街</p>
+                </a>
+            </li>
+            <li>
+                <a href="/goods_cart1.htm">
+                    <img src="/style/system/front/wap/images/nav_gwc.png">
+                    <p>购物车</p>
+                </a>
+            </li>
+            <li>
+                <a href="/member_center.htm">
+                    <img src="/style/system/front/wap/images/nav_yhzx.png">
+                    <p>用户中心</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!--精品推荐-->
+    <div class="phone_floor">
+        <h1>
+            <span class="fl">精品推荐</span>
+        </h1>
+        <div class="recom">
+            <div class="ohbox">
+                <ul class="piclist">
+                    <li th:each="goods : ${store_reommend_goods}">
+                        <a th:href="@{/goods.htm(id=${goods.id})}">
+                            <img th:if="${goods.goods_main_photo}" th:src="@{${'/'+goods.goods_main_photo.path +'/'+goods.goods_main_photo.name}+'_middle.'+${goods.goods_main_photo.ext}}">
+                            <img th:unless="${goods.goods_main_photo}" th:src="@{'/'+config.goodsImage.path +'/'+config.goodsImage.name}">
+                            <span class="re_name" th:text="${goods.goodsName}"></span>
+                            <span class="bg"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="phone_floor" class="phone_floor">
+        <h1>
+            <span class="fl">品牌街</span>
+            <span class="fr">
+                <a href="/brand.htm">更多</a>
+            </span>
+        </h1>
+        <div class="phone_brand">
+            <ul id="banners">
+                <li th:each="gb,index : ${gbs}" th:class="${index.index <4?'display:none;':''}">
+                    <a th:href="@{/brand_goods.htm(id=${gb.id})}" target="_blank">
+                        <img th:src="@{${'/'+gb.brandLogo.path+'/'+gb.brandLogo.name}}" width="88" height="44"/>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="phone_floor">
+        <div class="phone_activity">
+            <h1><span class="fl">促销商品</span><span class="fr"></span></h1>
+            <ul>
+                <li th:each="goods : ${dgs}">
+                    <a th:href="@{/goods.htm(id=${goods.d_goods.id})}">
+                        <img th:if="${goods.d_goods.goods_main_photo}"
+                             th:src="@{${'/'+goods.d_goods.goods_main_photo.path +'/'+goods.d_goods.goods_main_photo.name}}">
+                        <img th:unless="${goods.d_goods.goods_main_photo}"
+                             th:src="@{'/'+config.goodsImage.path +'/'+config.goodsImage.name}">
+                        <p class="price" style="font-size: 14px">
+                            <b th:text="${'现价:¥'+goods.d_goods.storePrice}"></b>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

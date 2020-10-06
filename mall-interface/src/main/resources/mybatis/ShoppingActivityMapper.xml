@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingActivityMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingActivity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="ac_begin_time" jdbcType="DATE" property="acBeginTime" />
+    <result column="ac_end_time" jdbcType="DATE" property="acEndTime" />
+    <result column="ac_sequence" jdbcType="INTEGER" property="acSequence" />
+    <result column="ac_status" jdbcType="INTEGER" property="acStatus" />
+    <result column="ac_title" jdbcType="VARCHAR" property="acTitle" />
+    <result column="ac_acc_id" jdbcType="BIGINT" property="acAccId" />
+    <result column="ac_rebate" jdbcType="DECIMAL" property="acRebate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingActivity">
+    <result column="ac_content" jdbcType="LONGVARCHAR" property="acContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, ac_begin_time, ac_end_time, ac_sequence, ac_status, ac_title,
+    ac_acc_id, ac_rebate
+  </sql>
+  <sql id="Blob_Column_List">
+    ac_content
+  </sql>
+
+  <select id="pageCount" resultType="java.lang.Integer">
+    select * from shopping_activity
+    <where>
+      1=1
+      <if test=""></if>
+      <if test=""></if>
+      <if test=""></if>
+      <if test=""></if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingActivityExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingActivityExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_activity
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_activity
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingActivityExample">
+    delete from shopping_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingActivity">
+    insert into shopping_activity (id, addTime, deleteStatus,
+      ac_begin_time, ac_end_time, ac_sequence,
+      ac_status, ac_title, ac_acc_id,
+      ac_rebate, ac_content)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{acBeginTime,jdbcType=DATE}, #{acEndTime,jdbcType=DATE}, #{acSequence,jdbcType=INTEGER},
+      #{acStatus,jdbcType=INTEGER}, #{acTitle,jdbcType=VARCHAR}, #{acAccId,jdbcType=BIGINT},
+      #{acRebate,jdbcType=DECIMAL}, #{acContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingActivity">
+    insert into shopping_activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="acBeginTime != null">
+        ac_begin_time,
+      </if>
+      <if test="acEndTime != null">
+        ac_end_time,
+      </if>
+      <if test="acSequence != null">
+        ac_sequence,
+      </if>
+      <if test="acStatus != null">
+        ac_status,
+      </if>
+      <if test="acTitle != null">
+        ac_title,
+      </if>
+      <if test="acAccId != null">
+        ac_acc_id,
+      </if>
+      <if test="acRebate != null">
+        ac_rebate,
+      </if>
+      <if test="acContent != null">
+        ac_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="acBeginTime != null">
+        #{acBeginTime,jdbcType=DATE},
+      </if>
+      <if test="acEndTime != null">
+        #{acEndTime,jdbcType=DATE},
+      </if>
+      <if test="acSequence != null">
+        #{acSequence,jdbcType=INTEGER},
+      </if>
+      <if test="acStatus != null">
+        #{acStatus,jdbcType=INTEGER},
+      </if>
+      <if test="acTitle != null">
+        #{acTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="acAccId != null">
+        #{acAccId,jdbcType=BIGINT},
+      </if>
+      <if test="acRebate != null">
+        #{acRebate,jdbcType=DECIMAL},
+      </if>
+      <if test="acContent != null">
+        #{acContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingActivityExample" resultType="java.lang.Long">
+    select count(*) from shopping_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_activity
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.acBeginTime != null">
+        ac_begin_time = #{record.acBeginTime,jdbcType=DATE},
+      </if>
+      <if test="record.acEndTime != null">
+        ac_end_time = #{record.acEndTime,jdbcType=DATE},
+      </if>
+      <if test="record.acSequence != null">
+        ac_sequence = #{record.acSequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.acStatus != null">
+        ac_status = #{record.acStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.acTitle != null">
+        ac_title = #{record.acTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acAccId != null">
+        ac_acc_id = #{record.acAccId,jdbcType=BIGINT},
+      </if>
+      <if test="record.acRebate != null">
+        ac_rebate = #{record.acRebate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.acContent != null">
+        ac_content = #{record.acContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_activity
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ac_begin_time = #{record.acBeginTime,jdbcType=DATE},
+      ac_end_time = #{record.acEndTime,jdbcType=DATE},
+      ac_sequence = #{record.acSequence,jdbcType=INTEGER},
+      ac_status = #{record.acStatus,jdbcType=INTEGER},
+      ac_title = #{record.acTitle,jdbcType=VARCHAR},
+      ac_acc_id = #{record.acAccId,jdbcType=BIGINT},
+      ac_rebate = #{record.acRebate,jdbcType=DECIMAL},
+      ac_content = #{record.acContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_activity
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      ac_begin_time = #{record.acBeginTime,jdbcType=DATE},
+      ac_end_time = #{record.acEndTime,jdbcType=DATE},
+      ac_sequence = #{record.acSequence,jdbcType=INTEGER},
+      ac_status = #{record.acStatus,jdbcType=INTEGER},
+      ac_title = #{record.acTitle,jdbcType=VARCHAR},
+      ac_acc_id = #{record.acAccId,jdbcType=BIGINT},
+      ac_rebate = #{record.acRebate,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingActivity">
+    update shopping_activity
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="acBeginTime != null">
+        ac_begin_time = #{acBeginTime,jdbcType=DATE},
+      </if>
+      <if test="acEndTime != null">
+        ac_end_time = #{acEndTime,jdbcType=DATE},
+      </if>
+      <if test="acSequence != null">
+        ac_sequence = #{acSequence,jdbcType=INTEGER},
+      </if>
+      <if test="acStatus != null">
+        ac_status = #{acStatus,jdbcType=INTEGER},
+      </if>
+      <if test="acTitle != null">
+        ac_title = #{acTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="acAccId != null">
+        ac_acc_id = #{acAccId,jdbcType=BIGINT},
+      </if>
+      <if test="acRebate != null">
+        ac_rebate = #{acRebate,jdbcType=DECIMAL},
+      </if>
+      <if test="acContent != null">
+        ac_content = #{acContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingActivity">
+    update shopping_activity
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ac_begin_time = #{acBeginTime,jdbcType=DATE},
+      ac_end_time = #{acEndTime,jdbcType=DATE},
+      ac_sequence = #{acSequence,jdbcType=INTEGER},
+      ac_status = #{acStatus,jdbcType=INTEGER},
+      ac_title = #{acTitle,jdbcType=VARCHAR},
+      ac_acc_id = #{acAccId,jdbcType=BIGINT},
+      ac_rebate = #{acRebate,jdbcType=DECIMAL},
+      ac_content = #{acContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingActivity">
+    update shopping_activity
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      ac_begin_time = #{acBeginTime,jdbcType=DATE},
+      ac_end_time = #{acEndTime,jdbcType=DATE},
+      ac_sequence = #{acSequence,jdbcType=INTEGER},
+      ac_status = #{acStatus,jdbcType=INTEGER},
+      ac_title = #{acTitle,jdbcType=VARCHAR},
+      ac_acc_id = #{acAccId,jdbcType=BIGINT},
+      ac_rebate = #{acRebate,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

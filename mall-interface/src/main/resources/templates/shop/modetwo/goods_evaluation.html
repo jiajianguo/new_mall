@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="evaluation">
+  <div class="eva_bar_box">
+    <div class="eva_bar">
+      <div class="eva_bar_left">
+        <h4>与描述相符</h4>
+        <strong th:text="${goods.descriptionEvaluate}"></strong> </div>
+
+      <div class="eva_bar_right">
+          <div class="eva_scroller">
+            <span th:style="${'width:'}+${goods.descriptionEvaluate }+${'%;'}">
+              <em th:text="${goods.descriptionEvaluate}"></em>
+            </span>
+          </div>
+          <ul class="scroller_ul">
+            <li>非常不满意</li>
+            <li>不满意</li>
+            <li>一般</li>
+            <li>满意</li>
+            <li>非常满意</li>
+          </ul>
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${rows==0}" class="novalue"> 还没有评价内容 </div>
+
+  <div th:unless="${rows==0}" th:each="obj : ${objs}"  class="evalone">
+    <ul>
+      <li>
+        <span class="blue evalonesp" th:text="${obj.evaluate_user.username}"></span>
+        <span th:text="${obj.evaluateInfo}"></span>
+      </li>
+      <li th:text="${#dates.format(obj.addtime,'yyyy-MM-dd')}"></li>
+    </ul>
+  </div>
+  <div class="fenye">
+    <div class="fenyes" th:html="${gotoPageAjaxHTML}"></div>
+  </div>
+</div>
+</html>

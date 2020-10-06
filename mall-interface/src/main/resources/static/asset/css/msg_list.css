@@ -1,0 +1,24 @@
+.msg_item .item_time{
+	background: #cccccc;
+	display: inline-block;
+	width: 3.5rem;
+	text-align: center;
+	padding: .1rem 0;
+	border-radius: 6px;
+	margin: .4rem 0 .3rem calc(50% - 1.725rem);
+	color: #fff;
+}
+
+.item_cont{
+	background: white;
+	margin: 0 .24rem;
+	padding: .3rem;
+	border-radius: 6px;
+	color: #999;
+}
+
+.item_cont div{
+	font-size: .32rem;
+	color: #333;
+	margin-bottom: .1rem;
+}

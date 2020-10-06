@@ -1,0 +1,38 @@
+﻿<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<div class="evaluone">
+  <table width="797" border="0" cellspacing="0" cellpadding="0" class="evaluonetable">
+    <tr>
+      <td width="80">评价</td>
+      <td width="140">内容</td>
+      <td width="100" align="center">商品</td>
+      <td width="60" align="center">金额</td>
+      <td width="100" align="center">买家</td>
+      <td width="100" align="center">时间</td>
+    </tr>
+    <tr th:each="obj :${objs}" >
+      <td th:if="${obj.evaluateBuyerVal==1}" >好评</td>
+      <td th:if="${obj.evaluateBuyerVal==0}" >中评</td>
+      <td th:if="${obj.evaluateBuyerVal==-1}" >差评</td>
+      <td th:text="${obj.evaluateInfo!='' ? obj.evaluateInfo :'这家伙什么都没说'}"></td>
+      <td class="goodsevalu">
+        <span class="nameevalu">
+          <a th:href="@{/goods.htm(id=${obj.evaluateGoodsId})}" target="_blank" th:text="${obj.evaluate_goods.goodsName}"></a>
+        </span>
+      </td>
+      <td align="center">
+        <strong class="orange" th:text="'¥'+${obj.of.totalprice}"></strong>
+      </td>
+      <td align="center" th:text="${obj.evaluate_user.username}"></td>
+      <td align="center" th:text="${#dates.format(obj.addtime,'yyyy-MM-dd HH:mm:ss')}"></td>
+    </tr>
+  </table>
+</div>
+<div class="fenye">
+  <div class="fenyes" th:utext="${gotoPageAjaxHTML}"></div>
+</div>
+
+
+</html>

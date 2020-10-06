@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingConsultMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingConsult">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="consult_email" jdbcType="VARCHAR" property="consultEmail" />
+    <result column="reply" jdbcType="BIT" property="reply" />
+    <result column="reply_time" jdbcType="TIMESTAMP" property="replyTime" />
+    <result column="consult_user_id" jdbcType="BIGINT" property="consultUserId" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="reply_user_id" jdbcType="BIGINT" property="replyUserId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingConsultWithBLOBs">
+    <result column="consult_content" jdbcType="LONGVARCHAR" property="consultContent" />
+    <result column="consult_reply" jdbcType="LONGVARCHAR" property="consultReply" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, consult_email, reply, reply_time, consult_user_id, goods_id,
+    reply_user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    consult_content, consult_reply
+  </sql>
+
+  <select id="queryByCondition" resultMap="ResultMapWithBLOBs">
+    select  * from shopping_consult
+    <where>
+      1=1
+      <if test="consult_user_id != null "> and consult_user_id=#{consult_user_id}</if>
+      <if test="reply != null "> and reply=#{reply}</if>
+      <if test="goods_id != null" > and goods_id =#{goods_id}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null"> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select  count(*) from shopping_consult
+    <where>
+      1=1
+      <if test="goods_id != null" > and goods_id =#{goods_id}</if>
+      <if test="consult_user_id != null "> and consult_user_id=#{consult_user_id}</if>
+      <if test="reply != null "> and reply=#{reply}</if>
+    </where>
+  </select>
+
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingConsultExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_consult
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingConsultExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_consult
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_consult
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_consult
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingConsultExample">
+    delete from shopping_consult
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingConsultWithBLOBs">
+    insert into shopping_consult (id, addTime, deleteStatus,
+      consult_email, reply, reply_time,
+      consult_user_id, goods_id, reply_user_id,
+      consult_content, consult_reply)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{consultEmail,jdbcType=VARCHAR}, #{reply,jdbcType=BIT}, #{replyTime,jdbcType=TIMESTAMP},
+      #{consultUserId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{replyUserId,jdbcType=BIGINT},
+      #{consultContent,jdbcType=LONGVARCHAR}, #{consultReply,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingConsultWithBLOBs">
+    insert into shopping_consult
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="consultEmail != null">
+        consult_email,
+      </if>
+      <if test="reply != null">
+        reply,
+      </if>
+      <if test="replyTime != null">
+        reply_time,
+      </if>
+      <if test="consultUserId != null">
+        consult_user_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="replyUserId != null">
+        reply_user_id,
+      </if>
+      <if test="consultContent != null">
+        consult_content,
+      </if>
+      <if test="consultReply != null">
+        consult_reply,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="consultEmail != null">
+        #{consultEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="reply != null">
+        #{reply,jdbcType=BIT},
+      </if>
+      <if test="replyTime != null">
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultUserId != null">
+        #{consultUserId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="replyUserId != null">
+        #{replyUserId,jdbcType=BIGINT},
+      </if>
+      <if test="consultContent != null">
+        #{consultContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="consultReply != null">
+        #{consultReply,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingConsultExample" resultType="java.lang.Long">
+    select count(*) from shopping_consult
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_consult
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.consultEmail != null">
+        consult_email = #{record.consultEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reply != null">
+        reply = #{record.reply,jdbcType=BIT},
+      </if>
+      <if test="record.replyTime != null">
+        reply_time = #{record.replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.consultUserId != null">
+        consult_user_id = #{record.consultUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.replyUserId != null">
+        reply_user_id = #{record.replyUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.consultContent != null">
+        consult_content = #{record.consultContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.consultReply != null">
+        consult_reply = #{record.consultReply,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_consult
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      consult_email = #{record.consultEmail,jdbcType=VARCHAR},
+      reply = #{record.reply,jdbcType=BIT},
+      reply_time = #{record.replyTime,jdbcType=TIMESTAMP},
+      consult_user_id = #{record.consultUserId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      reply_user_id = #{record.replyUserId,jdbcType=BIGINT},
+      consult_content = #{record.consultContent,jdbcType=LONGVARCHAR},
+      consult_reply = #{record.consultReply,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_consult
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      consult_email = #{record.consultEmail,jdbcType=VARCHAR},
+      reply = #{record.reply,jdbcType=BIT},
+      reply_time = #{record.replyTime,jdbcType=TIMESTAMP},
+      consult_user_id = #{record.consultUserId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      reply_user_id = #{record.replyUserId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingConsultWithBLOBs">
+    update shopping_consult
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="consultEmail != null">
+        consult_email = #{consultEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="reply != null">
+        reply = #{reply,jdbcType=BIT},
+      </if>
+      <if test="replyTime != null">
+        reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultUserId != null">
+        consult_user_id = #{consultUserId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="replyUserId != null">
+        reply_user_id = #{replyUserId,jdbcType=BIGINT},
+      </if>
+      <if test="consultContent != null">
+        consult_content = #{consultContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="consultReply != null">
+        consult_reply = #{consultReply,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingConsultWithBLOBs">
+    update shopping_consult
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      consult_email = #{consultEmail,jdbcType=VARCHAR},
+      reply = #{reply,jdbcType=BIT},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      consult_user_id = #{consultUserId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      reply_user_id = #{replyUserId,jdbcType=BIGINT},
+      consult_content = #{consultContent,jdbcType=LONGVARCHAR},
+      consult_reply = #{consultReply,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingConsult">
+    update shopping_consult
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      consult_email = #{consultEmail,jdbcType=VARCHAR},
+      reply = #{reply,jdbcType=BIT},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      consult_user_id = #{consultUserId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      reply_user_id = #{replyUserId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

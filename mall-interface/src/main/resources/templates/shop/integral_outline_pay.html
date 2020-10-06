@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>线下汇款 - Powered by shopping</title>
+  <meta name="keywords" th:content="${config.keywords}" />
+  <meta name="description" th:content="${config.description}" />
+  <meta name="generator" content="shopping 2.0" />
+  <meta name="author" content="www.shopping.com">
+  <meta name="copyright" content="shopping Inc. All Rights Reserved">
+  <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+  <link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet"/>
+  <script th:src="@{/js/jquery-1.6.2.js}"></script>
+  <script th:src="@{/js/jquery.validate.min.js}"></script>
+  <script th:src="@{/js/nav.js}"></script>
+  <script th:src="@{/js/top.js}"></script>
+  <script th:src="@{/js/head.js}"></script>
+  <script>
+    jQuery(document).ready(function(){
+      jQuery("#theForm").validate({
+        rules:{
+          pay_msg:{required:true}
+        },
+        messages:{
+          pay_msg:{
+            required:"付款说明不能为空"
+          }
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+              <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+                  </span>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}">
+          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+  <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+
+<div class="main">
+  <div class="head">
+    <div class="logo">
+      <a th:if="${config.websiteLogo}" th:href="@{/index.htm}">
+        <img th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60"  />
+      </a>
+      <a th:unless="${config.websiteLogo}" th:href="@{/index.htm}">
+        <img th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="60"/>
+      </a>
+    </div>
+    <div class="tuang">
+      <span class="tuan_span"></span>
+      <div class="tuan_spr">
+        <!--替换样式tuan_rs替换成tuan_active--三角图片tuansan2.gif-->
+        <div class="tuan_rs" id="group_area_switch">
+                    <span>
+                      <i class="tuantxt" th:text="${ga}"></i>
+                      <b class="tuanspan">
+                        <img th:src="@{/style/system/front/default/images/group/tuansan2.gif}" width="9" height="6" id="group_area_img" />
+                      </b>
+                    </span>
+        </div>
+        <div class="tuan_block" id="group_area_info" style="display:none;">
+          <div class="tuan_block_box">
+            <em>
+              <a href="javascript:void(0);"></a>
+            </em>
+            <div class="tuan_address">
+              <i>
+                <a th:href="@{/group.htm}">全国</a>
+              </i>
+              <i th:each="ga :${gas}">
+                <a th:href="@{/group.htm(ga_id=${ga.id})}" th:text="${ga.gaName}"></a>
+              </i>
+            </div>
+          </div>
+          <div class="tuan_blockb"></div>
+        </div>
+      </div>
+    </div>
+
+    <form th:action="@{/search.htm}" method="post" id="searchForm">
+      <input name="type" type="hidden" id="type" value="goods" />
+      <div class="toph_bigsearch">
+        <div class="toph_sear">
+          <ul class="toph_bgsear">
+            <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+            <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+          </ul>
+          <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()" class="toph_sear_txt"/>
+          <input name="input" type="button" value="搜索" style="cursor:pointer;" onclick="search_form();" class="toph_sear_btn" />
+        </div>
+        <div class="keyword">
+          <a th:each="info :${searchs}" href="javascript:void(0);" th:data-name="${info}" th:onclick="search_form(this.getAttribute('data-name'),'goods')" th:text="${info}"></a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="nav">
+    <div class="nav_center">
+      <div class="nav_left">
+        <h2>
+          <a th:href="@{/goods_class.htm}">
+                        <span>
+                            全部分类
+                            <em>
+                                <img th:src="@{/style/system/front/default/images/nav_left.png}">
+                            </em>
+                        </span>
+          </a>
+        </h2>
+        <div id="other_menu" class="other_menu" style="display:none;">
+          <div id="left_menu" class="left_menu">
+            <dl th:each="gc : ${navgcs}" sc_color="#E60012" style="position:relative;" th:id="${gc.id}"
+                th:child_count="${gc.childs == null ?0 :gc.childs.size() }" class="left_menu_dl">
+              <dt id="dts_15" class="left_menu_dt">
+                <i class="left_menu_i">
+                  <img th:if="${gc.iconType==0   }" width="16" height="16"
+                       th:src="@{'/style/common/images/icon/icon_'+ ${gc.iconSys}+'.png'}">
+                  <img th:unless="${gc.iconType==0   }" width="16" height="16"
+                       th:src="@{'/'+${gc.icon_acc.path} +'/'+${gc.icon_acc.name}}">
+                </i>
+                <strong class="left_menu_str">
+                  <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
+                </strong>
+              </dt>
+              <dd th:id="${'child_'+gc.id}" style="display: none;" class="left_menu_dd">
+                <div id="left_menu_con_15" class="left_menu_con this ">
+                                  <span class="left_menu_sp">
+                                      <div class="left_menu_con_center">
+                                          <div class="menu_con_right_top" style="background-color: rgb(230, 0, 18);">
+                                          <dl>
+                                            <dt>
+                                                <span th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                  <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}" target="_blank"
+                                                     th:text="${gc1.classname}"></a>
+                                                </span>
+                                            </dt>
+                                          </dl>
+                                        </div>
+                                        <div class="left_menu_con_center_left">
+                                                    <dl th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                        <dt>
+                                                          <b> &gt; </b>
+                                                          <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}"
+                                                             target="_blank" th:text="${gc1.classname}"></a>
+                                                        </dt>
+                                                        <dd>
+                                                            <a th:each="gc2 : ${gc1.childs}" th:if="${gc2.display}"
+                                                               th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}"
+                                                               target="_blank"
+                                                               th:text="${gc2.classname}"></a>
+                                                        </dd>
+                                                    </dl>
+                                         </div>
+                                      </div>
+                                  </span>
+                </div>
+              </dd>
+            </dl>
+          </div>
+
+        </div>
+      </div>
+
+      <ul id="navul">
+        <!--#set($navs=$!navTools.queryNav(0,-1))-->
+        <li th:each="nav : ${navs}">
+          <a th:id="${nav.id}" th:if="${nav.newWin==1}" target="_blank" th:original_url="${nav.originalUrl}"
+             th:href="@{${nav.url}}">
+            <span th:text="${nav.title}"></span>
+          </a>
+          <a th:id="${nav.id}" th:unless="${nav.newWin==1}" th:original_url="${nav.originalUrl}"
+             th:href="@{${nav.url}"><span th:text="${nav.title}"></span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="index">
+    <form th:action="@{/integral_order_pay_outline.htm}" method="post" id="theForm">
+      <div class="index2">
+        <div class="buy_step_last">
+          <ul>
+            <li>
+              <h1>线下汇款</h1>
+            </li>
+            <li>
+              <h2 th:text="${paymentTools.queryShopPayment('outline').get('content')}"></h2>
+            </li>
+            <li>
+              <h3>请输入汇款信息 (如转账的账号、时间等，您也可以稍后在用户中心“我的订单”中进行付款)：</h3>
+            </li>
+            <li><span class="steptext">
+            <textarea name="igo_pay_msg" cols="" rows="6" id="igo_pay_msg"></textarea>
+          </span></li>
+            <li><span class="stepbtn">
+            <input name="" type="submit"  value="提交" style="cursor:pointer;"/>
+          </span>
+              <input name="integral_order_id" type="hidden" id="integral_order_id" th:value="${integralOrderId}" />
+              <input name="integral_pay_session" type="hidden" id="integral_pay_session" th:value="${integralPaySession}" />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  $!httpInclude.include("/footer.htm")
+</div>
+</body>
+</html>

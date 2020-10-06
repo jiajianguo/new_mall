@@ -1,0 +1,142 @@
+.goodscartList{
+	height: calc(100vh - 5.1rem);
+	overflow: scroll;
+	margin-top: .2rem;
+}
+
+.list_item{
+	background: white;
+	padding: .3rem .2rem .15rem .2rem;
+	margin: 0 .24rem 0 .24rem;
+	color: #999;
+}
+
+.goodscartList .list_item:nth-child(n + 2){
+	margin-top: .2rem;
+}
+
+.list_item img{
+	width: 1.8rem;
+	height: 1.8rem;
+}
+
+.item_right{
+	width: calc(100% - .5rem);
+}
+
+.right_top_rgiht{
+	width: calc(100% - 2rem);
+	height: 1.8rem;
+}
+
+.wordNoWarp{
+	width: 80%;
+	color: #666;
+}
+
+.price_box{
+	margin-top: .24rem;
+}
+
+.goods_tit svg{
+	width: .35rem;
+	height: .35rem;
+	fill: #333;
+}
+
+.price_box div{
+	font-size: .3rem;
+	color: #ff2400;
+	margin-right: .2rem;
+}
+
+.goods_opt{
+	margin-top: .25rem;
+}
+
+.spec_box{
+	background: #f7f7f7;
+	padding: .02rem .15rem;
+	border-radius: .5rem;
+	color: #bbb;
+	font-size: .2rem;
+}
+
+.num_box{
+	width: 1.6rem;
+	height: .4rem;
+	border: 1px solid #eeeeee;
+	color: #333;
+	border-radius: .4rem;
+}
+
+.num_box div{
+	width: calc(100% / 3);
+	text-align: center;
+}
+
+.num_box div:nth-child(2){
+	width: .7rem;
+	border-left: 1px solid #eee;
+	border-right: 1px solid #eee;
+}
+
+.goods_tips{
+	font-size: .2rem;
+	margin-top: .1rem;
+}
+
+.page_address{
+	background: #fff;
+	padding: .3rem .24rem;
+}
+
+.address_left p{
+	font-size: .32rem;
+	color: #333333;
+	font-weight: bold;
+}
+
+.address_left div{
+	font-size: .24rem;
+	color: #999;
+	margin-top: .1rem;
+}
+
+.page_address button{
+	width: 1.2rem;
+	height: .6rem;
+	border: none;
+	background: #333333;
+	color: white;
+}
+
+.page_bottom{
+	position: fixed;
+	width: 100%;
+	padding: 0 .24rem;
+	background: white;
+	bottom: 1.04rem;
+}
+
+.price_line{
+	padding: .24rem 0;
+}
+
+.allprice{
+	font-size: .32rem;
+	font-weight: bold;
+}
+
+.pay_btn{
+	width: 100%;
+	height: .7rem;
+	color: white;
+	background: #333;
+	border: none;
+}
+
+.pay_tips{
+	padding: .1rem;
+	text-align: center;
+}

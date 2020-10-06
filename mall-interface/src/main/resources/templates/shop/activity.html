@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title th:text="${act.acTitle}"> </title>
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/goodshidden.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery.lazyload.js}"></script>
+  <script th:src="@{/js/nav.js}"></script>
+  <script th:src="@{/js/top.js}"></script>
+  <script th:src="@{/js/head.js}"></script>
+<script>
+jQuery(document).ready(function(){
+ jQuery(".imgcenter_span img").lazyload({effect:"fadeIn",width:170,height:170});
+});
+</script>
+</head>
+
+<body>
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.cneter}"></a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
+                <span th:switch="${user != null}">
+					<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
+                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
+				</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+           <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s>
+                    <a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
+                  </span>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}" >
+          <span  style="color:#FF3300;" th:text="#{messages.plateform.message}+${msgs!= null?msgs.size():0}"></span></a>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow" th:text="#{messages.collect.shop}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow" th:text="#{messages.more.link}"><b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+  <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
+          </span>
+          <span th:case="false">
+			  <span th:text="#{messages.welcome.word}"></span>
+              <span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+<div class="main">
+  <!--head-->
+  <div id="header_form">
+    <div id="head_h" class="head_width">
+      <div class="head clearFix">
+        <div class="logo">
+          <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+            <img width="180" height="60"
+                 th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+          </a>
+          <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
+            <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"
+                 border="0"/>
+            <!--270/100-->
+          </a>
+        </div>
+        <div class="searchForm">
+          <form action="/search.htm" method="post" target="_blank" id="searchForm">
+            <input name="type" type="hidden" id="type" th:value="${type}"/>
+            <div class="toph_bigsearch">
+              <div class="toph_sear">
+                <ul class="toph_bgsear">
+                  <li class="this" type="goods"><a href="javascript:void(0);" th:text="#{messages.baby}"><s></s></a></li>
+                  <li style="display:none" type="store"><a href="javascript:void(0);" th:text="#{messages.shop}"></a></li>
+                </ul>
+                <input name="keyword" type="text" id="keyword" th:placeholder="#{messages.search.simple}" x-webkit-speech
+                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                       class="toph_sear_txt"/>
+                <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;"
+                       onclick="search_form();" class="toph_sear_btn"/>
+              </div>
+              <div class="keyword">
+						   <span th:each="info : ${config.hotsearch.split(',')}">
+							   <a href="javascript:void(0);" th:data-id="${info}" onclick="search_form(this.getAttribute('data-id'),'goods');"
+                                  th:text="${info}"></a>
+						   </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--head-end -->
+
+  <!--nav1 -->
+  <div class="nav">
+    <div class="nav_center">
+      <div class="nav_left">
+        <h2>
+          <a th:href="@{/goods_class.htm}">
+                        <span>
+                            <span th:text="#{messages.type.all}"></span>
+                            <em>
+                                <img th:src="@{/style/system/front/default/images/nav_left.png}">
+                            </em>
+                        </span>
+          </a>
+        </h2>
+        <div id="other_menu" class="other_menu" style="display:none;">
+          <div id="left_menu" class="left_menu">
+            <dl th:each="gc : ${navgcs}" sc_color="#E60012" style="position:relative;" th:id="${gc.id}"
+                th:child_count="${gc.childs == null ?0 :gc.childs.size() }" class="left_menu_dl">
+              <dt id="dts_15" class="left_menu_dt">
+                <i class="left_menu_i">
+                  <img th:if="${gc.iconType==0   }" width="16" height="16"
+                       th:src="@{'/style/common/images/icon/icon_'+ ${gc.iconSys}+'.png'}">
+                  <img th:unless="${gc.iconType==0   }" width="16" height="16"
+                       th:src="@{'/'+${gc.icon_acc.path} +'/'+${gc.icon_acc.name}}">
+                </i>
+                <strong class="left_menu_str">
+                  <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
+                </strong>
+              </dt>
+              <dd th:id="${'child_'+gc.id}" style="display: none;" class="left_menu_dd">
+                <div id="left_menu_con_15" class="left_menu_con this ">
+                                  <span class="left_menu_sp">
+                                      <div class="left_menu_con_center">
+                                          <div class="menu_con_right_top" style="background-color: rgb(230, 0, 18);">
+                                          <dl>
+                                            <dt>
+                                                <span th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                  <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}" target="_blank"
+                                                     th:text="${gc1.classname}"></a>
+                                                </span>
+                                            </dt>
+                                          </dl>
+                                        </div>
+                                        <div class="left_menu_con_center_left">
+                                                    <dl th:each="gc1 : ${gc.childs}" th:if="${gc1.display}">
+                                                        <dt>
+                                                          <b> &gt; </b>
+                                                          <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}"
+                                                             target="_blank" th:text="${gc1.classname}"></a>
+                                                        </dt>
+                                                        <dd>
+                                                            <a th:each="gc2 : ${gc1.childs}" th:if="${gc2.display}"
+                                                               th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}"
+                                                               target="_blank"
+                                                               th:text="${gc2.classname}"></a>
+                                                        </dd>
+                                                    </dl>
+                                         </div>
+                                      </div>
+                                  </span>
+                </div>
+              </dd>
+            </dl>
+          </div>
+
+        </div>
+      </div>
+
+      <ul id="navul">
+
+        <li th:each="nav : ${navs}">
+          <a th:id="${nav.id}" th:if="${nav.newWin==1}" target="_blank" th:nav.originalUrl="${nav.originalUrl}"
+             th:href="@{${nav.url}}"><span th:text="${nav.title}"></span></a>
+          <a th:id="${nav.id}" th:unless="${nav.newWin==1}" th:nav.originalUrl="${nav.originalUrl}"
+             th:href="@{${nav.url}"><span th:text="${nav.title}"></span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--nav1-end  -->
+
+  <!-- $!httpInclude.include("/head.htm")
+   $!httpInclude.include("/nav1.htm")-->
+  <div class="index">
+    <div class="position">
+      <span th:text="#{messages.position.now}"></span>
+      <a th:href="@{/index.htm}"  th:text="#{messages.home.page}"></a> >
+      <span th:text="${act.acTitle}"></span></div>
+    <form method="post" id="ListForm">
+      <div class="index2">
+        <div class="active_box" th:if="${objs}">
+          <div class="active_banner">
+            <div class="active_left">
+              <div class="active_banner_img">
+                <img  th:src="@{${act.ac_acc.path}+'/'+${act.ac_acc.name}}" width="980" height="341" />
+              </div>
+              <span class="active_title" th:text="#{messages.activity.describle}"></span>
+              <span class="active_p" th:text="${act.acContent}"></span>
+            </div>
+            <div class="active_right">
+              <script th:src="@{/advert_invoke.htm(id=262151)}"></script>
+            </div>
+          </div>
+          <div class="active_list">
+            <div class="active_list_box">
+              <div class="active_list_one" th:each="obj: ${objs}">
+                <a th:href="@{/goods.htm(id=${obj.ag_goods.id})}" target="_blank">
+                  <ul class="active_list_ul">
+                    <li class="active_list_img">
+                      <p>
+                        <span class="imgcenter_span">
+                          <img th:if="${obj.ag_goods.goods_main_photo}" th:src="@{${'/'+obj.ag_goods.goods_main_photo.path+'/'+ obj.ag_goods.goods_main_photo.name}}"   width="160" height="160"/>
+                          <img th:unless="${obj.ag_goods.goods_main_photo}" th:src="@{${'/'+config.goodsImage.path+ '/'+ config.goodsImage.name }}"  width="160" height="160"/>
+                        </span>
+                      </p>
+                    </li>
+                    <li class="active_list_txt" th:text="${obj.ag_goods.goodsName}"></li>
+                    <li class="active_list_money">
+                      <span th:text="#{messages.store.price}+${'¥'+obj.ag_goods.storePrice}"></span>
+                    </li>
+                    <li class="active_list_btn">
+                      <span><b th:text="#{messages.sale.price}+${obj.agPrice}"></b></span>
+                    </li>
+                  </ul>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="active_page">
+          <div class="fenye">
+            <input name="currentPage" id="currentPage" type="hidden" th:value="${currentPage}" />
+            <span th:utext="${gotoPageFormHTML}"></span>
+          </div>
+        </div>
+        <div class="starshop_list" style="clear:both; margin:0px auto;" th:unless="${objs}">
+          <div class="sigh">
+            <span>
+              <img th:src="@{/style/system/front/default/images/sigh.png}" width="120" height="109" />
+            </span>
+            <b th:text="#{messages.null.data}"></b>
+          </div>
+        </div>
+       </div>
+    </form>
+  </div>
+
+  <div class="footer">
+    <div class="footerArea">
+      <ul>
+        <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+        </li>
+        <li class="hui2" >Copyright 2020 shopping Inc. All rights reserved</li>
+        <li class="hui2">Powered by shopping 2.x</li>
+        <li th:text="${config.codeStat}"></li>
+      </ul>
+    </div>
+  </div>
+ <!-- <div th:include="/shop/footer.html :: myfooter"></div>-->
+</div>
+</body>
+<script>
+  var app = angular.module('top', []);
+  app.controller('myCtrl', function($scope, $http) {
+    //$scope.name = "John Doe";
+    $scope.user={};
+    $scope.msgs=[];
+    $scope.navs=[];
+    $scope.cart=[];
+    var init = function () {
+      $http.post('/top').then(function (res){
+        console.log("shuju "+res);
+      });
+    };
+    init();
+    $cope.cart_remove=function (index){
+
+    }
+  });
+
+  function cart_remove(id,store_id){
+    jQuery.post('/remove_goods_cart.htm',{"id":id,"store_id":store_id},function(data){
+      jQuery("div[class=table] tr[id="+id+"]").remove();
+      jQuery(".shopping[id="+id+"]").remove();
+      jQuery(".shopp_ingtop[id="+id+"]").remove();
+      jQuery("#cart_goods_count_top").html(data.count);
+      jQuery("#cart_goods_price_top").html(data.total_price);
+      jQuery("#top_total_price_"+store_id).html(data.total_price);
+      if(store_id!=""){
+        jQuery("#total_price_"+store_id).html(data.sc_total_price);
+      }
+      if( jQuery("form[id=cart_"+store_id+"]").find("tr[goods_list^=goods_info]").length==0){
+        jQuery("form[id=cart_"+store_id+"]").remove();
+      }
+      if(jQuery("tr[goods_list^=goods_info]").length==0){
+        jQuery(".car_nogoods").show();
+      }
+    },"json");
+  }
+  jQuery(document).ready(function(){
+    jQuery("#cart_goods_top_menu").mouseover(function(){
+      jQuery.ajax({type:'POST',url:'/cart_menu_detail.htm',data:'',
+        beforeSend:function(){
+          jQuery("#cart_goods_top_info").empty().html('<div class="menu-bd-panel"><div style="text-align:center;"><img th:src="@{/style/common/images/loader.gif}" /></div></div>');
+          jQuery("#cart_goods_top_info").show();
+        },
+        success:function(data){
+          jQuery("#cart_goods_top_info").empty();
+          jQuery("#cart_goods_top_info").html(data);
+        }
+      });
+    });
+    jQuery("#cart_menu").mouseleave(function(){
+      jQuery("#cart_goods_top_info").hide();
+    });
+  });
+</script>
+<script>
+  jQuery(document).ready(function(){
+    jQuery(".toph_bgsear li").mouseover(function(){
+      jQuery(".toph_bgsear>li").show();
+    }).mouseleave(function(){
+      jQuery(".toph_bgsear>li").last().hide();
+    }).click(function(){
+      var index=jQuery(this).index();
+      if(index==1){
+        var f_text=jQuery(".toph_bgsear li").find("a").first().text();
+        jQuery(".toph_bgsear li").find("a").first().html(jQuery(this).find("a").text()+"<s></s>");
+        jQuery(".toph_bgsear li").find("a").last().text(f_text);
+        jQuery("#type").val(jQuery(this).attr("type"));
+        jQuery(".toph_bgsear>li").last().hide();
+      }
+    });
+
+    jQuery(".two_code_a").click(function(){
+      jQuery(this).parent().remove();
+    });
+
+  });
+  function search_form(){
+    var keyword=arguments[0];
+    var type=arguments[1];
+    if(keyword!=""&&keyword!=undefined){
+      jQuery("#keyword").val(keyword);
+    }
+    if(type!=""&&type!=undefined){
+      jQuery("#type").val(type);
+    }
+    jQuery("#searchForm").submit();
+    jQuery("#keyword").val("");
+  }
+</script>
+<script>
+  jQuery(document).ready(function(){
+    jQuery(".navul a").each(function(){
+      var nav.originalUrl=jQuery(this).attr("nav.originalUrl");
+      if("$!{current_url}".indexOf(nav.originalUrl)>=0){
+        jQuery(this).addClass("this");
+      }
+    });
+    jQuery(".left_menu_dl").mouseover(function(){
+      var child_count = jQuery(this).attr("child_count");
+      var sc_id=jQuery(this).attr("id");
+      var sc_color=jQuery(this).attr("sc_color");
+      var eq =jQuery(this).index();
+
+      var lengthArr=$(".left_menu_dl");
+      var arrs=[];
+      for(var i=0;i<lengthArr.length;i++){
+        arrs.push(-(i*35)+'px');
+        //alert(arrs);
+        $(".left_menu_dl").eq(i).find(".left_menu_con.this").css("top",arrs[i]);
+      }
+
+      if(jQuery(".left_menu_dd[id=child_"+sc_id+"]").html()==null){
+        jQuery.ajax({type:'POST',url:'http://b2b2c.iskyshop.com/nav_data.htm',data:{"sc_id":sc_id},success:function(data){
+            if(jQuery(".left_menu_dd[id=child_"+sc_id+"]").html()==null){
+              jQuery(".left_menu_dt[id=dts_"+sc_id+"]").after(data);
+            }
+            if(child_count>0){
+              jQuery("#dts_"+sc_id).addClass("left_menu_this").removeClass("left_menu_dt");
+              jQuery("#child_"+sc_id).show();
+            }
+            jQuery("#left_menu_con_"+sc_id).attr("style","border:1px solid "+sc_color+"; border-left:1px solid "+sc_color+";").find(".menu_con_right_top").css("background-color",sc_color);
+            var z = -35;
+            var x = eq*z;
+            jQuery("#left_menu_con_"+sc_id).css('margin-top',x+'px');
+            jQuery(".left_menu_dd[id=child_"+sc_id+"]").show();
+          }});
+      }else{
+        if(child_count>0){
+          jQuery("#dts_"+sc_id).addClass("left_menu_this").removeClass("left_menu_dt");
+          jQuery("#child_"+sc_id).show();
+        }
+        jQuery("#left_menu_con_"+sc_id).attr("style","border:1px solid "+sc_color+"; border-left:1px solid "+sc_color+";").find(".menu_con_right_top").css("background-color",sc_color);
+        var z = -35;
+        var x = eq*z;
+        jQuery("#left_menu_con_"+sc_id).css('margin-top',x+'px');
+        jQuery(".left_menu_dd[id=child_"+sc_id+"]").show();
+      }
+
+    }).mouseleave(function(e){
+      jQuery("dt[id^=dts_]").removeAttr("style");
+      jQuery("div[id^=left_menu_con_]").removeAttr("style");
+      var child_count = jQuery(this).attr("child_count");
+      jQuery("dt[id^=dts_]").removeClass("left_menu_this").addClass("left_menu_dt");
+      jQuery(".left_menu_dd[id^=child_]").hide();
+    });
+    jQuery(".nav_left").mouseover(function(){
+      jQuery("#other_menu").show();
+
+    });
+    jQuery(".nav_left").mouseleave(function(){
+      jQuery("#other_menu").hide();
+    });
+  });
+</script>
+</html>

@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <!--diskStore： 为缓存路径，ehcache分为内存和磁盘两级，此属性定义磁盘的缓存位置-->
+    <diskStore path="java.io.tmpdir/ehcache"/>
+
+    <!--
+            name：缓存名称
+            maxElementsInMemory：内存中最大缓存对象数
+            maxElementsOnDisk：硬盘中最大缓存对象数，若是0表示无穷大
+            eternal：true表示对象永不过期，此时会忽略timeToIdleSeconds和timeToLiveSeconds属性，默认为false
+            overflowToDisk：true表示当内存缓存的对象数目达到了maxElementsInMemory界限后，会把溢出的对象写到硬盘缓存中。注意：如果缓存的对象要写入到硬盘中的话，则该对象必须实现了Serializable接口才行。
+            diskSpoolBufferSizeMB：磁盘缓存区大小，默认为30MB。每个Cache都应该有自己的一个缓存区。
+            diskPersistent：是否缓存虚拟机重启期数据
+            diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认为120秒
+            timeToIdleSeconds： 设定允许对象处于空闲状态的最长时间，以秒为单位。当对象自从最近一次被访问后，如果处于空闲状态的时间超过了timeToIdleSeconds属性值，这个对象就会过期，EHCache将把它从缓存中清空。只有当eternal属性为false，该属性才有效。如果该属性值为0，则表示对象可以无限期地处于空闲状态
+            timeToLiveSeconds：设定对象允许存在于缓存中的最长时间，以秒为单位。当对象自从被存放到缓存中后，如果处于缓存中的时间超过了 timeToLiveSeconds属性值，这个对象就会过期，EHCache将把它从缓存中清除。只有当eternal属性为false，该属性才有效。如果该属性值为0，则表示对象可以无限期地存在于缓存中。timeToLiveSeconds必须大于timeToIdleSeconds属性，才有意义
+            memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。可选策略有：LRU（最近最少使用，默认策略）、FIFO（先进先出）、LFU（最少访问次数）。
+     -->
+
+    <!--默认缓存策略，当ehcache找不到定义的缓存时，则使用这个缓存策略。只能定义一个。-->
+    <defaultCache
+            maxElementsInMemory="500"
+            eternal="false"
+            overflowToDisk="true"
+            diskPersistent="false"
+            timeToIdleSeconds="60"
+            timeToLiveSeconds="60"
+            memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingAccessory"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingActivity"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingActivityGoods"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <!--自定缓存策略，为自定义的缓存策略-->
+    <cache name="com.xdj.www.entity.ShoppingAddress"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <!--自定缓存策略，为自定义的缓存策略-->
+    <cache name="com.xdj.www.entity.ShoppingAdvPosWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingAdvert"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingAlbum"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingArea"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingArticle"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingBargain"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingBargainGoods"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingBrandcategory"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingCartGsp"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingChatting"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingChattingfriend"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingChattinglog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingComplaintWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingComplaintGoods"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingComplaintSubject"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+    <cache name="com.xdj.www.entity.ShoppingConsultWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingCoupon"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingCouponInfo"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingCombinLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+    <cache name="com.xdj.www.entity.ShoppingDeliveryGoods"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingDeliveryLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingDocument"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingDynamic"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingExpressCompany"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingEvaluateWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingFavorite"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoldLogWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoldRecordWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsCombin"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsFloorWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsPhoto"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodscart"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsclassWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsbrand"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsspecification"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodstype"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodstypeBrand"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+    <cache name="com.xdj.www.entity.ShoppingGoodstypeproperty"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodstypeSpec"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsspecproperty"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsrecommend"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGoodsReturn"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGoodsReturnitem"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsReturnlog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsclassstaple"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+    <cache name="com.xdj.www.entity.ShoppingGoodsSpec"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGoodsUgc"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+    <cache name="com.xdj.www.entity.ShoppingGroup"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGroupGoods"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGroupArea"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGroupClass"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingGroupPriceRange"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingHomeAddention"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingHomepage"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingHomepageGoodsclassLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingHomepageGoodsclass"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingIntegralGoods"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingIntegralGoodscart"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingIntegralGoodsorderWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingIntegrallog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingMessage"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingMobileverifycode"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingNavigation"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingOrderformWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingOrderLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingPartner"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingPaymentWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingPredepositCash"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingPredepositLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingReportWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingRefundLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingRes"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingReportSubject"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingReportType"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingRole"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingReturnGsp"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingRolegroup"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingRoleRes"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingSecondsKill"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingShipping"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingSpareGoodsWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingSpareGoodsclass"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingSpareGoodsfloor"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStorecart"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStoregrade"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStoreStat"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingStorePoint"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingStorePoint"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStoreWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStoregradeLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStoreNav"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingStoreSlide"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingSpareGoodsclass"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingSpareGoodsfloor"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingSpareGoodsWithBLOBs"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+
+
+    <cache name="com.xdj.www.entity.ShoppingTransArea"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingTransport"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingUser"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingUserFriend"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingUsergoodsclass"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingUserconfig"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingUserAttention"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="com.xdj.www.entity.ShoppingUserRoleKey"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingVmenu"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingVisit"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingVlog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingVmessage"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingWatermark"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+    <cache name="com.xdj.www.entity.ShoppingZtcGoldLog"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" />
+</ehcache>

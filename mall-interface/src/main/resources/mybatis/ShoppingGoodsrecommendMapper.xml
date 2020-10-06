@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingGoodsrecommendMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingGoodsrecommend">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="browseNum" jdbcType="INTEGER" property="browsenum" />
+    <result column="goodsNum" jdbcType="INTEGER" property="goodsnum" />
+    <result column="imageHeight" jdbcType="INTEGER" property="imageheight" />
+    <result column="imageWidth" jdbcType="INTEGER" property="imagewidth" />
+    <result column="remarkInfo" jdbcType="VARCHAR" property="remarkinfo" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="showNum" jdbcType="INTEGER" property="shownum" />
+    <result column="styleName" jdbcType="VARCHAR" property="stylename" />
+    <result column="typeName" jdbcType="VARCHAR" property="typename" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdj.www.entity.ShoppingGoodsrecommend">
+    <result column="code" jdbcType="LONGVARCHAR" property="code" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, addTime, deleteStatus, browseNum, goodsNum, imageHeight, imageWidth, remarkInfo,
+    sequence, showNum, styleName, typeName
+  </sql>
+  <sql id="Blob_Column_List">
+    code
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoodsrecommendExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_goodsrecommend
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingGoodsrecommendExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_goodsrecommend
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shopping_goodsrecommend
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_goodsrecommend
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingGoodsrecommendExample">
+    delete from shopping_goodsrecommend
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingGoodsrecommend">
+    insert into shopping_goodsrecommend (id, addTime, deleteStatus,
+      browseNum, goodsNum, imageHeight,
+      imageWidth, remarkInfo, sequence,
+      showNum, styleName, typeName,
+      code)
+    values (#{id,jdbcType=BIGINT}, #{addtime,jdbcType=TIMESTAMP}, #{deletestatus,jdbcType=BIT},
+      #{browsenum,jdbcType=INTEGER}, #{goodsnum,jdbcType=INTEGER}, #{imageheight,jdbcType=INTEGER},
+      #{imagewidth,jdbcType=INTEGER}, #{remarkinfo,jdbcType=VARCHAR}, #{sequence,jdbcType=INTEGER},
+      #{shownum,jdbcType=INTEGER}, #{stylename,jdbcType=VARCHAR}, #{typename,jdbcType=VARCHAR},
+      #{code,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingGoodsrecommend">
+    insert into shopping_goodsrecommend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="browsenum != null">
+        browseNum,
+      </if>
+      <if test="goodsnum != null">
+        goodsNum,
+      </if>
+      <if test="imageheight != null">
+        imageHeight,
+      </if>
+      <if test="imagewidth != null">
+        imageWidth,
+      </if>
+      <if test="remarkinfo != null">
+        remarkInfo,
+      </if>
+      <if test="sequence != null">
+        sequence,
+      </if>
+      <if test="shownum != null">
+        showNum,
+      </if>
+      <if test="stylename != null">
+        styleName,
+      </if>
+      <if test="typename != null">
+        typeName,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="browsenum != null">
+        #{browsenum,jdbcType=INTEGER},
+      </if>
+      <if test="goodsnum != null">
+        #{goodsnum,jdbcType=INTEGER},
+      </if>
+      <if test="imageheight != null">
+        #{imageheight,jdbcType=INTEGER},
+      </if>
+      <if test="imagewidth != null">
+        #{imagewidth,jdbcType=INTEGER},
+      </if>
+      <if test="remarkinfo != null">
+        #{remarkinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="shownum != null">
+        #{shownum,jdbcType=INTEGER},
+      </if>
+      <if test="stylename != null">
+        #{stylename,jdbcType=VARCHAR},
+      </if>
+      <if test="typename != null">
+        #{typename,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingGoodsrecommendExample" resultType="java.lang.Long">
+    select count(*) from shopping_goodsrecommend
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_goodsrecommend
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.browsenum != null">
+        browseNum = #{record.browsenum,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsnum != null">
+        goodsNum = #{record.goodsnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.imageheight != null">
+        imageHeight = #{record.imageheight,jdbcType=INTEGER},
+      </if>
+      <if test="record.imagewidth != null">
+        imageWidth = #{record.imagewidth,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkinfo != null">
+        remarkInfo = #{record.remarkinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sequence != null">
+        sequence = #{record.sequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.shownum != null">
+        showNum = #{record.shownum,jdbcType=INTEGER},
+      </if>
+      <if test="record.stylename != null">
+        styleName = #{record.stylename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typename != null">
+        typeName = #{record.typename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shopping_goodsrecommend
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      browseNum = #{record.browsenum,jdbcType=INTEGER},
+      goodsNum = #{record.goodsnum,jdbcType=INTEGER},
+      imageHeight = #{record.imageheight,jdbcType=INTEGER},
+      imageWidth = #{record.imagewidth,jdbcType=INTEGER},
+      remarkInfo = #{record.remarkinfo,jdbcType=VARCHAR},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      showNum = #{record.shownum,jdbcType=INTEGER},
+      styleName = #{record.stylename,jdbcType=VARCHAR},
+      typeName = #{record.typename,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_goodsrecommend
+    set id = #{record.id,jdbcType=BIGINT},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      browseNum = #{record.browsenum,jdbcType=INTEGER},
+      goodsNum = #{record.goodsnum,jdbcType=INTEGER},
+      imageHeight = #{record.imageheight,jdbcType=INTEGER},
+      imageWidth = #{record.imagewidth,jdbcType=INTEGER},
+      remarkInfo = #{record.remarkinfo,jdbcType=VARCHAR},
+      sequence = #{record.sequence,jdbcType=INTEGER},
+      showNum = #{record.shownum,jdbcType=INTEGER},
+      styleName = #{record.stylename,jdbcType=VARCHAR},
+      typeName = #{record.typename,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingGoodsrecommend">
+    update shopping_goodsrecommend
+    <set>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="browsenum != null">
+        browseNum = #{browsenum,jdbcType=INTEGER},
+      </if>
+      <if test="goodsnum != null">
+        goodsNum = #{goodsnum,jdbcType=INTEGER},
+      </if>
+      <if test="imageheight != null">
+        imageHeight = #{imageheight,jdbcType=INTEGER},
+      </if>
+      <if test="imagewidth != null">
+        imageWidth = #{imagewidth,jdbcType=INTEGER},
+      </if>
+      <if test="remarkinfo != null">
+        remarkInfo = #{remarkinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="shownum != null">
+        showNum = #{shownum,jdbcType=INTEGER},
+      </if>
+      <if test="stylename != null">
+        styleName = #{stylename,jdbcType=VARCHAR},
+      </if>
+      <if test="typename != null">
+        typeName = #{typename,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoodsrecommend">
+    update shopping_goodsrecommend
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      browseNum = #{browsenum,jdbcType=INTEGER},
+      goodsNum = #{goodsnum,jdbcType=INTEGER},
+      imageHeight = #{imageheight,jdbcType=INTEGER},
+      imageWidth = #{imagewidth,jdbcType=INTEGER},
+      remarkInfo = #{remarkinfo,jdbcType=VARCHAR},
+      sequence = #{sequence,jdbcType=INTEGER},
+      showNum = #{shownum,jdbcType=INTEGER},
+      styleName = #{stylename,jdbcType=VARCHAR},
+      typeName = #{typename,jdbcType=VARCHAR},
+      code = #{code,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingGoodsrecommend">
+    update shopping_goodsrecommend
+    set addTime = #{addtime,jdbcType=TIMESTAMP},
+      deleteStatus = #{deletestatus,jdbcType=BIT},
+      browseNum = #{browsenum,jdbcType=INTEGER},
+      goodsNum = #{goodsnum,jdbcType=INTEGER},
+      imageHeight = #{imageheight,jdbcType=INTEGER},
+      imageWidth = #{imagewidth,jdbcType=INTEGER},
+      remarkInfo = #{remarkinfo,jdbcType=VARCHAR},
+      sequence = #{sequence,jdbcType=INTEGER},
+      showNum = #{shownum,jdbcType=INTEGER},
+      styleName = #{stylename,jdbcType=VARCHAR},
+      typeName = #{typename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统提示</title>
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+</head>
+<body>
+<!--<div th:include="shop/top.html :: mytop"></div>-->
+<div class="main">
+ <!-- $!httpInclude.include("/head.htm")
+  $!httpInclude.include("/nav1.htm")
+  $!uc_login_js-->
+  <div class="index" style="height:300px;">
+    <div style="height:280px;border:1px solid #CCCCCC;overflow:hidden; margin-left:auto; margin-right:auto; margin-top:10px;">
+      <div style="font-size:16px; color:#666666;margin-top:100px; padding-left:40%;">
+          <span style="float:left;">
+                <img th:src="@{/style/common/images/icon/succeed.png}" />
+          </span>
+          <input type="hidden" id="url" th:value="${url}">
+          <span style=" padding-top:10px; line-height:30px; float:left;" th:text="${op_title}+'!'"></span>
+      </div>
+    </div>
+  </div>
+<script>
+	  var count=3;
+	  window.setInterval(go,350);
+	  function go(){
+	    count--;
+	    if(count==0) window.location.href=jQuery("#url").val();
+	  }
+	</script>
+ <!-- $!httpInclude.include("/footer.htm")-->
+</div>
+</body>
+</html>

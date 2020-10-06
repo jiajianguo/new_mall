@@ -1,0 +1,654 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的订单</title>
+<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/system/front/default/css/user.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet" />
+<link  th:href="@{/style/common/css/jquery-ui-1.8.22.custom.css}" type=text/css rel=stylesheet>
+<script th:src="@{/js/jquery-1.6.2.js}"></script>
+<script th:src="@{/js/jquery.shop.common.js}"></script>
+<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+<script th:src="@{/js/jquery.zh.cn.js}"></script>
+<script th:src="@{/js/buyer_head.js}"></script>
+<script th:src="@{/js/buyer_nav.js}"></script>
+<script th:src="@{/js/top.js}"></script>
+<script>
+jQuery(document).ready(function(){
+  jQuery('#beginTime').datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+  jQuery('#endTime').datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+  //
+  jQuery("#order_status").val("$!order_status");
+  //QueryShip
+  jQuery(".li_10>a[id^=li_ship_]").click(function(){
+     jQuery("div[id^=li_ship_box]").hide();
+					var order_id =jQuery(this).attr("order_id");
+					var display =jQuery("#li_ship_box_"+order_id).css("display");
+							if(display=="none"){
+							jQuery("#li_ship_box_loading_"+order_id).show();
+							}
+							jQuery.post("/buyer/query_ship.htm",{
+									"id":order_id
+									},
+									function(data){
+											if(data){
+											   jQuery(".li_ship_box_loading").hide();
+											   jQuery("#li_ship_box_"+order_id).show().find("ul").html(data);
+											  }
+										},"text");
+  });
+  jQuery("div[id^=li_ship_box_]").mouseleave(function(){
+	  jQuery(this).hide();
+  });
+
+
+jQuery("a[id^=delete_order_]").click(function(){
+		var order_id=jQuery(this).attr("order_id");
+		jQuery("#delete_order_id").val(order_id);
+		showDialog("share_sns","系统提示","删除后不可恢复，是否继续？",1,"question","",order_delete);
+});
+
+//删除订单
+function order_delete(){
+	 var order_id=jQuery("#delete_order_id").val();
+	 var currentPage=jQuery("#currentPage").val();
+	 window.location.href="/buyer/order_delete.htm?id="+order_id+"&currentPage="+currentPage;
+}
+//
+});
+</script>
+</head>
+<body>
+<div class="top_page">
+    <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+            <li class="mytaobao menu-item menupx">
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/seller/index.htm}" rel="nofollow">商家中心</a>
+                                <a th:href="@{/seller/order.htm}" rel="nofollow">商家订单</a>
+                                <a th:href="@{/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow">我的店铺</a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow">商家入驻</a>
+								</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="search menu-item menupx">
+                <div class="menu" id="cart_menu">
+                    <span class="menu-hd" id="cart_goods_top_menu">
+                        <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车
+                        <span id="cart_goods_count_top" class="top_car" th:text="${cart ==null?0:cart.size()}"></span>种商品</a><b></b>
+                    </span>
+                </div>
+            </li>
+
+            <li class="menupx">
+                <a th:href="@{/buyer/message.htm}">
+                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            </li>
+            <li class="menupx" th:if="${navs != null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="menupx" style="background:none;" th:if="${navs == null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
+
+            <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">更多链接<b></b></a>
+                    <div class="menu-bd" style="height:auto;">
+                        <div class="menu-bd-panel">
+                            <div th:each="nav : ${navs}">
+                                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span>您好,欢迎来到</span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+          </span>
+          <span th:case="false">
+			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+            </span>
+          </span>
+        </span>
+    </div>
+</div>
+
+<div class="main">
+  <!--buyer-head-->
+    <form th:action="@{/search.htm}" method="post" id="SearchForm">
+        <input name="type" type="hidden" id="type" value="goods" />
+        <div class="head">
+            <div class="logo">
+                <a  th:href="@{/index.htm}">
+                    <img th:if="${config.websiteLogo}" th:src="@{${'/'+ config.websiteLogo.path+'/'+config.websiteLogo.name }}" border="0" width="180" height="60"/>
+                    <img th:unless="${config.websiteLogo}" th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="60" />
+                </a>
+            </div>
+            <div class="usersearch">
+                <ul class="users_menu">
+                    <li class="this">
+                        <em>
+                            <a th:href="@{/buyer/index.htm}">买家首页</a>
+                        </em>
+                    </li>
+                    <li >
+                        <em>
+                            <a th:href="@{/buyer/homepage.htm}" target="_blank">个人主页</a>
+                        </em>
+                    </li>
+                    <!--hover_use经过下拉样式class="hover_use"-->
+                    <li>
+                        <em>
+                            <a th:href="@{/buyer/friend.htm}">好友<s></s></a>
+                        </em>
+                        <div class="users_navh" style="display:none;">
+                            <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/friend_add.htm}" target="_blank">找人</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/homepage/myattention.htm}" target="_blank">关注</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/homepage/myfans.htm}" target="_blank">粉丝</a>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <em>
+                            <a href="javascript:void(0);">交易<s></s></a>
+                        </em>
+                        <div class="users_navh" style="display:none">
+                            <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/goods_cart1.htm}">我的购物车</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/order.htm}">已买到的商品</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/favorite_goods.htm}">我的收藏</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/complaint.htm}">投诉管理</a>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <em>
+                            <a href="javascript:void(0);">设置<s></s></a>
+                        </em>
+                        <div class="users_navh" style="display:none">
+                            <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/account.htm}">个人资料</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/address.htm}">收货地址</a>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <em>
+                            <a href="javascript:void(0);">消息<s></s></a>
+                        </em>
+                        <div class="users_navh" style="display:none">
+                            <div class="users_navh_box">
+                                <span>
+                                    <a th:href="@{/buyer/message.htm(type=0)}">系统消息</a>
+                                </span>
+                                <span>
+                                    <a th:href="@{/buyer/message.htm}">站内私信</a>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="user_ser">
+                    <!--展开时加active-->
+                    <div class="sear_type" id="search_type">
+                        <ul>
+                            <li><a href="javascript:void(0);">商品</a></li>
+                            <li type="goods" style="display:none" >
+                                <a href="javascript:void(0);">商品</a>
+                            </li>
+                            <li type="store" style="display:none">
+                                <a href="javascript:void(0);">店铺</a>
+                            </li>
+                        </ul>
+                        <s></s>
+                    </div>
+
+                    <div class="user_ser_box">
+                        <input name="keyword" type="text" class="user_ser_txt" placeholder=" 搜索真的很简单！" id="keyword" x-webkit-speech lang="zh-CN" onwebkitspeechchange="jQuery('#SearchForm').submit()"/>
+                        <input name="" type="button" class="user_ser_btn" style="cursor:pointer;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+  <div class="user_center">
+    <form th:action="@{/buyer/order.htm}" method="post" id="ListForm">
+      <table width="1000" border="0" cellspacing="0" cellpadding="0" class="user_table">
+        <tr>
+            <!-- /buyer/nav.htm -->
+            <td width="177" id="userbg" valign="top">
+                <div class="seller">
+                    <!--店铺设置-->
+                    <div class="product_manage2">
+                        <div class="protitle_seller">我是买家</div>
+                        <div class="user_photo">
+                            <dl>
+                                <dt>
+                                    <img th:if="${user.photo}" th:src="@{${'/'+user.photo.path+'/'+user.photo.name}}" width="120" height="120" />
+                                    <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}" width="120" height="120" />
+                                </dt>
+                                <dd>
+                                    <b></b>
+                                    <span>
+                                        <a  th:href="@{/buyer/account.htm}">编辑资料</a>
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+
+                        <ul class="sellul">
+                            <li>
+                                <a href="javascript:void(0);" child_show="true">
+                                    <b>
+                                        <img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" />
+                                    </b>
+                                    我的购物
+                                </a>
+                                <ul>
+                                    <li op="order">
+                                        <a th:href="@{/buyer/order.htm}">订单管理</a>
+                                    </li>
+                                    <li op="integral">
+                                        <a th:href="@{/buyer/integral_order_list.htm}">积分兑换</a>
+                                    </li>
+                                    <li op="coupon">
+                                        <a th:href="@{/buyer/coupon.htm}" class="other">我的优惠券</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);" child_show="true">
+                                    <b>
+                                        <img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" />
+                                    </b>
+                                    退款维权
+                                </a>
+                                <ul>
+                                    <li op="report">
+                                        <a th:href="@{/buyer/report.htm}">举报管理</a>
+                                    </li>
+                                    <li op="consult">
+                                        <a th:href="@{/buyer/consult.htm}">咨询管理</a>
+                                    </li>
+                                    <li op="complaint">
+                                        <a th:href="@{/buyer/complaint.htm}">投诉管理</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);" child_show="true">
+                                    <b>
+                                        <img th:src="@{/style/system/front/default/images/usercenter/menuspread.jpg}" width="10" height="10" />
+                                    </b>
+                                    收藏管理
+                                </a>
+                                <ul>
+                                    <li op="favorite_store"><a href="/buyer/favorite_store.htm">店铺收藏</a></li>
+                                    <li op="favorite_goods"><a href="/buyer/favorite_goods.htm">商品收藏</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!--店铺设置-->
+                </div>
+
+            </td>
+
+            <!-- /buyer/nav.htm -->
+          <td id="centerbg" valign="top">
+              <div class="buyer_position">
+                  <div class="buyer_p_box">
+                      <a th:href="@{/buyer/index.htm}">买家中心</a> >
+                      <span>订单列表</span>
+                  </div>
+              </div>
+            <div class="productmain">
+              <div class="pdctitle blue2">
+                  订单列表
+                <input type="hidden" name="delete_order_id" id="delete_order_id" />
+              </div>
+              <div class="ordersear">
+                  <span>订单号：</span>
+                  <span class="ordersp1 size7">
+                      <input name="order_id" type="text" id="order_id" th:value="${order_id}" />
+                  </span>
+                  <span>下单时间：</span>
+                  <span class="ordersp1 size8">
+                      <input name="beginTime" type="text" id="beginTime" th:value="${beginTime}" readonly="readonly" />
+                  </span>
+                  <span>-</span>
+                  <span class="ordersp1 size8">
+                      <input name="endTime" type="text" id="endTime" th:value="${endTime}" readonly="readonly" />
+                  </span>
+                  <span>订单号：</span>
+                  <span>订单状态：</span>
+                  <span class="ordersel">
+                    <select name="order_status" id="order_status">
+                      <option value="">所有订单</option>
+                      <option value="order_submit">待付款</option>
+                      <option value="order_pay">待发货</option>
+                      <option value="order_shipping">已发货</option>
+                      <option value="order_receive">已收货</option>
+                      <option value="order_finish">已完成</option>
+                      <option value="order_cancel">已取消</option>
+                    </select>
+                  </span>
+                  <span class="orderbtn">
+                    <input name="input" type="submit" value="搜索" style="cursor:pointer;" />
+                  </span>
+              </div>
+              <div class="myorder">
+                <div class="Order" th:each="obj : ${objs}">
+                  <div class="Order_box">
+                    <div class="line01">
+                      <ul>
+                        <li class="li_01">
+                            <span th:text="${'订单号：'+obj.orderId}"></span></li>
+                        <li class="li_02">
+                            <span th:text="${'下单时间：'+#dates.format(obj.addtime,'yyyy-MM-dd hh:mm:ss')}" ></span>
+                        </li>
+                        <li class="li_03">
+                            <a th:href="@{/buyer/order_view.htm(id=${obj.id})}" target="_blank">查看订单</a>
+                        </li>
+                        <li class="li_02" th:if="${obj.payment}"  th:switch="${obj.payment.mark}">
+                          <span  th:case="'alipay'" th:text="${'支付方式：支付宝'}"></span>
+                          <span  th:case="'alipay_wap'" th:text="${'支付方式：手机网页支付宝'}"></span>
+                          <span  th:case="'tenpay'" th:text="${'支付方式：财付通'}"></span>
+                          <span  th:case="'bill'" th:text="${'支付方式：快钱'}"></span>
+                          <span  th:case="'chinabank'" th:text="${'支付方式：网银在线'}"></span>
+                          <span  th:case="'outline'" th:text="${'支付方式：线下'}"></span>
+                          <span  th:case="'balance'"th:text="${'支付方式：预存款'}"></span>
+                          <span  th:case="'payafter'" th:text="${'支付方式：货到付款'}"></span>
+                          <span  th:case="'paypal'" th:text="${'支付方式：paypal'}"></span>
+                          <span  th:case="'*'" th:text="${'支付方式：未支付'}"></span>
+                        </li>
+                        <li class="li_02" th:unless="${obj.payment}"  >
+                              <span   th:text="${'支付方式：没有支付信息'}"></span>
+                        </li>
+                        <li class="li_02" th:switch="${obj.orderStatus}" >
+                            <span th:case=" 0" th:text="${'订单状态：已取消'}"></span>
+                            <span th:case="10" th:text="${'订单状态：待付款'}"></span>
+                            <span th:case="15" th:text="${'订单状态：线下支付待审核'}"></span>
+                            <span th:case="16" th:text="${'订单状态：货到付款待发货'}"></span>
+                            <span th:case="20" th:text="${'订单状态：待发货'}"></span>
+                            <span th:case="30" th:text="${'订单状态：已发货'}"></span>
+                            <span th:case="40" th:text="${'订单状态：已收货'}"></span>
+                            <span th:case="45" th:text="${'订单状态：买家申请退货'}"></span>
+                            <span th:case="46" th:text="${'订单状态：退货中'}"></span>
+                            <span th:case="47" th:text="${'订单状态：退货完成，已结束'}"></span>
+                            <span th:case="48" th:text="${'订单状态：卖家拒绝退货'}"></span>
+                            <span th:case="49" th:text="${'订单状态：退货失败'}"></span>
+                            <span th:case="50" th:text="${'订单状态：已完成,已评价'}"></span>
+                            <span th:case="60" th:text="${'订单状态：已结束'}"></span>
+                            <span th:case="50" th:text="${'订单状态：已结束，不可评价'}"></span>
+                            <span th:case="50" th:text="${'订单状态：已收货'}"></span>
+                        </li>
+                          <li class="li_02" th:switch="${obj.orderType}">
+                              <span th:case="'weixin'" th:text="${'订单类型：微信订单'}"></span>
+                              <span th:case="'android'" th:text="${'订单类型：android订单'}"></span>
+                              <span th:case= "'ios'" th:text="${'订单类型：ios订单'}"></span>
+                              <span th:case="'*'" th:text="${'订单类型：PC订单'}"></span>
+                          </li>
+                      </ul>
+                    </div>
+                    <div class="line_02">
+                      <table width="100%" cellpadding="0" cellspacing="0" class="order_table">
+                        <tr>
+                          <td>
+                            <ul class="ul_01" th:each="gc : ${obj.gcs}">
+                              <li class="li_05">
+                                  <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
+                                      <img th:if="${gc.goods.goods_main_photo}" th:src="@{${'/'+gc.goods.goods_main_photo.path +'/'+gc.goods.goods_main_photo.name }}" width="60" height="60" />
+                                      <img th:unless="${gc.goods.goods_main_photo}" th:src="@{${ '/'+config.goodsImage.path+'/'+config.goodsImage.name }}" width="60" height="60" />
+                                  </a>
+                              </li>
+                              <li class="li_06">
+                                  <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" th:text="${gc.goods.goodsName}"></a>
+                                  <strong th:if="${gc.goods.groupBuy==2}" style="color:#F00">【团购】</strong>
+                                  <strong th:if="${gc.goods.activityStatus==2}" style="color:#F00">【活动】</strong>
+                                  <span th:text="${'数量:'+gc.count}"></span>
+                                  <span th:utext="${gc.specInfo}"></span>
+                              </li>
+                            </ul>
+                          </td>
+                          <td>
+                              <ul class="ul_02">
+                                  <li style="color:#999;">物流跟踪</li>
+                                  <li class="li_07">
+                                      <a th:if="${obj.shipcode}" th:title="${obj.shipcode}"  th:href="@{/buyer/order_view.htm(id=${obj.id})}" target="_blank" style="color: #06F" th:text="${obj.shipcode}"> </a>
+                                      <span th:unless="${obj.shipcode}"  th:text="${' 暂无物流信息'}"></span>
+                                      <div class="li_07_box" th:id="${'li_ship_box_'+obj.id}" style="display:none">
+                                          <span>
+                                              <img th:src="@{/style/system/front/default/images/usercenter/Order_10.png}" />
+                                          </span>
+                                          <ul></ul>
+                                      </div>
+                                    <div class="li_ship_box_loading" th:id="${'li_ship_box_loading_'+obj.id }" style="display:none">
+                                        <span>
+                                            <img th:src="@{/style/system/front/default/images/usercenter/Order_10.png}" />
+                                        </span>
+                                        <b>
+                                            <img th:src="@{/style/common/images/loading.gif}"/><br/> 正在查询物流信息...
+                                        </b>
+                                    </div>
+                                  </li>
+
+                                  <li th:if="${obj.shipcode}" class="li_10">
+                                      <a th:id="${'li_ship_'+obj.id }" th:attr="order_id=${obj.id}" href="javascript:void(0);">查看物流</a>
+                                  </li>
+
+                              </ul>
+                          </td>
+                          <td>
+                              <ul class="ul_03">
+                              <li>
+                                  <a th:href="@{/store.htm(id=${obj.storeId})}" target="_blank" th:text="${obj.store.storeName}"></a>
+                              </li>
+                              <li>
+                                  <span th:text="${obj.store.user.username}"></span>
+                                  <a th:href="@{/buyer/message_send.htm(userName=${obj.store.user.username})}" target="_blank">
+                                      <img th:src="@{/style/system/front/default/images/usercenter/order_04.gif}" width="15" height="11" />
+                                  </a>
+                              </li>
+
+                              <li th:if="${obj.store.storeQq}">
+                                  <a target="_blank" th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${obj.store.storeQq},Site=${obj.store.storeQq},Menu=yes)}">
+                                      <img th:src="@{http://wpa.qq.com/pa(p='2:'+${obj.store.storeQq}+':51')}" />
+                                  </a>
+                              </li>
+
+                            </ul></td>
+                          <td>
+                              <ul class="ul_02">
+                                  <li style="color:#999;" th:text="${'￥'+obj.totalprice}"></li>
+                                  <li style="color:#59cfff;"  th:text="${'(含运费:￥'+obj.shipPrice+')'}"></li>
+                              </ul>
+                          </td>
+                          <td style="border:none">
+                             <ul class="ul_04" >
+                               <span th:if="${obj.orderStatus==0 || obj.orderStatus==15 || obj.orderStatus==50 || obj.orderStatus==60}">
+                                <li th:if="${obj.orderStatus<20}">
+                                    <a href="javascript:void(0);">&nbsp;</a>
+                                </li>
+                                <li th:text="${status}"></li>
+                               </span>
+
+                              <li th:if="${obj.orderStatus==0}">
+                                   <a style="color:#ff4f19; text-decoration:underline;" href="javascript:void(0);" th:attr="order_id=${obj.id}" th:id="'delete_order_'+${obj.id}">删除订单</a>
+                              </li>
+
+                              <li th:if="${obj.orderStatus==10}">
+                                  <a style="color:#ff4f19; text-decoration:underline;" href="javascript:void(0);" th:dialog_uri="@{/buyer/order_cancel.htm(id=${obj.id},currentPage=${currentPage})}" dialog_title="取消订单" dialog_width="400" dialog_height="100" dialog_id="order_cancel">取消订单</a>
+                              </li>
+
+                              <li th:if="${obj.orderStatus==45}">
+                                  <a style="color:#ff4f19; text-decoration:underline;" href="javascript:void(0);" th:dialog_uri="@{/buyer/order_return_apply.htm(id=${obj.id},&view='true')}" dialog_title="申请详情" dialog_width="400" dialog_height="100" dialog_id="order_cancel">申请退货中</a>
+                              </li>
+
+                             <span th:if="${obj.orderStatus==40}" id="orderStauts40">
+                              <span  th:each="gc :${obj.gcs}" >
+                                 <!-- <input th:if="${gc.goods.goodsChoiceType == 1}" type="hidden" th:value="1"  />-->
+                                  <li class="li_09" th:if="${gc.goods.goodsChoiceType != 1}" >
+                                    <a dialog_id="order_cancel" dialog_height="100" dialog_width="500" dialog_title="申请退货" th:dialog_uri="@{/buyer/order_return_apply.htm(id=${obj.id},currentPage=1)}" href="javascript:void(0);">申请退货</a>
+                                  </li>
+                              </span>
+
+                             </span>
+                              <script>
+
+                             </script>
+
+                             <li th:if="${obj.orderStatus==46}">
+                                 <a style="color:#ff4f19; text-decoration:underline;" href="javascript:void(0);" th:dialog_uri="@{/buyer/order_return_ship.htm(id=${obj.id},currentPage=${currentPage})}" dialog_title="退货物流" dialog_width="400" dialog_height="100" dialog_id="order_cancel">退货物流</a>
+                             </li>
+                             <li class="li_04" th:if="${obj.orderStatus==47}"  th:text="${'退货完成,已结束'}"></li>
+                             <li class="li_04"  th:if="${obj.orderStatus==48}" th:text="${'卖家拒绝退货申请'}"></li>
+                             <li class="li_04"  th:if="${obj.orderStatus==49}" th:text="${'退货失败'}"></li>
+                             <li class="li_04" th:if="${obj.orderStatus==65}" th:text="${'已结束,不可评价'}"></li>
+                             <li class="li_09" th:if="${obj.orderStatus==10}">
+                                 <a th:href="@{/order_pay_view.htm(id=${obj.id})}" target="_blank">付款</a>
+                             </li>
+                              <li class="li_09" th:if="${obj.orderStatus==20}">
+                                  <a th:href="@{/buyer/complaint_handle.htm(order_id=${obj.id})}">投诉</a>
+                              </li>
+                              <li class="li_09" th:if="${obj.orderStatus==30}">
+                                  <a href="javascript:void(0);" th:dialog_uri="@{/buyer/order_cofirm.htm(id=${obj.id},currentPage=${currentPage})}" dialog_title="确认收货" dialog_width="400" dialog_height="100" dialog_id="order_cancel">确认收货</a>
+                              </li>
+
+                             <span th:if="${obj.orderStatus >= 30}">
+                              <li class="li_09" th:each="gc :${obj.gcs}" th:if="${gc.goods.goodsChoiceType==1}">
+                                  <a href="javascript:void(0);" th:dialog_uri="@{/buyer/order_seller_intro.htm(id=${obj.id})}" dialog_title="虚拟商品" dialog_width="400" dialog_height="100" dialog_id="order_cancel">虚拟商品</a>
+                              </li>
+                             </span>
+                              <li class="li_09" th:if="${obj.orderStatus >=40 && obj.orderStatus!=47 && $obj.orderStatus!=50 && $obj.orderStatus != 60 && $obj.orderStatus != 65 }">
+                                  <a th:href="@{/buyer/order_evaluate.htm(id=${obj.id})}">我要评价</a>
+                              </li>
+
+                            </ul></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="alldel">
+                <div  class="userfenye">
+                  <input name="currentPage" type="hidden" id="currentPage" th:value="${currentPage}" />
+                  <span th:utext="${gotoPageFormHTML}"></span>
+                </div>
+              </div>
+            </div></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+    <div class="footer">
+        <div class="footerArea">
+            <ul>
+                <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+                </li>
+                <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+                <li class="hui2">Powered by shopping 2.x</li>
+                <li th:text="${config.codeStat}"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

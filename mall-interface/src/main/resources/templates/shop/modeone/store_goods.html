@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Goods Details</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="/css/framework.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/swiper.min.css"/>
+    <script src="/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="https://at.alicdn.com/t/font_2061876_ypwchl6fp5a.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+
+<div class="ui-pane">
+    <div>
+
+    </div>
+    <div class="Nav"></div>
+    <div class="ui-header">
+        <div class="pclogo flex-star">
+            <a th:href="@{/store.htm(id=${goodsStore.id})}">
+                <img th:if="${goodsStore.storeLogo}"
+                     th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"
+                     style="width: 1.2rem;height: 0.8rem;"/>
+                <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"
+                     style="width: 1.2rem;height: 0.8rem;"/>
+            </a>
+        </div>
+        <a href="/goods_cart1.htm" class="header-button left">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-caidan"></use>
+            </svg>
+        </a>
+        <div class="header-title">
+            <a th:href="@{/store.htm(id=${goodsStore.id})}">
+                <img th:if="${goodsStore.storeLogo}"
+                     th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"
+                     style="width: 1.2rem;height: 0.8rem;"/>
+                <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"
+                     style="width: 1.2rem;height: 0.8rem;"/>
+            </a>
+        </div>
+        <a href="/goods_cart1.htm" class="header-button btn_right">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-gouwu"></use>
+            </svg>
+        </a>
+    </div>
+    <div class="ui-content">
+        <div class="page_nav flex-star">
+				<span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
+					<span th:if="${ugc.childs}" th:id="'ugc_child_'+${ugc.id}">
+						<span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
+							<a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}"
+                               th:text="${cugc.classname}"></a>
+						</span>
+					</span>
+				</span>
+        </div>
+        <div class="search_box flex-between">
+            <input type="text" placeholder="搜索" name="keyword" id="keyword" value=""/>
+            <svg class="icon" aria-hidden="true" id="search">
+                <use xlink:href="#icon-sousuozhengchangzhuangtai"></use>
+            </svg>
+        </div>
+        <div class="goods_intro flex-center">
+            <div>
+                <div id="gallery" class="swiper-container main">
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+                            <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                        </div>
+                        <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"
+                             th:each="img,item: ${obj.goods_photos}">
+                            <img th:src="@{'/'+${img.path}+'/'+${img.name}}"><!--style="width: 6rem;height: 6rem"-->
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev flex-center">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-left"></use>
+                        </svg>
+                    </div>
+                    <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
+                    <div class="swiper-button-next flex-center">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-right"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div id="thumbs" class="swiper-container doli">
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+                            <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                        </div>
+                        <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"
+                             th:each="img,iter: ${obj.goods_photos}">
+                            <img th:src="@{'/'+${img.path}+'/'+${img.name}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="goods_intro_right">
+                <div class="right_tit" th:text="${obj.goodsName}"></div>
+                <div class="price_box flex-star">
+                    <div>
+                        <span> 原价:&nbsp;&nbsp;</span>
+                        <span th:text="${obj.goodsPrice}"></span>
+                    </div>
+                </div>
+                <div class="price_box flex-star">
+                    <input type="hidden"  id="groupBuy" name="groupBuy" th:value="${obj.groupBuy}" >
+                    <input type="hidden" id="combinStatus" name="combinStatus" th:value="${obj.combinStatus}">
+                    <div th:if="${obj.groupBuy != 2 }">
+                        <span> 店铺价:'￥'&nbsp;&nbsp;</span>
+                        <span id="store_price" th:text="${obj.storePrice}"></span>
+                    </div>
+
+                    <div th:if="${ obj.groupBuy ==2 }" th:each="groupGood :${groupGoods}">
+                        <span> 店铺价:&nbsp;&nbsp;</span>
+                        <span id="gg_price" th:text="${'￥'+groupGood.ggPrice}"></span>
+                    </div>
+                </div>
+                <div class="spec_box">
+                    <div class="spec_item" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
+                        <div class="flex-star spec_cont">
+							<label class="flex-star specitem" th:data-id="${spec.id}" th:text="${spec.name}"></label>
+                            <label class="flex-star specitem" th:each="gsp : ${obj.goods_specs}"
+                                   th:if="${gsp.spec.id == spec.id}">
+                                <input type="radio" th:name="${'gsp'+gsp.spec.id }" th:id="${obj.id}"  th:attr="spec=${gsp.spec.id}" />
+                                <span th:text="${gsp.value}"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="spec_item">
+                        <p>Quantity &nbsp;&nbsp;Inventory&nbsp;&nbsp;  <small id="inventory" style="font-size: .22rem;color: #FEAB27;" th:text="${obj.goodsInventory}"></small></p>
+                        <div class="num_box flex-between">
+                            <button  id="sub_count" type="button">-</button>
+                            <input type="number" name="count" id="quantity" value="1"/>
+                            <button id="add_count" type="button">+</button>
+                        </div>
+                    </div>
+                    <input type="button" class="buy_btn" id="add_cart" th:data-id="${obj.id}" value="Add To Cart"/>
+                    <input type="button" class="add_cart" id="buy_goods" th:data-id="${obj.id}" value="Buy It Now"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="page_show_nav flex-center">
+            <div class="page_show_nav_act">商品详情</div>
+            <div>
+                <span>
+                    评价信息
+                </span>
+            </div>
+        </div>
+
+        <div class="goods_show">
+            <div class="show_box" th:utext="${obj.goodsDetails}"></div>
+        </div>
+		<div class="goods_pingj">
+            <div class="evaluation">
+                <div class="eva_bar_box">
+                    <div class="eva_bar">
+                        <div class="eva_bar_left">
+                            <h4 th:text="#{messages.consistent.description}"></h4>
+                            <strong th:text="${goods.descriptionEvaluate}"></strong> </div>
+
+                        <div class="eva_bar_right">
+                            <div class="eva_scroller">
+                                <span th:style="${'width:'+ goods.descriptionEvaluate +'%;'}">
+                                  <em th:text="${goods.descriptionEvaluate}"></em>
+                                </span>
+                            </div>
+                            <ul class="scroller_ul">
+                                <li th:text="#{messages.satisfaction.veryNo}"></li>
+                                <li th:text="#{messages.satisfaction.no}"></li>
+                                <li th:text="#{messages.satisfaction.normal}"></li>
+                                <li th:text="#{messages.satisfaction.yes}"></li>
+                                <li th:text="#{messages.satisfaction.vertYes}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${rows==0}" class="novalue" th:text="#{messages.null.data}">  </div>
+
+                <div th:unless="${rows==0}" th:each="obj : ${objs}"  class="evalone">
+                    <ul>
+                        <li>
+                            <span class="blue evalonesp" th:text="${obj.evaluate_user.username}"></span>
+                            <span th:text="${obj.evaluateInfo}"></span>
+                        </li>
+                        <li th:text="${#dates.format(obj.addtime,'yyyy-MM-dd')}"></li>
+                    </ul>
+                </div>
+                <div class="fenye">
+                    <div class="fenyes" th:html="${gotoPageAjaxHTML}"></div>
+                </div>
+            </div>
+		</div>
+        <div class="ui-shade">
+            <div class="phone_nav">
+                <div th:each="ugc : ${ugcs}" th:if="${ugc.display}">
+                    <div th:if="${ugc.childs}" th:id="'ugc_child_'+${ugc.id}">
+                        <div th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
+                            <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}"
+                               th:text="${cugc.classname}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function () {
+            var mySwiper2 = new Swiper('#thumbs', {
+                spaceBetween: 10,
+                slidesPerView: 5,
+                watchSlidesVisibility: true,//防止不可点击
+            })
+
+            var mySwiper1 = new Swiper('#gallery', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                spaceBetween: 10,
+                thumbs: {
+                    swiper: mySwiper2,
+                }
+            })
+
+        }, 1000);
+        $(".show_box").addClass("goods_more_block");
+        $(".goods_pingj").removeClass("goods_more_block");
+
+        /**
+         *较少数量
+         */
+        $("#sub_count").on('click',function(){
+            var count =$("#quantity").val();
+            if(count){
+                if(parseInt(count) >1){
+                    $("#quantity").val(parseInt(count)-1)
+                }
+            }else{
+                alert('商品数量无效');
+            }
+        });
+
+        /**
+         * 添加数量
+         */
+        $("#add_count").on('click',function(){
+            var count =$("#quantity").val();
+            if(count){
+                var inventory =$("#inventory").text();
+                if(parseInt(count) >parseInt(inventory)){
+                    alert("库存不足");
+                }else{
+                    $("#quantity").val(parseInt(count)+1)
+                }
+            }
+        });
+
+
+		$(".page_show_nav div").click(function(){
+			$(this).addClass("page_show_nav_act").siblings().removeClass("page_show_nav_act");
+			if($(this).index() === 0){
+				$(".show_box").addClass("goods_more_block");
+				$(".goods_pingj").removeClass("goods_more_block");
+			}else{
+				$(".goods_pingj").addClass("goods_more_block");
+				$(".show_box").removeClass("goods_more_block");
+			}
+		})
+
+        $(".header-button.left").click(function (e) {
+            $(".ui-shade").css("display", "block");
+            $(".phone_nav").css("left", "0");
+            var ev = e || event;
+            ev.stopPropagation();
+        })
+
+        $(".ui-shade").click(function (e) {
+            $(this).css("display", "none")
+        })
+
+        $(".phone_nav").click(function (e) {
+            var ev = e || event;
+            ev.stopPropagation();
+        })
+
+        $("#quantity").change(function (){
+            //判断是否超过库存
+            var inventory =$("#inventory").text;
+            var count =$(this).val();
+            count_verify(count);
+        });
+
+        function count_verify(count){
+            var inventory =$("#inventory").text();
+            if(parseInt(count) <1){
+                alert("请输入正整数");
+            }
+            if(parseInt(count) >parseInt(inventory)){
+                alert("库存不足");
+            }
+        }
+
+        function verify_count(count){
+            var inventory =$("#inventory").text();
+            if(parseInt(count) <1){
+                return false;
+            }
+            if(parseInt(count) >parseInt(inventory)){
+               return false;
+            }
+            return true;
+        }
+
+
+        /**
+         * 切换商品规格
+         */
+        $('input[type=radio]').change(function(){
+            var id = $(this).attr('id');
+            console.log('id=',id);
+            var name =$(this).attr('name');
+            //删除this
+            $('input:radio[spec='+name+']').removeClass("this");
+            $(this).addClass('this');
+            //加载不同的规格不同的价格
+            goods_spec_set(id);
+        });
+
+        /**
+         * 根据不同的规格加载不同的价格
+         * @param id
+         */
+        function goods_spec_set(id) {
+            var gsp = "";
+            var load = true;
+            $(".spec_cont specitem").each(function () {
+                $.each(
+                    $(this).find("input:radio[class=this]"), function () {
+                        gsp = $(this).attr("gsp") + "," + gsp;
+                    });
+                if ($(this).find("input:radio[class=this]").length == 0) load = false;
+            });
+            if (load) {
+                $.post("/load_goods_gsp.htm", {"id":id, "gsp": gsp},function (data) {
+                    var res =JSON.parse(data);
+                    var  goods_inventory = res.count;
+                    var  store_price = res.price;
+                    var groupBuy = $("#groupBuy").val();
+                    if(groupBuy == '2'){
+                        $("#gg_price").text('￥'+store_price);
+                    }else{
+                        $("#store_price").text('￥'+store_price);
+                    }
+                    $("#inventory").text(goods_inventory);
+                    console.log('执行数据-----');
+                });
+            }
+        }
+
+        /**
+         * 添加购物车->验证添加购物车信息
+         */
+        $("#add_cart").on('click',function(){
+            var id= $(this).attr('data-id');
+            var count = $("#quantity").val();
+            var price =$("#store_price").text();
+            var gsp ="";
+            var load = true;
+            var s=$("input[class='this' ]");
+            console.log('smsg='+s[0]);
+            s.each(function(){
+                gsp=gsp+ $(this).attr('spec')+',';
+            });
+            if(gsp.length <1){
+                alert("请选择商品规格");
+                load = false;
+            }
+            if(count){
+               if(!verify_count(count)){
+                   alert('数量信息有误');
+               }
+            }else{
+                load= false;
+                alert('数量信息有误');
+            }
+            if(load){
+                add_goods_to_cart(id,count,price,gsp,false)
+            }
+        });
+
+    $("#buy_goods").on('click',function (){
+        var  id= $(this).attr('data-id');
+        var count = $("#quantity").val();
+        var price =$("#store_price").text();
+        var gsp ="";
+        var load = true;
+        $(".spec_cont specitem").each(function () {
+            $.each(
+                $(this).find("input:radio[class=this]"), function () {
+                    gsp = $(this).attr("gsp") + "," + gsp;
+                });
+
+        });
+        if(gsp.length == 0){
+            load=false;
+            alert("请选择规格属性");
+        }
+        if(count){
+            count_verify(count);
+        }else{
+            load= false;
+            alert('数量信息有误');
+        }
+        if(load){
+            add_goods_to_cart(id,count,price,gsp,true)
+        }else{
+
+        }
+    });
+
+
+
+    /**
+     * 添加到购物车
+     * @param id
+     * @param count
+     * @param price
+     * @param gsp
+     * @param flag
+     */
+    function add_goods_to_cart(id,count,price,gsp,flag){
+        console.log('gsp',gsp);
+        var type='';
+        var groupBuy = $("#groupBuy").val();
+        if(groupBuy == '2'){
+            price= $("#gg_price").text();
+        }
+        var combinStatus = $("#combinStatus").val();
+        if(combinStatus == '2'){
+            type='combin';
+        }
+        jQuery.post("/add_goods_cart.htm", {
+            "id": id,
+            "count": count,
+            "price": price,
+            "gsp": gsp,
+            'buy_type': type
+        }, function (res) {
+            //验证成功跳转购物车
+            if(flag){
+
+                window.location.href = "/goods_cart1.htm";
+            }else{
+                alert('添加到购物车成功');
+            }
+        });
+    }
+    });
+</script>
+</html>

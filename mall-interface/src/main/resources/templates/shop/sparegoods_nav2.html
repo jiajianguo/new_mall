@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<script>
+jQuery(document).ready(function(){
+
+  if(${user}){
+		jQuery(".My_idle").hover(function(){
+						if(jQuery(this).find("a:first").attr("user_id")!=""){
+						var dis =jQuery(".My_idle_list").css("display");
+						jQuery(".My_idle_list").show();
+							}
+						},function(){
+						if(jQuery(this).find("a:first").attr("user_id")!=""){
+						var dis =jQuery(".My_idle_list").css("display");
+						jQuery(".My_idle_list").hide();
+							}
+							});
+  }
+		jQuery(".index_nav_list ul li").hover(
+			function(){
+					jQuery(this).parent().find(".div_left").removeClass("hover");
+					jQuery(this).find(".div_left").addClass("hover");
+					jQuery(this).parent().find("li .div_right").hide();
+					jQuery(this).find(".div_right").show();
+			  },function(){
+				 jQuery(this).find(".div_right").hide();
+
+			});
+
+});
+</script>
+
+<div class="Idle_nav" >
+  <div class="Idle_menu">
+    <div class="index_Classify">
+      <a href="javascript:void(0);">热门二手分类</a>
+    </div>
+    <ul class="index_navigation">
+      <li th:each="nav :${navs}">
+        <a th:href="@{'/'+${nav.url}}" th:if="${nav.newWin==1}" target="_blank" th:text="${nav.title}"></a>
+      </li>
+    </ul>
+
+    <div class="My_idle">
+      <a href="javascript:void(0);" th:user_id="${user.id}"
+         th:if="${user}" th:dialog_uri="@{/user_dialog_login.htm}"
+         dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" >我的闲置
+      </a>
+      <div class="My_idle_list" style="display:none">
+        <ul>
+          <li><a th:href="@{/seller/spare_goods.htm(type=0)}" target="_blank">出售中: <span th:text="${selling}"> </span>件</a></li>
+          <li><a th:href="@{/seller/spare_goods.htm(type=-1)}" target="_blank">下架中: <span th:text="${down}"></span>件</a></li>
+          <li><a th:href="@{/seller/spare_goods.htm}" target="_blank">违规中: <span th:text="${drops}"></span>件</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="release"><a th:href="@{/seller/add_spare_goods.htm}" target="_blank">发布宝贝</a></div>
+    <!--所有分类下拉 start-->
+    <div class="index_nav_list">
+      <ul>
+        <li th:each="sgc :${sgcs}" class="item">
+          <div class="div_left">
+            <a class="font_14" th:href="@{/sparegoods_search.htm(cid=${sgc.id})}" target="_blank" th:text="${sgc.classname}"></a>
+
+            <span th:each="child :${sgc.childs}">
+            <a th:if="${velocitycount<=2}" class="font_12" th:href="@{/sparegoods_search.htm(cid=${child.id})}" target="_blank" th:text="${child.classname}"></a>
+            </span>
+
+          </div>
+
+          <div class="div_right" style="display:none;">
+            <dl th:each="child : ${sgc.childs}">
+              <dt>
+                <a th:href="@{/sparegoods_search.htm(cid=${child.id})}"  target="_blank" th:text="${child.classname}"></a>
+              </dt>
+              <dd>
+                <ul>
+                  <li th:each="c :${child.childs}">
+                    <a th:href="@{/sparegoods_search.htm(cid=${c.id})}" target="_blank" th:text="${c.classname}"></a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

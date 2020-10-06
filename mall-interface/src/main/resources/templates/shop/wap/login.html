@@ -1,0 +1,163 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="/wap/css/framework.css" />
+		<link rel="stylesheet" type="text/css" href="/wap/css/logon.css" />
+		<script src="/wap/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/wap/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/wap/js/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/wap/css/front.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+	<form action="/shopping_login.htm" method="post" id="theForm">
+		<div class="ui-pane">
+			<div class="ui-content">
+
+				<div class="content">
+					<div class="logozong">
+						<img class="logo" src="/wap/img/logo1.png">
+					</div>
+					<div class="text_title">
+						<div>
+							<a class="textlink textborder" href="#">LOG IN</a>
+						</div>
+						<div>
+							<a class="textlink" href="/register.htm">SIGN UP</a>
+						</div>
+					</div>
+
+					<div class="text textname">
+						<input class="text_input" id="login_eamil" name="email" type="text" placeholder="EMAIL  ADDRESS" />
+					</div>
+					<div class="text">
+						<input class="text_input" id="login_password" name="password" type="password" placeholder="PASSWORD" />
+					</div>
+					<div class="wjpasswordbt">
+						<span class="wjpassword">Forgot your password</span>
+					</div>
+					<input class="content_bt" type="submit" id="login_submit" value="LOG IN" />
+					<div class="text_bototm">
+						<div class="text_dian"></div>
+						<div class="text_bototm_row">Or Join With</div>
+						<div class="text_dian"></div>
+					</div>
+					<div class="dbtp">
+						<img src="/wap/img/book.png">
+						<img src="/wap/img/go.png">
+					</div>
+
+					<div class="forget1">
+						<div class="forget_text">
+							<div class="tbqx">
+								<svg class="icon tbqxbt" aria-hidden="true">
+									<use xlink:href="#icon-quxiao"></use>
+								</svg>
+							</div>
+							<div class="forget1_content">
+								<div class="forget_title">
+									<p class="forget_title_font">Reset Password</p>
+									<p>Fill in your email and we will send a reset link</p>
+								</div>
+								<input class="password1" type="text" placeholder="EMAIL  ADDRESS" />
+								<input class="password1_bt" type="button" value="SUBMIT" />
+							</div>
+							<div class="good1">
+								<div class="tbgoodzong">
+									<svg class="icon tbgood" aria-hidden="true">
+										<use xlink:href="#icon-wancheng"></use>
+									</svg>
+								</div>
+								<p class="goodts">The link to reset password has beensent to 1484031892@qq.com</p>
+								<div class="forget_ts"><div class="forget_dian">●</div>Emails may be delayed for a few minutes</div>
+								<div class="forget_ts"><div class="forget_dian">●</div> If you have not reeived an email,please checkyour junk maibox，and rejected list</div>
+								<input class="good_bt" type="button" value="RETURN TO LOG IN" />
+								<div class="resendzong"><input class="resend_bt" type="button" value="Resend" /></div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+			</div>
+		</div>
+	</form>
+	</body>
+	<script type="text/javascript">
+		$("#login_eamil").blur(function(){
+			var email = $(this).val();
+			if(!verify(email)){
+				alert("用户名为null")
+			}
+		});
+
+		$("#login_password").blur(function(){
+			var password = $(this).val();
+			if(!verify(password)){
+				alert("密码为空")
+			}
+
+		});
+		 function verify(str){
+		 	if(!str){
+		 		return false;
+			}
+		 	return true;
+		 }
+
+		 $("#login_submit").click(function (){
+			 var email = $("#login_eamil").val();
+			 var password = $("#login_password").val();
+			 var flag= true;
+			 if(!verify(email)){
+			 	flag =false;
+			 	alert("请填写邮箱");
+			 }
+			 if(!verify(password)){
+				 flag =false;
+				 alert("密码忘了填写");
+			 }
+			 console.log(flag);
+			 /*if(flag){
+			 	window.location.href="/shopping_login.htm?email="+email+"&password=" +password;
+			 	$.post('/shopping_login.htm',{'email':email,'password':password},function(res){
+			 		console.log(typeof res);
+					console.log(res);
+				});
+			 }*/
+		 });
+
+		$(".wjpassword").click(function() {
+			$(".forget1").css({
+				"display": "block",
+			})
+		})
+
+		$(".tbqxbt,.good_bt").click(function() {
+			$(".forget_text").addClass("forget_text1")
+			setTimeout(() => {
+				$(".forget1").css({
+					"display": "none",
+				})
+				$(".forget_text").removeClass("forget_text1")
+				$(".forget1_content").css({
+					"display":"block",
+				})
+				$(".good1").css({
+					"display":"none"
+				})
+			}, 250)
+		})
+
+		$(".password1_bt").click(function(){
+			$(".forget1_content").css({
+				"display":"none",
+			})
+			$(".good1").css({
+				"display":"block"
+			})
+		})
+	</script>
+</html>
