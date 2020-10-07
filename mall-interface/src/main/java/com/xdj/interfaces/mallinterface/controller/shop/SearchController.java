@@ -15,7 +15,6 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -228,7 +227,8 @@ public class SearchController {
             }
             Sort sort = new Sort();
             if (!CommUtil.null2String(order_by).equals("")) {
-                sort = new Sort(new SortField(order_by, SortField.Type.STRING,order_type));
+                //sort = new Sort(new SortField(order_by, SortField.Type.STRING,order_type));
+                sort.setSort(new SortField(order_by, SortField.Type.STRING,order_type));
             }else{
                 sort.setSort(new SortField("addTime", SortField.Type.STRING,order_type));
             }

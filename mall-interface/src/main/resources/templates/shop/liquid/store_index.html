@@ -215,10 +215,10 @@
                         var search_keyword = $(this).siblings().find('input').val();
                         var type = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').data('search-type')) : 1;
                         var val = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').find('option:selected').val()) : '';
-                        var url = '/store_goods_search.htm';
+                        var url = '/goods_list.htm';
                         var store_id=jQuery("#store_id").val();
 
-                        window.location = url + '?keyword=' + search_keyword+type + '&store_id=' + store_id;
+                        window.location = url + '?keyword=' + search_keyword+"&type="+type+ '&store_id=' + store_id;
                     });
 
                     $(document).on('click', '.search-box .icon-sousuo', function () {
@@ -226,10 +226,10 @@
                         var search_keyword = $(this).parent().find('input').val();
                         var type = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').data('search-type')) : 1;
                         var val = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').find('option:selected').val()) : '';
-                        var url = '/store_goods_search.htm';
+                        var url = '/goods_list.htm';
                         var store_id=jQuery("#store_id").val();
 
-                        window.location = url + '?keyword=' + search_keyword+type + '&store_id=' + store_id;
+                        window.location = url + '?keyword=' + search_keyword+"&type="+type + '&store_id=' + store_id;
                     });
 
                     $('#search_box').bind('keydown', function (event) {
@@ -382,11 +382,9 @@
                 </div>
                 <div class="search-link">
                     <div class="link-title">Quick Links</div>
-                    <a href="/products?handler=cycling-1">cycling</a>
-                    <a href="/products?handler=fitness">fitness</a>
-                    <a href="/products?handler=rubby">rubby</a>
-                    <a href="/products?handler=outdoor">outdoor</a>
-                    <a href="/products?handler=skiing">skiing</a>
+                    <a th:each="ugc,iter : ${ugcaccsorry}" th:if="${iter.count<=5}"
+                       th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
+                       th:text="${ugc.classname}"></a>
                 </div>
             </div>
         </div>
@@ -410,8 +408,7 @@
                             </div>
                             <div class="swiper-describe sl-subhead-title" data-swiper-parallax="-50%"
                                  style="transition-duration: 0ms; transform: translate3d(-50%, 0px, 0px);">
-                                <div style="">Use overlay text to give your customers insight into your brand. Select
-                                    imagery and text that relates to your style and story.
+                                <div style=""> our style and story.
                                 </div>
                             </div>
                             <div class="swiper-shop-now" data-swiper-parallax="-50%"
@@ -852,24 +849,7 @@
                             Search </a>
                     </div>
                 </div>
-                <div class="footer-menu">
-                    <h4 class="J-FooterMenu">Footer menu</h4>
-                    <div>
-                        <a href="/">
-                            Home </a>
-                        <a href="/search">
-                            Search </a>
-                    </div>
-                </div>
-                <div class="footer-menu">
-                    <h4 class="J-FooterMenu">Footer menu</h4>
-                    <div>
-                        <a href="/">
-                            Home </a>
-                        <a href="/search">
-                            Search </a>
-                    </div>
-                </div>
+
                 <div class="footer-text">
                     <h4>Rich text</h4>
                     <div>Use this section to welcome customers to your store, say a bit about your brand, or share news

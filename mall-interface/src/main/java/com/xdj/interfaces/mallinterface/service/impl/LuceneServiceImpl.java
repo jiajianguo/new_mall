@@ -2,7 +2,6 @@ package com.xdj.interfaces.mallinterface.service.impl;
 
 
 import com.xdj.interfaces.mallinterface.mv.PageQuery;
-import com.xdj.interfaces.mallinterface.mv.SeckillModel;
 import com.xdj.interfaces.mallinterface.service.GoodsService;
 import com.xdj.interfaces.mallinterface.service.LuceneService;
 import com.xdj.interfaces.mallinterface.util.LuceneResult;
@@ -182,6 +181,7 @@ public class LuceneServiceImpl implements LuceneService {
         if ((begin_price >= 0.0D) && (end_price > 0.0D)) {
             builder.add(FloatPoint.newRangeQuery("store_price", begin_price, end_price), BooleanClause.Occur.MUST);
         }
+
         int count= 100;
         if(query.getPageNow() >1){
             count = (query.getPageNow()-1) * pageSize;

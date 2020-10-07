@@ -277,7 +277,7 @@ public class StoreController {
     public ModelAndView app_store_goods_search(HttpServletRequest request, HttpServletResponse response, String keyword, String store_id, String currentPage)
     {
         ShoppingStoreWithBLOBs store = this.storeService.getObjById(Long.valueOf(Long.parseLong(store_id)));
-        ModelAndView mv = new JModelAndView( "wap/store_goods_search.html", this.configService.getSysConfig(),
+        ModelAndView mv = new JModelAndView( "wap/search_goods_list.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
         Map<String,Object> params = new HashMap<>();
         int pageNow = 1;

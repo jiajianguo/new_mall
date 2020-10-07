@@ -16,22 +16,25 @@
 
 				<div class="content">
 
+					<form th:action="@{/search.htm}"  method="post" id="ListForm">
 					<div class="content_search">
 						<svg class="icon icon_left" aria-hidden="true">
 							<use xlink:href="#icon-left"></use>
 						</svg>
 						<div class="seinput">
+                            <a href="" class="header-button">
 							<svg class="icon icon_search" aria-hidden="true">
 								<use xlink:href="#icon-search"></use>
 							</svg>
-							<input class="setext" type="text" placeholder="搜索商品标题" />
+                            </a>
+							<input class="setext" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="搜索关键字" />
 						</div>
-						<input class="sebt" type="button" name="" id="" value="搜索" />
+						<input class="sebt" type="submit" name="" id="" value="搜索" />
 					</div>
 
 					<div class="nav_top">
 						<div class="nav_text nav1 nav_text_act">
-							<span><a th:href="@{/goodsList.htm(store_id = ${store.id},orderBy='addTime',orderType='desc')}">综合</a> </span>
+							<span><a class="order" href="javascript:void(0);" orderBy="addTime"  orderType="asc">综合</a> </span>
 							<div>
 								<svg class="icon" aria-hidden="true">
 									<use xlink:href="#icon-sanjiao"></use>
@@ -39,14 +42,14 @@
 							</div>
 						</div>
 						<div class="nav_text nav_text1" data-select="0">
-							<span><a th:href="@{/goodsList.htm(store_id = ${store.id},orderBy='goods_salenum',orderType='desc')}">
+							<span><a class="order" href="javascript:void(0);" orderBy="goods_salenum" orderType="desc">
 								销量</a></span>
 							<svg class="icon icon_nav" aria-hidden="true">
 								<use xlink:href="#icon-shangxia1-copy-copy"></use>
 							</svg>
 						</div>
 						<div class="nav_text nav_text1" data-select="0">
-							<span><a th:href="@{/goodsList.htm(store_id = ${store.id},orderBy='store_price',orderType='asc')}">价格</a> </span>
+							<span><a class="order" href="javascript:void(0);" orderBy="store_price"   orderType="asc" >价格</a> </span>
 							<svg class="icon icon_nav" aria-hidden="true">
 								<use xlink:href="#icon-shangxia1-copy-copy"></use>
 							</svg>
@@ -59,7 +62,7 @@
 						</div>
 					</div>
 
-					<div class="content_text" th:if="${objs}" th:each="goods :${objs}">
+					<div class="content_text" th:if="${searchGoods}" th:each="goods :${searchGoods}">
 						<a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
 							<img class="tu" th:if="${goods.goods_main_photo}"
 								 th:src="@{${goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"/>
@@ -78,8 +81,19 @@
 						</div>
 					</div>
 
-				</div>
+                        <input name="orderBy" type="hidden" id="orderBy" th:value="${orderBy}" />
+                        <input name="orderType" type="hidden" id="orderType" th:value="${orderType}" />
 
+						<div class="starshop_list" th:unless="${ searchGoods }">
+							<div class="sigh">
+								<span>
+									<img th:src="@{/style/system/front/default/images/sigh.png}" width="120" height="109"/>
+								</span>
+								<b>对不起，没有对应的数据!</b>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</body>
@@ -92,7 +106,7 @@
 
 			$(".nav1").click(function() {
 				$(".nav_text1").attr("data-select", 0)
-			})
+			});
 
 			$(".nav_text1").click(function() {
 				$(this).addClass("select1").siblings().removeClass("select1")
@@ -104,7 +118,21 @@
 					$(this).attr("data-select", 2)
 					$(this).find(".icon_nav use").attr("xlink:href", "#icon-shangxia1-copy")
 				}
-			})
+			});
+
+            /*jQuery(".order").click(function(){
+                var orderBy = jQuery(this).attr("orderBy");
+                var orderType = jQuery(this).attr("orderType");
+                console.log("===order"+orderBy,orderType)
+                jQuery("#orderBy").val(orderBy);
+                jQuery("#orderType").val(orderType);
+                jQuery("#ListForm").submit();
+            });
+            var orderBy =jQuery("#orderBy").val();
+            if(orderBy){
+                jQuery(".order").removeClass("this");
+                jQuery(".order[orderBy="+orderBy+"]").addClass("this");
+            }*/
 		})
 	</script>
 </html>

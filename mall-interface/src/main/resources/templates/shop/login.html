@@ -162,16 +162,15 @@
         <a href="#" class="forgot-password">Forgot password?</a>
       </div>
     </form>
-
-  <form class="email-signup"  action="/register_finish.htm" method="post" enctype="multipart/form-data">
+    <form class="email-signup"  id="theForm" action="/register_finish.htm" method="post" enctype="multipart/form-data">
       <div class="u-form-group">
-        <input id="register-email" type="email" placeholder="Email"/>
+        <input id="register-email" type="email" name="email" placeholder="Email"/>
       </div>
       <div class="u-form-group">
-        <input type="password" placeholder="Password"/>
+        <input type="password" name="password" id="password" placeholder="Password"/>
       </div>
       <div class="u-form-group">
-        <input type="password" placeholder="Confirm Password"/>
+        <input name="repassword" type="password" id="repassword" placeholder="Confirm Password"/>
       </div>
       <div class="u-form-group">
         <button id="regster_sub">Sign Up</button>
@@ -182,7 +181,7 @@
   $("#register-email").blur(function(){
     var email=$(this).val();
     jQuery.post('/verify_email.htm',{'email': email},function(res){
-      if(res === 'false'){
+      if(res == 'false'){
         alert("该email已存在");
         $(this).val('');
       }
@@ -191,9 +190,77 @@
 
 $("#regster_sub").click(function(){
   //验证password 和密码
-
+  var password=$("#password").val();
+  var repassword=$("#repassword").val();
+  if(repassword!=password){
+    alert("两次密码不一致！");
+    $("#repassword").val('');
+  }
+  var re =  /^[a-z0-9]+@([a-z0-9]+\.)+[a-z]{2,4}$/i;
+  if (re.test(jQuery("#register-email").val())) {
+    alert("Email格式不对！");
+  }
 });
 </script>
+<!--<script>
+  jQuery(document).ready(function () {
+    //
+    jQuery.validator.addMethod("verify", function (value, element) {
+      var re =  /^[a-z0-9]+@([a-z0-9]+\.)+[a-z]{2,4}$/i;
+      if (re.test(jQuery("#register-email").val())) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    jQuery("#theForm").validate({
+        password: {
+          required: true,
+          minlength: 6,
+          maxlength: 20
+        },
+        repassword: {
+          required: true,
+          equalTo: "#password"
+        },
+        email: {
+          required: true,
+          email: true,
+          remote: {
+            url: "/verify_email.htm",     //后台处理程序
+            type: "post",               //数据发送方式
+            dataType: "json",           //接受数据格式
+            data: {                     //要传递的数据
+              "email": function () {
+                return jQuery("#register-email").val();
+              }
+            }
+          }
+        },
+      messages: {
+        password: {
+          required: "密码不能为空",
+          minlength: "密码不能小于{0}个字符",
+          maxlength: "密码不能大于{0}个字符"
+        },
+        repassword: {
+          required: "重复密码不能为空",
+          equalTo: "两次输入密码不一致"
+        },
+        email: {
+          required: "email不能为空",
+          email: "email格式不正确",
+          remote: "该email已经存在"
+        },
+        /*code: {
+            required: "验证码不能为空",
+            remote: "验证码不正确"
+        }*/
+      }
+    });
+    //
+  });
+</script>-->
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
  <!-- <script  src="./script.js"></script>-->

@@ -76,9 +76,14 @@ import java.util.*;
    }
 
    @RequestMapping({"/success.htm"})
-   public final ModelAndView loginSuccess(HttpServletRequest request){
-     ModelAndView mv = new ModelAndView();
-     mv.setViewName("/shop/success.html");
+   public final ModelAndView loginSuccess(HttpServletRequest request,HttpServletResponse response){
+       ModelAndView mv = new JModelAndView("success.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+       String shopping_view_type = CommUtil.null2String(request.getSession(false).getAttribute("shopping_view_type"));
+       if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+           mv = new JModelAndView("/wap/success.html", this.configService.getSysConfig(),
+                   this.userConfigService.getUserConfig(), 1, request, response);
+       }
+
      String reqest_sesion_id ="";
        Cookie[] cookies = request.getCookies();
        if (cookies != null) {
@@ -89,8 +94,6 @@ import java.util.*;
                }
            }
        }
-       String shopping_view_type = CommUtil.null2String( request.getSession().getAttribute( "shopping_view_type" ) );
-
      if(!"".equals(reqest_sesion_id)){
          mv.addObject("url", RequestMsgCache.urlSave.get(reqest_sesion_id));
      }else{
@@ -260,7 +263,7 @@ import java.util.*;
            }
            response.sendRedirect("user/login.htm");
        }else{
-           response.sendRedirect("register.htm");
+           response.sendRedirect("user/login.htm");
        }
    }
 
