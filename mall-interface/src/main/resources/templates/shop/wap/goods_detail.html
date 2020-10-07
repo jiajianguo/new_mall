@@ -9,12 +9,39 @@
 	<link rel="stylesheet" type="text/css" href="/asset/css/goods_intro.css" />
 	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main-new.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 	<div class="ui-pane">
-		<div class="Nav"></div>
+		<div class="Nav">
+			<div class="ui-nav">
+				<a class="item" href="/wap/index.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-dianpu"></use>
+					</svg>
+					<span class="item-text">首页</span>
+				</a>
+				<a class="item" th:href="@{/goodsclass.htm(storeId=${obj.goodsStoreId})}">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-classify-on"></use>
+					</svg>
+					<span class="item-text">分类</span>
+				</a>
+				<a class="item" href="/goods_cart1.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-gouwuche-zhuangtai"></use>
+					</svg>
+					<span class="item-text">购物车</span>
+				</a>
+				<a class="item" href="/member_center.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-icon_mine"></use>
+					</svg>
+					<span class="item-text">我的</span>
+				</a>
+			</div>
+		</div>
 		<div class="ui-header">
 			<a href="" class="header-button">
 				<svg class="icon" aria-hidden="true">
@@ -65,41 +92,14 @@
 
 			<div class="cuxiao">
 				<div class="cux_tit flex-between">
-					<div><a th:href="@{/app_store.htm(id=${obj.goodsStoreId})}" style="color: #ff9900">进入店铺</a></div>
+					<div>
+						<a th:href="@{/store.htm(id=${obj.goodsStoreId})}" style="color: #ff9900">进入店铺</a>
+					</div>
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-right"></use>
 					</svg>
 				</div>
 			</div>
-
-			<!--<div class="cuxiao">
-				<div class="cux_tit flex-between">
-					<div>促销</div>
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-right"></use>
-					</svg>
-				</div>
-				<div class="zhek flex-star">
-					<div>折扣</div><span>打折15%（合计超过3件）</span>
-				</div>
-				<div class="jiangli flex-star">
-					<div>奖励</div><span>打折15%（合计超过3件）</span>
-				</div>
-			</div>-->
-
-			<!--<div class="quan">
-				<div class="quan_card">
-					<div class="card_top flex-between">
-						<div class="yhq_cont">
-							<div>打折10%</div>
-							<span>超过￥203.10</span>
-						</div>
-						<input type="button" name="" id="" value="Claim" />
-					</div>
-					<p>APP新用户使用</p>
-				</div>
-			</div>-->
-
 			<div class="goods_spec">
 				<div class="spec_line" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
 					<div class="spec_tit">
@@ -119,8 +119,6 @@
 						<input type="number" name="count" id="count" value="1" />
 						<div id="add_count">+</div>
 						&nbsp;&nbsp;&nbsp;
-						<div id="add_count" style="color: #CC3C1A;">库存</div>
-						&nbsp;&nbsp;&nbsp;
 						<input type="number" name="inventory" id="inventory" th:value="${obj.goodsInventory}" disabled="disabled" />
 					</div>
 				</div>
@@ -130,7 +128,7 @@
 			</div>
 
 			<div class="tips">
-				<p>处理时间:当项目被选中时计算</p>
+				<!--<p>处理时间:当项目被选中时计算</p>-->
 				<p>发货时间:加急快递3-7个工作日</p>
 			</div>
 

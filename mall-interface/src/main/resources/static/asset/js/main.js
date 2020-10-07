@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		})
 
 		navList[newindex].classList.add("active");
-
 		navList.forEach((item, index) => {
 			item.addEventListener("click", () => {
 				window.sessionStorage.setItem("newindex", index);

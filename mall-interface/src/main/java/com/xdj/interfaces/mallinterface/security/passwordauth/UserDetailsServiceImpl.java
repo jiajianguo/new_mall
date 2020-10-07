@@ -11,6 +11,7 @@ import com.xdj.www.entity.ShoppingRole;
 import com.xdj.www.entity.ShoppingUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.SubstituteLogger;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +24,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 
+/**
+ * @author Administrator
+ */
 @Service("userDetailsService")
 public class UserDetailsServiceImpl  implements UserDetailsService {
 
@@ -33,8 +37,11 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
 	@Resource
 	private IResService resService;
 
+	private Logger log = LoggerFactory.getLogger(this.getClass().getName());
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		log.info("------login-verify------{}",email);
 		ShoppingUser user = userDAO.findByEmail(email);
 		if(user != null) {
 			List<ShoppingRole> roles = roleService.queryRoleByUserId(user.getId());

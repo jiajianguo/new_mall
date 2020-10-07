@@ -70,6 +70,7 @@ public class PasswordFilter extends OncePerRequestFilter {
 		String email = request.getParameter("email");
 		if (StringUtils.isNotBlank(email)) {
 			try {
+				log.info("------登录信息------{}",email);
 				String password = request.getParameter("password");
 				/*ShoppingUserMapper userDAO = webApplicationContext.getBean(ShoppingUserMapper.class);
 				ShoppingUser user = userDAO.findByEmail(email);*/

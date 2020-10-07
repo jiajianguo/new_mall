@@ -34,8 +34,6 @@ public class ShoppingGoodsclass extends BaseEntity{
     private Long iconAccId;
 
 
-
-
     public Long getId() {
         return id;
     }

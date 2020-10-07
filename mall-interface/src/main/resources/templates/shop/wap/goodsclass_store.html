@@ -28,9 +28,6 @@
                         <div class="classify_box flex-star">
                             <div th:each="gc1 :${gc.childs}" >
                                 <div class="ify_item" th:each="gc2 :${gc1.childs}">
-                                    <!--<div class="item_img flex-center">
-                                        <img src="asset/img/化妆品.png" >
-                                    </div>-->
                                     <a th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}" th:text="${gc2.classname}"></a>
                                 </div>
                             </div>

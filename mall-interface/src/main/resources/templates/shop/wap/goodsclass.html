@@ -35,18 +35,17 @@
 			<div class="page_main flex-between">
 				<div class="mian_left">
 					<!--<div class="mian_left_act">所有商品</div>-->
-					<div th:each="gc :${gcs}" th:text="${gc.classname}" th:data-id="${gc.id}">
-
-					</div>
+					<div th:each="gc :${gcs}" th:text="${gc.classname}" th:data-id="${gc.id}"></div>
 				</div>
 				<div class="main_right" >
 					<img class="right_banner" src="asset/img/class_banner.png" >
-					<div class="classify_box flex-star"  th:each="gc :${gcs}">
-						<div th:each="gc1 :${gc.childs}"  th:data-id="${gc.id}" >
-							<div class="ify_item" th:each="gc2 :${gc1.childs}">
+					<div class="classify_box flex-star"  th:each="gc :${gcs}" th:data-id="${gc.id}" style="display: none">
+						<div class="ify_item" th:each="gc1 :${gc.childs}">
+							<a th:href="@{/store_goods_list.htm(gc_id = ${gc1.id})}" >
 								<img src="asset/img/化妆品.png" >
-								<a th:href="@{/store_goods_list.htm(gc_id = ${gc2.id})}" th:text="${gc2.classname}"></a>
-							</div>
+								<br>
+								<span th:text="${gc1.classname}"> </span>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -55,21 +54,30 @@
 	</div>
 </body>
 <script type="text/javascript">
+	var defShow=$(".main_right").find('.classify_box');
+	if(defShow.length>0){
+		var s=defShow[0];
+		s.css('display','block');
+	}
 	$(".mian_left > div").mouseover(function(){
-		 console.log('执行------');
 		 var gc_id= $(this).attr('data-id');
+		 var s=$('.mian_left > div');
+		 if(s){
+		 	s.each(function(){
+		 		$(this).css("background-color","#f2f2f2");
+			})
+		 }
+		 $(this).show();
 		 access(gc_id);
 	});
 	function access(gc_id){
-		var s= $(".classify_box > div ");
+		var s= $(".classify_box");
 		if(s){
-			console.log('执行了1------',s.length);
 			s.each(function(){
-				console.log('执行了1------');
 				var gcid=$(this).attr('data-id');
+				$(this).css("display",'none');
 				if(gc_id ==  gcid){
-					console.log('执行了------');
-					$(this).show();
+					$(this).css("display",'block');
 				}
 			})
 		}

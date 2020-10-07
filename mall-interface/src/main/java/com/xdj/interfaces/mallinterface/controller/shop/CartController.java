@@ -1261,7 +1261,6 @@ public class CartController {
     @SecurityMapping(display = false, rsequence = 0, title = "地址新增", value = "/*", rtype = "buyer", rname = "购物流程3", rcode = "goods_cart", rgroup = "在线购物")
     @RequestMapping({"/cart_address.htm"})
     public ModelAndView cart_address(HttpServletRequest request, HttpServletResponse response, String id, String store_id) {
-
         ModelAndView mv = new JModelAndView("cart_address.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
         String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));

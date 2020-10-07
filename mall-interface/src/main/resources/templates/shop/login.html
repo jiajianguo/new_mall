@@ -162,9 +162,10 @@
         <a href="#" class="forgot-password">Forgot password?</a>
       </div>
     </form>
-    <form class="email-signup"  action="" method="post" enctype="multipart/form-data">
+
+  <form class="email-signup"  action="/register_finish.htm" method="post" enctype="multipart/form-data">
       <div class="u-form-group">
-        <input type="email" placeholder="Email"/>
+        <input id="register-email" type="email" placeholder="Email"/>
       </div>
       <div class="u-form-group">
         <input type="password" placeholder="Password"/>
@@ -173,10 +174,26 @@
         <input type="password" placeholder="Confirm Password"/>
       </div>
       <div class="u-form-group">
-        <button>Sign Up</button>
+        <button id="regster_sub">Sign Up</button>
       </div>
     </form>
   </div>
+<script>
+  $("#register-email").blur(function(){
+    var email=$(this).val();
+    jQuery.post('/verify_email.htm',{'email': email},function(res){
+      if(res === 'false'){
+        alert("该email已存在");
+        $(this).val('');
+      }
+    });
+  });
+
+$("#regster_sub").click(function(){
+  //验证password 和密码
+
+});
+</script>
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
  <!-- <script  src="./script.js"></script>-->

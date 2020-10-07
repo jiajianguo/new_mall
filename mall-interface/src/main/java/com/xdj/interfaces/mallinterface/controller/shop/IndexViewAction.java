@@ -85,6 +85,8 @@ public class IndexViewAction {
 	private IAdvertPositionService advertPositionService;
 	@Resource
 	private GoodsCartTools goodsCartTools;
+	@Resource
+	private IUserGoodsClassService userGoodsClassService;
 
 
 	public static Logger log =LoggerFactory.getLogger("indexController" );
@@ -241,7 +243,6 @@ public class IndexViewAction {
 	 */
 	@RequestMapping( { "/nav.htm" } )
 	public ModelAndView nav( HttpServletRequest request, HttpServletResponse response ) {
-		log.info("-------------执行index-------------------------");
 		ModelAndView mv = new JModelAndView("nav.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
 		mv.addObject( "navTools", this.navTools );
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -755,27 +756,56 @@ public class IndexViewAction {
 		params.put( "display", Boolean.valueOf( true ) );
 		params.put("orderBy","sequence");
 		params.put("sort","asc");
-		List gcs = this.goodsClassService.queryByCondition(params);
-				//query( "select obj from GoodsClass obj where obj.parent.id is null and obj.display=:display order by obj.sequence asc", params, -1, -1 );
+		List<ShoppingGoodsclass> gcs = this.goodsClassService.queryByCondition(params);
 		mv.addObject( "gcs", gcs );
 		return mv;
 	}
 
 	@RequestMapping( { "/goodsclass.htm" } )
-	public ModelAndView goodsclass( HttpServletRequest request, HttpServletResponse response ) {
-
-		ModelAndView mv = new JModelAndView( "goodsclass.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
-		String shopping_view_type = CommUtil.null2String( request.getSession( false ).getAttribute( "shopping_view_type" ) );
-		if( (shopping_view_type != null) && (!shopping_view_type.equals( "" )) && (shopping_view_type.equals( "wap" )) ) {
-			mv = new JModelAndView( "wap/goodsclass.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
-		}
+	public ModelAndView goodsclass( HttpServletRequest request, HttpServletResponse response,String storeId) {
+		ModelAndView mv = new JModelAndView( "wap/goodsclass.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
 		Map params = new HashMap();
-		params.put("orderBy","sequence");
-		params.put("sort","asc");
-		params.put("parent_id","is null");
-		List gcs = this.goodsClassService.queryByCondition(params);
-				//query( "select obj from GoodsClass obj where obj.parent.id is null  order by obj.sequence asc", params,-1, -1 );
-		mv.addObject( "gcs", gcs );
+		if(StringUtils.isNotBlank(storeId)){
+			mv = new JModelAndView( "wap/goodsclass_store.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
+			ShoppingStoreWithBLOBs store = storeService.getObjById(CommUtil.null2Long(storeId));
+			storeViewTools.addUser(store);
+			params.put("user_id",store.getUser().getId() );
+			params.put("parent_id","is null");
+			params.put("display", Boolean.valueOf(true));
+			params.put("orderBy","sequence");
+			params.put("sort","asc");
+			List<ShoppingUsergoodsclass> ugcs = this.userGoodsClassService.queryByCondition(params);
+			List<ShoppingUsergoodsclass> ugcaccsorry= new ArrayList<>();
+			for(ShoppingUsergoodsclass s: ugcs){
+				params.clear();
+				params.put("parent_id","=".concat(s.getId().toString()));
+				params.put("user_id",store.getUser().getId());
+				List<ShoppingUsergoodsclass> gcs = userGoodsClassService.queryByCondition(params);
+				if(gcs != null){
+					for(ShoppingUsergoodsclass gc: gcs){
+						accessViewTools.addUserGcImgs(gc);
+					}
+				}
+				s.setChilds(gcs);
+				ugcaccsorry.addAll(gcs);
+			}
+			mv.addObject( "gcs", ugcs );
+		}else{
+			params.put("orderBy","sequence");
+			params.put("sort","asc");
+			params.put("parent_id","is null");
+			List<ShoppingGoodsclassWithBLOBs> gcs = this.goodsClassService.queryByCondition(params);
+			if(gcs != null ){
+				for(ShoppingGoodsclassWithBLOBs s: gcs){
+					params.clear();
+					params.put("parent_id","=".concat(s.getId()+""));
+					List<ShoppingGoodsclassWithBLOBs> child = goodsClassService.queryByCondition(params);
+					s.setChilds(child);
+				}
+			}
+			mv.addObject( "gcs", gcs );
+		}
+
 
 		return mv;
 	}
