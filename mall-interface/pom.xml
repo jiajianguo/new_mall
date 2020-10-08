@@ -97,14 +97,14 @@
             <artifactId>java-jwt</artifactId>
             <version>3.2.0</version>
         </dependency>
-        <!--devtools热部署
+        <!--devtools热部署 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
             <scope>true</scope>
         </dependency>
-        -->
+
         <!-- java email -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

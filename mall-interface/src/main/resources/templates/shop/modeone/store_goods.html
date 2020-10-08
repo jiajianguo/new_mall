@@ -110,7 +110,7 @@
                 <div class="right_tit" th:text="${obj.goodsName}"></div>
                 <div class="price_box flex-star">
                     <div>
-                        <span> 原价:&nbsp;&nbsp;</span>
+                        <span> 原价:&nbsp;&nbsp;￥</span>
                         <span th:text="${obj.goodsPrice}"></span>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <input type="hidden"  id="groupBuy" name="groupBuy" th:value="${obj.groupBuy}" >
                     <input type="hidden" id="combinStatus" name="combinStatus" th:value="${obj.combinStatus}">
                     <div th:if="${obj.groupBuy != 2 }">
-                        <span> 店铺价:'￥'&nbsp;&nbsp;</span>
+                        <span> 店铺价:&nbsp;￥</span>
                         <span id="store_price" th:text="${obj.storePrice}"></span>
                     </div>
 
@@ -366,9 +366,9 @@
                     var  store_price = res.price;
                     var groupBuy = $("#groupBuy").val();
                     if(groupBuy == '2'){
-                        $("#gg_price").text('￥'+store_price);
+                        $("#gg_price").text(store_price);
                     }else{
-                        $("#store_price").text('￥'+store_price);
+                        $("#store_price").text(store_price);
                     }
                     $("#inventory").text(goods_inventory);
                     console.log('执行数据-----');
@@ -413,12 +413,9 @@
         var price =$("#store_price").text();
         var gsp ="";
         var load = true;
-        $(".spec_cont specitem").each(function () {
-            $.each(
-                $(this).find("input:radio[class=this]"), function () {
-                    gsp = $(this).attr("gsp") + "," + gsp;
-                });
-
+        var s=$("input[class='this' ]");
+        s.each(function(){
+            gsp=gsp+ $(this).attr('spec')+',';
         });
         if(gsp.length == 0){
             load=false;
@@ -433,7 +430,7 @@
         if(load){
             add_goods_to_cart(id,count,price,gsp,true)
         }else{
-
+            alert("检查信息");
         }
     });
 
@@ -458,7 +455,7 @@
         if(combinStatus == '2'){
             type='combin';
         }
-        jQuery.post("/add_goods_cart.htm", {
+        jQuery.post("/addGoodsCart", {
             "id": id,
             "count": count,
             "price": price,
@@ -466,12 +463,17 @@
             'buy_type': type
         }, function (res) {
             //验证成功跳转购物车
-            if(flag){
-
-                window.location.href = "/goods_cart1.htm";
+            console.log(res);
+            if(res.code == '200'){
+                if(flag){
+                    window.location.href = "/goods_cart1.htm";
+                }else{
+                    alert('添加到购物车成功');
+                }
             }else{
-                alert('添加到购物车成功');
+                alert(res.msg);
             }
+
         });
     }
     });

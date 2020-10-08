@@ -1,242 +1,250 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title >订单确认</title>
-  <meta name="keywords" th:content="${config.keywords}" />
-  <meta name="description" th:content="${config.description}" />
-<meta name="generator" content="shopping 2.0" />
-<meta name="author" content="www.shopping.com">
-<meta name="copyright" content="shopping Inc. All Rights Reserved">
-<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet" />
-<link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet" />
-<link th:href="@{/style/common/css/jquery-ui-1.8.22.custom.css}" type="text/css" rel="stylesheet" />
-<link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet" />
-<script th:src="@{/js/jquery-1.6.2.js}"></script>
-<script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
-<script th:src="@{/js/jquery.shop.common.js}"></script>
-<script th:src="@{/js/jquery.validate.min.js}"></script>
-  <script th:src="@{/js/nav.js}"></script>
-  <script th:src="@{/js/top.js}"></script>
-  <script th:src="@{/js/head.js}"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>订单确认</title>
+    <meta name="keywords" th:content="${config.keywords}"/>
+    <meta name="description" th:content="${config.description}"/>
+    <meta name="generator" content="shopping 2.0"/>
+    <meta name="author" content="www.shopping.com">
+    <meta name="copyright" content="shopping Inc. All Rights Reserved">
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/system/front/default/css/goods.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/common/css/jquery-ui-1.8.22.custom.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+    <script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+    <script th:src="@{/js/jquery.shop.common.js}"></script>
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/js/nav.js}"></script>
+    <script th:src="@{/js/top.js}"></script>
+    <script th:src="@{/js/head.js}"></script>
 
-<script>
-jQuery(document).ready(function(){
-  var address=jQuery("#addr").val();
-  var person_info=jQuery("#person_info").val();
-  jQuery("#order_address_info").html("寄送至:"+address);
-  jQuery("#order_person_info").html("收货人:"+person_info);
-   //
-  var addrSize=jQuery("#addrs").val();
-  if(addrSize==0)
-   jQuery("body").append("<div id='cart_address'><div class='white_content'><div class='white_box'><h1>新增收货地址</h1><div class='content_load'></div></div></div><div class='black_overlay'></div></div>");
-   var top=(document.documentElement.clientHeight-100)/2+document.documentElement.scrollTop+document.body.scrollTop;
-   var h=document.body.scrollHeight;
-   var storeId=jQuery("#store_id").val();
-   jQuery('.black_overlay').css("height",h);
-   jQuery(".white_content").css("position","absolute").css("top",top);
-   jQuery.ajax({type:'POST',url:"/cart_address.htm",async:false,data:{"store_id":storeId},success:function(html){
-	    	jQuery(".content_load").remove();
-			jQuery("#cart_address .white_content").css("width","500");
-		    jQuery("#cart_address .white_box h1").after(html);
-		    jQuery("#cart_address").show();
-	   }});
-  jQuery(":radio[id=invoiceType]").click(function(){
-     var val=jQuery(this).val();
-	 if(val == "1" ){
-	   jQuery("#invoice_info").show();
-	 }else{
-	   jQuery("#invoice_info").hide();
-	 }
-  });
-  //
-  jQuery(":radio[id=addr_id]").click(function(){
-    var addr=jQuery(this).parent().parent().find("#address").html();
-	var person=jQuery(this).parent().parent().find("#person").html()+" "+jQuery(this).parent().parent().find("#mobile").html();
-	jQuery("#order_address_info").html("寄送至:"+addr);
-	jQuery("#order_person_info").html("收货人:"+person);
-  });
-  //
-  jQuery("#coupon_id").change(function(){
-      var coupon_amount=parseFloat(jQuery(this).find("option:selected").attr("coupon_amount"));
-	  if(isNaN(coupon_amount)){
-		 coupon_amount=0;
-	  }
-	  var goods_amount=parseFloat(jQuery("#goods_amount").val());
-	  jQuery("#order_coupon_div").show();
-	  var coupon_info="-¥"+coupon_amount;
-	  jQuery("#order_coupon").html(coupon_info);
-	  var ship_price=parseFloat(jQuery("#ship_price").val());
-	  if(isNaN(ship_price)){
-		  ship_price=0;
-	  }
-	  var order_fee=goods_amount-coupon_amount+ship_price;
-	  jQuery("#order_store_amount").html("¥"+order_fee);
-	  jQuery("#order_pay_fee").html("¥"+order_fee);
-	  if(coupon_amount==0){
-	    jQuery("#order_coupon_div").hide();
-	  }
-  });
-  //
-  jQuery(":radio[id^=addr_id]").click(function(){
-       var addr_id=jQuery(this).val();
-       var storeId=jQuery("#store_id").val();
-       console.log("-----单击地址----");
-	   jQuery.ajax({type:'POST',url:'/order_address.htm',data:{'addr_id':addr_id,"store_id":storeId},dataType:'json',
-				  /*beforeSend:function(){
-					    jQuery("#order_save").attr("disabled",true);
-                  },*/
-				  success:function(data){
-				    console.log('加载地址成功'+data);
-	                 jQuery("#ship_price").empty();
-					 jQuery(data).each(function(index,item){
-					     jQuery("#ship_price").append("<option value='"+item.value+"'>"+item.key+"</option>");
-					 });
-				     var ship_price=parseFloat(jQuery("#ship_price").val());
-					 if(isNaN(ship_price)){
-					    ship_price=0;
-					 }
-	                 var coupon_amount=parseFloat(jQuery("#coupon_id").find("option:selected").attr("coupon_amount"));
-					 if(isNaN(coupon_amount)){
-					   coupon_amount=0;
-					 }
-	                 var goods_amount=parseFloat(jQuery("#goods_amount").val());
-	                 var order_fee=goods_amount-coupon_amount+ship_price;
-	                 jQuery("#order_store_amount").html("¥"+order_fee);
-	                 jQuery("#order_pay_fee").html("¥"+order_fee);
-					/* jQuery("#order_save").attr("disabled",false);*/
-				  }
-	   });
-  });
-  //
-  jQuery("#ship_price").change(function(){
-     var ship_price=parseFloat(jQuery(this).val());
-	 if(isNaN(ship_price)){
-		 ship_price=0;
-	 }
-	 var coupon_amount=parseFloat(jQuery("#coupon_id").find("option:selected").attr("coupon_amount"));
-	 if(isNaN(coupon_amount)){
-		 coupon_amount=0;
-	  }
-	 var goods_amount=parseFloat(jQuery("#goods_amount").val());
-	 var order_fee=goods_amount-coupon_amount+ship_price;
-	 jQuery("#order_store_amount").html("¥"+order_fee);
-	 jQuery("#order_pay_fee").html("¥"+order_fee);
-	 var text=jQuery(this).find("option:selected").text();
-	 var transport=text.substring(0,text.indexOf("["));
-	 jQuery("#transport").val(transport);
-  });
-  //
-  jQuery(".baby_gp>a").mouseover(function(){
-	jQuery(this).parent().find(".arrow").show();
-    jQuery(this).parent().find(".baby_group").show();
-  });
-  jQuery(".baby_gp").mouseleave(function(){
-    jQuery(this).parent().find(".arrow").hide();
-    jQuery(this).parent().find(".baby_group").hide();
-  });
-  //
-  jQuery("#coupon_id").val("0");
-  jQuery("#ship_price").find("option:first").attr("selected",true);
-  jQuery(":radio[id^=addr_id]:first").attr("checked",true);
-});
-function save_order(){
-  jQuery("#cart_form").submit();
-}
-</script>
+    <script>
+        jQuery(document).ready(function () {
+            var address = jQuery("#addr").val();
+            var person_info = jQuery("#person_info").val();
+            jQuery("#order_address_info").html("寄送至:" + address);
+            jQuery("#order_person_info").html("收货人:" + person_info);
+            jQuery("#invoice_address").html( address);
+            var addrSize = jQuery("#addrs").val();
+            if (addrSize == 0)
+                jQuery("body").append("<div id='cart_address'><div class='white_content'><div class='white_box'><h1>新增收货地址</h1><div class='content_load'></div></div></div><div class='black_overlay'></div></div>");
+            var top = (document.documentElement.clientHeight - 100) / 2 + document.documentElement.scrollTop + document.body.scrollTop;
+            var h = document.body.scrollHeight;
+            var storeId = jQuery("#store_id").val();
+            jQuery('.black_overlay').css("height", h);
+            jQuery(".white_content").css("position", "absolute").css("top", top);
+            jQuery.ajax({
+                type: 'POST',
+                url: "/cart_address.htm",
+                async: false,
+                data: {"store_id": storeId},
+                success: function (html) {
+                    jQuery(".content_load").remove();
+                    jQuery("#cart_address .white_content").css("width", "500");
+                    jQuery("#cart_address .white_box h1").after(html);
+                    jQuery("#cart_address").show();
+                }
+            });
+            jQuery(":radio[id=invoiceType]").click(function () {
+                var val = jQuery(this).val();
+                if (val == "1") {
+                    jQuery("#invoice_info").show();
+                } else {
+                    jQuery("#invoice_info").hide();
+                }
+            });
+            //
+            jQuery(":radio[id=addr_id]").click(function () {
+                var addr = jQuery(this).parent().parent().find("#address").html();
+                var person = jQuery(this).parent().parent().find("#person").html() + " " + jQuery(this).parent().parent().find("#mobile").html();
+                jQuery("#order_address_info").html("寄送至:" + addr);
+                jQuery("#order_person_info").html("收货人:" + person);
+                jQuery("#invoice_address").html( addr);
+            });
+            //
+            jQuery("#coupon_id").change(function () {
+                var coupon_amount = parseFloat(jQuery(this).find("option:selected").attr("coupon_amount"));
+                if (isNaN(coupon_amount)) {
+                    coupon_amount = 0;
+                }
+                var goods_amount = parseFloat(jQuery("#goods_amount").val());
+                jQuery("#order_coupon_div").show();
+                var coupon_info = "-¥" + coupon_amount;
+                jQuery("#order_coupon").html(coupon_info);
+                var ship_price = parseFloat(jQuery("#ship_price").val());
+                if (isNaN(ship_price)) {
+                    ship_price = 0;
+                }
+                var order_fee = goods_amount - coupon_amount + ship_price;
+                jQuery("#order_store_amount").html("¥" + order_fee);
+                jQuery("#order_pay_fee").html("¥" + order_fee);
+                if (coupon_amount == 0) {
+                    jQuery("#order_coupon_div").hide();
+                }
+            });
+            //
+            jQuery(":radio[id^=addr_id]").click(function () {
+                var addr_id = jQuery(this).val();
+                var storeId = jQuery("#store_id").val();
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '/order_address.htm',
+                    data: {'addr_id': addr_id, "store_id": storeId},
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log('加载地址成功' + data);
+                        jQuery("#ship_price").empty();
+                        jQuery(data).each(function (index, item) {
+                            jQuery("#ship_price").append("<option value='" + item.value + "'>" + item.key + "</option>");
+                        });
+                        var ship_price = parseFloat(jQuery("#ship_price").val());
+                        if (isNaN(ship_price)) {
+                            ship_price = 0;
+                        }
+                        var coupon_amount = parseFloat(jQuery("#coupon_id").find("option:selected").attr("coupon_amount"));
+                        if (isNaN(coupon_amount)) {
+                            coupon_amount = 0;
+                        }
+                        var goods_amount = parseFloat(jQuery("#goods_amount").val());
+                        var order_fee = goods_amount - coupon_amount + ship_price;
+                        jQuery("#order_store_amount").html("¥" + order_fee);
+                        jQuery("#order_pay_fee").html("¥" + order_fee);
+
+                    }
+                });
+            });
+            //
+            jQuery("#ship_price").change(function () {
+                var ship_price = parseFloat(jQuery(this).val());
+                if (isNaN(ship_price)) {
+                    ship_price = 0;
+                }
+                var coupon_amount = parseFloat(jQuery("#coupon_id").find("option:selected").attr("coupon_amount"));
+                if (isNaN(coupon_amount)) {
+                    coupon_amount = 0;
+                }
+                var goods_amount = parseFloat(jQuery("#goods_amount").val());
+                var order_fee = goods_amount - coupon_amount + ship_price;
+                jQuery("#order_store_amount").html("¥" + order_fee);
+                jQuery("#order_pay_fee").html("¥" + order_fee);
+                var text = jQuery(this).find("option:selected").text();
+                var transport = text.substring(0, text.indexOf("["));
+                jQuery("#transport").val(transport);
+            });
+            //
+            jQuery(".baby_gp>a").mouseover(function () {
+                jQuery(this).parent().find(".arrow").show();
+                jQuery(this).parent().find(".baby_group").show();
+            });
+            jQuery(".baby_gp").mouseleave(function () {
+                jQuery(this).parent().find(".arrow").hide();
+                jQuery(this).parent().find(".baby_group").hide();
+            });
+            //
+            jQuery("#coupon_id").val("0");
+            jQuery("#ship_price").find("option:first").attr("selected", true);
+            jQuery(":radio[id^=addr_id]:first").attr("checked", true);
+        });
+
+        function save_order() {
+            jQuery("#cart_form").submit();
+        }
+    </script>
 </head>
 <body>
 <div class="top_page">
-  <div class="pageright" id="site-nav">
-    <ul class="quick-menu">
-      <li class="mytaobao menu-item menupx">
-        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
-          <div class="menu-bd">
-            <div class="menu-bd-panel">
-              <div>
-                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <li class="mytaobao menu-item menupx">
-        <div class="menu">
-          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
-          <div class="menu-bd">
-            <div class="menu-bd-panel">
-              <div>
-                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
-                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
-                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
-                <span th:switch="${user != null}">
+    <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+            <li class="mytaobao menu-item menupx">
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <span th:switch="${user != null}">
 									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
                                        rel="nofollow">我的店铺</a>
                                     <a th:case="false" th:href="@{/seller/store_create_first.htm}"
                                        rel="nofollow">商家入驻</a>
 								</span>
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
 
-      <li class="search menu-item menupx">
-        <div class="menu" id="cart_menu">
+            <li class="search menu-item menupx">
+                <div class="menu" id="cart_menu">
            <span class="menu-hd" id="cart_goods_top_menu">
                     <s></s>
                     <a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
                   </span>
-        </div>
-      </li>
-      <li class="menupx">
-        <a th:href="@{/buyer/message.htm}">
-          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
-      </li>
-      <li class="mytaobao menu-item menupx">
-        <div class="menu">
-          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
-          <div class="menu-bd">
-            <div class="menu-bd-panel">
-              <div>
-                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
-                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
+                </div>
+            </li>
+            <li class="menupx">
+                <a th:href="@{/buyer/message.htm}">
+                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
 
-      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
-        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
-      </li>
-      <li class="menupx" th:if="${navs != null}">
-        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
-      </li>
+            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            </li>
+            <li class="menupx" th:if="${navs != null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
 
-      <li class="menupx" style="background:none;" th:if="${navs == null}">
-        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
-      </li>
+            <li class="menupx" style="background:none;" th:if="${navs == null}">
+                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+            </li>
 
-      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
-        <div class="menu">
-          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
-          <div class="menu-bd" style="height:auto;">
-            <div class="menu-bd-panel">
-              <div th:each="nav : ${navs}">
-                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
+            <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+                <div class="menu">
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+                    <div class="menu-bd" style="height:auto;">
+                        <div class="menu-bd-panel">
+                            <div th:each="nav : ${navs}">
+                                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
 
-    </ul>
-  </div>
-  <div class="pageleft">
+        </ul>
+    </div>
+    <div class="pageleft">
         <span th:switch="${user != null}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
@@ -255,259 +263,318 @@ function save_order(){
             </span>
           </span>
         </span>
-  </div>
+    </div>
 </div>
 
 <div class="main">
-  <div id="header_form">
-    <div id="head_h" class="head_width">
-      <div class="head clearFix">
-        <div class="logo">
-          <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
-            <img width="180" height="60"
-                 th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
-          </a>
-          <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
-            <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}" border="0"/>
-          </a>
-        </div>
-        <div class="searchForm">
-          <form action="/search.htm" method="post" target="_blank" id="searchForm">
-            <input name="type" type="hidden" id="type" value="${type}"/>
-            <div class="toph_bigsearch">
-              <div class="toph_sear">
-                <ul class="toph_bgsear">
-                  <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
-                  <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
-                </ul>
-                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
-                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
-                       class="toph_sear_txt"/>
-                <input name="input" type="button" value="搜索" style="cursor:pointer;"
-                       onclick="search_form();" class="toph_sear_btn"/>
-              </div>
-              <div class="keyword">
-                <span th:each="info : ${config.hotsearch.split(',')}">
-					<a href="javascript:void(0);" th:data="${info}" onclick="search_form(this.getAttribute('data'),'goods');" th:text="${info}"></a>
-				</span>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="Steps_box">
-    <div class="Steps">
-      <ul>
-        <li class="done prev">1.查看购物车</li>
-        <li class="this">2.确认订单信息</li>
-        <li>3.付款到卖家</li>
-        <li>4.确认收货</li>
-        <li class="last">5.评价</li>
-      </ul>
-    </div>
-    <form th:action="@{/goods_cart3.htm}" method="post" th:enctype="@{/goods_cart3.htm}" id="cart_form">
-      <div class="h1">
-        <span class="h1_l">店铺名称：
-          <a th:href="@{/store.htm(id=${sc.store.id})}" target="_blank" th:text="${sc.store.storeName}"></a>
-          <input name="store_id" type="hidden" th:id="store_id" th:value="${sc.store.id}" />
-          <input name="addrs" type="hidden" th:id="${addrs}" th:value="${addrs.size()}" />
-        </span>
-      </div>
-      <div class="table">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            <td width="57%" align="center" class="title">店铺商品</td>
-            <td width="10%" align="center" class="title">单价</td>
-            <td width="11%" align="center" class="title">数量</td>
-            <td width="11%" align="center" class="title">小计</td>
-          </tr>
-
-          <tr th:each="gc :${sc.gcs}" >
-            <td class="baby">
-              <a th:href="@{/goods.htm(id=${gc.goodsId})}" target="_blank">
-                <img  th:if="${gc.goods.goods_main_photo}" th:src="@{'/'+${gc.goods.goods_main_photo.path}+'/'+${gc.goods.goods_main_photo.name}+'_small.'+${gc.goods.goods_main_photo.ext}}" width="65" height="65" />
-              </a>
-              <p>
-                <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" th:text="${gc.goods.goodsName}"></a>
-                <span th:if="${gc.goods.groupBuy==2}" style="color:#F00">(团购)</span>
-                <span th:if="${gc.goods.bargainStatus==2}" style="color:#F00">(特价)</span>
-                <span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span>
-
-              <div th:if="${gc.cartType=='combin'}" class="baby_gp">
-                <a href="javascript:void(0);" style="color:#F00;">[组合商品]</a>
-                <div class="baby_group" style="display:none;">
-                  <div class="baby_group_box">
-                    <ul class="group_ul">
-
-                      <li th:each="info : ${goodsViewTools.query_combin_goods('${gc.goods.id}')}">
-                        <a th:href="@{/goods.htm(id=${info.id})}" target="_blank">
-                          <img th:if="${info.goods_main_photo}" th:src="@{'/'+${info.goods_main_photo.path}+'/'+${info.goods_main_photo.name}+'_small.'+${info.goods_main_photo.ext}}" />
-                          <img th:unless="${info.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" />
-                        </a>
-                        <span>
-                          <a th:href="@{/goods.htm(id=${info.id})}" target="_blank" th:text="${info.goodsName}"></a><!--$!CommUtil.substring("$!info.goodsName",18)-->
-                        </span>
-                      </li>
-
-                    </ul>
-                  </div>
+    <div id="header_form">
+        <div id="head_h" class="head_width">
+            <div class="head clearFix">
+                <div class="logo">
+                    <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+                        <img width="180" height="60"
+                             th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+                    </a>
+                    <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
+                        <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"
+                             border="0"/>
+                    </a>
                 </div>
-                <span class="arrow" style="display:none;"></span>
-              </div>
-              <br />
-              <span th:each="gsp :${gc.gsps}" th:if="${gsp.spec}" th:text="${gsp.spec.name+': '+gsp.value}"></span>
-              <br/>
+                <div class="searchForm">
+                    <form action="/search.htm" method="post" target="_blank" id="searchForm">
+                        <input name="type" type="hidden" id="type" value="${type}"/>
+                        <div class="toph_bigsearch">
+                            <div class="toph_sear">
+                                <ul class="toph_bgsear">
+                                    <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
+                                    <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                                </ul>
+                                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                                       class="toph_sear_txt"/>
+                                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                                       onclick="search_form();" class="toph_sear_btn"/>
+                            </div>
+                            <div class="keyword">
+                <span th:each="info : ${config.hotsearch.split(',')}">
+					<a href="javascript:void(0);" th:data="${info}"
+                       onclick="search_form(this.getAttribute('data'),'goods');" th:text="${info}"></a>
+				</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-              </p>
-            </td>
-            <td align="center" th:text="${gc.price}"></td>
-            <td align="center" th:text="${gc.count}"></td>
-            <td align="center"><strong class="orange" th:text="'¥'+${gc.count * gc.price}"></strong></td>
-          </tr>
-        </table>
-      </div>
-      <div class="sendadress">
-        <h1>
-          <div class="sendhright">
+    <div class="Steps_box">
+        <div class="Steps">
+            <ul>
+                <li class="done prev">1.查看购物车</li>
+                <li class="this">2.确认订单信息</li>
+                <li>3.付款到卖家</li>
+                <li>4.确认收货</li>
+                <li class="last">5.评价</li>
+            </ul>
+        </div>
+        <form th:action="@{/goods_cart3.htm}" method="post" th:enctype="@{/goods_cart3.htm}" id="cart_form">
+            <div class="h1">
+               <!-- <span class="h1_l">店铺名称：
+                  <a th:href="@{/store.htm(id=${sc.store.id})}" target="_blank" th:text="${sc.store.storeName}"></a>
+                  <input name="store_id" type="hidden" th:id="store_id" th:value="${sc.store.id}"/>
+                  <input name="addrs" type="hidden" th:id="${addrs}" th:value="${addrs.size()}"/>
+                </span>-->
+            </div>
+            <div class="table">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td width="57%" align="center" class="title">店铺商品</td>
+                        <td width="10%" align="center" class="title">单价</td>
+                        <td width="11%" align="center" class="title">数量</td>
+                        <td width="11%" align="center" class="title">小计</td>
+                    </tr>
+                    <span th:each="d : ${data}">
+                        <tr th:each="gc :${d.carts}">
+                            <td class="baby">
+                                <a th:href="@{/goods.htm(id=${gc.goodsId})}" target="_blank">
+                                    <img th:if="${gc.goods.goods_main_photo}"
+                                         th:src="@{'/'+${gc.goods.goods_main_photo.path}+'/'+${gc.goods.goods_main_photo.name}+'_small.'+${gc.goods.goods_main_photo.ext}}"
+                                         width="65" height="65"/>
+                                </a>
+                                <p>
+                                    <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank"
+                                       th:text="${gc.goods.goodsName}"></a>
+                                    <span th:if="${gc.goods.groupBuy==2}" style="color:#F00">(团购)</span>
+                                    <span th:if="${gc.goods.bargainStatus==2}" style="color:#F00">(特价)</span>
+                                    <span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span>
+
+                                <div th:if="${gc.cartType=='combin'}" class="baby_gp">
+                                    <a href="javascript:void(0);" style="color:#F00;">[组合商品]</a>
+                                    <div class="baby_group" style="display:none;">
+                                        <div class="baby_group_box">
+                                            <ul class="group_ul">
+                                                <li th:each="info : ${goodsViewTools.query_combin_goods('${gc.goods.id}')}">
+                                                    <a th:href="@{/goods.htm(id=${info.id})}" target="_blank">
+                                                        <img th:if="${info.goods_main_photo}"
+                                                             th:src="@{'/'+${info.goods_main_photo.path}+'/'+${info.goods_main_photo.name}+'_small.'+${info.goods_main_photo.ext}}"/>
+                                                        <img th:unless="${info.goods_main_photo}"
+                                                             th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}"/>
+                                                    </a>
+                                                    <span>
+                                                      <a th:href="@{/goods.htm(id=${info.id})}" target="_blank" th:text="${info.goodsName}"></a>
+
+                                                    </span>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <span class="arrow" style="display:none;"></span>
+                                </div>
+                                <br/>
+                                <span th:each="gsp :${gc.gsps}" th:if="${gsp.spec}"
+                                      th:text="${gsp.spec.name+': '+gsp.value}"></span>
+                                <br/>
+
+                                </p>
+                            </td>
+                            <td align="center" th:text="${gc.price}"></td>
+                            <td align="center" th:text="${gc.count}"></td>
+                            <td align="center"><strong class="orange" th:text="'¥'+${gc.count * gc.price}"></strong></td>
+                        </tr>
+                    </span>
+
+                </table>
+            </div>
+            <div class="sendadress">
+                <h1>
+                    <div class="sendhright">
             <span class="sendperbtn">
-              <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id})}" dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address">新增地址</a>
+              <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id})}"
+                 dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address">新增地址</a>
             </span>
-            <span class="sendperbtn">
+                        <span class="sendperbtn">
               <a th:href="@{/buyer/address.htm}" target="_blank">管理收货地址</a>
             </span>
-          </div>
-          <span class="sendperadr">收货人地址</span>
-        </h1>
-        <div class="writeok">
-          <ul>
-            <li th:each="addr :${addrs}">
-              <strong>
-                <img th:src="@{/style/system/front/default/images/Steps_02.gif}" width="14" height="23" />
-              </strong>
-              <label>
-                <strong>
-                  <input type="radio" name="addr_id" id="addr_id" th:value="${addr.id}" th:checked="${ velocitycount==1 ?'checked':'' }" />
-                </strong>
-                <span id="address" th:if="${addr.area != null }" th:text="${  addr.area.parent.parent.areaname}+${addr.area.parent.areaname}+${addr.area.areaname}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
-                <input type="hidden" id="addr" th:if="${addr.area != null }" th:value="${ addr.area.parent.parent.areaname}+${addr.area.parent.areaname}+${addr.area.areaname}+${addr.areaInfo!=null?addr.areaInfo:''}"/>
-                <span id="person" th:text="${addr.truename}"></span>
-                <span id="mobile" th:text="${addr.mobile}"></span>
-                <input type="hidden" id="person_info" th:value="${addr.truename}+':'+${addr.mobile}"/>
-              </label>
-            </li>
-          </ul>
-        </div>
-        <h1><span class="sendperadr margin10">发票信息</span></h1>
-        <div class="sendmethod">
-          <ul>
-            <li>
-              <label>
-                <input name="invoiceType" type="radio" id="invoiceType" value="0" checked="checked" />个人 </label>
-              <label>
-                <input name="invoiceType" id="invoiceType" type="radio" value="1" /> 单位 </label>
-            </li>
-            <li >
-              <table style="width: 450px">
-                <thead>
-                  <tr>
-                   <th></th>
-                   <th></th>
-                  </tr>
-                </thead>
-                  <tr>
-                    <td>12345</td>
-                    <td>100</td>
-                    <td>20</td>
-                  </tr>
-                <tbody>
+                    </div>
+                    <span class="sendperadr">收货人地址</span>
+                </h1>
+                <div class="writeok">
+                    <ul>
+                        <li th:each="addr :${addrs}">
+                            <strong>
+                                <img th:src="@{/style/system/front/default/images/Steps_02.gif}" width="14"
+                                     height="23"/>
+                            </strong>
+                            <label>
+                                <strong>
+                                    <input type="radio" name="addr_id" id="addr_id" th:value="${addr.id}"
+                                           th:checked="${ velocitycount==1 ?'checked':'' }"/>
+                                </strong>
+                                <span id="address" th:if="${addr.area != null }"
+                                      th:text="${  addr.area.parent.parent.areaname}+${addr.area.parent.areaname}+${addr.area.areaname}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
+                                <input type="hidden" id="addr" th:if="${addr.area != null }"
+                                       th:value="${ addr.area.parent.parent.areaname}+${addr.area.parent.areaname}+${addr.area.areaname}+${addr.areaInfo!=null?addr.areaInfo:''}"/>
+                                <span id="person" th:text="${addr.truename}"></span>
+                                <span id="mobile" th:text="${addr.mobile}"></span>
+                                <input type="hidden" id="person_info" th:value="${addr.truename}+':'+${addr.mobile}"/>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
 
-                </tbody>
-              </table>
-            </li>
-            <li id="invoice_info" style="display:none;">
-               <span style="margin-bottom:5px;">发票抬头：</span>
-              <input name="invoice" type="text" id="invoice" size="40" style="height:20px;" />
-            </li>
-          </ul>
-        </div>
+                <h1><span class="sendperadr margin10">发票信息</span></h1>
+                <div class="sendmethod">
+                    <ul>
+                        <li>
+                            <label>
+                                <input name="invoiceType" type="radio" id="invoiceType" value="0" checked="checked"/>个人
+                            </label>
+                            <label>
+                                <input name="invoiceType" id="invoiceType" type="radio" value="1"/> 单位 </label>
+                        </li>
+                        <li>
+                            <table style="color: #3f4c58;">
+                                <thead>
+                                <tr>
+                                    <th colspan="5"><h4>Contact Info</h4></th>
+                                </tr>
+                                <tr>
+                                    <th>address</th>
+                                    <th colspan="4" id="invoice_address"></th>
+                                </tr>
+                                <tr>
+                                    <th>eail</th>
+                                    <th colspan="4" th:text="${user.email}"></th>
+                                </tr>
+                                <tr>
+                                    <th>phone</th>
+                                    <th colspan="4" th:text="${user.telephone}"></th>
+                                </tr>
+                                <tr>
+                                    <th>商品名</th>
+                                    <th>原价</th>
+                                    <th>税价</th>
+                                    <th>数量</th>
+                                    <th>小计金额</th>
+                                </tr>
+                                </thead>
+                                <span th:each="d : ${data}">
+                                    <tr th:each="gc :${d.carts}">
+                                        <td th:text="${gc.goods.goodsName}"></td>
+                                        <td th:text="${gc.price}"></td>
+                                        <td th:text="${'10%'}"></td>
+                                        <td th:text="${gc.count}"></td>
+                                        <td th:text="${gc.count*gc.price}"></td>
+                                    </tr>
+                                </span>
 
-        <h1 th:if="${couponinfos.size()>0}">
-          <span class="sendperadr margin10">使用优惠券</span>
-        </h1>
-        <div class="sendmethod">
-          <ul>
-            <li><span style="margin-bottom:5px;">可用优惠券：</span>
-              <select name="coupon_id" id="coupon_id">
-                <option value="" selected="selected" coupon_amount="0">请选择优惠券</option>
-                <option th:each="info :${couponinfos}" th:value="${info.id}" th:coupon_amount="${info.coupon.couponAmount}" th:text="${info.couponSn+'['+info.coupon.couponName+']'}"></option>
-              </select>
-            </li>
-          </ul>
-        </div>
+                                <tr>
+                                    <td>应付金额</td>
+                                    <td colspan="4" th:text="${totalPrice}"></td>
+                                </tr>
+                                <tr>
+                                    <td>实付金额</td>
+                                    <td colspan="4" th:text="${totalPrice}"></td>
+                                </tr>
+                                <tbody>
 
-         <h1 th:if="${goodsDelivery}">
-           <span class="sendperadr margin10">配送方式</span>
-         </h1>
-        <div class="sendmethod">
-          <ul>
-            <li>
-            <span style="margin-bottom:5px;">可用配送方式：</span>
-            <select name="ship_price" style="width:110px;" id="ship_price">
-              <option th:each="sm : ${sms}" th:value="${(velocitycount==1) ? sm.value:0}" th:text="${sm.key}"></option>
-            </select>
-            <input name="transport" type="hidden" id="transport" value="平邮" />
-            </li>
-          </ul>
-        </div>
-        <h1>
-          <span class="sendperadr margin10">买家附言</span>
-        </h1>
-        <div class="sendmeg">
-          <textarea name="msg" cols="" rows="" id="msg"></textarea>
-        </div>
-        <div class="paysend" id="order_coupon_div" style="display:none;">优惠券抵消：<strong class="red" style=" font-size:24px;" id="order_coupon"></strong></div>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li id="invoice_info" style="display:none;">
+                            <span style="margin-bottom:5px;">发票抬头：</span>
+                            <input name="invoice" type="text" id="invoice" size="40" style="height:20px;"/>
+                        </li>
+                    </ul>
+                </div>
 
-        <div class="paysend">店铺合计：<strong class="red" style=" font-size:24px;" id="order_store_amount" th:text="'¥'+(${velocitycount==1 ? sm.value:0}+${sc.totalPrice== null?0: sc.totalPrice})"></strong></div>
-        <div class="paysend">
-          <div class="paysd">
-            <div class="paysd_box">
+                <h1 th:if="${couponinfos.size()>0}">
+                    <span class="sendperadr margin10">使用优惠券</span>
+                </h1>
+                <div class="sendmethod">
+                    <ul>
+                        <li><span style="margin-bottom:5px;">可用优惠券：</span>
+                            <select name="coupon_id" id="coupon_id">
+                                <option value="" selected="selected" coupon_amount="0">请选择优惠券</option>
+                                <option th:each="info :${couponinfos}" th:value="${info.id}"
+                                        th:coupon_amount="${info.coupon.couponAmount}"
+                                        th:text="${info.couponSn+'['+info.coupon.couponName+']'}"></option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
 
-            <span>实付款：<strong></strong><b id="order_pay_fee" th:text="'¥'+(${velocitycount==1 ? sm.value:0}+${sc.totalPrice== null?0: sc.totalPrice })"></b></span>
-              <ul>
-                <li><span id="order_address_info" ></span></li>
-                <li><span id="order_person_info"></span></li>
-              </ul>
+                <h1 th:if="${goodsDelivery}">
+                    <span class="sendperadr margin10">配送方式</span>
+                </h1>
+                <div class="sendmethod">
+                    <ul>
+                        <li>
+                            <span style="margin-bottom:5px;">可用配送方式：</span>
+                            <select name="ship_price" style="width:110px;" id="ship_price">
+                                <option th:each="sm : ${sms}" th:value="${(velocitycount==1) ? sm.value:0}"
+                                        th:text="${sm.key}"></option>
+                            </select>
+                            <input name="transport" type="hidden" id="transport" value="平邮"/>
+                        </li>
+                    </ul>
+                </div>
+                <h1>
+                    <span class="sendperadr margin10">买家附言</span>
+                </h1>
+                <div class="sendmeg">
+                    <textarea name="msg" cols="" rows="" id="msg"></textarea>
+                </div>
+                <div class="paysend" id="order_coupon_div" style="display:none;">优惠券抵消：<strong class="red"
+                                                                                               style=" font-size:24px;"
+                                                                                               id="order_coupon"></strong>
+                </div>
+
+                <div class="paysend">
+                    店铺合计：
+                    <strong class="red" style=" font-size:24px;" id="order_store_amount"  th:text="${'¥'+totalPrice}"></strong>
+                </div>
+                <div class="paysend">
+                    <div class="paysd">
+                        <div class="paysd_box">
+                            <span>
+                                实付款：<strong></strong>
+                                <b id="order_pay_fee"  th:text="${'¥'+totalPrice}"></b>
+                            </span>
+                            <ul>
+                                <li><span id="order_address_info"></span></li>
+                                <li><span id="order_person_info"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="paybtn">
+                    <input name="cart_session" type="hidden" id="cart_session" th:if="${cart_session != null}"th:value="${cart_session}"/>
+                    <input name="goods_amount" type="hidden" id="goods_amount" th:value="${totalPrice}"/>
+                    <input name="order_save" type="button" value="提交订单并支付" onclick="save_order();" style="cursor:pointer;" id="order_save"/>
+
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="paybtn">
-           <input name="cart_session" type="hidden" id="cart_session" th:if="${cart_session != null}" th:value="${cart_session}" />
-           <input name="goods_amount" type="hidden" id="goods_amount" th:value="${sc.totalPrice}" />
-           <input  name="order_save" type="button"  value="提交订单并支付" onclick="save_order();"  style="cursor:pointer;" id="order_save"/>
+        </form>
+    </div>
 
-        </div>
-      </div>
-    </form>
-  </div>
-
-  <div class="footer">
-    <div class="footerArea">
-      <ul>
-        <li>
+    <div class="footer">
+        <div class="footerArea">
+            <ul>
+                <li>
                 <span th:each="nav : ${footer}">
                     <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
                     <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
                 </span>
-        </li>
-        <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
-        <li class="hui2">Powered by shopping 2.x</li>
-        <li th:text="${config.codeStat}"></li>
-      </ul>
+                </li>
+                <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+                <li class="hui2">Powered by shopping 2.x</li>
+                <li th:text="${config.codeStat}"></li>
+            </ul>
+        </div>
     </div>
-  </div>
 
 </div>
 </body>

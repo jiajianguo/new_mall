@@ -8,6 +8,7 @@ import com.xdj.interfaces.mallinterface.pay.tools.PaymentTools;
 import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
 import com.xdj.www.core.annotation.SecurityMapping;
+import com.xdj.www.core.constant.ResponseModel;
 import com.xdj.www.core.tools.CommUtil;
 import com.xdj.www.entity.*;
 import org.apache.commons.lang3.StringUtils;
@@ -72,10 +73,6 @@ public class CartController {
     private IOrderFormService orderFormService;
     @Resource
     private IOrderFormLogService orderFormLogService;
-    @Resource
-    private ITemplateService templateService;
-    @Resource
-    private SendMessageService sendMessageService;
     @Resource
     private ICouponService couponService;
     @Resource
@@ -217,8 +214,6 @@ public class CartController {
 
     @RequestMapping({"/addSeckillCart.htm"})
     public final void addSeckillCart(HttpServletRequest request, HttpServletResponse response, String id, String count, String price, String gsp, String buy_type) {
-        //BigDecimal addPrice=BigDecimal.valueOf(CommUtil.null2Double(price.substring(1)));
-        log.info("id======{}------gsp====={}", id, gsp);
         String cart_session_id = "";
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -425,6 +420,84 @@ public class CartController {
         }
     }
 
+    /**
+     *
+     * @param id 商品id
+     * @param count 数量
+     * @param price 价格
+     * @param gsp 商品属性id数组
+     * @param buy_type 购买类型
+     * @return  返回你添加成功或失败
+     */
+    @RequestMapping({"/addGoodsCart"})
+    @ResponseBody
+    public  ResponseModel  addGoodsCart(String id, String count, String price, String gsp, String buy_type){
+        ResponseModel res = new ResponseModel();
+        res.setCode("400");
+        ShoppingUser user = SecurityUserHolder.getCurrentUser();
+        if(user != null){
+            BigDecimal addPrice =new BigDecimal(price);
+            BigDecimal amount = addPrice.multiply(new BigDecimal(count));
+            ShoppingGoodsWithBLOBs goods = this.goodsService.getObjById(CommUtil.null2Long(id));
+            if( goods != null){
+                if( !goods.getGoodsStoreId().equals(user.getStoreId())){
+                    ShoppingStorecart sc = new ShoppingStorecart();
+                    sc.setAddtime(new Date());
+                    sc.setUserId(user.getId());
+                    sc.setStoreId(goods.getGoodsStoreId());
+                    sc.setScStatus(0);
+                    sc.setTotalPrice(amount);
+                    sc.setDeletestatus(false);
+                    //添加店铺购物车
+                    this.storeCartService.save(sc);
+                    //获取商品属性
+                    String[] gsp_ids = gsp.split(",");
+                    Arrays.sort(gsp_ids);
+                    ShoppingGoodsspecproperty spec_property;
+                    String spec_info ="";
+                    if (gsp_ids != null && !"".equals(gsp_ids)) {
+                        for (String gsp_id : gsp_ids) {
+                            spec_property = this.goodsSpecPropertyService.getObjById(CommUtil.null2Long(gsp_id));
+                            if (spec_property != null) {
+                                spec_property.setSpec(goodsSpecificationService.getObjById(spec_property.getSpecId()));
+                                spec_info = spec_property.getSpec().getName() + ":" + spec_property.getValue() + " " + spec_info;
+                            }
+                        }
+                    }
+
+                    ShoppingGoodscart cart = new ShoppingGoodscart();
+                    cart.setDeletestatus(false);
+                    cart.setScId(sc.getId());
+                    cart.setPrice(addPrice);
+                    cart.setAddtime(new Date());
+                    if (CommUtil.null2String(buy_type).equals("")) {
+                        cart.setCount(CommUtil.null2Int(count));
+                        cart.setPrice(addPrice);
+                    }
+                    if (CommUtil.null2String(buy_type).equals("combin")) {
+                        cart.setCount(1);
+                        cart.setCartType("combin");
+                        cart.setPrice(goods.getCombinPrice());
+                    }
+                    cart.setCartType(buy_type);
+                    cart.setSpecInfo(spec_info);
+                    cart.setCount(Integer.parseInt(count));
+                    cart.setGoodsId(goods.getId());
+                    goodsCartService.save(cart);
+                    res.setCode("200");
+                    res.setMsg("successs");
+                    return res;
+                }else{
+                    res.setMsg("不能购买自己的商品");
+                }
+            }else{
+                res.setMsg("参数id有误");
+            }
+        }else{
+            res.setMsg("用户没有登录");
+        }
+        return res;
+    }
 
     /**
      * 添加购物车
@@ -461,9 +534,7 @@ public class CartController {
         ShoppingUser user = SecurityUserHolder.getCurrentUser();
         Map params = new HashMap();
         ShoppingStorecart sc;
-        //用户不为null
         if (user != null) {
-            //通过cartsession 和 storeid获取信息
             if (!cart_session_id.equals("")) {
                 if (user.getStoreId() != null) {
                     params.clear();
@@ -510,7 +581,6 @@ public class CartController {
             if (datas.containsKey(sc12.getId())) {
                 datas.put(sc12.getId(), sc12);
             }
-
         }
         for (ShoppingStorecart sc11 : cookie_cart) {
             if (!datas.containsKey(sc11.getId())) {
@@ -553,13 +623,6 @@ public class CartController {
             ShoppingGoodsWithBLOBs goods = this.goodsService.getObjById(CommUtil.null2Long(id));
             String type = "save";
             ShoppingStorecart sc33 = new ShoppingStorecart();
-            /*for (Map.Entry<Long, ShoppingStorecart> entry : datas.entrySet()) {
-                if (goods.getGoodsStoreId() == entry.getValue().getStoreId()) {
-                    sc33 = entry.getValue();
-                    type = "update";
-                    break;
-                }
-            }*/
             if (type.equals("save")) {
                 sc33.setStoreId(goods.getGoodsStoreId());
                 sc33.setUserId(user.getId());
@@ -568,9 +631,7 @@ public class CartController {
                 sc33.setAddtime(new Date());
                 sc33.setDeletestatus(false);
                 this.storeCartService.save(sc33);
-            }/* else {
-                this.storeCartService.update(sc33);
-            }*/
+            }
             obj = new ShoppingGoodscart();
             obj.setAddtime(new Date());
             obj.setPrice(addPrice);
@@ -612,17 +673,7 @@ public class CartController {
             } else {
                 sc33.getGcs().add(obj);
             }
-            /*for (ShoppingGoodscart gc1 : sc33.getGcs()) {
-                if (CommUtil.null2String(gc1.getCartType()).equals("")) {
-                    total_price = (gc1.getPrice().multiply(new BigDecimal(gc1.getCount() + ""))).add(total_price);
-                }
-                if (!CommUtil.null2String(gc1.getCartType()).equals("combin")) {
-                    ShoppingGoodsWithBLOBs good = goodsService.getObjById(gc1.getGoodsId());
-                    if (good != null && good.getCombinPrice() != null) {
-                        total_price = good.getCombinPrice().multiply(new BigDecimal(gc1.getCount() + "")).add(total_price);
-                    }
-                }
-            }*/
+
             if (user == null) {
                 sc33.setCartSessionId(cart_session_id);
             } else {
@@ -700,21 +751,8 @@ public class CartController {
         params.put("isdefault",true);
         List<ShoppingAddress> address=addressService.queryByCondition(params);
         mv.addObject("address",address);
-        List<ShoppingStorecart> cart = cart_calc(request);
+        List<ShoppingStorecart> cart = getCart(user.getId());
         if (cart != null) {
-            ShoppingStoreWithBLOBs store = storeService.getObjById(user.getStoreId());
-            if (store != null) {
-                for (ShoppingStorecart sc : cart) {
-                    if (sc.getStoreId().equals(store.getId())) {
-                        goodsCartTools.addGcs(sc);
-                        for (ShoppingGoodscart gc : sc.getGcs()) {
-                            this.goodsCartService.delete(gc.getId());
-                        }
-                        sc.getGcs().clear();
-                        this.storeCartService.delete(sc.getId());
-                    }
-                }
-            }
             cart = storeViewTools.addStores(cart);
             goodsCartTools.insertGcs(cart);
             request.getSession(false).setAttribute("carts", cart);
@@ -723,6 +761,19 @@ public class CartController {
             viewTools.topHandle(mv, request);
             viewTools.headHandle(mv, request);
             viewTools.footerHandle(mv);
+            if (this.configService.getSysConfig().getZtcStatus()) {
+                List ztc_goods = null;
+                Map ztc_map = new HashMap();
+                ztc_map.put("ztc_status", Integer.valueOf(3));
+                ztc_map.put("ztc_begin_time", new Date());
+                ztc_map.put("ztc_gold", Integer.valueOf(0));
+                ztc_map.put("orderBy", "ztc_dredge_price");
+                ztc_map.put("sort", "desc");
+                List goods = this.goodsService.queryByCondition(ztc_map);
+                ztc_goods = randomZtcGoods(goods);
+                accessoryViewTools.addMainPhotos(ztc_goods);
+                mv.addObject("ztc_goods", ztc_goods);
+            }
         } else {
             mv = new JModelAndView("error.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
@@ -731,22 +782,12 @@ public class CartController {
                         this.userConfigService.getUserConfig(), 1, request, response);
             }
             mv.addObject("op_title", "购物车信息为空");
-            mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
-        }
+            if("pc".equals(shopping_view_type)){
+                mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
+            }else{
+                mv.addObject("url", CommUtil.getURL(request) + "/wap/index.htm");
+            }
 
-        if (this.configService.getSysConfig().getZtcStatus()) {
-            List ztc_goods = null;
-            Map ztc_map = new HashMap();
-            ztc_map.put("ztc_status", Integer.valueOf(3));
-            ztc_map.put("ztc_begin_time", new Date());
-            ztc_map.put("ztc_gold", Integer.valueOf(0));
-            ztc_map.put("orderBy", "ztc_dredge_price");
-            ztc_map.put("sort", "desc");
-            List goods = this.goodsService.queryByCondition(ztc_map);
-            //query("select obj from Goods obj where obj.ztc_status =:ztc_status and obj.ztc_begin_time <=:now_date and obj.ztc_gold>:ztc_gold order by obj.ztc_dredge_price desc", ztc_map, -1, -1);
-            ztc_goods = randomZtcGoods(goods);
-            accessoryViewTools.addMainPhotos(ztc_goods);
-            mv.addObject("ztc_goods", ztc_goods);
         }
         return mv;
     }
@@ -817,9 +858,8 @@ public class CartController {
                 params.put("orderBy", "addTime");
                 params.put("sort", "desc");
                 params.put("isdefault",1);
-                log.info("----------addr_start--------");
+
                 List<ShoppingAddress> addrs = this.addressService.queryByCondition(params);
-                log.info("----------addr_finish--------");
                 mv.addObject("addrs", addrs);
                 String orderNo=SecurityUserHolder.getCurrentUser().getId() + CommUtil.formatTime("yyyyMMddHHmmss", new Date());
                 //组装数据  -》一店铺分类的 返回的店铺购物车数据信息
@@ -895,7 +935,7 @@ public class CartController {
 
 
     @RequestMapping({"/goods_cart2.htm"})
-    public ModelAndView goods_cart2(HttpServletRequest request, HttpServletResponse response, String store_id) {
+    public ModelAndView goods_cart2(HttpServletRequest request, HttpServletResponse response, String ids) {
         ModelAndView mv = new JModelAndView("goods_cart2.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
         String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
@@ -903,18 +943,15 @@ public class CartController {
             mv = new JModelAndView("wap/goods_cart2.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
         }
-        List<ShoppingStorecart> cart = cart_calc(request);
-        ShoppingStorecart sc = null;
-        if (cart != null) {
-            for (ShoppingStorecart sc1 : cart) {
-                if (sc1.getStoreId().equals(CommUtil.null2Long(store_id))) {
-                    sc = sc1;
-                    goodsCartTools.addGcss(sc);
-                    break;
-                }
+        String[]  primarys= ids.split(",");
+        List<ShoppingGoodscart> gcs =new ArrayList<>();
+        for(String s: primarys){
+            if(StringUtils.isNotBlank(s)){
+                gcs.add(goodsCartService.getObjById(Long.valueOf(s)));
             }
         }
-        if (sc != null) {
+
+        if (gcs != null) {
             Map params = new HashMap();
             params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
             params.put("orderBy", "addTime");
@@ -925,7 +962,6 @@ public class CartController {
                 for (ShoppingAddress addr : addrs) {
                     if (addr.getAreaId() != null) {
                         ShoppingArea area = areaService.getObjById(addr.getAreaId());
-                        mv.addObject("sms", this.transportTools.query_cart_trans(sc, addr.getAreaId()));
                         areaViewTools.addGrandpa(area);
                         addr.setArea(area);
                     }
@@ -933,14 +969,49 @@ public class CartController {
                 }
             }
             mv.addObject("addrs", adds);
-            if ((store_id == null) || (store_id.equals(""))) {
-                store_id = sc.getStoreId().toString();
+            Map<Long,List<ShoppingGoodscart>>  cartMsg = new HashMap<>();
+            Map<Long,BigDecimal> priceMsg= new HashMap<>();
+            for(ShoppingGoodscart s: gcs){
+                ShoppingStorecart sc = storeCartService.getObjById(s.getScId());
+                if(!cartMsg.containsKey(sc.getStoreId())){
+                    priceMsg.put(sc.getStoreId(),s.getPrice());
+                    List<ShoppingGoodscart> cart= new ArrayList<>();
+                    cart.add(s);
+                    cartMsg.put(sc.getStoreId(),cart);
+                }else{
+                    BigDecimal price = priceMsg.get(sc.getStoreId());
+                    priceMsg.put(sc.getStoreId(),price.add(s.getPrice()));
+                    List<ShoppingGoodscart> cart= cartMsg.get(sc.getStoreId());
+                    cart.add(s);
+                    cartMsg.put(sc.getStoreId(), cart);
+                }
             }
-            String cart_session = CommUtil.randomString(32);
-            request.getSession(false).setAttribute("cart_session", cart_session);
-            params.clear();
-            storeViewTools.addStore(sc);
-            params.put("coupon_order_amount", sc.getTotalPrice());
+            JSONArray data = new JSONArray();
+            Set<Map.Entry<Long,List<ShoppingGoodscart>>> entrySet = cartMsg.entrySet();
+            Iterator<Map.Entry<Long,List<ShoppingGoodscart>>> iter = entrySet.iterator();
+            BigDecimal totalPrice = new BigDecimal("0.00");
+            while (iter.hasNext()){
+                Map.Entry<Long,List<ShoppingGoodscart>> entry = iter.next();
+                ShoppingStoreWithBLOBs store = storeService.getObjById(entry.getKey());
+                JSONObject obj = new JSONObject();
+                obj.put("store",store);
+                //添加订单信息
+                List<ShoppingGoodscart> cart = entry.getValue();
+                for(ShoppingGoodscart c: cart){
+                    goodsViewTools.addGoodsCartGood(c);
+                }
+                obj.put("carts", cart);
+                obj.put("totalPrice",priceMsg.get(entry.getKey()));
+                totalPrice= totalPrice.add(priceMsg.get(entry.getKey()));
+               /* params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
+                params.put("coupon_begin_time", new Date());
+                params.put("coupon_end_time", new Date());
+                params.put("status", Integer.valueOf(0));
+                List<ShoppingCouponInfo> couponinfos = this.couponInfoService.queryByCondition(params);
+                obj.put("couponin",couponinfos);*/
+                data.add(obj);
+            }
+            params.put("coupon_order_amount", totalPrice);
             params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
             params.put("coupon_begin_time", new Date());
             params.put("coupon_end_time", new Date());
@@ -948,20 +1019,8 @@ public class CartController {
             List<ShoppingCouponInfo> couponinfos = this.couponInfoService.queryByCondition(params);
             //优惠券
             mv.addObject("couponinfos", couponinfos);
-            mv.addObject("sc", sc);
-            mv.addObject("cart_session", cart_session);
-            mv.addObject("store_id", store_id);
-            boolean goods_delivery = false;
-            List<ShoppingGoodscart> goodCarts = sc.getGcs();
-            for (ShoppingGoodscart gc : goodCarts) {
-                ShoppingGoodsWithBLOBs goods = goodsService.getObjById(gc.getGoodsId());
-                gc.setGoods(goods);
-                if (goods.getGoodsChoiceType() == 0) {
-                    goods_delivery = true;
-                    break;
-                }
-            }
-            mv.addObject("goodsDelivery", Boolean.valueOf(goods_delivery));
+            mv.addObject("totalPrice", totalPrice);
+            mv.addObject("data", data);
             viewTools.topHandle(mv, request);
             viewTools.headHandle(mv, request);
             viewTools.footerHandle(mv);
@@ -1158,76 +1217,6 @@ public class CartController {
         return mv;
     }
 
-     /* private void send_email(HttpServletRequest request, ShoppingOrderform order, String email, String mark) throws Exception {
-        Map<String,Object> params = new HashMap<>();
-        params.put("mark",mark);
-        ShoppingTemplate template = this.templateService.queryByCondition(params);
-        if ((template != null) && (template.getOpen())) {
-            String subject = template.getTitle();
-            String path = request.getSession().getServletContext().getRealPath("") + File.separator + "vm"+ File.separator;
-            if (!CommUtil.fileExist(path)) {
-                CommUtil.createFolder(path);
-            }
-            PrintWriter pwrite = new PrintWriter(new OutputStreamWriter(new FileOutputStream(path + "msg.vm", false), "UTF-8"));
-            pwrite.print(template.getContent());
-            pwrite.flush();
-            pwrite.close();
-            Properties p = new Properties();
-            p.setProperty("file.resource.loader.path", request.getRealPath("/") + "vm" + File.separator);
-            p.setProperty("input.encoding", "UTF-8");
-            p.setProperty("output.encoding", "UTF-8");
-            Velocity.init(p);
-            org.apache.velocity.Template blank = Velocity.getTemplate("msg.vm", "UTF-8");
-            VelocityContext context = new VelocityContext();
-            context.put("buyer", order.getUser());
-            context.put("seller", order.getStore().getUser());
-            context.put("config", this.configService.getSysConfig());
-            context.put("send_time", CommUtil.formatLongDate(new Date()));
-            context.put("webPath", CommUtil.getURL(request));
-            context.put("order", order);
-            StringWriter writer = new StringWriter();
-            blank.merge(context, writer);
-            String content = writer.toString();
-            this.sendMessageService.sendEmail(email, subject, content);
-        }
-    }*/
-
-
-    /*private void send_sms(HttpServletRequest request, ShoppingOrderform order, String mobile, String mark) throws Exception {
-        ShoppingTemplate template = this.templateService.getObjByProperty("mark", mark);
-        if ((template != null) && (template.getOpen())) {
-            String path = request.getSession().getServletContext().getRealPath("") + File.separator + "vm"
-                    + File.separator;
-            if (!CommUtil.fileExist(path)) {
-                CommUtil.createFolder(path);
-            }
-            PrintWriter pwrite = new PrintWriter(
-                    new OutputStreamWriter(new FileOutputStream(path + "msg.vm", false), "UTF-8"));
-            pwrite.print(template.getContent());
-            pwrite.flush();
-            pwrite.close();
-
-            Properties p = new Properties();
-            p.setProperty("file.resource.loader.path", request.getRealPath("/") + "vm" + File.separator);
-            p.setProperty("input.encoding", "UTF-8");
-            p.setProperty("output.encoding", "UTF-8");
-            Velocity.init(p);
-            org.apache.velocity.Template blank = Velocity.getTemplate("msg.vm", "UTF-8");
-            VelocityContext context = new VelocityContext();
-            context.put("buyer", order.getUser());
-            context.put("seller", order.getStore().getUser());
-            context.put("config", this.configService.getSysConfig());
-            context.put("send_time", CommUtil.formatLongDate(new Date()));
-            context.put("webPath", CommUtil.getURL(request));
-            context.put("order", order);
-            StringWriter writer = new StringWriter();
-            blank.merge(context, writer);
-
-            String content = writer.toString();
-            this.sendMessageService.sendSMS(mobile, content);
-        }
-    }
-*/
 
     @RequestMapping({"/cart_menu_detail.htm"})
     public ModelAndView cart_menu_detail(HttpServletRequest request, HttpServletResponse response) {
@@ -1278,6 +1267,12 @@ public class CartController {
         return mv;
     }
 
+    private List<ShoppingStorecart> getCart(Long userId){
+        Map params = new HashMap();
+        params.put("user_id", userId);
+        params.put("sc_status", Integer.valueOf(0));
+        return this.storeCartService.queryByCondition(params);
+    }
 
 
     private List<ShoppingStorecart> cart_calc(HttpServletRequest request) {
@@ -1329,7 +1324,6 @@ public class CartController {
                 params.put("sc_status", Integer.valueOf(0));
                 params.put("deleteStatus",false);
                 user_cart = this.storeCartService.queryByCondition(params);
-
             } else {
                 params.clear();
                 params.put("user_id", user.getId());
@@ -1495,7 +1489,8 @@ public class CartController {
     @RequestMapping({"/goods_count_adjust.htm"})
     public void goods_count_adjust(HttpServletRequest request, HttpServletResponse response, String cart_id, String store_id, String count) {
         //更改数量
-        List<ShoppingStorecart> cart = cart_calc(request);
+        ShoppingUser user  = SecurityUserHolder.getCurrentUser();
+        List<ShoppingStorecart> cart = getCart(user.getId());
         goodsCartTools.insertGcs(cart);
         double goods_total_price = 0.0D;
         String error = "100";

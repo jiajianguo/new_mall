@@ -64,40 +64,49 @@
 						</div>
 						<div class="order_text">
 							<div>
-								<svg class="icon icon_order" aria-hidden="true">
-									<use xlink:href="#icon-qianbao"></use>
-								</svg>
-								<div class="order_bttext">
-									<a  href="/buyer/order.htm?order_status=order_submit">待支付</a>
-								</div>
-								<div class="orderbq" th:text="${waitingPay}"></div>
+								<a  href="/buyer/order.htm?order_status=order_submit">
+									<svg class="icon icon_order" aria-hidden="true">
+										<use xlink:href="#icon-qianbao"></use>
+									</svg>
+									<div class="order_bttext">
+										待支付
+									</div>
+									<div class="orderbq" th:text="${waitingPay}"></div>
+								</a>
+
 							</div>
 							<div>
-								<svg class="icon icon_order" aria-hidden="true">
-									<use xlink:href="#icon-daifahuo"></use>
-								</svg>
-								<div class="order_bttext">
-									<a href="/buyer/order.htm?order_status=order_pay">待发货</a>
-								</div>
-								<div class="orderbq" th:text="${waitingSend}"></div>
+								<a href="/buyer/order.htm?order_status=order_pay">
+									<svg class="icon icon_order" aria-hidden="true">
+										<use xlink:href="#icon-daifahuo"></use>
+									</svg>
+									<div class="order_bttext">
+										待发货
+									</div>
+									<div class="orderbq" th:text="${waitingSend}"></div>
+								</a>
 							</div>
 							<div>
-								<svg class="icon icon_order" aria-hidden="true">
-									<use xlink:href="#icon-gerenzhongxindingdandaishouhuo"></use>
-								</svg>
-								<div class="order_bttext">
-									<a  href="/buyer/order.htm?order_status=order_receive">待收货</a>
-								</div>
-								<div class="orderbq" th:text="${waitingDeli}"></div>
+								<a  href="/buyer/order.htm?order_status=order_receive">
+									<svg class="icon icon_order" aria-hidden="true">
+										<use xlink:href="#icon-gerenzhongxindingdandaishouhuo"></use>
+									</svg>
+									<div class="order_bttext">
+										待收货
+									</div>
+									<div class="orderbq" th:text="${waitingDeli}"></div>
+								</a>
 							</div>
 							<div>
-								<svg class="icon icon_order" aria-hidden="true">
-									<use xlink:href="#icon-xiaoxi1"></use>
-								</svg>
-								<div class="order_bttext">
-									<a  href="/buyer/order.htm?order_status=order_finish">待评价</a>
-								</div>
-								<div class="orderbq" th:text="${waitingEval}">1</div>
+								<a  href="/buyer/order.htm?order_status=order_finish">
+									<svg class="icon icon_order" aria-hidden="true">
+										<use xlink:href="#icon-xiaoxi1"></use>
+									</svg>
+									<div class="order_bttext">
+										待评价
+									</div>
+									<div class="orderbq" th:text="${waitingEval}">1</div>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -129,7 +138,7 @@
 									<use xlink:href="#icon-liulan"></use>
 								</svg>
 								<div class="order_bttext">
-									<a href="/">浏览历史</a>
+									<a href="#">浏览历史</a>
 								</div>
 							</div>
 							<div>

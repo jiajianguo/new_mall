@@ -512,6 +512,7 @@ public class IndexViewAction {
 	@RequestMapping( {"/index.htm"} )
 	public ModelAndView index( HttpServletRequest request, HttpServletResponse response ) {
 		ModelAndView mv = new JModelAndView( "index.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
+		request.getSession().setAttribute("shopping_view_type", "pc");
 		Map params = new HashMap();
 		params.put( "display", Boolean.valueOf( true ));
 		params.put("start",0);
@@ -558,10 +559,8 @@ public class IndexViewAction {
 		params.put("sort","asc");
 		/*合作伙伴*/
 		List<ShoppingPartner> img_partners = this.partnerService.queryByCondition(params);
-				//( "select obj from Partner obj where obj.image.id is not null order by obj.sequence asc", params, -1, -1 );
 		mv.addObject( "img_partners", img_partners );
 		List<ShoppingPartner> text_partners = this.partnerService.queryByCondition(params);
-				//query( "select obj from Partner obj where obj.image.id is null order by obj.sequence asc", params, -1, -1 );
 		mv.addObject( "text_partners", text_partners );
 		// 底部新闻分类显示
 		params.clear();
@@ -1067,12 +1066,11 @@ public class IndexViewAction {
 						this.storeCartService.delete(sc.getId() );
 					}
 				}
-
 				params.clear();
 				params.put( "cart_session_id", cart_session_id );
 				params.put( "sc_status", Integer.valueOf( 0 ) );
 				cookie_cart = this.storeCartService.queryByCondition(params);
-						//query( "select obj from StoreCart obj where obj.cart_session_id=:cart_session_id and obj.sc_status=:sc_status", params, -1, -1 );
+						//query("select obj from StoreCart obj where obj.cart_session_id=:cart_session_id and obj.sc_status=:sc_status", params, -1, -1 );
 
 				params.clear();
 				params.put( "user_id", user.getId() );
@@ -1099,7 +1097,7 @@ public class IndexViewAction {
 		for( ShoppingStorecart sc : user_cart ) {
 			boolean sc_add = true;
 			for( ShoppingStorecart sc1 : cart ) {
-				if( sc1.getStore().getId().equals( sc.getStore().getId() ) ) {
+				if( sc1.getStoreId().equals(sc.getStoreId()) ) {
 					sc_add = false;
 				}
 			}
