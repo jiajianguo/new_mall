@@ -714,7 +714,6 @@ public class CartController {
     }
 
 
-
     @SecurityMapping(display = false, rsequence = 0, title = "购物车中收货地址保存", value = "/cart_address_save.htm*", rtype = "buyer", rname = "购物流程3", rcode = "goods_cart", rgroup = "在线购物")
     @RequestMapping({"/cart_address_save.htm"})
     public void cart_address_save(HttpServletRequest request, HttpServletResponse response, String id, String area_id, String store_id) throws IOException {

@@ -186,12 +186,12 @@ public class OrderController {
         params.put("sort","desc");
         params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
         int pageNow =1;
-        params.put("start",(pageNow -1)*8);
-        params.put("pageSize",8);
-        params.put("deleteStatus",0);
         if(StringUtils.isNotBlank(currentPage)){
             pageNow =Integer.parseInt(currentPage);
         }
+        params.put("start",(pageNow -1)*8);
+        params.put("pageSize",8);
+        params.put("deleteStatus",0);
         if (!CommUtil.null2String(order_id).equals("")) {
             params.put("order_id","%" + order_id + "%");
             mv.addObject("order_id", order_id);

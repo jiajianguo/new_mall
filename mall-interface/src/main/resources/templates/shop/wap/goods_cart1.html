@@ -57,7 +57,7 @@
 									</div>
 									<div class="num_box flex-between">
 										<div class="reduce" th:data-id="${obj.id}">-</div>
-										<div class="goods_num" >1</div>
+										<div class="goods_num" th:text="${obj.count!=null?obj.count:1}"></div>
 										<div class="add" th:data-id="${obj.id}">+</div>
 									</div>
 								</div>
@@ -142,12 +142,13 @@
 				}
 				$.post('/goods_count_adjust',{'cart_id':$(this).attr('data-id'),'count': val},function(res){
 					if(res.err == '200'){
-						$(this).parents(".num_box").find(".goods_num").text(val);
-						calcAllprice();
+						console.log(res.err+",,,,"+res.errmsg);
 					}else{
 						alert("数据有误")
 					}
 				});
+				$(this).parents(".num_box").find(".goods_num").text(val);
+				calcAllprice();
 
 
 			})
@@ -157,12 +158,13 @@
 					val++;
 				$.post('/goods_count_adjust',{'cart_id':$(this).attr('data-id'),'count': val},function(res){
 					if(res.err == '200'){
-						$(this).parents(".num_box").find(".goods_num").text(val);
-						calcAllprice();
+						console.log(res.err+",,,,"+res.errmsg);
 					}else{
 						alert("数据有误")
 					}
 				});
+				$(this).parents(".num_box").find(".goods_num").text(val);
+				calcAllprice();
 			})
 
 

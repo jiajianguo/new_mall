@@ -58,7 +58,8 @@
 	background: #f7f7f7;
 	padding: .02rem .15rem;
 	border-radius: .5rem;
-	color: #555;
+	color: #bbb;
+	font-size: .2rem;
 }
 
 .num_box{

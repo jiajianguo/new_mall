@@ -105,9 +105,10 @@
 					<div class="spec_tit">
 						<span th:text="${spec.name}"></span>
 						<b></b>
+						<input type="hidden">
 					</div>
 					<div class="sepc_cont flex-star"  >
-						<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}"></div>
+						<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}" th:attr="gsp=${gsp.id}"></div>
 					</div>
 				</div>
 				<div class="spec_line">
@@ -181,11 +182,14 @@
 		}
 		var gsp ="";
 		var load = true;
-		var gsps=$(".spec_line").find(".spec_tit b");
+		//var gsps=$(".spec_line").find(".spec_tit b");
+		var gsps=$(".spec_line").find(".spec_tit input").val();
+		console.log("gsps",gsps);
 		if(gsps.length >0){
 			gsps.each(function () {
-				if($(this).text()){
-					gsp=gsp+ $(this).text()+",";
+				if($(this).val()){
+					//gsp=gsp+ $(this).text()+",";
+					gsp=gsp+ $(this).attr("gsp")+",";
 				}
 			})
 		}
@@ -327,6 +331,7 @@
 	$(".sepc_cont div").click(function(){
 		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
 		$(this).parents(".spec_line").find(".spec_tit b").text($(this).text());
+		$(this).parents(".spec_line").find(".spec_tit input").val($(this).attr("gsp"));
 	});
 </script>
 </html>
