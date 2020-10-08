@@ -2,6 +2,9 @@ package com.xdj.www.entity;
 
 import java.util.Date;
 
+/**
+ * @author Administrator
+ */
 public class ShoppingAddress {
     private Long id;
 

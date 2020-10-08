@@ -284,13 +284,13 @@ public class PayContoller {
         String subject = request.getParameter("subject");
         String type = CommUtil.null2String(request.getParameter("body")).trim();
         String trade_status = request.getParameter("trade_status");
-        ShoppingOrderformWithBLOBs order = null;
+        List<ShoppingOrderformWithBLOBs> order = null;
         ShoppingPredepositWithBLOBs obj = null;
         ShoppingGoldRecordWithBLOBs gold = null;
         ShoppingIntegralGoodsorderWithBLOBs ig_order = null;
         if (type.equals("goods")) {
-            order = this.orderFormService.getObjById(CommUtil.null2Long(order_no));
-            paymentViewTools.addOrderPay(order);
+            order = this.orderFormService.selectByOrderNo(order_no);
+            paymentViewTools.addOrderPays(order);
         }
         if (type.equals("cash")) {
             obj = this.predepositService.getObjById(CommUtil.null2Long(order_no));
@@ -319,9 +319,9 @@ public class PayContoller {
         }
         AlipayConfig config = new AlipayConfig();
         if (type.equals("goods")) {
-            config.setKey(order.getPayment().getSafekey());
-            config.setPartner(order.getPayment().getPartner());
-            config.setSeller_email(order.getPayment().getSellerEmail());
+            config.setKey(order.get(0).getPayment().getSafekey());
+            config.setPartner(order.get(0).getPayment().getPartner());
+            config.setSeller_email(order.get(0).getPayment().getSellerEmail());
         }
         if ((type.equals("cash")) || (type.equals("gold")) ||
                 (type.equals("integral"))) {
@@ -347,36 +347,35 @@ public class PayContoller {
         config.setReturn_url(CommUtil.getURL(request) + "/aplipay_return.htm");
         boolean verify_result = AlipayNotify.verify(config, params);
         if (verify_result) {
-            if ((type.equals("goods")) && (
-                    (trade_status.equals("WAIT_SELLER_SEND_GOODS")) ||
-                            (trade_status.equals("TRADE_FINISHED")) ||
-                            (trade_status.equals("TRADE_SUCCESS")))) {
-                if (order.getOrderStatus() != 20) {
-                    order.setOrderStatus(20);
-                    order.setOutOrderId(trade_no);
-                    order.setPaytime(new Date());
-                    this.orderFormService.update(order);
+            if ((type.equals("goods")) && ( (trade_status.equals("WAIT_SELLER_SEND_GOODS")) ||
+                (trade_status.equals("TRADE_FINISHED")) || (trade_status.equals("TRADE_SUCCESS")))) {
+                for(ShoppingOrderformWithBLOBs o: order){
+                    if (o.getOrderStatus() != 20) {
+                        o.setOrderStatus(20);
+                        o.setOutOrderId(trade_no);
+                        o.setPaytime(new Date());
+                        this.orderFormService.update(o);
+                        update_goods_inventory(o);
+                        ShoppingOrderLog ofl = new ShoppingOrderLog();
+                        ofl.setAddtime(new Date());
+                        ofl.setLogInfo("支付宝在线支付");
+                        ofl.setLogUserId(o.getUserId());
+                        ofl.setOfId(o.getId());
+                        ofl.setDeletestatus(false);
+                        this.orderFormLogService.save(ofl);
+                        if (this.configService.getSysConfig().getEmailenable()) {
+                            //通过店铺id 获取店主手机或者email
+                            ShoppingUser user= userService.queryOneByStoreId(o.getStoreId());
+                            sendMessageService.sendEmail(user.getEmail(),"会员下单","尊敬的卖家用户，你的客户已下单支付成功，请尽快处理订单");
+                        }
 
-                    update_goods_inventory(order);
-                    ShoppingOrderLog ofl = new ShoppingOrderLog();
-                    ofl.setAddtime(new Date());
-                    ofl.setLogInfo("支付宝在线支付");
-                    ofl.setLogUserId(order.getUserId());
-                    ofl.setOfId(order.getId());
-                    ofl.setDeletestatus(false);
-                    this.orderFormLogService.save(ofl);
-
-                    if (this.configService.getSysConfig().getEmailenable()) {
-                        //send_order_email(request, order, order.getUser().getEmail(),"email_tobuyer_online_pay_ok_notify");
-                        //send_order_email(request, order, order .getStore().getUser().getEmail(), "email_toseller_online_pay_ok_notify");
-                    }
-
-                    if (this.configService.getSysConfig().getSmsenbale()) {
-                        //send_order_sms(request, order, order.getUser().getMobile(),"sms_tobuyer_online_pay_ok_notify");
-                        //send_order_sms(request, order, order.getStore().getUser().getMobile(), "sms_toseller_online_pay_ok_notify");
+                        if (this.configService.getSysConfig().getSmsenbale()) {
+                            ShoppingUser user= userService.queryOneByStoreId(o.getStoreId());
+                            sendMessageService.sendSMS(user.getMobile(),"尊敬的卖家用户，你的客户已下单支付成功，请尽快处理订单");
+                        }
                     }
                 }
-                mv.addObject("obj", order);
+                mv.addObject("obj", order.get(0));
             }
 
             if ((type.equals("cash")) && (
@@ -431,20 +430,15 @@ public class PayContoller {
                     log.setGrId(gold.getId());
                     this.goldLogService.save(log);
                 }
-                mv = new JModelAndView("success.html",
-                        this.configService.getSysConfig(),
-                        this.userConfigService.getUserConfig(), 1, request,
-                        response);
-                mv.addObject("op_title", "兑换" + gold.getGoldCount() +
-                        "金币成功");
+                mv = new JModelAndView("success.html", this.configService.getSysConfig(),
+                        this.userConfigService.getUserConfig(), 1, request, response);
+                mv.addObject("op_title", "兑换" + gold.getGoldCount() + "金币成功");
                 mv.addObject("url", CommUtil.getURL(request) +
                         "/seller/gold_record_list.htm");
             }
 
-            if ((type.equals("integral")) && (
-                    (trade_status.equals("WAIT_SELLER_SEND_GOODS")) ||
-                            (trade_status.equals("TRADE_FINISHED")) ||
-                            (trade_status.equals("TRADE_SUCCESS")))) {
+            if ((type.equals("integral")) && ((trade_status.equals("WAIT_SELLER_SEND_GOODS")) ||
+                            (trade_status.equals("TRADE_FINISHED")) || (trade_status.equals("TRADE_SUCCESS")))) {
                 if (ig_order.getIgoStatus() < 20) {
                     ig_order.setIgoStatus(20);
                     ig_order.setIgoPayTime(new Date());
@@ -468,8 +462,7 @@ public class PayContoller {
                 viewTools.navshandle(mv);
                 mv.addObject("obj", ig_order);
             }
-        }
-        else {
+        }else {
             mv = new JModelAndView("error.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request,
                     response);
@@ -739,12 +732,12 @@ public class PayContoller {
     public String genericAlipay(String url, String payment_id, String type, String id){
         log.info("----alipaymsg--url---{}----payment--{}---type----{}---id----{}",url,payment_id,type,id);
         String result = "";
-        ShoppingOrderformWithBLOBs of = null;
+        List<ShoppingOrderformWithBLOBs> of = null;
         ShoppingPredepositWithBLOBs obj = null;
         ShoppingGoldRecordWithBLOBs gold = null;
         ShoppingIntegralGoodsorderWithBLOBs ig_order = null;
         if (type.equals("goods")) {
-            of = this.orderFormService.getObjById(CommUtil.null2Long(id));
+            of = this.orderFormService.selectByOrderNo(id);
         }
         if (type.equals("cash")) {
             obj = this.predepositService.getObjById(CommUtil.null2Long(id));
@@ -798,7 +791,7 @@ public class PayContoller {
             }
             String out_trade_no = "";
             if (type.equals("goods")) {
-                out_trade_no = of.getId().toString();
+                out_trade_no = id;
             }
             if (type.equals("cash")) {
                 out_trade_no = obj.getId().toString();
@@ -812,7 +805,7 @@ public class PayContoller {
 
             String subject = "";
             if (type.equals("goods")) {
-                subject = of.getOrderId();
+                subject =id;
             }
             if (type.equals("cash")) {
                 subject = obj.getPdSn();
@@ -828,7 +821,11 @@ public class PayContoller {
 
             String total_fee = "";
             if (type.equals("goods")) {
-                total_fee = CommUtil.null2String(of.getTotalprice());
+                BigDecimal price = new BigDecimal("0.00");
+                for(ShoppingOrderformWithBLOBs s: of){
+                    price=price.add(s.getTotalprice());
+                }
+                total_fee = price.toString();
             }
             if (type.equals("cash")) {
                 total_fee = CommUtil.null2String(obj.getPdAmount());
@@ -878,11 +875,10 @@ public class PayContoller {
             }
             result = AlipayService.create_direct_pay_by_user(config, sParaTemp);
         }
-        if (interfaceType == 1)
-        {
+        if (interfaceType == 1) {
             String out_trade_no = "";
             if (type.equals("goods")) {
-                out_trade_no = of.getId().toString();
+                out_trade_no = id;
             }
             if (type.equals("cash")) {
                 out_trade_no = obj.getId().toString();
@@ -896,7 +892,7 @@ public class PayContoller {
 
             String subject = "";
             if (type.equals("goods")) {
-                subject = of.getOrderId();
+                subject =id;
             }
             if (type.equals("cash")) {
                 subject = obj.getPdSn();
@@ -912,7 +908,11 @@ public class PayContoller {
 
             String total_fee = "";
             if (type.equals("goods")) {
-                total_fee = com.xdj.interfaces.mallinterface.util.CommUtil.null2String(of.getTotalprice());
+                BigDecimal price = new BigDecimal("0.00");
+                for(ShoppingOrderformWithBLOBs s: of){
+                    price=price.add(s.getTotalprice());
+                }
+                total_fee = price.toString();
             }
             if (type.equals("cash")) {
                 total_fee = com.xdj.interfaces.mallinterface.util.CommUtil.null2String(obj.getPdAmount());
@@ -968,7 +968,7 @@ public class PayContoller {
         if (interfaceType == 2){
             String out_trade_no = "";
             if (type.equals("goods")) {
-                out_trade_no = of.getId().toString();
+                out_trade_no = id;
             }
             if (type.equals("cash")) {
                 out_trade_no = obj.getId().toString();
@@ -982,7 +982,7 @@ public class PayContoller {
 
             String subject = "";
             if (type.equals("goods")) {
-                subject = of.getOrderId();
+                subject =id;
             }
             if (type.equals("cash")) {
                 subject = obj.getPdSn();
@@ -998,7 +998,11 @@ public class PayContoller {
 
             String total_fee = "";
             if (type.equals("goods")) {
-                total_fee = com.xdj.interfaces.mallinterface.util.CommUtil.null2String(of.getTotalprice());
+                BigDecimal price = new BigDecimal("0.00");
+                for(ShoppingOrderformWithBLOBs s: of){
+                    price=price.add(s.getTotalprice());
+                }
+                total_fee = price.toString();
             }
             if (type.equals("cash")) {
                 total_fee = com.xdj.interfaces.mallinterface.util.CommUtil.null2String(obj.getPdAmount());

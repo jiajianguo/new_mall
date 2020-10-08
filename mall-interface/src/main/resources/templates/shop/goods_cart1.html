@@ -27,7 +27,7 @@
                 if (data.err == "200") {
                     jQuery("#goods_count_" + cart_id).val(count);
                     jQuery("#goods_count_" + cart_id).attr("goods_count", count)
-                    jQuery("#goods_total_price_" + cart_id).html("¥" + data.goods_total_price);
+                    jQuery("#goods_total_price_" + cart_id).html("¥" + data.sc_total_price);
                     jQuery("#total_price_" + store_id).html(data.sc_total_price);
                     jQuery("#top_total_price_" + store_id).html(data.sc_total_price);
                 }
@@ -41,7 +41,6 @@
                 }*/
             }, "json");
         }
-
 
         function confirm_cart() {
             //判断勾选商品
@@ -86,6 +85,9 @@
                     window.location.href = "/user/login.htm?url=/goods_cart1.htm"
 
             });
+            /**
+             * 减数量
+             */
             jQuery("a[id^=count_down]").click(function () {
                 var cart_id = jQuery(this).attr("cart_id");
                 var count = jQuery("#goods_count_" + cart_id).val();
@@ -95,6 +97,7 @@
                     goods_count_adjust(cart_id, store_id, count)
                 }
             });
+
             jQuery("a[id^=count_up]").click(function () {
                 var cart_id = jQuery(this).attr("cart_id");
                 var count = jQuery("#goods_count_" + cart_id).val();
@@ -104,6 +107,10 @@
                     goods_count_adjust(cart_id, store_id, count);
                 }
             });
+
+            /**
+             * 加数量
+             */
             jQuery("input[id^=goods_count_]").keyup(function () {
                 var cart_id = jQuery(this).attr("cart_id");
                 var count = jQuery("#goods_count_" + cart_id).val().replace(/\D/g, '');
@@ -115,32 +122,42 @@
                     goods_count_adjust(cart_id, store_id, count);
                 }
             });
-            //
+
             jQuery(".baby_gp>a").mouseover(function () {
                 jQuery(this).parent().find(".arrow").show();
                 jQuery(this).parent().find(".baby_group").show();
             });
+
             jQuery(".baby_gp").mouseleave(function () {
                 jQuery(this).parent().find(".arrow").hide();
                 jQuery(this).parent().find(".baby_group").hide();
             });
+            /**
+             * 选中结算商品
+             */
             jQuery(".table tr td input[type=checkbox]").click(function(){
-                console.log("执行数据信息CheckBox");
-                calcAllprice();
+                goods_cart_price();
             });
-            function calcAllprice(){
-                var allprice = 0.00;
-                $(".table tr td input[type=checkbox]").each(function(){
-                    if($(this).is(":checked")){
-                        var num = $(this).parents(".list_item").find(".num_box .goods_num").text();
-                        var pricestr = $(this).parents(".list_item").find(".price_box div").text();
-                        pricestr = pricestr.slice(1,pricestr.length);
-                        pricestr = parseFloat(pricestr) * num;
-                        allprice += pricestr;
-                    }
-                    $(".allprice").text(allprice.toFixed(2))
-                })
+            function goods_cart_price (){
+                console.log('更改选中结算的价格')
+                var s=jQuery(".table tr td ").find("input[type=checkbox]");
+                var price=0;
+                if(s){
+                    s.each(function(){
+                        if(jQuery(this).is(':checked')){
+                            var id=jQuery(this).val();
+                            console.log(id);
+                            var p = jQuery("#goods_total_price_"+id).text();
+                            console.log(p);
+                            var ps=p.slice(1,p.length);
+                            console.log(ps);
+                            price=price+parseFloat(p.slice(1,p.length)) ;
+                        }
+                    })
+                    jQuery("#orange_price").text(price);
+                }
             }
+
         });
     </script>
     <head>
@@ -372,7 +389,7 @@
                                 <span class="color"  th:text="${obj.specInfo}"></span><br/>
                                 </p>
                             </td>
-                            <td align="center" th:class="${'goods_price'+obj.id}"  th:text="'￥'+${obj.price}"></td>
+                            <td align="center" th:class="${'goods_price'+obj.id}" th:id="${'goods_price'+obj.id}"  th:text="'￥'+${obj.price}"></td>
                             <td class="input" align="center">
                               <span>
                                 <a href="javascript:void(0);" th:id="'count_down_'+${obj.id}" th:cart_id="${obj.id}"
@@ -391,8 +408,7 @@
                                   </span>
                             </td>
                             <td align="center">
-                                <strong class="orange" th:id="'goods_total_price_'+${obj.id}">
-                                    <span th:text="'¥ '+${obj.count *(obj.price == null?1: obj.price)}"></span>
+                                <strong class="orange" th:id="${'goods_total_price_'+obj.id}" th:text="'¥'+${obj.count *(obj.price == null?1: obj.price)}">
                                 </strong>
                             </td>
                             <td align="center">
@@ -410,7 +426,7 @@
             <span class="h2_r">
               <em>商品总价：¥</em>
               <b>
-                  <strong class="orange" > 0.00</strong>
+                  <strong class="orange" id="orange_price"> 0.00</strong>
               </b>
                 <a href="javascript:void(0);" onclick="confirm_cart();">结算</a>
             </span>

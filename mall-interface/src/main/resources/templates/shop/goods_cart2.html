@@ -325,6 +325,7 @@
                   <input name="store_id" type="hidden" th:id="store_id" th:value="${sc.store.id}"/>
                   <input name="addrs" type="hidden" th:id="${addrs}" th:value="${addrs.size()}"/>
                 </span>-->
+                <input type="hidden" name="ids" th:value="${ids}">
             </div>
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -348,13 +349,12 @@
                                     <span th:if="${gc.goods.groupBuy==2}" style="color:#F00">(团购)</span>
                                     <span th:if="${gc.goods.bargainStatus==2}" style="color:#F00">(特价)</span>
                                     <span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span>
-
                                 <div th:if="${gc.cartType=='combin'}" class="baby_gp">
                                     <a href="javascript:void(0);" style="color:#F00;">[组合商品]</a>
                                     <div class="baby_group" style="display:none;">
                                         <div class="baby_group_box">
                                             <ul class="group_ul">
-                                                <li th:each="info : ${goodsViewTools.query_combin_goods('${gc.goods.id}')}">
+                                                <li th:each="info : ${goodsViewTools.query_combin_goods(gc.goods.id)}">
                                                     <a th:href="@{/goods.htm(id=${info.id})}" target="_blank">
                                                         <img th:if="${info.goods_main_photo}"
                                                              th:src="@{'/'+${info.goods_main_photo.path}+'/'+${info.goods_main_photo.name}+'_small.'+${info.goods_main_photo.ext}}"/>
@@ -390,13 +390,13 @@
             <div class="sendadress">
                 <h1>
                     <div class="sendhright">
-            <span class="sendperbtn">
-              <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id})}"
-                 dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address">新增地址</a>
-            </span>
                         <span class="sendperbtn">
-              <a th:href="@{/buyer/address.htm}" target="_blank">管理收货地址</a>
-            </span>
+                            <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id})}"
+                             dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address">新增地址</a>
+                        </span>
+                        <span class="sendperbtn">
+                            <a th:href="@{/buyer/address.htm}" target="_blank">管理收货地址</a>
+                        </span>
                     </div>
                     <span class="sendperadr">收货人地址</span>
                 </h1>
@@ -409,13 +409,11 @@
                             </strong>
                             <label>
                                 <strong>
-                                    <input type="radio" name="addr_id" id="addr_id" th:value="${addr.id}"
-                                           th:checked="${ velocitycount==1 ?'checked':'' }"/>
+                                    <input type="radio" name="addr_id" id="addr_id" th:value="${addr.id}" th:checked="${ velocitycount==1 ?'checked':'' }"/>
                                 </strong>
-                                <span id="address" th:if="${addr.area != null }"
-                                      th:text="${  addr.area.parent.parent.areaname}+${addr.area.parent.areaname}+${addr.area.areaname}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
+                                <span id="address" th:if="${addr.area != null }" th:text="${ addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
                                 <input type="hidden" id="addr" th:if="${addr.area != null }"
-                                       th:value="${ addr.area.parent.parent.areaname}+${addr.area.parent.areaname}+${addr.area.areaname}+${addr.areaInfo!=null?addr.areaInfo:''}"/>
+                                       th:value="${addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"/>
                                 <span id="person" th:text="${addr.truename}"></span>
                                 <span id="mobile" th:text="${addr.mobile}"></span>
                                 <input type="hidden" id="person_info" th:value="${addr.truename}+':'+${addr.mobile}"/>
@@ -432,7 +430,7 @@
                                 <input name="invoiceType" type="radio" id="invoiceType" value="0" checked="checked"/>个人
                             </label>
                             <label>
-                                <input name="invoiceType" id="invoiceType" type="radio" value="1"/> 单位 </label>
+                                <input name="invoiceType" id="invoiceType" type="radio" value="1"/>单位</label>
                         </li>
                         <li>
                             <table style="color: #3f4c58;">
@@ -490,10 +488,10 @@
                     </ul>
                 </div>
 
-                <h1 th:if="${couponinfos.size()>0}">
+                <h1 th:if="${couponinfos}">
                     <span class="sendperadr margin10">使用优惠券</span>
                 </h1>
-                <div class="sendmethod">
+                <div class="sendmethod"  th:if="${couponinfos}">
                     <ul>
                         <li><span style="margin-bottom:5px;">可用优惠券：</span>
                             <select name="coupon_id" id="coupon_id">
@@ -506,7 +504,7 @@
                     </ul>
                 </div>
 
-                <h1 th:if="${goodsDelivery}">
+                <h1 ><!--th:if="${goodsDelivery}"-->
                     <span class="sendperadr margin10">配送方式</span>
                 </h1>
                 <div class="sendmethod">
@@ -527,9 +525,9 @@
                 <div class="sendmeg">
                     <textarea name="msg" cols="" rows="" id="msg"></textarea>
                 </div>
-                <div class="paysend" id="order_coupon_div" style="display:none;">优惠券抵消：<strong class="red"
-                                                                                               style=" font-size:24px;"
-                                                                                               id="order_coupon"></strong>
+                <div class="paysend" id="order_coupon_div" style="display:none;">
+                    优惠券抵消：
+                    <strong class="red" style=" font-size:24px;" id="order_coupon"></strong>
                 </div>
 
                 <div class="paysend">

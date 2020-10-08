@@ -36,4 +36,11 @@ public class PaymentViewTools {
           order.setPayment(paymentService.getObjById(order.getPaymentId()));
         }
     }
+    public void addOrderPays(List<ShoppingOrderformWithBLOBs> orders){
+        if(orders != null ){
+            for(ShoppingOrderformWithBLOBs o: orders){
+                addOrderPay(o);
+            }
+        }
+    }
 }

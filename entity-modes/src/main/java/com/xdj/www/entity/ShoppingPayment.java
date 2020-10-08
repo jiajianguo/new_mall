@@ -3,6 +3,9 @@ package com.xdj.www.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author Administrator
+ */
 public class ShoppingPayment extends BaseEntity{
     private Long id;
 

@@ -53,7 +53,7 @@ spring:
 logging:
   level:
     org.springframework: info
-    com.xdj.interfaces.mallinterface.mapper: debug
+    #com.xdj.interfaces.mallinterface.mapper: debug
 # mybatis 相关配置
 mybatis:
   mapper-locations: classpath:mybatis/*.*

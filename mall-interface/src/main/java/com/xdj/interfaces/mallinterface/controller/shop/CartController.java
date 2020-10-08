@@ -68,8 +68,6 @@ public class CartController {
     @Resource
     private GoodsViewTools goodsViewTools;
     @Resource
-    private AreaViewTools areaViewTools;
-    @Resource
     private IOrderFormService orderFormService;
     @Resource
     private IOrderFormLogService orderFormLogService;
@@ -89,6 +87,8 @@ public class CartController {
     private AccessoryViewTools accessoryViewTools;
     @Resource
     private PayViewTools payViewTools;
+    @Resource
+    private SendMessageService sendMessageService;
 
     private Logger log = LoggerFactory.getLogger("cart");
 
@@ -153,61 +153,71 @@ public class CartController {
     @RequestMapping({"/order_pay.htm"})
     public ModelAndView order_pay(HttpServletRequest request, HttpServletResponse response, String payType, String order_id) throws UnsupportedEncodingException {
         ModelAndView mv = null;
-        ShoppingOrderformWithBLOBs of = this.orderFormService.getObjById(CommUtil.null2Long(order_id));
         log.info("-----order-id-----{}-----payType----{}", order_id, payType);
-        if (of.getOrderStatus() == 10) {
-            if (CommUtil.null2String(payType).equals("")) {
+        List<ShoppingOrderformWithBLOBs> ofs= orderFormService.selectByOrderNo(order_id);
+        if(ofs != null){
+            if (ofs.get(0).getOrderStatus() == 10) {
+                if (CommUtil.null2String(payType).equals("")) {
+                    mv = new JModelAndView("error.html", this.configService.getSysConfig(),this.userConfigService.getUserConfig(), 1, request, response);
+                    mv.addObject("op_title", "支付方式错误！");
+                    mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
+                } else {
+                    List<ShoppingPaymentWithBLOBs> payments = new ArrayList();
+                    Map<String,Object> params = new HashMap();
+                    //判断是否平台支付
+                    if (this.configService.getSysConfig().getConfigPaymentType() == 1) {
+                        params.put("mark", payType);
+                        params.put("type", "admin");
+                        payments = this.paymentService.queryByCondition(params);
+                    } else {
+                        params.put("mark", payType);
+                        params.put("store_id", ofs.get(0).getStoreId());
+                        payments = this.paymentService.queryByCondition(params);
+                    }
+                   for(ShoppingOrderformWithBLOBs o: ofs){
+                       o.setPaymentId(payments.get(0).getId());
+                       this.orderFormService.update(o);
+                   }
+
+                    if (payType.equals("balance")) {
+                        mv = new JModelAndView("balance_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+                    } else if (payType.equals("outline")) {
+                        mv = new JModelAndView("outline_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+                        String pay_session = CommUtil.randomString(32);
+                        request.getSession(false).setAttribute("pay_session", pay_session);
+                        //mv.addObject("paymentTools", this.paymentTools);
+                        mv.addObject("store_id", this.orderFormService.getObjById(CommUtil.null2Long(order_id)).getStoreId());
+                        mv.addObject("pay_session", pay_session);
+                    } else if (payType.equals("payafter")) {
+                        mv = new JModelAndView("payafter_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+                        String pay_session = CommUtil.randomString(32);
+                        request.getSession(false).setAttribute("pay_session", pay_session);
+                        mv.addObject("store_id", this.orderFormService.getObjById(CommUtil.null2Long(order_id)).getStoreId());
+                        mv.addObject("pay_session", pay_session);
+                    } else {
+                        mv = new JModelAndView("line_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+                        mv.addObject("payType", payType);
+                        mv.addObject("url", CommUtil.getURL(request));
+                        mv.addObject("type", "goods");
+                        mv.addObject("payment_id", ofs.get(0).getPaymentId());
+                    }
+                    mv.addObject("order_id", order_id);
+                }
+            } else {
                 mv = new JModelAndView("error.html", this.configService.getSysConfig(),
                         this.userConfigService.getUserConfig(), 1, request, response);
-                mv.addObject("op_title", "支付方式错误！");
+                mv.addObject("op_title", "该订单不能进行付款！");
                 mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
-            } else {
-
-                List<ShoppingPaymentWithBLOBs> payments = new ArrayList();
-                Map params = new HashMap();
-                //判断是否平台支付
-                if (this.configService.getSysConfig().getConfigPaymentType() == 1) {
-                    params.put("mark", payType);
-                    params.put("type", "admin");
-                    payments = this.paymentService.queryByCondition(params);
-                } else {
-                    params.put("mark", payType);
-                    params.put("store_id", of.getStoreId());
-                    payments = this.paymentService.queryByCondition(params);
-                }
-                of.setPaymentId(payments.get(0).getId());
-                this.orderFormService.update(of);
-                if (payType.equals("balance")) {
-                    mv = new JModelAndView("balance_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
-                } else if (payType.equals("outline")) {
-                    mv = new JModelAndView("outline_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
-                    String pay_session = CommUtil.randomString(32);
-                    request.getSession(false).setAttribute("pay_session", pay_session);
-                    //mv.addObject("paymentTools", this.paymentTools);
-                    mv.addObject("store_id", this.orderFormService.getObjById(CommUtil.null2Long(order_id)).getStoreId());
-                    mv.addObject("pay_session", pay_session);
-                } else if (payType.equals("payafter")) {
-                    mv = new JModelAndView("payafter_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
-                    String pay_session = CommUtil.randomString(32);
-                    request.getSession(false).setAttribute("pay_session", pay_session);
-                    mv.addObject("store_id", this.orderFormService.getObjById(CommUtil.null2Long(order_id)).getStoreId());
-                    mv.addObject("pay_session", pay_session);
-                } else {
-                    mv = new JModelAndView("line_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
-                    mv.addObject("payType", payType);
-                    mv.addObject("url", CommUtil.getURL(request));
-                    //mv.addObject("payTools", this.payTools);
-                    mv.addObject("type", "goods");
-                    mv.addObject("payment_id", of.getPaymentId());
-                }
-                mv.addObject("order_id", of.getId());
             }
-        } else {
+        }else{
             mv = new JModelAndView("error.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
             mv.addObject("op_title", "该订单不能进行付款！");
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }
+       /* ShoppingOrderformWithBLOBs of = this.orderFormService.getObjById(CommUtil.null2Long(order_id));
+        */
+
         return mv;
     }
 
@@ -950,14 +960,13 @@ public class CartController {
                 gcs.add(goodsCartService.getObjById(Long.valueOf(s)));
             }
         }
-
         if (gcs != null) {
             Map params = new HashMap();
             params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
             params.put("orderBy", "addTime");
             params.put("sort", "desc");
             List<ShoppingAddress> addrs = this.addressService.queryByCondition(params);
-            List<ShoppingAddress> adds = new ArrayList<>();
+           /* List<ShoppingAddress> adds = new ArrayList<>();
             if (addrs != null && addrs.size() > 0) {
                 for (ShoppingAddress addr : addrs) {
                     if (addr.getAreaId() != null) {
@@ -967,20 +976,20 @@ public class CartController {
                     }
                     adds.add(addr);
                 }
-            }
-            mv.addObject("addrs", adds);
+            }*/
+            mv.addObject("addrs", addrs);
             Map<Long,List<ShoppingGoodscart>>  cartMsg = new HashMap<>();
             Map<Long,BigDecimal> priceMsg= new HashMap<>();
             for(ShoppingGoodscart s: gcs){
                 ShoppingStorecart sc = storeCartService.getObjById(s.getScId());
                 if(!cartMsg.containsKey(sc.getStoreId())){
-                    priceMsg.put(sc.getStoreId(),s.getPrice());
+                    priceMsg.put(sc.getStoreId(),sc.getTotalPrice());
                     List<ShoppingGoodscart> cart= new ArrayList<>();
                     cart.add(s);
                     cartMsg.put(sc.getStoreId(),cart);
                 }else{
                     BigDecimal price = priceMsg.get(sc.getStoreId());
-                    priceMsg.put(sc.getStoreId(),price.add(s.getPrice()));
+                    priceMsg.put(sc.getStoreId(),price.add(sc.getTotalPrice()));
                     List<ShoppingGoodscart> cart= cartMsg.get(sc.getStoreId());
                     cart.add(s);
                     cartMsg.put(sc.getStoreId(), cart);
@@ -1003,12 +1012,6 @@ public class CartController {
                 obj.put("carts", cart);
                 obj.put("totalPrice",priceMsg.get(entry.getKey()));
                 totalPrice= totalPrice.add(priceMsg.get(entry.getKey()));
-               /* params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
-                params.put("coupon_begin_time", new Date());
-                params.put("coupon_end_time", new Date());
-                params.put("status", Integer.valueOf(0));
-                List<ShoppingCouponInfo> couponinfos = this.couponInfoService.queryByCondition(params);
-                obj.put("couponin",couponinfos);*/
                 data.add(obj);
             }
             params.put("coupon_order_amount", totalPrice);
@@ -1021,6 +1024,7 @@ public class CartController {
             mv.addObject("couponinfos", couponinfos);
             mv.addObject("totalPrice", totalPrice);
             mv.addObject("data", data);
+            mv.addObject("ids",ids);
             viewTools.topHandle(mv, request);
             viewTools.headHandle(mv, request);
             viewTools.footerHandle(mv);
@@ -1087,133 +1091,201 @@ public class CartController {
 
 
     @RequestMapping({"/goods_cart3.htm"})
-    public ModelAndView goods_cart3(HttpServletRequest request, HttpServletResponse response, String cart_session, String store_id, String addr_id, String coupon_id) throws Exception {
+    public ModelAndView goods_cart3(HttpServletRequest request, HttpServletResponse response,String ids,/* String cart_session, String store_id,*/ String addr_id, String coupon_id) throws Exception {
         ModelAndView mv = new JModelAndView("goods_cart3.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
         String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
         if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
             mv = new JModelAndView("wap/goods_cart3.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
         }
-        String cart_session1 = (String) request.getSession(false).getAttribute("cart_session");
-        List<ShoppingStorecart> cart = cart_calc(request);
-        if (cart != null) {
-            if (CommUtil.null2String(cart_session1).equals(cart_session)) {
-                request.getSession(false).removeAttribute("cart_session");
-                ShoppingOrderformWithBLOBs of = new ShoppingOrderformWithBLOBs();
-                of.setAddtime(new Date());
-                of.setOrderId(SecurityUserHolder.getCurrentUser().getId() + CommUtil.formatTime("yyyyMMddHHmmss", new Date()));
-                // ShoppingAddress addr = this.addressService.getObjById(CommUtil.null2Long(addr_id));
-                BigDecimal amount = new BigDecimal("0.00");
-                //运费
-                BigDecimal ship = new BigDecimal("0.00");
-                for (ShoppingStorecart c : cart) {
-                    amount = amount.add(c.getTotalPrice());
+        if(StringUtils.isNotBlank(ids)){
+            String[] is= ids.split(",");
+            List<ShoppingGoodscart> gcs =new ArrayList<>();
+            for(String s: is){
+                if(StringUtils.isNotBlank(s)){
+                    gcs.add(goodsCartService.getObjById(Long.valueOf(s)));
                 }
-                of.setGoodsAmount(amount);
-                of.setShipPrice(ship);
-                of.setAddrId(CommUtil.null2Long(addr_id));
-                of.setOrderStatus(10);
-                of.setUserId(SecurityUserHolder.getCurrentUser().getId());
-                of.setStoreId(CommUtil.null2Long(store_id));
-                of.setTotalprice(BigDecimal.valueOf(CommUtil.add(of.getGoodsAmount(), of.getShipPrice())));
-                if (!CommUtil.null2String(coupon_id).equals("")) {
-                    ShoppingCouponInfo ci = this.couponInfoService.getObjById(CommUtil.null2Long(coupon_id));
-                    ci.setStatus(1);
-                    this.couponInfoService.update(ci);
-                    of.setCiId(ci.getId());
-                    ShoppingCoupon cou = couponService.getObjById(ci.getCouponId());
-                    of.setTotalprice(BigDecimal.valueOf(CommUtil.subtract(of.getTotalprice(), cou == null ? new BigDecimal("0.00") : cou.getCouponAmount())));
-                }
-                of.setOrderType("web");
-                of.setDeletestatus(false);
-                of.setAddtime(new Date());
-                of.setInvoicetype(0);
-
-                this.orderFormService.save(of);
-                ShoppingGoodscart gc;
-                for (ShoppingStorecart sc : cart) {
-                    if (sc.getStoreId().toString().equals(store_id)) {
-                        goodsCartTools.addGcs(sc);
-                        if (sc.getGcs() != null) {
-                            for (ShoppingGoodscart s : sc.getGcs()) {
-                                gc = s;
-                                s.setOfId(of.getId());
-                                this.goodsCartService.update(s);
-                            }
-                        }
-                        sc.setCartSessionId(null);
-                        sc.setUser(SecurityUserHolder.getCurrentUser());
-                        sc.setScStatus(1);
-                        this.storeCartService.update(sc);
-                        break;
+            }
+            if(!gcs.isEmpty()){
+                String orderNo = SecurityUserHolder.getCurrentUser().getId() + CommUtil.formatTime("yyyyMMddHHmmss", new Date());
+                BigDecimal totalPrice =new BigDecimal("0.00");
+                for(ShoppingGoodscart s: gcs){
+                    ShoppingStorecart sc = storeCartService.getObjById(s.getScId());
+                    totalPrice=totalPrice.add(sc.getTotalPrice());
+                    ShoppingOrderformWithBLOBs of = new ShoppingOrderformWithBLOBs();
+                    of.setAddtime(new Date());
+                    of.setOrderId(SecurityUserHolder.getCurrentUser().getId() + CommUtil.formatTime("yyyyMMddHHmmss", new Date()));
+                    of.setAddrId(CommUtil.null2Long(addr_id));
+                    //运费
+                    BigDecimal ship = new BigDecimal("0.00");
+                    of.setGoodsAmount(sc.getTotalPrice());
+                    of.setShipPrice(ship);
+                    of.setAddrId(CommUtil.null2Long(addr_id));
+                    of.setOrderStatus(10);
+                    of.setUserId(SecurityUserHolder.getCurrentUser().getId());
+                    of.setStoreId(sc.getStoreId());
+                    of.setTotalprice(BigDecimal.valueOf(CommUtil.add(of.getGoodsAmount(), of.getShipPrice())));
+                    if (!CommUtil.null2String(coupon_id).equals("")) {
+                        ShoppingCouponInfo ci = this.couponInfoService.getObjById(CommUtil.null2Long(coupon_id));
+                        ci.setStatus(1);
+                        this.couponInfoService.update(ci);
+                        of.setCiId(ci.getId());
+                        ShoppingCoupon cou = couponService.getObjById(ci.getCouponId());
+                        of.setTotalprice(BigDecimal.valueOf(CommUtil.subtract(of.getTotalprice(), cou == null ? new BigDecimal("0.00") : cou.getCouponAmount())));
                     }
-                }
-                Cookie[] cookies = request.getCookies();
-                if (cookies != null) {
-                    for (int i = 0; i < cookies.length; i++) {
-                        Cookie cookie = cookies[i];
-                        if (cookie.getName().equals("cart_session_id")) {
-                            cookie.setDomain(CommUtil.generic_domain(request));
-                            cookie.setValue("");
-                            cookie.setMaxAge(0);
-                            response.addCookie(cookie);
-                        }
+                    of.setOrderType("web");
+                    of.setDeletestatus(false);
+                    of.setAddtime(new Date());
+                    of.setInvoicetype(0);
+                    this.orderFormService.save(of);
+                    s.setOfId(of.getId());
+                    goodsCartService.update(s);
+                    ShoppingOrderLog ofl = new ShoppingOrderLog();
+                    ofl.setDeletestatus(false);
+                    ofl.setAddtime(new Date());
+                    ofl.setOfId(of.getId());
+                    ofl.setLogInfo("提交订单");
+                    ofl.setLogUserId(SecurityUserHolder.getCurrentUser().getId());
+                    this.orderFormLogService.save(ofl);
+                    if (this.configService.getSysConfig().getEmailenable()) {
+                        sendMessageService.sendEmail("","下单提醒","尊敬的卖家，客户已下单请,订单号为："+of.getId()+"尽快处理");
                     }
+                    if (this.configService.getSysConfig().getSmsenbale()) {
+                        sendMessageService.sendSMS("","尊敬的卖家，客户已下单请,订单号为："+of.getId()+"尽快处理");
+                    }
+                    sc.setScStatus(1);
+                    storeCartService.update(sc);
                 }
-                ShoppingOrderLog ofl = new ShoppingOrderLog();
-                ofl.setDeletestatus(false);
-                ofl.setAddtime(new Date());
-                ofl.setOfId(of.getId());
-                ofl.setLogInfo("提交订单");
-                ofl.setLogUserId(SecurityUserHolder.getCurrentUser().getId());
-                this.orderFormLogService.save(ofl);
-                mv.addObject("of", of);
-                //mv.addObject("paymentTools", this.paymentTools);
-                if (this.configService.getSysConfig().getEmailenable()) {
-                    //send_email(request, of, of.getUser().getEmail(), "email_tobuyer_order_submit_ok_notify");
-                }
-                if (this.configService.getSysConfig().getSmsenbale()) {
-                    //send_sms(request, of, of.getUser().getMobile(), "sms_tobuyer_order_submit_ok_notify");
-                }
-                paymentTools.returnData("alipay", mv);
-                paymentTools.returnData("paypal", mv);
-                paymentTools.returnData("tenpay", mv);
-                paymentTools.returnData("wxcodepay", mv);
-                paymentTools.returnData("chinabank", mv);
-                paymentTools.returnData("bill", mv);
-                paymentTools.returnData("outline", mv);
-                paymentTools.returnData("payafter", mv);
-                paymentTools.returnData("balance", mv);
-                paymentTools.returnStoreData("alipay", of.getStoreId(), mv);
-                paymentTools.returnStoreData("paypal", of.getStoreId(), mv);
-                paymentTools.returnStoreData("tenpay", of.getStoreId(), mv);
-                paymentTools.returnStoreData("wxcodepay", of.getStoreId(), mv);
-                paymentTools.returnStoreData("chinabank", of.getStoreId(), mv);
-                paymentTools.returnStoreData("outline", of.getStoreId(), mv);
-                paymentTools.returnStoreData("payafter", of.getStoreId(), mv);
-                paymentTools.returnStoreData("balance", of.getStoreId(), mv);
+                mv.addObject("orderNo",orderNo);
+                mv.addObject("totalPrice",totalPrice);
+                Map<String,Object> params = new HashMap<>();
+                params.put("type", "admin");
+                List<ShoppingPaymentWithBLOBs> pays = paymentService.queryByCondition(params);
+                mv.addObject("pays",pays);
                 viewTools.topHandle(mv, request);
                 viewTools.headHandle(mv, request);
                 viewTools.footerHandle(mv);
-            } else {
+                paymentTools.returnData("wxcodepay", mv);
+            }else{
                 mv = new JModelAndView("error.html", this.configService.getSysConfig(),
                         this.userConfigService.getUserConfig(), 1, request, response);
                 if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
                     mv = new JModelAndView("wap/error.html", this.configService.getSysConfig(),
                             this.userConfigService.getUserConfig(), 1, request, response);
                 }
-                mv.addObject("op_title", "订单已经失效");
+                mv.addObject("op_title", "订单信息错误");
                 mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
             }
-        } else {
-            mv = new JModelAndView("error.html", this.configService.getSysConfig(),
-                    this.userConfigService.getUserConfig(), 1, request, response);
+        }else{
+            mv = new JModelAndView("error.html", this.configService.getSysConfig(),this.userConfigService.getUserConfig(), 1, request, response);
             if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
                 mv = new JModelAndView("wap/error.html", this.configService.getSysConfig(),
                         this.userConfigService.getUserConfig(), 1, request, response);
             }
-            mv.addObject("op_title", "订单信息错误");
+            mv.addObject("op_title", "参数为null");
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }
+
+      /*  List<ShoppingStorecart> cart = cart_calc(request);
+        if (cart != null) {
+            request.getSession(false).removeAttribute("cart_session");
+            ShoppingOrderformWithBLOBs of = new ShoppingOrderformWithBLOBs();
+            of.setAddtime(new Date());
+            of.setOrderId(SecurityUserHolder.getCurrentUser().getId() + CommUtil.formatTime("yyyyMMddHHmmss", new Date()));
+            // ShoppingAddress addr = this.addressService.getObjById(CommUtil.null2Long(addr_id));
+            BigDecimal amount = new BigDecimal("0.00");
+            //运费
+            BigDecimal ship = new BigDecimal("0.00");
+            for (ShoppingStorecart c : cart) {
+                amount = amount.add(c.getTotalPrice());
+            }
+            of.setGoodsAmount(amount);
+            of.setShipPrice(ship);
+            of.setAddrId(CommUtil.null2Long(addr_id));
+            of.setOrderStatus(10);
+            of.setUserId(SecurityUserHolder.getCurrentUser().getId());
+            of.setStoreId(CommUtil.null2Long(store_id));
+            of.setTotalprice(BigDecimal.valueOf(CommUtil.add(of.getGoodsAmount(), of.getShipPrice())));
+            if (!CommUtil.null2String(coupon_id).equals("")) {
+                ShoppingCouponInfo ci = this.couponInfoService.getObjById(CommUtil.null2Long(coupon_id));
+                ci.setStatus(1);
+                this.couponInfoService.update(ci);
+                of.setCiId(ci.getId());
+                ShoppingCoupon cou = couponService.getObjById(ci.getCouponId());
+                of.setTotalprice(BigDecimal.valueOf(CommUtil.subtract(of.getTotalprice(), cou == null ? new BigDecimal("0.00") : cou.getCouponAmount())));
+            }
+            of.setOrderType("web");
+            of.setDeletestatus(false);
+            of.setAddtime(new Date());
+            of.setInvoicetype(0);
+            this.orderFormService.save(of);
+
+            ShoppingGoodscart gc;
+            for (ShoppingStorecart sc : cart) {
+                *//*if (sc.getStoreId().toString().equals(store_id)) {
+                    goodsCartTools.addGcs(sc);
+                    if (sc.getGcs() != null) {
+                        for (ShoppingGoodscart s : sc.getGcs()) {
+                            gc = s;
+                            s.setOfId(of.getId());
+                            this.goodsCartService.update(s);
+                        }
+                    }
+                    sc.setCartSessionId(null);
+                    sc.setUser(SecurityUserHolder.getCurrentUser());
+                    sc.setScStatus(1);
+                    this.storeCartService.update(sc);
+                    break;
+                }*//*
+            }
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (int i = 0; i < cookies.length; i++) {
+                    Cookie cookie = cookies[i];
+                    if (cookie.getName().equals("cart_session_id")) {
+                        cookie.setDomain(CommUtil.generic_domain(request));
+                        cookie.setValue("");
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
+                    }
+                }
+            }
+            ShoppingOrderLog ofl = new ShoppingOrderLog();
+            ofl.setDeletestatus(false);
+            ofl.setAddtime(new Date());
+            ofl.setOfId(of.getId());
+            ofl.setLogInfo("提交订单");
+            ofl.setLogUserId(SecurityUserHolder.getCurrentUser().getId());
+            this.orderFormLogService.save(ofl);
+            mv.addObject("of", of);
+            if (this.configService.getSysConfig().getEmailenable()) {
+                //send_email(request, of, of.getUser().getEmail(), "email_tobuyer_order_submit_ok_notify");
+            }
+            if (this.configService.getSysConfig().getSmsenbale()) {
+                //send_sms(request, of, of.getUser().getMobile(), "sms_tobuyer_order_submit_ok_notify");
+            }
+            paymentTools.returnData("alipay", mv);
+            paymentTools.returnData("paypal", mv);
+            paymentTools.returnData("tenpay", mv);
+
+            paymentTools.returnData("chinabank", mv);
+            paymentTools.returnData("bill", mv);
+            paymentTools.returnData("outline", mv);
+            paymentTools.returnData("payafter", mv);
+            paymentTools.returnData("balance", mv);
+            paymentTools.returnStoreData("alipay", of.getStoreId(), mv);
+            paymentTools.returnStoreData("paypal", of.getStoreId(), mv);
+            paymentTools.returnStoreData("tenpay", of.getStoreId(), mv);
+            paymentTools.returnStoreData("wxcodepay", of.getStoreId(), mv);
+            paymentTools.returnStoreData("chinabank", of.getStoreId(), mv);
+            paymentTools.returnStoreData("outline", of.getStoreId(), mv);
+            paymentTools.returnStoreData("payafter", of.getStoreId(), mv);
+            paymentTools.returnStoreData("balance", of.getStoreId(), mv);
+            viewTools.topHandle(mv, request);
+            viewTools.headHandle(mv, request);
+            viewTools.footerHandle(mv);
+        } else {
+
+        }*/
         return mv;
     }
 
@@ -1386,19 +1458,16 @@ public class CartController {
      * @param request
      * @param response
      * @param id
-     * @param store_id
      */
     @RequestMapping({"/remove_goods_cart.htm"})
-    public void remove_goods_cart(HttpServletRequest request, HttpServletResponse response, String id, String store_id) {
+    public void remove_goods_cart(HttpServletRequest request, HttpServletResponse response, String id) {
         ShoppingGoodscart gc = this.goodsCartService.getObjById(CommUtil.null2Long(id));
         ShoppingStorecart the_sc = storeCartService.getObjById(gc.getScId());
         this.goodsCartService.delete(CommUtil.null2Long(id));
         goodsCartTools.addGcs(the_sc);
-        if (the_sc.getGcs() == null) {
-            the_sc.setDeletestatus(true);
-            this.storeCartService.update(the_sc);
-        }
-        List<ShoppingStorecart> cart = cart_calc(request);
+        this.storeCartService.delete(the_sc.getId());
+        ShoppingUser user =SecurityUserHolder.getCurrentUser();
+        List<ShoppingStorecart> cart = getCart(user.getId());
         double total_price = 0.0D;
         double sc_total_price = 0.0D;
         double count = 0.0D;
@@ -1407,9 +1476,6 @@ public class CartController {
             for (ShoppingGoodscart gc1 : sc2.getGcs()) {
                 total_price = CommUtil.null2Double(gc1.getPrice()) * gc1.getCount() + total_price;
                 count += 1.0D;
-                if ((store_id == null) || (store_id.equals(""))|| (!sc2.getStoreId().toString().equals(store_id))) {
-                    continue;
-                }
                 sc_total_price = sc_total_price + CommUtil.null2Double(gc1.getPrice()) * gc1.getCount();
                 sc2.setTotalPrice(BigDecimal.valueOf(sc_total_price));
             }
@@ -1482,6 +1548,8 @@ public class CartController {
         errmsg="success";
         map.put("err",err);
         map.put("errmsg",errmsg);
+        //map.put("goods_total_price",)
+        map.put("sc_total_price",sc.getTotalPrice());
         return map;
     }
 

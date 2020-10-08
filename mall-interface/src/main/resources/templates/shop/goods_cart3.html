@@ -183,8 +183,8 @@
             <h1>订单提交成功</h1>
             <h2>您的订单已成功生成，选择您想用的支付支付方式进行支付</h2>
             <ul>
-              <li><strong>订单编号：</strong><strong class="orange" th:text="${of.orderId}"></strong></li>
-              <li><strong>应付金额：</strong><strong class="orange" th:text="'¥'+${of.totalprice}"></strong></li>
+              <li><strong>订单编号：</strong><strong class="orange" th:text="${orderNo}"></strong></li>
+              <li><strong>应付金额：</strong><strong class="orange" th:text="'¥'+${totalPrice}"></strong></li>
             </ul>
             <h3>您可以在用户中心中<a th:href="@{/buyer/order.htm}">“我的订单”</a>查看该订单</h3>
           </div>
@@ -194,183 +194,31 @@
             <h1><span>您可以选择付款方式</span></h1>
           </div>
           <div id="selectpay" class="bankcar">
-              <ul th:if="${config.getConfigPaymentType()==1}">
-                <li>
-                  <h1>在线支付</h1>
-                  <div th:if="${alipay == true}" class="bankone">
-                  	<span class="banksp">
-                      <input name="payType" type="radio" value="alipay" checked="checked" />
-                    </span>
-                    <span class="bankimg"><img th:src="@{/style/common/images/payment/alipay.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:text="${alipayContent}"></span>
-                  </div>
-
-                  <div th:if="${paypal == true}" class="bankone">
-	                <span class="banksp">
-	                  <input name="payType" type="radio" value="paypal" />
-	                </span>
-                    <span class="bankimg"><img th:src="@{/style/common/images/payment/paypal.jpg}" width="125" height="47" /></span>
-	                <span class="bank_txt" th:utext="${paypalContent}"></span>
-                  </div>
-
-                  <div th:if="${tenpay == true}" class="bankone">
-                  	<span class="banksp">
-                    <input name="payType" type="radio" value="tenpay" />
-                    </span> <span class="bankimg"><img th:src="@{/style/common/images/payment/tenpay.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${paymentTools.queryShopPayment('tenpay').get('content')}"></span>
-                  </div>
-
-
-                  <div th:if="${wxcodepay == true}" class="bankone">
-                  	<span class="banksp">
-                    <input name="payType" type="radio" value="wxcodepay" />
-                    </span> <span class="bankimg"><img th:src="@{/style/common/images/payment/weixin.png}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${wxcodepayContent}"></span>
-                  </div>
-
-                  <div th:if="${chinabank == true}" class="bankone">
-                  	<span class="banksp">
-                    <input name="payType" type="radio" value="chinabank" />
-                    </span> <span class="bankimg"><img th:src="@{/style/common/images/payment/chinabank.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${chinabankContent}"></span>
-                  </div>
-
-                  <div th:if="${bill == true}" class="bankone">
-                  	<span class="banksp">
-                    <input name="payType" type="radio" value="bill" />
-                    </span>
-                    <span class="bankimg"><img th:src="@{/style/common/images/payment/bill.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${billContent}"></span>
-                  </div>
-
-                  </li>
-                  <li th:if="${outline == true}">
-                    <h1>线下支付</h1>
-                    <div  class="bankone">
+              <ul >
+                  <li>
+                    <h1>在线支付</h1>
+                    <div th:each="pay : ${pays}" class="bankone">
                       <span class="banksp">
-                      <input name="payType" type="radio" value="outline" />
-                      </span> <span class="bankimg"><img th:src="@{/style/common/images/payment/outline.jpg}" width="125" height="47" /></span>
-                      <span class="bank_txt" th:utext="${outlineContent}"></span>
-                    </div>
-
-                  </li>
-                  <li th:if="${payafter == true}">
-                    <h1>货到付款</h1>
-                    <div th:if="${payafter == true}" class="bankone">
-                      <span class="banksp">
-                      <input name="payType" type="radio" value="payafter" />
+                        <input name="payType" type="radio" th:value="${pay.mark}" checked="checked" />
                       </span>
-                      <span class="bankimg"><img th:src="@{/style/common/images/payment/payafter.jpg}" width="125" height="47" /></span>
-                      <span class="bank_txt" th:text="${payafterContent}"></span>
+                      <span class="bankimg">
+                        <img th:if="${pay.mark == 'alipay' || pay.mark == 'alipay_wap'}"  th:src="@{/style/common/images/payment/alipay.jpg}" width="125" height="47" />
+                        <img th:if="${pay.mark == 'paypal'}"  th:src="@{/style/common/images/payment/paypal.jpg}" width="125" height="47" />
+                        <img th:if="${pay.mark == 'tenpay'}"   th:src="@{/style/common/images/payment/tenpay.jpg}" width="125" height="47" />
+                        <img th:if="${pay.mark == 'outline'}"  th:src="@{/style/common/images/payment/outline.jpg}" width="125" height="47" />
+                        <img th:if="${pay.mark == 'payafter'}" th:src="@{/style/common/images/payment/payafter.jpg}" width="125" height="47" />
+                        <img th:if="${pay.mark == 'balance'}"  th:src="@{/style/common/images/payment/balance.jpg}" width="125" height="47" />
+                        <img th:if="${pay.mark == 'wxcodepay' || pay.mark == 'weixin_wap'}" th:src="@{/style/common/images/payment/weixin.png}" width="125" height="47" />
+                      </span>
+                      <span class="bank_txt" th:text="${pay.content}"></span>
                     </div>
 
                 </li>
-                <li th:if="${balance == true}" >
-                  <h1>预存款支付</h1>
-                  <div class="bankone">
-                    <span class="banksp">
-                    <input name="payType" type="radio" value="balance" />
-                    </span>
-                    <span class="bankimg"><img th:src="@{/style/common/images/payment/balance.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:text="${balanceContent}"></span>
-                  </div>
-                </li>
               </ul>
-
-              <ul th:unless="${config.getConfigPaymentType()==1}">
-                <li>
-                  <h1>在线支付</h1>
-
-                  <div th:if="${unalipay == true}" class="bankone">
-                    <span class="banksp">
-                    <input name="payType" type="radio" value="alipay" checked="checked" />
-                    </span>
-                    <span class="bankimg">
-                      <img th:src="@{/style/common/images/payment/alipay.jpg}" width="125" height="47" />
-                    </span>
-                    <span class="bank_txt" th:utext="${unalipayContent}"></span>
-                  </div>
-
-                <div th:if="${unpaypal  == true}" class="bankone">
-                  <span class="banksp">
-                    <input name="payType" type="radio" value="paypal" />
-                  </span>
-                  <span class="bankimg">
-                    <img th:src="@{/style/common/images/payment/paypal.jpg}" width="125" height="47" />
-                  </span>
-                 <span class="bank_txt" th:utext="${unpaypalContent}"></span>
-                </div>
-                  <div th:if="${untenpay == true}" class="bankone">
-                    <span class="banksp">
-                    <input name="payType" type="radio" value="tenpay" />
-                    </span>
-                    <span class="bankimg">
-                      <img th:src="@{/style/common/images/payment/tenpay.jpg}" width="125" height="47" />
-                    </span>
-                    <span class="bank_txt" th:utext="${untenpayContent}"></span>
-                  </div>
-
-
-                  <div th:if="${unwxcodepay == true}" class="bankone">
-                  	<span class="banksp">
-                    <input name="payType" type="radio" value="wxcodepay" />
-                    </span> <span class="bankimg"><img th:src="@{/style/common/images/payment/weixin.png}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${unwxcodepayContent}"></span>
-                  </div>
-
-
-                  <div th:if="${unchinabank == true }" class="bankone">
-                    <span class="banksp">
-                    <input name="payType" type="radio" value="chinabank" />
-                    </span> <span class="bankimg"><img th:src="@{/style/common/images/payment/chinabank.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${unchinabankContent}"></span>
-                  </div>
-
-                  <div th:if="${unbill}" class="bankone"> <span class="banksp">
-                    <input name="payType" type="radio" value="bill" />
-                    </span>
-                    <span class="bankimg"><img th:src="@{/style/common/images/payment/bill.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:utext="${unbillContent}"></span>
-                  </div>
-                </li>
-                <li th:if="${unoutline == true}">
-                  <h1>线下支付</h1>
-                  <div  class="bankone"> <span class="banksp">
-                    <input name="payType" type="radio" value="outline" />
-                    </span>
-                    <span class="bankimg">
-                    <img th:src="@{/style/common/images/payment/outline.jpg}" width="125" height="47" />
-                    </span> <span class="bank_txt" th:utext="${unoutlineContent}"></span>
-                  </div>
-                   </li>
-
-                <li th:if="${ unpayafter == true}">
-                  <h1>货到付款</h1>
-                  <div th:if="${ unpayafter == true}" class="bankone"> <span class="banksp">
-                    <input name="payType" type="radio" value="payafter" />
-                    </span>
-                    <span class="bankimg">
-                      <img th:src="@{/style/common/images/payment/payafter.jpg}" width="125" height="47" />
-                    </span>
-                    <span class="bank_txt" th:text="${ unpayafterContent }"></span>
-                  </div>
-                </li>
-                <li th:if="${unbalance == true }">
-                  <h1>预存款支付</h1>
-                  <div  class="bankone"> <span class="banksp">
-                    <input name="payType" type="radio" value="balance" />
-                    </span>
-                    <span class="bankimg">
-                      <img th:src="@{/style/common/images/payment/balance.jpg}" width="125" height="47" /></span>
-                    <span class="bank_txt" th:text="${unbalanceContent}"></span>
-                  </div>
-                </li>
-              </ul>
-
             </div>
           <div class="banknextbtn">
             <input name="" type="button"  value="确认支付" onclick="order_pay();" style="cursor:pointer;"/>
-            <input name="order_id" type="hidden" id="order_id" th:value="${of.id}" />
+            <input name="order_id" type="hidden" id="order_id" th:value="${orderNo}" />
           </div>
         </div>
       </div>
@@ -390,7 +238,7 @@
         <dt></dt>
         <dd>
           <div class="payf">
-            <a th:href="@{/order_finish.htm(order_id=${of.id})}">已经完成支付！</a>
+            <a th:href="@{/order_finish.htm(order_id=${orderNo})}">已经完成支付！</a>
           </div>
           <div class="payf">
             <a href="javascript:void(0);"  onclick="javascript:jQuery('#pay_overlay').hide();" >支付出现问题！</a>
@@ -415,7 +263,7 @@
         </dt>
         <dd>
           <div class="payf">
-            <a th:href="@{/order_finish.htm(order_id=${of.id})}">完成支付！</a>
+            <a th:href="@{/order_finish.htm(order_id=${orderNo})}">完成支付！</a>
           </div>
           <div class="payf">
             <a href="javascript:void(0);"  onclick="javascript:jQuery('#wxcodepay_overlay').hide();" >支付出现问题！</a>
