@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>shopping cart</title>
+	<title>shopping goods detail</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
@@ -101,14 +101,14 @@
 				</div>
 			</div>
 			<div class="goods_spec">
-				<div class="spec_line" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
+				<div class="spec_line" id="specification" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
 					<div class="spec_tit">
 						<span th:text="${spec.name}"></span>
 						<b></b>
-						<input type="hidden">
 					</div>
-					<div class="sepc_cont flex-star"  >
-						<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}" th:attr="gsp=${gsp.id}"></div>
+					<div class="sepc_cont flex-star" >
+						<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}" th:attr="gsp=${gsp.id}">
+						</div>
 					</div>
 				</div>
 				<div class="spec_line">
@@ -180,19 +180,25 @@
 		}else{
 			price=$("#store_price").text();
 		}
-		var gsp ="";
+
+		var gsp="";
 		var load = true;
-		//var gsps=$(".spec_line").find(".spec_tit b");
-		var gsps=$(".spec_line").find(".spec_tit input").val();
-		console.log("gsps",gsps);
-		if(gsps.length >0){
-			gsps.each(function () {
-				if($(this).val()){
-					//gsp=gsp+ $(this).text()+",";
-					gsp=gsp+ $(this).attr("gsp")+",";
-				}
-			})
+		if($("#specification").length==0){
+			load=true;
+		}else{
+			var s=$("div[class=sepc_act]")
+			console
+			if(s!=null){
+				s.each(function () {
+					gsp = $(this).attr("gsp") + "," + gsp;
+				});
+				console.log("gsp", gsp);
+			}else{
+				load=false;
+			}
 		}
+
+
 		if(gsp.length < 1){
 			load=false;
 			alert("请选择规格属性");
@@ -331,7 +337,7 @@
 	$(".sepc_cont div").click(function(){
 		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
 		$(this).parents(".spec_line").find(".spec_tit b").text($(this).text());
-		$(this).parents(".spec_line").find(".spec_tit input").val($(this).attr("gsp"));
+
 	});
 </script>
 </html>

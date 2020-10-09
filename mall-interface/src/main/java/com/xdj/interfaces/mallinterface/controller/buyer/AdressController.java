@@ -13,7 +13,6 @@ import com.xdj.interfaces.mallinterface.util.database.DatabaseTools;
 import com.xdj.www.core.annotation.SecurityMapping;
 import com.xdj.www.core.tools.StringUtils;
 import com.xdj.www.entity.ShoppingAddress;
-import com.xdj.www.entity.ShoppingAddressExample;
 import com.xdj.www.entity.ShoppingArea;
 import com.xdj.www.entity.ShoppingUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,6 +196,7 @@ public class AdressController {
                 this.addressService.delete(Long.valueOf(Long.parseLong(id)));
             }
         }
+
         response.sendRedirect("address.htm?currentPage=" + currentPage);
     }
 }
