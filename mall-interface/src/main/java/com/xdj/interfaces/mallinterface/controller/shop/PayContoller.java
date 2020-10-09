@@ -1334,12 +1334,12 @@ public class PayContoller {
     @RequestMapping("/genericPaypal")
     @ResponseBody
     public String genericPaypal(String url, String payment_id, String type, String id){
-        ShoppingOrderformWithBLOBs of = null;
+        List<ShoppingOrderformWithBLOBs> of = null;
         ShoppingPredepositWithBLOBs obj = null;
         ShoppingGoldRecordWithBLOBs gold = null;
         ShoppingIntegralGoodsorderWithBLOBs ig_order = null;
         if (type.equals("goods")) {
-            of = this.orderFormService.getObjById(CommUtil.null2Long(id));
+            of = this.orderFormService.selectByOrderNo(id);
         }
         if (type.equals("cash")) {
             obj = this.predepositService.getObjById(CommUtil.null2Long(id));
@@ -1362,7 +1362,7 @@ public class PayContoller {
         sms.add(new SysMap("return", return_url));
         String item_name = "";
         if (type.equals("goods")) {
-            item_name = of.getOrderId();
+            item_name = id;
         }
         if (type.equals("cash")) {
             item_name = obj.getPdSn();
@@ -1377,8 +1377,12 @@ public class PayContoller {
         String amount = "";
         String item_number = "";
         if (type.equals("goods")) {
-            amount = CommUtil.null2String(of.getTotalprice());
-            item_number = of.getOrderId();
+            BigDecimal price = new BigDecimal("0.00");
+            for(ShoppingOrderformWithBLOBs o: of){
+                price=price.add(o.getTotalprice());
+            }
+            amount =price.toString();
+            item_number = id;
         }
         if (type.equals("cash")) {
             amount =CommUtil.null2String(obj.getPdAmount());
@@ -1400,7 +1404,7 @@ public class PayContoller {
 
         String custom = "";
         if (type.equals("goods")) {
-            custom = of.getId().toString();
+            custom = id;
         }
         if (type.equals("cash")) {
             custom = obj.getId().toString();
@@ -1467,7 +1471,6 @@ public class PayContoller {
                     CommUtil.null2Long(remark1));
         }
         String txn_id = request.getParameter("txn_id");
-
         String itemName = request.getParameter("item_name");
         String paymentStatus = request.getParameter("payment_status");
         String paymentAmount = request.getParameter("mc_gross");

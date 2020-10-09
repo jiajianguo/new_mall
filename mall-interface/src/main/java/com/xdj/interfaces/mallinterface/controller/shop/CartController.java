@@ -465,7 +465,7 @@ public class CartController {
                     Arrays.sort(gsp_ids);
                     ShoppingGoodsspecproperty spec_property;
                     String spec_info ="";
-                    if (gsp_ids != null && !"".equals(gsp_ids)) {
+                    if (gsp_ids != null && gsp_ids.length>0) {
                         for (String gsp_id : gsp_ids) {
                             spec_property = this.goodsSpecPropertyService.getObjById(CommUtil.null2Long(gsp_id));
                             if (spec_property != null) {
@@ -1051,6 +1051,15 @@ public class CartController {
                 for(ShoppingOrderformWithBLOBs of: ofs){
                     of.setAddrId(Long.valueOf(addr_id));
                     of.setPaymentId(Long.valueOf(payId));
+                    ShoppingGoodscartExample example =new ShoppingGoodscartExample();
+                    example.createCriteria()
+                            .andOfIdEqualTo(of.getId());
+                    List<ShoppingGoodscart> carts= goodsCartService.selectByExample(example);
+                    for(ShoppingGoodscart c: carts){
+                        ShoppingStorecart sc= storeCartService.getObjById(c.getScId());
+                        sc.setScStatus(1);
+                        storeCartService.update(sc);
+                    }
                     //修改订单信息 totalprice addr_id  等信息
                     if (!CommUtil.null2String(coupon_id).equals("")) {
                         ShoppingCouponInfo ci = this.couponInfoService.getObjById(CommUtil.null2Long(coupon_id));

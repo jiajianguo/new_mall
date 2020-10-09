@@ -2,6 +2,7 @@ package com.xdj.interfaces.mallinterface.service;
 
 
 import com.xdj.www.entity.ShoppingGoodscart;
+import com.xdj.www.entity.ShoppingGoodscartExample;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,9 @@ public abstract interface IGoodsCartService
 
   public abstract   int pageCount(Map<String, Object> params);
 
-  List<ShoppingGoodscart> pageList(Map<String, Object> params);
+  public abstract List<ShoppingGoodscart> pageList(Map<String, Object> params);
+
+  public abstract List<ShoppingGoodscart> selectByExample(ShoppingGoodscartExample example);
 }
 
 

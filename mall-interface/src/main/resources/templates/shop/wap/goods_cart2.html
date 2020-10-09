@@ -137,16 +137,92 @@
 							</div>-->
 						</div>
 					</div>
-					
+
 					<div class="btzong">
 						<input class="content_bt" type="button" id="orderPay" value="立即支付" />
 					</div>
-					
+					<!--弹窗发票-->
+					<div class="bill">
+						<div class="bill_content">
+							<div class="back1"></div>
+							<div class="bill_title">普通电子发票</div>
+							<div class="bill_text bill_border">
+								<div>
+									<div class="bill_title_color">日期</div>
+									<div>2020-10-06  12：09：34</div>
+								</div>
+								<div>
+									<div class="bill_title_color">订单号</div>
+									<div>124633354110</div>
+								</div>
+							</div>
+							<div class="bill_text bill_border">
+								<div>
+									<div class="bill_title_color">商品名字</div>
+									<div>高夫洗面奶</div>
+								</div>
+								<div>
+									<div class="bill_title_color">商品税率</div>
+									<div>0.56%</div>
+								</div>
+								<div>
+									<div class="bill_title_color">发票金额</div>
+									<div>￥500</div>
+								</div>
+								<div>
+									<div class="bill_title_color">发票地址</div>
+									<div>中国重庆南岸区金台大厦</div>
+								</div>
+							</div>
+							<div class="bill_text">
+								<div>
+									<div class="bill_title_color">发票号码</div>
+									<div>0111056322</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
 	</body>
 	<script type="text/javascript">
+		$(".bt01").click(function() {
+			$(".main_zhezhao").css({
+				"display": "block",
+
+			})
+		})
+
+		$(".bt02").click(function() {
+			$(".main_zhezhao").css({
+				"display": "none",
+			})
+		})
+
+		$(".main_zhezhao").click(function(e) {
+			e.stopPropagation()
+			$(".main_zhezhao").css({
+				"display": "none",
+			})
+		})
+
+		$(".main_z").click(function(e) {
+			event = e || window.event
+			event.stopPropagation()
+		})
+		$(".look_info").click(function(){
+			$(".bill").css("display","block")
+		})
+
+		$(".bill").click(function(){
+			$(".bill").css("display","none")
+		})
+
+		$(".bill_content").click(function(){
+			return false
+		})
 		$("#user_address").click(function (){
 			window.location.href="/buyer/address.htm";
 		});

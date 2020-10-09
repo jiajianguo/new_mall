@@ -26,55 +26,56 @@
 				</div>
 				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'">添加</button>
 			</div>
-			<form th:if="${carts.size()>0}" th:each="sc :${carts}" status="no_submit" method="post" th:name="'cart_'+${sc.storeId}" target="_blank"
-				  th:id="'cart_'+${sc.storeId}" th:action="@{/goods_cart2.htm}">
-			<div class="goodscartList">
-				<div th:each="obj :${sc.gcs}" class="list_item flex-between">
-					<input type="checkbox" name="goodscart" th:id="${obj.id}" th:value="${obj.id}" />
-					<div class="item_right">
-						<div class="right_top flex-between">
-							<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
-							<img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" >
-							<div class="right_top_rgiht">
-								<div class="goods_tit flex-between">
-									<div class="wordNoWarp">
-										<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" th:text="${obj.goods.goodsName}"></a>
-									</div>
-									<svg class="icon" aria-hidden="true">
-										<use xlink:href="#icon-shoucang"></use>
-									</svg>
-								</div>
-								<div class="price_box flex-star">
-									<div th:text="'$'+${obj.price}"></div>
-									<!--<span>$ 199.00</span>-->
-								</div>
-								<div class="goods_opt flex-between">
-									<div class="spec_box flex-star">
-										<span th:text="${obj.specInfo}"></span>
+			<form th:if="${carts.size()>0}"  status="no_submit" method="post"  target="_blank"  action="/goods_cart2.htm">
+			<div class="goodscartList"  >
+				<div th:each="sc :${carts}"  th:id="'cart_'+${sc.storeId}"   class="list_item flex-between">
+					<div th:each="obj :${sc.gcs}" class="flex-between">
+						<input type="checkbox" name="goodscart" th:id="${obj.id}" th:value="${obj.id}" />
+						<div class="item_right">
+							<div class="right_top flex-between">
+								<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+								<img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" >
+								<div class="right_top_rgiht">
+									<div class="goods_tit flex-between">
+										<div class="wordNoWarp">
+											<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" th:text="${obj.goods.goodsName}"></a>
+										</div>
 										<svg class="icon" aria-hidden="true">
-											<use xlink:href="#icon-bottom"></use>
+											<use xlink:href="#icon-shoucang"></use>
 										</svg>
 									</div>
-									<div class="num_box flex-between">
-										<div class="reduce" th:data-id="${obj.id}">-</div>
-										<div class="goods_num" th:text="${obj.count!=null?obj.count:1}"></div>
-										<div class="add" th:data-id="${obj.id}">+</div>
+									<div class="price_box flex-star">
+										<div th:text="'$'+${obj.price}"></div>
+										<!--<span>$ 199.00</span>-->
+									</div>
+									<div class="goods_opt flex-between">
+										<div class="spec_box flex-star">
+											<span th:text="${obj.specInfo}"></span>
+											<svg class="icon" aria-hidden="true">
+												<use xlink:href="#icon-bottom"></use>
+											</svg>
+										</div>
+										<div class="num_box flex-between">
+											<div class="reduce" th:data-id="${obj.id}">-</div>
+											<div class="goods_num" th:text="${obj.count!=null?obj.count:1}"></div>
+											<div class="add" th:data-id="${obj.id}">+</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class= "goods_tips">
-							<svg class="icon" aria-hidden="true" >
-								<use xlink:href="#icon-gantan"></use>
-							</svg>
-							<span>最终售出的商品不能退货</span>
+							<div class= "goods_tips">
+								<svg class="icon" aria-hidden="true" >
+									<use xlink:href="#icon-gantan"></use>
+								</svg>
+								<span>最终售出的商品不能退货</span>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="page_bottom">
 					<div class="price_line flex-star">
-						Total：<span class="allprice" th:text="${sc.totalPrice}"></span>
+						Total：<span class="allprice" >0.00</span>
 					</div>
 					<input type="button" class="pay_btn" name="" id="goods_pay" value="结算" />
 					<div class="pay_tips">支付可以使用优惠券商品更划算</div>

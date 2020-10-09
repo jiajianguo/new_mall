@@ -105,6 +105,11 @@
          return goodsCartDao.pageList(params);
      }
 
+     @Override
+     public List<ShoppingGoodscart> selectByExample(ShoppingGoodscartExample example) {
+         return goodsCartDao.selectByExampleWithBLOBs(example);
+     }
+
 
  }
 

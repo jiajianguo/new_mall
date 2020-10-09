@@ -133,7 +133,7 @@
 							<label class="flex-star specitem" th:data-id="${spec.id}" th:text="${spec.name}"></label>
                             <label class="flex-star specitem" th:each="gsp : ${obj.goods_specs}"
                                    th:if="${gsp.spec.id == spec.id}">
-                                <input type="radio" th:name="${'gsp'+gsp.spec.id }" th:id="${obj.id}"  th:attr="spec=${gsp.spec.id}" />
+                                <input type="radio" th:name="${gsp.spec.id }" th:id="${gsp.id}" th:data-id="${obj.id}"  th:attr="spec=${gsp.spec.id}" />
                                 <span th:text="${gsp.value}"></span>
                             </label>
                         </div>
@@ -242,7 +242,9 @@
             })
 
         }, 1000);
+
         $(".show_box").addClass("goods_more_block");
+
         $(".goods_pingj").removeClass("goods_more_block");
 
         /**
@@ -334,31 +336,24 @@
         /**
          * 切换商品规格
          */
-        $('input[type=radio]').change(function(){
-            var id = $(this).attr('id');
+        $('input[type=radio]').click(function(){
+            var id = $(this).attr('data-id');
+            var gsp = $(this).attr('id');
             console.log('id=',id);
             var name =$(this).attr('name');
             //删除this
             $('input:radio[spec='+name+']').removeClass("this");
             $(this).addClass('this');
             //加载不同的规格不同的价格
-            goods_spec_set(id);
+            goods_spec_set(id,gsp);
         });
 
         /**
          * 根据不同的规格加载不同的价格
          * @param id
          */
-        function goods_spec_set(id) {
-            var gsp = "";
+        function goods_spec_set(id,gsp) {
             var load = true;
-            $(".spec_cont specitem").each(function () {
-                $.each(
-                    $(this).find("input:radio[class=this]"), function () {
-                        gsp = $(this).attr("gsp") + "," + gsp;
-                    });
-                if ($(this).find("input:radio[class=this]").length == 0) load = false;
-            });
             if (load) {
                 $.post("/load_goods_gsp.htm", {"id":id, "gsp": gsp},function (data) {
                     var res =JSON.parse(data);
@@ -385,12 +380,8 @@
             var price =$("#store_price").text();
             var gsp ="";
             var load = true;
-            var s=$("input[class='this' ]");
-            console.log('smsg='+s[0]);
-            s.each(function(){
-                gsp=gsp+ $(this).attr('spec')+',';
-            });
-            if(gsp.length <1){
+            gsp=getgsp();
+            if(gsp.length < 1){
                 alert("请选择商品规格");
                 load = false;
             }
@@ -406,16 +397,27 @@
                 add_goods_to_cart(id,count,price,gsp,false)
             }
         });
-
+   function getgsp(){
+       var s= $('input:radio[class=this]');
+       var gsp="";
+       if(s.length >0){
+           s.each(function(){
+               gsp=gsp+ $(this).attr('id')+',';
+           });
+       }
+       return gsp;
+   }
     $("#buy_goods").on('click',function (){
         var  id= $(this).attr('data-id');
         var count = $("#quantity").val();
         var price =$("#store_price").text();
         var gsp ="";
         var load = true;
-        var s=$("input[class='this' ]");
+        var s=$(".specitem").find("input[type=radio ]");
         s.each(function(){
-            gsp=gsp+ $(this).attr('spec')+',';
+            if($(this).is(":checked")){
+                gsp =gsp+$(this).attr("id")+',';
+            }
         });
         if(gsp.length == 0){
             load=false;
