@@ -20,6 +20,7 @@
   <script th:src="@{/js/top.js}"></script>
 <script>
 jQuery(document).ready(function(){
+  var userId=$("#user_id").val();
   jQuery("#theForm").validate({
        rules: {
 			mobile:{
@@ -29,7 +30,7 @@ jQuery(document).ready(function(){
                   type: "post",               //数据发送方式
                   dataType: "json",           //接受数据格式   
                   data: {                     //要传递的数据
-                    "mobile": function(){return jQuery("#mobile").val();},"id":"$!user.id"
+                    "mobile": function(){return jQuery("#mobile").val();},"id":userId
 		          }
 		       }
 			},
@@ -137,6 +138,7 @@ jQuery(document).ready(function(){
 
   <div class="pageleft">
         <span th:switch="${user != null}">
+          <input type="hidden" id="user_id" th:value="${user.id}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
 			  <span>您好,欢迎来到</span>

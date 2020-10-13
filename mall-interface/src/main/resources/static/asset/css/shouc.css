@@ -1,0 +1,25 @@
+.page_list{
+	background: white;
+	padding: .2rem .24rem;
+	margin-top: .1rem;
+}
+
+.page_list img{
+	width: 2.2rem;
+	height: 2.2rem;
+}
+
+.item_right{
+	width: calc(100%  - 2.4rem);
+	height: 2.2rem;
+	padding: .2rem 0;
+}
+
+.goods_name{
+	font-size: .3rem;
+}
+
+.item_price{
+	color: #555;
+	margin-top: .7rem;
+}

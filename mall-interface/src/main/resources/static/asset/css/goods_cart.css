@@ -1,5 +1,5 @@
 .goodscartList{
-	height: calc(100vh - 5.1rem);
+	height: calc(100vh - 4.7rem);
 	overflow: scroll;
 	margin-top: .2rem;
 }
@@ -87,13 +87,12 @@
 }
 
 .page_address{
-	background: #fff;
-	padding: .3rem .24rem;
+	padding: .2rem .24rem .1rem .24rem;
 }
 
 .address_left p{
-	font-size: .32rem;
-	color: #333333;
+	font-size: .3rem;
+	color: #555;
 	font-weight: bold;
 }
 
@@ -117,6 +116,11 @@
 	padding: 0 .24rem;
 	background: white;
 	bottom: 1.04rem;
+}
+
+.icon.del{
+	fill: #333;
+	font-size: .36rem;
 }
 
 .price_line{

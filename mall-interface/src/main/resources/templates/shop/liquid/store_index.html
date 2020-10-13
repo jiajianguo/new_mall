@@ -580,8 +580,7 @@
                             <div class="grid-item-shade" style="background-color: rgba(0,0,0,0.4)">
                                 <div class="grid-item-box text-top-left">
                                     <div class="grid-item-tit" th:text="${goods.goods_brand}"></div>
-                                    <div class="grid-item-desc">Use this section to welcome customers to your store, say
-                                        a bit about your brand, or share news.
+                                    <div class="grid-item-desc" th:text="${goods.goodsName}">
                                     </div>
                                     <a th:href="@{/goods.htm(id=${goods.id})}" class="grid-item-button">
                                         shop now </a>

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +97,7 @@ public class GoodsCartTools {
         if(order != null){
             Map<String,Object> para = new HashMap<>();
             para.put("of_id",order.getId());
-            para.put("deleteStatus",true);
+            para.put("deleteStatus",false);
             List<ShoppingGoodscart> gcs = goodsCartService.queryByCondition(para);
             for(ShoppingGoodscart gc: gcs){
                 ShoppingGoodsWithBLOBs goods = goodsService.getObjById(gc.getGoodsId());

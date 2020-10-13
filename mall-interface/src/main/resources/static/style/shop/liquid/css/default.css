@@ -26,7 +26,7 @@ left:-50%; z-index:0;}
 
 
 /*nav_width*/
-.nav_width{ width:100%; clear:both; background-color:#0098eb;  *margin-top:-6px;}
+.nav_width{ width:100%; clear:both; background-color:#333;  *margin-top:-6px;}
 .navbotm{ width:100%; display:none;}
 
 
@@ -40,8 +40,8 @@ left:-50%; z-index:0;}
 	height: 100%;
     width: 100%;
 }
-.nav_bg { width:100%; height:32px; background-color:#0098eb; margin-top:0px;}
-.shopnav{ width:1002px; margin-top:0px;overflow:hidden; margin-left:auto; margin-right:auto; }
+.nav_bg { width:100%; height:32px; background-color:#333; margin-top:0px;}
+.shopnav{ width:1002px; margin-top:0px;overflow:hidden; margin-left:auto; margin-right:auto; background: #333}
 .shopnavul ul li{ float:left; width:87px; height:32px; text-align:center; line-height:31px; margin-right:5px; }
 .shopnavul ul li a { color:#FFF;}
 .shopnav .this{ background:url(../images/nav1.jpg) no-repeat;}
@@ -194,12 +194,12 @@ left:-50%; z-index:0;}
 .bigshopimg{ width:797px; overflow:hidden; height:393px;}
 
 .shopf{width:193px; border:1px solid #D6DAE2; margin-top:10px; float:left;}
-.shopf h1{ background:#0098eb; padding-left:10px; color:#fff; font-size:12px; font-weight:lighter; height:26px; line-height:26px; border-bottom:1px solid #D6DAE2; width:183px;}
+.shopf h1{ background:#333; padding-left:10px; color:#fff; font-size:12px; font-weight:lighter; height:26px; line-height:26px; border-bottom:1px solid #D6DAE2; width:183px;}
 .shopf ul{ width:193px; padding-bottom:10px;}
 .shopf ul li{margin-top:10px; margin-left:10px;}
 
 .regoods{ width:797px; overflow:hidden; margin-top:10px; width:100%;}
-.regoods h1{ background:url(../images/tt.jpg); width:797px; height:30px; color:#FFF; line-height:30px; width:100%}
+.regoods h1{ background:#333; width:797px; height:30px; color:#FFF; line-height:30px; width:100%}
 .regoods h1 span{ padding-left:20px;}
 .regoods h1 a{ float:right; margin-right:10px; color:#FFF;}
 .regoodsshop{ width:797px; overflow:hidden; margin-top:10px;}
@@ -459,7 +459,7 @@ dd,dl,dt{ padding:0px; margin:0px;}
 .shop_sort .this .sort_b{ background:url(../images/scort_a.gif) no-repeat right center;}
 /*商品排行*/
 .shop_rank{border:1px solid #D6DAE2; width:193px; overflow:hidden; float:left; margin-top:10px; float:left}
-.shop_rank h3{ background:url(../images/hhh.jpg) no-repeat; padding-left:10px; color:#fff; font-size:12px; font-weight:lighter; height:25px; line-height:25px; border-bottom:1px solid #D6DAE2; width:183px; }
+.shop_rank h3{ background:#333 no-repeat; padding-left:10px; color:#fff; font-size:12px; font-weight:lighter; height:25px; line-height:25px; border-bottom:1px solid #D6DAE2; width:183px; }
 .shop_rank_box{ width:193px; overflow:hidden; position:relative}
 .shop_rank_top{ width:193px; float:left; overflow:hidden; height:25px; padding-top:5px; position:relative; top:1px; float:left}
 .shop_rank_top ul{ width:188px; float:left; overflow:hidden; height:25px; line-height:25px; text-align:center; padding-left:5px;}

@@ -3,16 +3,16 @@
 
 
  import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
- import com.xdj.interfaces.mallinterface.service.*;
- import com.xdj.www.core.tools.CommUtil;
- import com.xdj.www.entity.*;
- import org.slf4j.Logger;
- import org.slf4j.LoggerFactory;
- import org.springframework.stereotype.Component;
+import com.xdj.interfaces.mallinterface.service.*;
+import com.xdj.www.core.tools.CommUtil;
+import com.xdj.www.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
- import javax.annotation.Resource;
- import javax.servlet.http.HttpServletRequest;
- import java.util.*;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
  /**
   * @author Administrator
@@ -53,6 +53,8 @@
    private StoreViewTools storeViewTools;
    @Resource
    private IGroupGoodsService groupGoodsService;
+   @Resource
+   private IStoreRateService storeRateService;
 
    @Resource
    private AccessoryViewTools accessViewTools;
@@ -615,7 +617,12 @@
 
    public final  void addGoodsCartGood(ShoppingGoodscart s) {
      if(s != null && s.getGoodsId() != null){
-       s.setGoods(goodsService.getObjById(s.getGoodsId()));
+       ShoppingGoodsWithBLOBs goods = goodsService.getObjById(s.getGoodsId());
+       if(goods.getRateId() !=null){
+         ShoppingStoreRate rate = storeRateService.getObjById(goods.getRateId());
+         goods.setRate(rate);
+       }
+       s.setGoods(goods);
      }
    }
 

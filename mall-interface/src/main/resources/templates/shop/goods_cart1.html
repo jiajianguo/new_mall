@@ -487,13 +487,12 @@
     </div>
 </div>
 <script>
-    function cart_remove(id,store_id){
+    /*function cart_remove(id,store_id){
         jQuery.post('/remove_goods_cart.htm',{"id":id,"store_id":store_id},function(data){
             jQuery("div[class=table] tr[id="+id+"]").remove();
             jQuery(".shopping[id="+id+"]").remove();
             jQuery(".shopp_ingtop[id="+id+"]").remove();
             jQuery("#cart_goods_count_top").html(data.count);
-            jQuery("#cart_goods_price_top").html(data.total_price);
             jQuery("#top_total_price_"+store_id).html(data.total_price);
             if(store_id!=""){
                 jQuery("#total_price_"+store_id).html(data.sc_total_price);
@@ -505,6 +504,16 @@
                 jQuery(".car_nogoods").show();
             }
         },"json");
+    }*/
+
+    function cart_remove(id,store_id){
+        jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
+            jQuery("div[class=table] tr[id="+id+"]").remove();
+            jQuery(".shopping[id="+id+"]").remove();
+            jQuery(".shopp_ingtop[id="+id+"]").remove();
+            $(this).parents(".list_item").remove();
+            jQuery("#cart_goods_count_top").html(data.count);
+        }, "json");
     }
 
     jQuery(document).ready(function(){

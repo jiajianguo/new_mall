@@ -1,13 +1,10 @@
 package com.xdj.interfaces.mallinterface.controller.shop;
 
-import com.xdj.interfaces.mallinterface.component.CustomLocalResolver;
-import com.xdj.www.core.constant.ResponseModel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +34,6 @@ public class LanauageController {
         }else if("fr".equals(lang)){
             request.getSession().setAttribute("LOCALE_SESSION_ATTRIBUTE_NAME",new Locale("fr","FR"));
         }
-        response.sendRedirect("/user/login.htm");
+        //response.sendRedirect("/user/login.htm");
     }
 }

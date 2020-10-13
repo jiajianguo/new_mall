@@ -39,8 +39,7 @@
           href="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
           type="image/x-icon">
     <script async="" th:src="@{js/scevent.min.js}"></script>
-    <script src="https://bat.bing.com/bat.js" async=""></script>
-    <!--<script async="" src="https://s.pinimg.com/ct/core.js"></script>-->
+    <!--<script src="https://bat.bing.com/bat.js" async=""></script>-->
     <script type="text/javascript" th:src="@{/js/init.js}"></script>
     <script th:src="@{js/checkout.min.js}"></script>
     <script async="true" id="xo-pptm" th:src="@{js/pptm.js}"></script>                <!-- Pinterest Code -->
@@ -59,7 +58,7 @@
                 var r = document.getElementsByTagName("script")[0];
                 r.parentNode.insertBefore(t, r)
             }
-        }("https://s.pinimg.com/ct/core.js");
+        }(""); /*https://s.pinimg.com/ct/core.js*/
         pintrk('load', '', {em: ''});
         pintrk('page');
     </script>
@@ -237,24 +236,24 @@
 
                     $(document).on('click', '.search-box .search-icon', function () {
                         var sort = "";
-                        var search_keyword = $(this).siblings().find('input').val();
+                        var search_keyword = $("#search_box").val();
                         var type = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').data('search-type')) : 1;
                         var val = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').find('option:selected').val()) : '';
                         var url = '/store_goods_search.htm';
                         var store_id = jQuery("#store_id").val();
 
-                        window.location = url + '?keyword=' + search_keyword + type + '&store_id=' + store_id;
+                        window.location = url + '?keyword=' + search_keyword  + '&store_id=' + store_id;
                     });
 
                     $(document).on('click', '.search-box .icon-sousuo', function () {
                         var sort = "";
-                        var search_keyword = $(this).parent().find('input').val();
+                        var search_keyword = $("#search_box ").val();
                         var type = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').data('search-type')) : 1;
                         var val = $(this).siblings('.search-select').length || (window.screen.availWidth < 768) ? ($(this).siblings('.search-select').find('option:selected').val()) : '';
                         var url = '/store_goods_search.htm';
                         var store_id = jQuery("#store_id").val();
 
-                        window.location = url + '?keyword=' + search_keyword + type + '&store_id=' + store_id;
+                        window.location = url + '?keyword=' + search_keyword + '&store_id=' + store_id;
                     });
 
                     $('#search_box').bind('keydown', function (event) {
@@ -365,11 +364,12 @@
                 <div class="operat">
                     <!--店铺装修==> 移动端不显示搜索时，前台只显示搜索图标-->
                     <a class="head-customer iconfont icon-gerenzhongxin-1" th:if="${user==null}"
-                       th:href="@{user/login.htm}"></a>
+                       href="user/login.htm"></a>
                     <a class="head-customer iconfont icon-gerenzhongxin-1" th:if="${user!=null}"
                        href="/buyer/index.htm"></a>
                     <a class="head-buycart iconfont icon-gouwu " th:href="@{/goods_cart1.htm}">
                         <i style="display: none;"></i>
+                        <div class="goods_num" th:text="${cartSize!=null?cartSize:0}"></div>
                     </a>
                 </div>
             </div>
@@ -403,7 +403,7 @@
         <div class="search-popup">
             <div class="search-box">
                 <form th:action="@{/store_goods_search.htm}" method="get" autocomplete="off">
-                    <input type="search" name="keyword" class="search" placeholder="Start Typing Here" value="">
+                    <input type="search" name="keyword" id="search_box" class="search" placeholder="Start Typing Here" value="">
                 </form>
                 <div class="cancel J-CancelSearch">
                     Cancel
@@ -418,13 +418,13 @@
         </div>
         <!--头部 ==> 结束-->
     </div>
-    <script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js?v=0517"></script>
+    <script type="text/javascript" src="js/Swiper.js"></script>
     <input type="hidden" class="J-isOpenRecommend" value="1">
     <input type="hidden" class="J-isShowComment" value="1">
     <input type="hidden" class="J-SwitchType" value="select">
-    <input type="hidden" class="product-handler" value="character-sport-bike-helmet">
-    <input type="hidden" class="JH-product-handler" value="character-sport-bike-helmet">
-    <input type="hidden" class="JH-product-title" value="Character  Sport  Bike Helmet">
+    <input type="hidden" class="product-handler" value="default">
+    <input type="hidden" class="JH-product-handler" value="default">
+    <input type="hidden" class="JH-product-title" value="default">
     <input type="hidden" class="product-id" value="10079549">
     <input type="hidden" class="product-code" value="gFDi45">
     <input type="hidden" class="J-ShareSource" value="">
@@ -435,7 +435,7 @@
 
 
     <div class="JH-Columns main recommend product " itemscope="" itemtype="http://schema.org/Product">
-        <meta itemprop="name" content="Character  Sport  Bike Helmet">
+        <meta itemprop="name" content="default">
         <meta itemprop="url" content="">
         <meta itemprop="image" content="">
         <div class="breadcrumb">
@@ -584,8 +584,8 @@
 
                     <li th:unless="${obj.groupBuy==2}">
                         <span class="detbt" >店铺价格：</span>
-                        <span class="pricedata">
-                                        <strong class="orange" id="store_price" th:text="${'￥'+ obj.storePrice}">
+                        <span class="pricedata"><strong>￥</strong>
+                                        <strong class="orange" id="store_price" th:text="${obj.storePrice}">
                                         </strong>
                                     </span>
                         <div class="sale-tag sl-subhead-title">
@@ -621,11 +621,11 @@
             <!-- 规格属性 -->
 
             <div class="types-item J-Attribute" id="specification" th:if="${obj.specification != null}"
-                 th:each="spec : ${obj.specification}" >
+                 th:each="spec : ${obj.specification}">
                 <span th:text="${spec.name+':'}"></span>
                 <div class="product-types-select">
                     <select class="gsp">
-                        <option disabled="" selected="" value="0">Select</option>
+                        <!--<option disabled="" selected="" value="0">Select</option>-->
                         <option  th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}"
                                 th:value="${gsp.id}"
                                 th:text="${gsp.value}"></option>
@@ -828,13 +828,14 @@
                             <span class="pay-price" th:data-price="${goods.storePrice}" th:data-seller-price="${goods.storePrice}" th:text="${goods.storePrice}"></span>
                             <span class="orig-price" th:data-price="${goods.goodsPrice}" th:text="${goods.goodsPrice}"></span>
                         </p>
-                        <div class="attribute select-hide">
+                        <!--<div class="attribute select-hide">
                             <select class="J-recommendAttribute">
                             <option data-id="10079548" data-inventory-quantity="100000" data-desc="" data-title=""
                                     data-image-url="https://img.xshoppy.shop/uploader/9bd903deb7d55ce00990f266b4c13c6f.png"
                                     data-price="12.00" data-orig-price="12.00" data-compare-at-price="16.00"
                                     data-orig-compare-at-price="16.00" data-limitoffer-open="0" selected=""></option>
-                        </select></div>
+                            </select>
+                        </div>-->
                         <div class="star">
                             <div class="score"></div>
                         </div>
@@ -1083,6 +1084,13 @@
     var time = 0;
     var time_id;
 
+   var flag = $(".gsp").each(function () {
+        if(!$(".gsp option:selected").val()){
+            console.log(true);
+            return true
+        }
+    })
+
     function add_cart(id,storeId) {
         var groupBuy = jQuery("#gropBuy").val();
         var userstoreId = jQuery("#userstoreId").val();
@@ -1115,6 +1123,7 @@
                         });
                         if ($(".gsp option:selected").val() == 0){
                             add = false;
+                            alert("请选择规格！！！")
                         }
                     });
                 }
@@ -1131,23 +1140,9 @@
                     alert("商品库存为0,不能购买!");
                     return;
                 }
+
                 if (add) {
-                    console.log("------可以购物----");
-                    console.log("------添加到购物车的价格----"+price);
-                    jQuery.post("/add_goods_cart.htm", {
-                        "id": id,
-                        "count": count,
-                        "price": price,
-                        "gsp": gsp
-                    }, function (res) {
-                        alert("添加购物车成功！");
-                        var data =JSON.parse(res);
-                        jQuery("#cart_goods_count").html(data.count);
-                        jQuery("#cart_goods_totalprice").html(data.total_price);
-                        jQuery(".goodscar").fadeIn();
-                        //更新顶部购物车信息
-                        jQuery("#cart_goods_count_top").html(data.count);
-                    });
+                    add_goods_to_cart(id,count,price,gsp,false)
                 } else {
                     jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
                     jQuery("#goods_spec_info_close").show();
@@ -1159,6 +1154,43 @@
         }
 
     }
+
+    function add_goods_to_cart(id,count,price,gsp,flag){
+        console.log('gsp',gsp);
+        var type='';
+        var groupBuy = $("#gropBuy").val();
+        if(groupBuy == '2'){
+            price= $("#group_price").text();
+        }
+        var combinStatus = $("#combinStatus").val();
+        if(combinStatus == '2'){
+            type='combin';
+        }
+
+        var num=$(".goods_num").text();
+        jQuery.post("/addGoodsCart", {
+            "id": id,
+            "count": count,
+            "price": price,
+            "gsp": gsp,
+            'buy_type': type
+        }, function (res) {
+            //验证成功跳转购物车
+            console.log(res);
+            if(res.code == '200'){
+                if(flag){
+                    window.location.href = "/goods_cart1.htm";
+                }else{
+                    alert('添加到购物车成功');
+                    $(".goods_num").text(parseInt(num)+parseInt(1))
+                }
+            }else{
+                alert(res.msg);
+            }
+
+        });
+    }
+
 
     function buy_goods(id,storeId) {
         var userId = jQuery("#userId").val();
@@ -1209,17 +1241,7 @@
             var buy_type = arguments[4];
             console.log("购买类型---"+buy_type);
             if (add) {
-                jQuery.post("/add_goods_cart.htm", {
-                    "id": id,
-                    "count": count,
-                    "price": price,
-                    "gsp": gsp,
-                    "buy_type": buy_type
-                }, function (data) {
-                    jQuery("#cart_goods_count").html(data.count);
-                    jQuery("#cart_goods_totalprice").html(data.total_price);
-                    window.location.href = "/goods_cart1.htm";
-                }, "json");
+                add_goods_to_cart(id,count,price,gsp,true)
             } else {
                 jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
                 jQuery("#goods_spec_info_close").show();

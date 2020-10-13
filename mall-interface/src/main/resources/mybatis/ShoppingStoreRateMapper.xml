@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdj.interfaces.mallinterface.mapper.ShoppingStoreRateMapper">
+  <resultMap id="BaseResultMap" type="com.xdj.www.entity.ShoppingStoreRate">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="deleteStatus" jdbcType="BIT" property="deletestatus" />
+    <result column="store_id" jdbcType="BIGINT" property="storeId" />
+    <result column="rate" jdbcType="DECIMAL" property="rate" />
+    <result column="rate_name" jdbcType="VARCHAR" property="rateName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, deleteStatus, store_id, rate, rate_name, remark, addTime
+  </sql>
+  <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingStoreRateExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_store_rate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shopping_store_rate
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_store_rate
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingStoreRateExample">
+    delete from shopping_store_rate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdj.www.entity.ShoppingStoreRate">
+    insert into shopping_store_rate (id, deleteStatus, store_id, 
+      rate, rate_name, remark, 
+      addTime)
+    values (#{id,jdbcType=BIGINT}, #{deletestatus,jdbcType=BIT}, #{storeId,jdbcType=BIGINT}, 
+      #{rate,jdbcType=DECIMAL}, #{rateName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingStoreRate">
+    insert into shopping_store_rate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deletestatus != null">
+        deleteStatus,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="rateName != null">
+        rate_name,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="addtime != null">
+        addTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="deletestatus != null">
+        #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="rateName != null">
+        #{rateName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xdj.www.entity.ShoppingStoreRateExample" resultType="java.lang.Long">
+    select count(*) from shopping_store_rate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_store_rate
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.deletestatus != null">
+        deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rate != null">
+        rate = #{record.rate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rateName != null">
+        rate_name = #{record.rateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addtime != null">
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_store_rate
+    set id = #{record.id,jdbcType=BIGINT},
+      deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      rate = #{record.rate,jdbcType=DECIMAL},
+      rate_name = #{record.rateName,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdj.www.entity.ShoppingStoreRate">
+    update shopping_store_rate
+    <set>
+      <if test="deletestatus != null">
+        deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="rateName != null">
+        rate_name = #{rateName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null">
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdj.www.entity.ShoppingStoreRate">
+    update shopping_store_rate
+    set deleteStatus = #{deletestatus,jdbcType=BIT},
+      store_id = #{storeId,jdbcType=BIGINT},
+      rate = #{rate,jdbcType=DECIMAL},
+      rate_name = #{rateName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      addTime = #{addtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

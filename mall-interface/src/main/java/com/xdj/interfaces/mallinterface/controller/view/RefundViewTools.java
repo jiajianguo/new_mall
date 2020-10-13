@@ -52,7 +52,7 @@ public class RefundViewTools {
     public void addOrderGrls(ShoppingOrderformWithBLOBs obj) {
         if(obj != null ){
             Map<String,Object> params = new HashMap<>();
-            params.put("if_id",obj.getId());
+            params.put("of_id",obj.getId());
             List<ShoppingGoodsReturnlog> logs = goodsReturnLogService.queryByCondition(params);
             if(logs != null){
                 for(ShoppingGoodsReturnlog log: logs){

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
 	let ICONJs = document.createElement("script");
-	ICONJs.setAttribute("src", "https://at.alicdn.com/t/font_2092067_5e9g3o9d4q.js");
+	ICONJs.setAttribute("src", "https://at.alicdn.com/t/font_2092067_gw35bbtvujf.js");
 	document.getElementsByTagName("head")[0].appendChild(ICONJs);
 
 
@@ -37,6 +37,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	if(document.getElementsByClassName("header-button")[0]){
 		document.getElementsByClassName("header-button")[0].addEventListener("click", function(event) {
+			event.preventDefault();
+			console.log(this);
+			this.getAttribute("href") ? window.location.href = this.getAttribute("href") : window.history.go(-1)
+		})
+	}
+
+	if(document.querySelector(".icon_left")){
+		document.querySelector(".icon_left").addEventListener("click", function(event) {
 			event.preventDefault();
 			console.log(this);
 			this.getAttribute("href") ? window.location.href = this.getAttribute("href") : window.history.go(-1)

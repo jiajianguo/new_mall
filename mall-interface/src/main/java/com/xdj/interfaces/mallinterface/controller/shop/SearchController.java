@@ -228,7 +228,8 @@ public class SearchController {
             Sort sort = new Sort();
             if (!CommUtil.null2String(order_by).equals("")) {
                 //sort = new Sort(new SortField(order_by, SortField.Type.STRING,order_type));
-                sort.setSort(new SortField(order_by, SortField.Type.STRING,order_type));
+                //sort.setSort(new SortField(order_by, SortField.Type.STRING,order_type));
+                sort = new Sort(new SortField(order_by, SortField.Type.DOUBLE, order_type));
             }else{
                 sort.setSort(new SortField("addTime", SortField.Type.STRING,order_type));
             }

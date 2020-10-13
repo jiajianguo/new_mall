@@ -69,11 +69,13 @@
 				<input type="hidden" id="user_store_id" name="user_store_id" th:value="${user.storeId}">
 				<input type="hidden" id="goodsId" name="goodsId" th:value="${obj.id}">
 				<div class="price_box">
-					<div class="price" th:if="${obj.groupBuy !=2}" >
-						<span id="store_price" th:text="${'￥'+obj.storePrice}"></span>
+					<div class="price" th:if="${obj.groupBuy !=2}">
+						<span>￥</span>
+						<span id="store_price" th:text="${obj.storePrice}"></span>
 					</div>
 					<div class="price" th:if="${obj.groupBuy ==2}" th:each="groupGood :${groupGoods}">
-						<span id="gg_price" th:text="${'￥'+groupGood.ggPrice}"></span>
+						<span>￥</span>
+						<span id="gg_price" th:text="${groupGood.ggPrice}"></span>
 					</div>
 					<div class="price_del" >
 						<del th:text="${obj.goodsPrice}"></del>
@@ -125,7 +127,8 @@
 				</div>
 			</div>
 			<div class="btn_cont">
-				<input type="button" class="btn" th:data-id="${obj.id}" name="" id="buy_goods" value="加入购物车" />
+				<input type="button" class="btn" th:data-id="${obj.id}" name="" id="add_cart" value="加入购物车" />
+				<input type="button" style="margin-top: .2rem;background: #222" class="btn buy_btn" th:data-id="${obj.id}" name="" id="buy_goods" value="立即购买" />
 			</div>
 
 			<div class="tips">
@@ -170,6 +173,53 @@
 <script src="/wap/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 
+	$(".buy_btn").click(function(){
+
+	})
+
+	$("#add_cart").on('click',function (){
+		var  id= $(this).attr('data-id');
+		var count = $("#count").val();
+		var groupBuy =$("#gropBuy").val();
+		var price;
+		if(groupBuy == '2'){
+			price=$("#gg_price").text();
+		}else{
+			price=$("#store_price").text();
+		}
+
+		var gsp="";
+		var load = true;
+		if($("#specification").length==0){
+			load=true;
+		}else{
+			var s=$("div[class=sepc_act]")
+			console
+			if(s!=null){
+				s.each(function () {
+					gsp = $(this).attr("gsp") + "," + gsp;
+				});
+				console.log("gsp", gsp);
+			}else{
+				load=false;
+			}
+			if(gsp.length < 1){
+				load=false;
+				alert("请选择规格属性");
+			}
+		}
+
+		if(!count_verify(count)){
+			load= false;
+			alert('数量信息有误');
+		}
+		if(load){
+			add_goods_to_cart(id,count,price,gsp,false)
+		}else{
+			alert('购物失败');
+		}
+	});
+
 	$("#buy_goods").on('click',function (){
 		var  id= $(this).attr('data-id');
 		var count = $("#count").val();
@@ -196,13 +246,12 @@
 			}else{
 				load=false;
 			}
+			if(gsp.length < 1){
+				load=false;
+				alert("请选择规格属性");
+			}
 		}
 
-
-		if(gsp.length < 1){
-			load=false;
-			alert("请选择规格属性");
-		}
 		if(!count_verify(count)){
 			load= false;
 			alert('数量信息有误');
@@ -268,7 +317,7 @@
 	function add_goods_to_cart(id,count,price,gsp,flag){
 		console.log('gsp',gsp);
 		var type='';
-		var groupBuy = $("#groupBuy").val();
+		var groupBuy = $("#gropBuy").val();
 		if(groupBuy == '2'){
 			price= $("#gg_price").text();
 		}
@@ -276,7 +325,7 @@
 		if(combinStatus == '2'){
 			type='combin';
 		}
-		jQuery.post("/add_goods_cart.htm", {
+		jQuery.post("/addGoodsCart", {
 			"id": id,
 			"count": count,
 			"price": price,
@@ -284,13 +333,20 @@
 			'buy_type': type
 		}, function (res) {
 			//验证成功跳转购物车
-			if(flag){
-				window.location.href = "/goods_cart1.htm";
+			console.log(res);
+			if(res.code == '200'){
+				if(flag){
+					window.location.href = "/goods_cart1.htm";
+				}else{
+					alert('添加到购物车成功');
+				}
 			}else{
-				alert('添加到购物车成功');
+				alert(res.msg);
 			}
+
 		});
 	}
+
 
 
 	$("#sub_count").click(function(){

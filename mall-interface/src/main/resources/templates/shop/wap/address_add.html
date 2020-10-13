@@ -66,7 +66,7 @@
 
 					<div>
 						<div class="text_title"><span>*</span>is default address</div>
-						<input name="isdefault" type="radio" id="isdefault" th:value="${obj !=null ? obj.isdefault:''}"/>
+						<input name="isdefault" type="radio" id="isdefault" th:value="${obj !=null ? obj.isdefault:false}" th:checked="${obj !=null ? obj.isdefault:false}"/>
 					</div>
 					
 					<div class="content_text">

@@ -427,7 +427,8 @@
                         </span>
                       </td>
                     </tr>
-                     <tr>
+
+                    <tr>
                       <td align="right" valign="top">所在地区：</td>
                       <td  class="px10"><span class="setinput">
                         <span id="area_area_info" th:text="${user.areaId!=null}?(${user.area.parent.parent.areaname}+${user.area.parent.areaname}+${user.area.areaname}):''"></span>
@@ -451,6 +452,19 @@
 
                         </span></td>
                     </tr>
+                    <!--<tr>
+                      <td align="right" valign="top">所在地区：</td>
+                      <td  class="px10"><span class="setinput">
+                        <input name="countries" type="text" id="countries" th:value="${user.countries!=null?user.countries:''}+${user.city!=null?user.city:''}" />
+                        </span></td>
+                    </tr>
+                    <tr>
+                      <td align="right" valign="top">所在城市：</td>
+                      <td  class="px10"><span class="setinput">
+                        <input name="city" type="text" id="city" th:value="${user.city!=null?user.city:''}"/>
+                        </span></td>
+                    </tr>-->
+
                     <tr>
                       <td align="right" valign="top">QQ：</td>
                       <td  class="px10"><span class="setinput">

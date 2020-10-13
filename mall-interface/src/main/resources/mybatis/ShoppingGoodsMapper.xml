@@ -32,6 +32,7 @@
     <result column="ztc_status" jdbcType="INTEGER" property="ztcStatus" />
     <result column="gc_id" jdbcType="BIGINT" property="gcId" />
     <result column="goods_brand_id" jdbcType="BIGINT" property="goodsBrandId" />
+    <result column="rate_id" jdbcType="BIGINT" property="rateId" />
     <result column="goods_main_photo_id" jdbcType="BIGINT" property="goodsMainPhotoId" />
     <result column="goods_store_id" jdbcType="BIGINT" property="goodsStoreId" />
     <result column="ztc_admin_id" jdbcType="BIGINT" property="ztcAdminId" />
@@ -212,7 +213,7 @@
     bargain_status, delivery_status, goods_current_price, goods_volume, ems_trans_fee,
     express_trans_fee, mail_trans_fee, transport_id, combin_status, combin_begin_time,
     combin_end_time, combin_price, description_evaluate, weixin_shop_hot, weixin_shop_hotTime,
-    weixin_shop_recommend, weixin_shop_recommendTime
+    weixin_shop_recommend, weixin_shop_recommendTime,rate_id
   </sql>
   <sql id="Blob_Column_List">
     goods_details, goods_inventory_detail, goods_property, seo_description, ztc_admin_content
@@ -451,7 +452,7 @@
       store_recommend, store_recommend_time, ztc_apply_time,
       ztc_begin_time, ztc_click_num, ztc_dredge_price,
       ztc_gold, ztc_pay_status, ztc_price,
-      ztc_status, gc_id, goods_brand_id,
+      ztc_status, gc_id, goods_brand_id,rate_id,
       goods_main_photo_id, goods_store_id, ztc_admin_id,
       goods_collect, group_buy, goods_choice_type,
       group_id, activity_status, bargain_status,
@@ -579,6 +580,8 @@
       </if>
       <if test="goodsBrandId != null">
         goods_brand_id,
+      </if><if test="rateId != null">
+        rate_id,
       </if>
       <if test="goodsMainPhotoId != null">
         goods_main_photo_id,
@@ -953,6 +956,9 @@
       <if test="record.goodsBrandId != null">
         goods_brand_id = #{record.goodsBrandId,jdbcType=BIGINT},
       </if>
+      <if test="record.rateId != null">
+        rate_id = #{record.rateId,jdbcType=BIGINT},
+      </if>
       <if test="record.goodsMainPhotoId != null">
         goods_main_photo_id = #{record.goodsMainPhotoId,jdbcType=BIGINT},
       </if>
@@ -1079,7 +1085,8 @@
       ztc_price = #{record.ztcPrice,jdbcType=INTEGER},
       ztc_status = #{record.ztcStatus,jdbcType=INTEGER},
       gc_id = #{record.gcId,jdbcType=BIGINT},
-      goods_brand_id = #{record.goodsBrandId,jdbcType=BIGINT},
+      goods_brand_id = #{record.rateId,jdbcType=BIGINT},
+      rate_id = #{record.goodsBrandId,jdbcType=BIGINT},
       goods_main_photo_id = #{record.goodsMainPhotoId,jdbcType=BIGINT},
       goods_store_id = #{record.goodsStoreId,jdbcType=BIGINT},
       ztc_admin_id = #{record.ztcAdminId,jdbcType=BIGINT},
@@ -1146,6 +1153,7 @@
       ztc_status = #{record.ztcStatus,jdbcType=INTEGER},
       gc_id = #{record.gcId,jdbcType=BIGINT},
       goods_brand_id = #{record.goodsBrandId,jdbcType=BIGINT},
+      rate_id = #{record.rateId,jdbcType=BIGINT},
       goods_main_photo_id = #{record.goodsMainPhotoId,jdbcType=BIGINT},
       goods_store_id = #{record.goodsStoreId,jdbcType=BIGINT},
       ztc_admin_id = #{record.ztcAdminId,jdbcType=BIGINT},
@@ -1264,6 +1272,9 @@
       </if>
       <if test="goodsBrandId != null">
         goods_brand_id = #{goodsBrandId,jdbcType=BIGINT},
+      </if>
+      <if test="rateId != null">
+        rate_id = #{rateId,jdbcType=BIGINT},
       </if>
       <if test="goodsMainPhotoId != null">
         goods_main_photo_id = #{goodsMainPhotoId,jdbcType=BIGINT},
@@ -1389,6 +1400,7 @@
       ztc_status = #{ztcStatus,jdbcType=INTEGER},
       gc_id = #{gcId,jdbcType=BIGINT},
       goods_brand_id = #{goodsBrandId,jdbcType=BIGINT},
+      rate_id = #{rateId,jdbcType=BIGINT},
       goods_main_photo_id = #{goodsMainPhotoId,jdbcType=BIGINT},
       goods_store_id = #{goodsStoreId,jdbcType=BIGINT},
       ztc_admin_id = #{ztcAdminId,jdbcType=BIGINT},
@@ -1452,6 +1464,7 @@
       ztc_status = #{ztcStatus,jdbcType=INTEGER},
       gc_id = #{gcId,jdbcType=BIGINT},
       goods_brand_id = #{goodsBrandId,jdbcType=BIGINT},
+      rate_id = #{rateId,jdbcType=BIGINT},
       goods_main_photo_id = #{goodsMainPhotoId,jdbcType=BIGINT},
       goods_store_id = #{goodsStoreId,jdbcType=BIGINT},
       ztc_admin_id = #{ztcAdminId,jdbcType=BIGINT},

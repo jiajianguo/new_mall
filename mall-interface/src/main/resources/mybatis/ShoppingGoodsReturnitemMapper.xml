@@ -76,6 +76,15 @@
   <sql id="Blob_Column_List">
     spec_info
   </sql>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select  * from shopping_goods_returnitem
+    <where>
+      1=1
+      <if test="gr_id != null "> and gr_id=#{gr_id}</if>
+    </where>
+  </select>
+
   <select id="selectByExampleWithBLOBs" parameterType="com.xdj.www.entity.ShoppingGoodsReturnitemExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">

@@ -22,28 +22,28 @@
 				</a>
 				<div class="header-title">收货地址</div>
 			</div>
-			<div class="ui-content">
+			<div class="ui-content" style="padding-bottom: 1rem;">
 
 				<div th:each="obj :${objs}" class="main_content public_padding">
 					<div class="content_name public_flex_between">
-						<div >收货人：<span th:text="${obj.truename}"></span> </div>
-						<div th:text="${obj.telephone}"></div>
+						<div >收货人：<span th:text="${obj.truename}" class="person"></span> </div>
+						<div  class="phone" th:text="${obj.telephone}"></div>
 					</div>
 					<div class="content_dizhi"  th:text="${obj.countries == null?'':obj.countries } + ${obj.city== null?'':obj.city +obj.areaInfo}"></div>
 					<div class="content_bt public_flex_between">
 						<label class="font_color color1">
-							<input class="font_color_text"  th:data-id="${obj.id}" th:checked="${obj.isdefault == true?'checked':''}" type="radio" name="isdefault" /> 默认地址
+							<input class="font_color_text"  th:data-id="${obj.id}" th:checked="${obj.isdefault == true?true:false}" type="radio" name="isdefault" /> 默认地址
 						</label>
 						<div class="public_bt">
 							<div>
-								<a href="/buyer/address_edit.htm">
+								<a th:href="@{/buyer/address_edit.htm(id=${obj.id})}">
 								<svg class="icon bt_icon" aria-hidden="true">
 									<use xlink:href="#icon-bianji"></use>
 								</svg>
 								</a>
 							</div>
 							<div>
-								<a href="/buyer/address_del.htm">
+								<a th:href="@{/buyer/address_del.htm(mulitId=${obj.id})}">
 								<svg class="icon bt_icon" aria-hidden="true">
 									<use xlink:href="#icon-shanchu"></use>
 								</svg>
@@ -83,6 +83,26 @@
 			$("#new_address").click(function(){
 				window.location.href="/buyer/address_add.htm";
 			});
+
+
+			$(".main_content").click(function() {
+				var person = $(this).find(".person").text();
+				var phone = $(this).find(".phone").text();
+				var address = $(this).find(".content_dizhi").text();
+				var obj = {
+					person:person,
+					phone:phone,
+					address:address
+				}
+
+				window.sessionStorage.setItem("obj",JSON.stringify(obj));
+
+				/*window.location.href="/goods_cart2";*/
+
+
+
+			})
+
 		})
 		
 		

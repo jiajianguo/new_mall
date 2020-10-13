@@ -36,14 +36,19 @@ public class FavoriteBuyerController {
     @Autowired
     private GoodsViewTools goodsViewTools;
 
-    @SecurityMapping(display = false, rsequence = 0, title="用户商品收藏", value="/buyer/favorite_*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
+    @SecurityMapping(display = false, rsequence = 0, title="用户商品收藏", value="/buyer/favorite_goods*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
     @RequestMapping({"/buyer/favorite_goods.htm"})
     public ModelAndView favorite_goods(HttpServletRequest request, HttpServletResponse response, String currentPage, String orderBy, String orderType)
     {
         ModelAndView mv = new JModelAndView(
-                "/buyer/favorite_goods.html", this.configService
-                .getSysConfig(),
+                "/buyer/favorite_goods.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 0, request, response);
+        String shopping_view_type = CommUtil.null2String( request.getSession().getAttribute( "shopping_view_type" ) );
+        if( (shopping_view_type != null) && (!shopping_view_type.equals( "" )) && (shopping_view_type.equals( "wap" )) ) {
+            mv = new JModelAndView("wap/favorite_goods.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+        }
+
         String url = this.configService.getSysConfig().getAddress();
         if ((url == null) || (url.equals(""))) {
             url = CommUtil.getURL(request);
@@ -70,7 +75,7 @@ public class FavoriteBuyerController {
             page.setRowCount(count);
             page.setPageSize(10);
             page.setCurrentPage(pageNow);
-            CommUtil.saveIPageList2ModelAndView(url + "/buyer/favorite_", "", params, page, mv);
+            CommUtil.saveIPageList2ModelAndView(url + "/buyer/favorite_goods.htm", "", params, page, mv);
         }
         return mv;
     }
@@ -81,6 +86,7 @@ public class FavoriteBuyerController {
     {
         ModelAndView mv = new JModelAndView("/buyer/favorite_store.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 0, request, response);
+
         String url = this.configService.getSysConfig().getAddress();
         if ((url == null) || (url.equals(""))) {
             url = CommUtil.getURL(request);
@@ -122,7 +128,7 @@ public class FavoriteBuyerController {
             }
         }
         if (type == 0) {
-            response.sendRedirect("favorite_?currentPage=" + currentPage);
+            response.sendRedirect("favorite_goods.htm?currentPage=" + currentPage);
         }else{
             response.sendRedirect("favorite_store.htm?currentPage=" + currentPage);
         }

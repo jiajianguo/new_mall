@@ -86,6 +86,10 @@ public class GoodsController {
     private OrderViewTools orderViewTools;
     @Resource
     private UserGoodsClassTools userGoodsClassTools;
+    @Resource
+    private IStoreCartService storeCartService;
+    @Resource
+    private GoodsCartTools goodsCartTools;
 
     private Logger log = LoggerFactory.getLogger("goodsController");
 
@@ -1113,7 +1117,25 @@ public class GoodsController {
             mv.addObject("op_title", "该商品未上架，不允许查看");
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }
+
+        ShoppingUser user =SecurityUserHolder.getCurrentUser();
+        List<ShoppingStorecart> cart = getCart(user.getId());
+        int count = 0;
+        for (ShoppingStorecart sc2 : cart) {
+            goodsCartTools.addGcs(sc2);
+            for (ShoppingGoodscart gc1 : sc2.getGcs()) {
+                count += 1;
+            }
+        }
+        mv.addObject("cartSize",count);
         return mv;
+    }
+
+    private List<ShoppingStorecart> getCart(Long userId){
+        Map params = new HashMap();
+        params.put("user_id", userId);
+        params.put("sc_status", Integer.valueOf(0));
+        return this.storeCartService.queryByCondition(params);
     }
 
     public void goodsEvalutioin(String id,String currentPage,HttpServletRequest request,ModelAndView mv){

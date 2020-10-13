@@ -25,7 +25,7 @@
 					<div class="pushdz">
 						<div>
 							<div class="push_title">收货地址</div>
-							<div th:each="addr : ${addrs}" th:data-id="${addr.id}" class="address_id" >
+							<div th:data-id="${addr.id}" class="address_id" >
 								<span id="person" th:text="${addr.truename } "></span>
 								<span id="mobile" th:text="${addr.mobile}"></span>
 								<div class="pushdz_text"   th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>
@@ -70,7 +70,7 @@
 										<input class="fpinput" type="radio" name="fp"/>
 									</div>
 								</div>
-								<div>查看详情></div>
+								<div class="look_info">查看详情></div>
 							</div>
 							<div class="zfpay_row">
 								<div>商品总额：</div>
@@ -99,7 +99,8 @@
 					<div class="zfmode">
 						<div class="text_title">支付方式</div>
 						<div class="zfmode_text">
-							<input type="hidden" id="orderNO" name="orderNo" th:value="${orderNo}">
+							<input type="hidden" name="ids" id="ids" th:value="${ids}">
+							<!--<input type="hidden" id="orderNO" name="orderNo" th:value="${orderNo}">-->
 							<div class="zfmode_row" th:each="pay : ${pays}">
 								<div class="zfmode_left">
 									<img class="zfmode_leftimg" src="asset/img/pay1.png" >
@@ -145,45 +146,99 @@
 					<div class="bill">
 						<div class="bill_content">
 							<div class="back1"></div>
-							<div class="bill_title">普通电子发票</div>
+							<div class="bill_title">Contact Info</div>
 							<div class="bill_text bill_border">
 								<div>
-									<div class="bill_title_color">日期</div>
-									<div>2020-10-06  12：09：34</div>
+									<div class="bill_title_color">address</div>
+									<div th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>
 								</div>
 								<div>
-									<div class="bill_title_color">订单号</div>
-									<div>124633354110</div>
+									<div class="bill_title_color">email</div>
+									<div th:text="${user.email}"></div>
+								</div>
+								<div>
+									<div class="bill_title_color">phone</div>
+									<div th:text="${user.telephone}"></div>
 								</div>
 							</div>
 							<div class="bill_text bill_border">
+								<span th:each="gc :${carts}">
 								<div>
 									<div class="bill_title_color">商品名字</div>
-									<div>高夫洗面奶</div>
+									<div th:text="${gc.goods.goodsName}"></div>
 								</div>
 								<div>
 									<div class="bill_title_color">商品税率</div>
-									<div>0.56%</div>
+									<div th:if="${gc.goods.rate}" th:text="${gc.goods.rate.rate}+'%'">10%</div>
+									<div th:unless="${gc.goods.rate}">10%</div>
 								</div>
 								<div>
 									<div class="bill_title_color">发票金额</div>
-									<div>￥500</div>
+									<div th:text="${gc.count*gc.price}"></div>
 								</div>
-								<div>
-									<div class="bill_title_color">发票地址</div>
-									<div>中国重庆南岸区金台大厦</div>
-								</div>
+								</span>
 							</div>
 							<div class="bill_text">
 								<div>
 									<div class="bill_title_color">发票号码</div>
-									<div>0111056322</div>
+									<div>0111056322567</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
 				</div>
+
+				<div class="ui-shade flex-center">
+					<div class="ui-modal">
+						<div class="modal_tit">地址列表</div>
+						<div class="modal_cont">
+							<div class="modal_item" th:each="address :${addressList}">
+								<div class="flex-between">
+									<div>收货人：<span class="userName" th:text="${address.truename}"></span></div>
+									<div>电话：<span class="phoneNumber" th:text="${address.mobile}"></span></div>
+								</div>
+								<div class="address_info" th:text="${address.countries} + ${address.city} +${address.areaInfo }">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<style>
+
+					.ui-shade{
+						display: none;
+					}
+					.ui-modal{
+						background: white;
+						width: calc(100% - 1rem);
+						padding: 0 .24rem .3rem .24rem;
+					}
+
+					.modal_tit{
+						text-align: center;
+						padding: .3rem 0 .2rem 0;
+						font-size: .36rem;
+						font-weight: bold;
+						color: #333;
+					}
+
+					.modal_item{
+						margin-top: .1rem;
+						box-shadow: 0 0 4px rgba(0,0,0,.1);
+						padding: .2rem;
+						border-right: 6px;
+					}
+
+					.modal_item .address_info{
+						color: #999;
+						font-size: .24rem;
+						margin-top: .1rem;
+					}
+
+				</style>
+
 			</div>
 		</div>
 	</body>
@@ -191,9 +246,27 @@
 		$(".bt01").click(function() {
 			$(".main_zhezhao").css({
 				"display": "block",
-
 			})
 		})
+		
+		$(".look_info").click(function () {
+			$(".bill").css("display","block");
+		})
+
+
+		$(".ui-shade").click(function () {
+			$(".ui-shade").css("display","none");
+		})
+
+
+		$(".modal_item").click(function () {
+			$("#person").text($(this).find(".userName").text())
+			$("#mobile").text($(this).find(".phoneNumber").text())
+			$(".pushdz_text").text($(this).find(".address_info").text())
+			$(".ui-shade").css("display","none");
+			return false;
+		})
+
 
 		$(".bt02").click(function() {
 			$(".main_zhezhao").css({
@@ -224,10 +297,10 @@
 			return false
 		})
 		$("#user_address").click(function (){
-			window.location.href="/buyer/address.htm";
+			$(".ui-shade").css("display","flex");
 		});
 		$("#orderPay").click(function (){
-           var orderNO=$("#orderNO").val();
+           var ids=$("#ids").val();
            var addr_id=$(".address_id");
            var coupon_id ='';
            var payIds =$(".zfmode_text .zfmode_row").find("input[type =radio]");
@@ -244,10 +317,7 @@
 				payid = $(this).val();
 			}
 		   });
-           if(!verify(orderNO)){
-           		alert("订单信息有误");
-           		flag =false;
-		   }
+
            if(!verify(addr)){
            	 alert("选择收货地址");
            	 flag =false;
@@ -257,7 +327,7 @@
            	 flag =false;
 		   }
            if(flag){
-           	 window.location.href="/goods_cart3?addr_id="+addr+"&payId="+payid+"&orderNo="+orderNO;
+           	 window.location.href="/goods_cart3?addr_id="+addr+"&payId="+payid+"&ids="+ids;
 		   }
 		});
 

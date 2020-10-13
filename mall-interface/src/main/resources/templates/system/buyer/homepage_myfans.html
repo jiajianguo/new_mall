@@ -60,7 +60,8 @@
                 <div class="menu" id="cart_menu">
                     <span class="menu-hd" id="cart_goods_top_menu">
                         <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车
-                        <span id="cart_goods_count_top" class="top_car" th:text="${cart.size()}">0</span>种商品</a><b></b>
+                        <!--<span id="cart_goods_count_top" class="top_car" th:text="${cart.size()}">0</span>种商品-->
+                    </a><b></b>
                     </span>
                 </div>
             </li>
@@ -251,9 +252,8 @@ $!httpInclude.include("/buyer/homepage_head.htm?uid=$!owner.id")
                 <ul>
 
                 	 <li>
-                         <a href="$!friend_Url">好友列表</a>
-                         <a th:if="${owner.id!=user.id}" th:href="@{/buyer/homepage/myfriends.htm(uid=${owner.id})}">关注列表</a>
-                         <a th:unless="${owner.id!=user.id}" th:href="@{/buyer/homepage/myfriends.htm}">关注列表</a>
+                         <a th:if="${owner.id!=user.id}" th:href="@{/buyer/homepage/myfriends.htm(uid=${owner.id})}">好友列表</a>
+                         <a th:unless="${owner.id!=user.id}" th:href="@{/buyer/homepage/myfriends.htm}">好友列表</a>
                      </li>
                 	 <li>
                          <a th:if="${owner.id!=user.id}" th:href="@{/buyer/homepage/myattention.htm(uid=${owner.id})}">关注列表</a>

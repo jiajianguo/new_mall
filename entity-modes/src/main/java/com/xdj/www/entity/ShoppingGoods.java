@@ -92,6 +92,33 @@ public class ShoppingGoods extends BaseEntity{
      *
      */
     private Long goodsBrandId;
+
+    /**
+     *
+     */
+    private Long rateId;
+
+    /**
+     * 店铺商品税率
+     */
+    private ShoppingStoreRate rate;
+
+    public Long getRateId() {
+        return rateId;
+    }
+
+    public void setRateId(Long rateId) {
+        this.rateId = rateId;
+    }
+
+    public ShoppingStoreRate getRate() {
+        return rate;
+    }
+
+    public void setRate(ShoppingStoreRate rate) {
+        this.rate = rate;
+    }
+
     /**
      * 商品主图id
      */

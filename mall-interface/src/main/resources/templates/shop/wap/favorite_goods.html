@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>我的收藏</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/shouc.css"/>
+	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div class="ui-pane">
+		<div class="ui-header">
+			<a href="" class="header-button">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-left"></use>
+				</svg>
+			</a>
+			<div class="header-title">我的收藏</div>
+		</div>
+		<div class="ui-content" th:if="${objs.size()>0}">
+
+			<div class="page_list flex-between" th:each="obj :${objs}">
+				<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank">
+				<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}">
+				</a>
+				<div class="item_right">
+					<div class="right_top flex-between">
+						<div th:text="${obj.goods.goodsName}"></div>
+						<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-fenxiang"></use>
+						</svg>
+						</a>
+					</div>
+					<!--<div class="goods_name wordNoWarp"  >
+						现货Chanel 经典款黑色荔枝皮
+					</div>-->
+					<div class="item_price" th:text="${config.currencyCode}+${obj.goods.storePrice}">
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

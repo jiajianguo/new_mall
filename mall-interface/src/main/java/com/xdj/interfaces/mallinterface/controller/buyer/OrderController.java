@@ -228,7 +228,11 @@ public class OrderController {
         }
         mv.addObject("order_status", order_status);
         List<ShoppingOrderformWithBLOBs> pList = this.orderFormService.pageList(params);
+
         if(pList != null){
+            for (ShoppingOrderformWithBLOBs orderform : pList) {
+                goodsCartTools.addOrderGcs(orderform);
+            }
             int count  = this.orderFormService.count(params);
             PageModel page = new PageModel();
             paymentViewTools.addOrderPays(pList,true);
@@ -240,8 +244,8 @@ public class OrderController {
             }else{
                 page.setPages(count/10+1);
             }
-
             page.setCurrentPage(pageNow);
+            page.setPageSize(8);
             CommUtil.saveIPageList2ModelAndView("", "", "", page, mv);
         }
         return mv;

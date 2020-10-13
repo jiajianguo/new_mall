@@ -163,8 +163,8 @@ jQuery(document).ready(function(){
     <div class="head">
       <div class="logo">
         <a  th:href="@{/index.htm}">
-          <img th:if="${config.websiteLogo}" th:src="@{${'/'+ config.websiteLogo.path+'/'+config.websiteLogo.name }}" border="0" />
-          <img th:unless="${config.websiteLogo}" th:src="@{/style/system/front/default/images/logo.png}"  border="0" />
+          <img th:if="${config.websiteLogo}" th:src="@{${'/'+ config.websiteLogo.path+'/'+config.websiteLogo.name }}" border="0" width="180" height="60"/>
+          <img th:unless="${config.websiteLogo}" th:src="@{/style/system/front/default/images/logo.png}"  border="0" width="180" height="60"/>
         </a>
       </div>
       <div class="usersearch">

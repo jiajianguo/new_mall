@@ -18,8 +18,8 @@
 				<div class="address_left" id="user_address">
 					<p>收货地址</p>
 					<div th:if="${ address }" th:each="addr : ${address}">
-						<span id="person" th:text="${addr.truename } "></span>
-						<span id="mobile" th:text="${addr.mobile}"></span>
+						<span style="display: none" id="person" th:text="${addr.truename } "></span>
+						<span style="display: none" id="mobile" th:text="${addr.mobile}"></span>
 						<div  th:text="${addr.countries} +${addr.city}+ ${addr.areaInfo}"></div>
 					</div>
 					<div th:unless="${address }">未添加默认地址</div>
@@ -44,8 +44,13 @@
 											<use xlink:href="#icon-shoucang"></use>
 										</svg>
 									</div>
-									<div class="price_box flex-star">
+									<div class="price_box flex-between">
 										<div th:text="'$'+${obj.price}"></div>
+										<a href="javascript:void(0);" th:data-id="${obj.id}"  th:data-name="${sc.store.id}"  onclick="cart_remove(this.getAttribute('data-id'),this.getAttribute('data-name'));">
+										<svg class="icon del" aria-hidden="true">
+											<use xlink:href="#icon-shanchu"></use>
+										</svg>
+										</a>
 										<!--<span>$ 199.00</span>-->
 									</div>
 									<div class="goods_opt flex-between">
@@ -73,14 +78,15 @@
 					</div>
 				</div>
 
-				<div class="page_bottom">
-					<div class="price_line flex-star">
-						Total：<span class="allprice" >0.00</span>
-					</div>
-					<input type="button" class="pay_btn" name="" id="goods_pay" value="结算" />
-					<div class="pay_tips">支付可以使用优惠券商品更划算</div>
-				</div>
 
+
+			</div>
+			<div class="page_bottom">
+				<div class="price_line flex-star">
+					Total：<span class="allprice" >0.00</span>
+				</div>
+				<input type="button" class="pay_btn" name="" id="goods_pay" value="结算" />
+				<div class="pay_tips">支付可以使用优惠券商品更划算</div>
 			</div>
 			</form>
 
@@ -103,9 +109,27 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$("#user_address").click(function (){
-		window.location.href="/buyer/address.htm";
-	});
+
+	function cart_remove(id,store_id) {
+		if (confirm("确定删除商品吗？")) {
+			jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
+				$(this).parents(".list_item").remove();
+				jQuery("#cart_goods_count_top").html(data.count);
+				calcAllprice();
+			}, "json");
+		}
+	}
+
+
+	/*$(".del").click(function () {
+		if(confirm("确定删除商品吗？")){
+			$(this).parents(".list_item").remove();
+			calcAllprice();
+			console.log(66666666666666)
+		}
+	})*/
+
+
 	      $("#goods_pay").click(function(){
 	      	//获取选中的IDS
 			var checkboxs =  $(".goodscartList .list_item").find("input[type=checkbox]");
@@ -179,8 +203,8 @@
 						pricestr = parseFloat(pricestr) * num;
 						allprice += pricestr;
 					}
-					$(".allprice").text( "$" + allprice.toFixed(2))
 				})
+				$(".allprice").text( "$" + allprice.toFixed(2))
 			}
 
 </script>

@@ -74,7 +74,7 @@ public class AdressController {
         param.put("start",(pageNow-1)*10);
         param.put("pageSize",10);
         List<ShoppingAddress> pList = addressService.queryByCondition(param);
-        areaViewTools.addAdressAreas(pList);
+        //areaViewTools.addAdressAreas(pList);
         if(pList != null && pList.size() >0){
             int count =  this.addressService.count(param);
             PageModel page = new PageModel();
@@ -85,10 +85,10 @@ public class AdressController {
             //CommUtil.saveIPageList2ModelAndView(url + "/buyer/address.htm", "", params, page, mv);
             CommUtil.saveIPageList2ModelAndView( "", "", params, page, mv);
         }
-        param.clear();
+       /* param.clear();
         param.put("parent_id","is null");
         List<ShoppingArea> areas = this.areaService.queryByCondition(param);
-        mv.addObject("areas", areas);
+        mv.addObject("areas", areas);*/
         return mv;
     }
 
@@ -130,20 +130,21 @@ public class AdressController {
             mv = new JModelAndView("wap/address_add.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
         }
-        Map<String,Object> params=new HashMap<>();
+        /*Map<String,Object> params=new HashMap<>();
         params.put("parent_id","is null");
-        List<ShoppingArea> areas = this.areaService.queryByCondition(params);
+        List<ShoppingArea> areas = this.areaService.queryByCondition(params);*/
         ShoppingAddress obj = this.addressService.getObjById(CommUtil.null2Long(id));
-        areaViewTools.addAdressArea(obj);
+        //areaViewTools.addAdressArea(obj);
         mv.addObject("obj", obj);
-        mv.addObject("areas", areas);
+        //mv.addObject("areas", areas);
         mv.addObject("currentPage", currentPage);
         return mv;
     }
 
+
     @SecurityMapping(display = false, rsequence = 0, title="收货地址保存", value="/buyer/address_save.htm*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
     @RequestMapping({"/buyer/address_save.htm"})
-    public void address_save(HttpServletRequest request, HttpServletResponse response, String id, String area_id,String isdefault, String currentPage) throws IOException {
+    public void address_save(HttpServletRequest request, HttpServletResponse response, String id, String currentPage) throws IOException {
         ShoppingUser user=SecurityUserHolder.getCurrentUser();
         ShoppingAddress address = null;
         if (id == null || "".equals(id)) {
@@ -164,6 +165,7 @@ public class AdressController {
         } else {
          address = this.addressService.getObjById(Long.valueOf(Long.parseLong(id)));
         }
+        String isdefault=request.getParameter("default");
         if(StringUtils.isBlank(isdefault)){
             if(isdefault.equals("1")){
                 address.setIsdefault(true);
@@ -189,14 +191,16 @@ public class AdressController {
     @RequestMapping({"/buyer/address_del.htm"})
     public void address_del(HttpServletRequest request, HttpServletResponse response, String mulitId, String currentPage) throws IOException {
         String[] ids = mulitId.split(",");
-        for (String id : ids) {
+        for (String id : ids){
             if (!id.equals("")) {
-                ShoppingAddress address = this.addressService.getObjById(
-                        Long.valueOf(Long.parseLong(id)));
+                //ShoppingAddress address = this.addressService.getObjById(Long.valueOf(Long.parseLong(id)));
                 this.addressService.delete(Long.valueOf(Long.parseLong(id)));
             }
         }
-
-        response.sendRedirect("address.htm?currentPage=" + currentPage);
+        int pageNow=1;
+        if(StringUtils.isBlank(currentPage)){
+            pageNow=Integer.valueOf(currentPage);
+        }
+        response.sendRedirect("address.htm?currentPage=" + pageNow);
     }
 }

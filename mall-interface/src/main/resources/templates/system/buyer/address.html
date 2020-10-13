@@ -315,18 +315,15 @@
                   <td width="162">所在地区</td>
                   <td  width="111">详细地址</td>
                   <td width="111">联系电话</td>
-                  <td width="88">手机号码</td>
                   <td width="211" align="left">操作</td>
                 </tr>
 
                 <tr th:each="obj :${objs}" class="opertr" th:id="${obj.id}">
                     <input type="hidden" id="mulitId" th:value="${obj.id}">
                   <td width="115" th:text="${obj.truename}"></td>
-                  <td width="162" th:area_info_id="${obj.id}" th:if="${obj.area != null}" th:text="${obj.area.parent.parent.areaname}+${obj.area.parent.areaname}+${obj.area.areaname}"></td>
-                  <td width="162" th:area_info_id="${obj.id}"  th:unless="${obj.area == null}" th:text="${obj.countries== null?'':obj.countries + obj.city== null?'':obj.city +obj.areaInfo}"></td>
+                  <td width="162" th:area_info_id="${obj.id}" th:text="${obj.countries==null?'':obj.countries}+${obj.city == null?'':obj.city}"></td>
                   <td width="111" th:text="${obj.areaInfo}"> </td>
                   <td  width="111" th:text="${obj.telephone}"></td>
-                  <td width="88" th:text="${obj.mobile}"></td>
                   <td align="left">
                       <span class="edit">
                           <a href="javascript:void(0);" th:dialog_uri="@{/buyer/address_edit.htm(id=${obj.id},currentPage=${currentPage})}" dialog_title="编辑地址" dialog_width="500" dialog_height="100" dialog_id="cart_address">编辑</a>
