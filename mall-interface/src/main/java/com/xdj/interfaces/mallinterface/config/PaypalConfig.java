@@ -19,6 +19,7 @@ import java.util.Map;
         @Value("${paypal.mode}")
         private String mode;*/
 
+
         private String clientId="AdzB8eyuCmutAI9vFz5oJGEYKJyWmwFJ8rvrhpEtwf2P2uFO4TqqjoA2ryty_fFJguaFXa4vN6z65u-9";
         private String clientSecret="EN0FUAJ-OfVV4Nn-STSTPzOJBgLBueTV-vcx-hCziW09Yb3BGZYxylPltaEK3upNTsuvt1coCeGL_i4x";
         private String mode="sandbox";

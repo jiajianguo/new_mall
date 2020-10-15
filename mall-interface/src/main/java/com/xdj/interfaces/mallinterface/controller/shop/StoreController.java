@@ -331,7 +331,7 @@ public class StoreController {
         if ((store.getTemplate() != null) && (!store.getTemplate().equals(""))) {
             template = store.getTemplate();
         }
-        ModelAndView mv = new JModelAndView(template + "/store_goods_search.html", this.configService.getSysConfig(),
+        ModelAndView mv = new JModelAndView(template + "/goods_list.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
         Map<String,Object> params = new HashMap<>();
         int pageNow = 1;

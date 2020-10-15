@@ -3,8 +3,6 @@ package com.xdj.interfaces.mallinterface.service;
 
 import com.xdj.www.entity.ShoppingAddress;
 
-
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +16,7 @@ public abstract interface IAddressService
 
   public abstract int batchDelete(List<Long> paramList);
 
-  public abstract boolean update(ShoppingAddress paramAddress);
+  public abstract int update(ShoppingAddress paramAddress);
 
 
   public abstract List<ShoppingAddress> queryByCondition(Map params);

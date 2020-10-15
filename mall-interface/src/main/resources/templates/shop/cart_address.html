@@ -28,7 +28,7 @@ jQuery(document).ready(function(){
 	}
   });
     //
- jQuery("select").change(function(){
+ /*jQuery("select").change(function(){
      var level=jQuery(this).attr("level");
 	 var id=jQuery(this).val();
 	 if(id!=""){
@@ -46,7 +46,7 @@ jQuery(document).ready(function(){
 	    jQuery("#area"+i).hide();
 	   }
 	 }
-  });
+  });*/
   //
  jQuery("#area3").change(function(){
    var id=jQuery(this).val();
@@ -59,6 +59,7 @@ jQuery(document).ready(function(){
 
 
 <form th:action="@{/cart_address_save.htm}" method="post" id="theForm">
+  <input type="hidden" name="ids" id="ids" th:value="${ids}">
   <table style="float:left;" width="100%" border="0" cellspacing="0" cellpadding="0" class="box_table">
     <tr>
       <td width="100" align="right" valign="top">

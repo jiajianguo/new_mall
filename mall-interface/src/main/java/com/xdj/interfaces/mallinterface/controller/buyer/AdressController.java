@@ -83,7 +83,7 @@ public class AdressController {
             page.setPageSize(10);
             page.setCurrentPage(pageNow);
             //CommUtil.saveIPageList2ModelAndView(url + "/buyer/address.htm", "", params, page, mv);
-            CommUtil.saveIPageList2ModelAndView( "", "", params, page, mv);
+            CommUtil.saveIPageList2ModelAndView( "", "/buyer/address.htm", params, page, mv);
         }
        /* param.clear();
         param.put("parent_id","is null");
@@ -130,13 +130,9 @@ public class AdressController {
             mv = new JModelAndView("wap/address_add.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
         }
-        /*Map<String,Object> params=new HashMap<>();
-        params.put("parent_id","is null");
-        List<ShoppingArea> areas = this.areaService.queryByCondition(params);*/
         ShoppingAddress obj = this.addressService.getObjById(CommUtil.null2Long(id));
         //areaViewTools.addAdressArea(obj);
         mv.addObject("obj", obj);
-        //mv.addObject("areas", areas);
         mv.addObject("currentPage", currentPage);
         return mv;
     }
@@ -152,20 +148,12 @@ public class AdressController {
             address.setAddtime(new Date());
             address.setDeletestatus(false);
             address.setIsdefault(false);
-            address.setTruename(request.getParameter("trueName"));
-            address.setAreaInfo(request.getParameter("area_info"));
-            address.setZip(request.getParameter("zip"));
-            address.setMobile(request.getParameter("mobile"));
-            address.setTelephone(request.getParameter("telephone"));
-            address.setCity(request.getParameter("city"));
-            address.setCompany(request.getParameter("company"));
-            address.setCountries(request.getParameter("countries"));
             address.setUserId(user.getId());
             address.setDeletestatus(false);
         } else {
          address = this.addressService.getObjById(Long.valueOf(Long.parseLong(id)));
         }
-        String isdefault=request.getParameter("default");
+        String isdefault=request.getParameter("isdefault");
         if(StringUtils.isBlank(isdefault)){
             if(isdefault.equals("1")){
                 address.setIsdefault(true);
@@ -173,26 +161,72 @@ public class AdressController {
                 address.setIsdefault(false);
             }
         }
+        address.setTruename(request.getParameter("trueName"));
+        address.setAreaInfo(request.getParameter("area_info"));
+        address.setZip(request.getParameter("zip"));
+        address.setMobile(request.getParameter("mobile"));
+        address.setTelephone(request.getParameter("telephone"));
+        address.setCity(request.getParameter("city"));
+        address.setCompany(request.getParameter("company"));
+        address.setCountries(request.getParameter("countries"));
+        address.setSex(request.getParameter("sex"));
 
         if (id == null || "".equals(id)) {
             this.addressService.save(address);
         }else{
-            ShoppingAddress addr = new ShoppingAddress();
-            addr.setUserId(user.getId());
-            addr.setIsdefault(false);
-            this.addressService.updateByPrimaryKeySelective(addr);
             this.addressService.update(address);
         }
-        response.sendRedirect("address.htm?currentPage=" + currentPage);
+        int pageNow=1;
+        if(StringUtils.isBlank(currentPage)){
+            pageNow=Integer.valueOf(currentPage);
+        }
+        response.sendRedirect("address.htm?currentPage=" + pageNow);
+
+    }
+
+    @RequestMapping({"/buyer/address_save_default.htm"})
+    public void address_save_default(HttpServletRequest request, HttpServletResponse response, String id, String currentPage,String isdefault) throws IOException {
+        ShoppingUser user=SecurityUserHolder.getCurrentUser();
+
+        Map<String,Object> para=new HashMap<>();
+        para.put("user_id",user.getId());
+        para.put("isdefault",1);
+        List<ShoppingAddress> addressList = addressService.queryByCondition(para);
+        if(addressList.size()>0){
+            for (ShoppingAddress addr : addressList) {
+                addr.setIsdefault(false);
+                addressService.update(addr);
+            }
+        }
+        ShoppingAddress address = null;
+        if (id != null || !"".equals(id)) {
+            address = this.addressService.getObjById(Long.valueOf(Long.parseLong(id)));
+        }
+        if(StringUtils.isBlank(isdefault)){
+            if(isdefault.equals("1")){
+                address.setIsdefault(true);
+            }else{
+                address.setIsdefault(false);
+            }
+        }
+            this.addressService.update(address);
+        int pageNow=1;
+        if(StringUtils.isBlank(currentPage)){
+            pageNow=Integer.valueOf(currentPage);
+        }
+
+        response.sendRedirect("address.htm?currentPage=" + pageNow);
 
     }
 
     @SecurityMapping(display = false, rsequence = 0, title="收货地址删除", value="/buyer/address_del.htm*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
     @RequestMapping({"/buyer/address_del.htm"})
     public void address_del(HttpServletRequest request, HttpServletResponse response, String mulitId, String currentPage) throws IOException {
+        System.err.println("mulitId: "+mulitId);
         String[] ids = mulitId.split(",");
         for (String id : ids){
             if (!id.equals("")) {
+                System.err.println("id: "+id);
                 //ShoppingAddress address = this.addressService.getObjById(Long.valueOf(Long.parseLong(id)));
                 this.addressService.delete(Long.valueOf(Long.parseLong(id)));
             }
@@ -201,6 +235,6 @@ public class AdressController {
         if(StringUtils.isBlank(currentPage)){
             pageNow=Integer.valueOf(currentPage);
         }
-        response.sendRedirect("address.htm?currentPage=" + pageNow);
+       response.sendRedirect("address.htm?currentPage=" + pageNow);
     }
 }

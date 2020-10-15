@@ -259,6 +259,9 @@
       <if test="record.deletestatus != null">
         deleteStatus = #{record.deletestatus,jdbcType=BIT},
       </if>
+      <if test="record.isdefault != null">
+        isdefault = #{record.isdefault,jdbcType=BIT},
+      </if>
       <if test="record.areaInfo != null">
         area_info = #{record.areaInfo,jdbcType=VARCHAR},
       </if>
@@ -302,6 +305,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       addTime = #{record.addtime,jdbcType=TIMESTAMP},
       deleteStatus = #{record.deletestatus,jdbcType=BIT},
+      isdefault = #{record.isdefault,jdbcType=BIT},
       area_info = #{record.areaInfo,jdbcType=VARCHAR},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
@@ -325,6 +329,9 @@
       </if>
       <if test="deletestatus != null">
         deleteStatus = #{deletestatus,jdbcType=BIT},
+      </if>
+      <if test="isdefault != null">
+        isdefault = #{isdefault,jdbcType=BIT},
       </if>
       <if test="areaInfo != null">
         area_info = #{areaInfo,jdbcType=VARCHAR},
@@ -369,6 +376,7 @@
     update shopping_address
     set addTime = #{addtime,jdbcType=TIMESTAMP},
       deleteStatus = #{deletestatus,jdbcType=BIT},
+      isdefault = #{isdefault,jdbcType=BIT},
       area_info = #{areaInfo,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},

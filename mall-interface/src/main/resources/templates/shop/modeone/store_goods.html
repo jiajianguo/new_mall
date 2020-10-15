@@ -128,7 +128,7 @@
                     </div>
                 </div>
                 <div class="spec_box">
-                    <div class="spec_item" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
+                    <div class="spec_item" th:if="${obj.specification != null}" id="specification" th:each="spec : ${obj.specification}">
                         <div class="flex-star spec_cont">
 							<label class="flex-star specitem" th:data-id="${spec.id}" th:text="${spec.name}"></label>
                             <label class="flex-star specitem" th:each="gsp : ${obj.goods_specs}"
@@ -380,10 +380,14 @@
             var price =$("#store_price").text();
             var gsp ="";
             var load = true;
-            gsp=getgsp();
-            if(gsp.length < 1){
-                alert("请选择商品规格");
-                load = false;
+            if($("#specification").length==0){
+                var load = true;
+            }else{
+                gsp=getgsp();
+                if(gsp.length < 1){
+                    alert("请选择商品规格");
+                    load = false;
+                }
             }
             if(count){
                if(!verify_count(count)){
@@ -413,15 +417,19 @@
         var price =$("#store_price").text();
         var gsp ="";
         var load = true;
-        var s=$(".specitem").find("input[type=radio ]");
-        s.each(function(){
-            if($(this).is(":checked")){
-                gsp =gsp+$(this).attr("id")+',';
+        if($("#specification").length==0){
+            var load = true;
+        }else {
+            var s = $(".specitem").find("input[type=radio ]");
+            s.each(function () {
+                if ($(this).is(":checked")) {
+                    gsp = gsp + $(this).attr("id") + ',';
+                }
+            });
+            if (gsp.length == 0) {
+                load = false;
+                alert("请选择规格属性");
             }
-        });
-        if(gsp.length == 0){
-            load=false;
-            alert("请选择规格属性");
         }
         if(count){
             count_verify(count);

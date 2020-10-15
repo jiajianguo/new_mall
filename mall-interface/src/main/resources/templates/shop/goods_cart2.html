@@ -391,7 +391,7 @@
                 <h1>
                     <div class="sendhright">
                         <span class="sendperbtn">
-                            <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id})}"
+                            <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id},ids=${ids})}"
                              dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address">新增地址</a>
                         </span>
                         <span class="sendperbtn">
@@ -411,8 +411,8 @@
                                 <strong>
                                     <input type="radio" name="addr_id" id="addr_id" th:value="${addr.id}" th:checked="${ velocitycount==1 ?'checked':'' }"/>
                                 </strong>
-                                <span id="address" th:if="${addr.area != null }" th:text="${ addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
-                                <input type="hidden" id="addr" th:if="${addr.area != null }"
+                                <span id="address" th:if="${addr!= null }" th:text="${ addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
+                                <input type="hidden" id="addr" th:if="${addr != null }"
                                        th:value="${addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"/>
                                 <span id="person" th:text="${addr.truename}"></span>
                                 <span id="mobile" th:text="${addr.mobile}"></span>

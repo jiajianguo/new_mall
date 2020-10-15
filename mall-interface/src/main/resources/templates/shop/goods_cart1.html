@@ -415,7 +415,7 @@
                                 <a href="javascript:void(0);" class="cart_common" th:id="'favorite_'+${obj.goods.id}">收藏</a>
                                 <a href="javascript:void(0);" th:dialog_uri="@{/goods_share.htm(goods_id=${obj.goods.id})}"
                                    dialog_title="分享商品" dialog_width="450" dialog_height="400" dialog_id="goods_share" class="cart_common">分享</a>
-                                <a href="javascript:void(0);"  th:data-id="${obj.id}"  th:data-name="${sc.store.id}"  onclick="cart_remove(this.getAttribute('data-id'),this.getAttribute('data-name'));"
+                                <a href="javascript:void(0);"  th:data-id="${obj.id}"  th:data-name="${sc.store.id}"  onclick="cart_remove(this.getAttribute('data-id'),this.getAttribute('data-name'),this);"
                                    th:text="${'删除'}" class="cart_common"> </a>
                             </td>
                         </span>
@@ -506,7 +506,9 @@
         },"json");
     }*/
 
-    function cart_remove(id,store_id){
+
+
+    function cart_remove(id,store_id,_this){
         jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
             jQuery("div[class=table] tr[id="+id+"]").remove();
             jQuery(".shopping[id="+id+"]").remove();
@@ -514,6 +516,9 @@
             $(this).parents(".list_item").remove();
             jQuery("#cart_goods_count_top").html(data.count);
         }, "json");
+
+        console.log($(_this));
+        $(_this).parents("tr").remove();
     }
 
     jQuery(document).ready(function(){

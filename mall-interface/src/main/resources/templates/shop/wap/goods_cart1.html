@@ -111,23 +111,21 @@
 <script type="text/javascript">
 
 	function cart_remove(id,store_id) {
-		if (confirm("确定删除商品吗？")) {
 			jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
 				$(this).parents(".list_item").remove();
 				jQuery("#cart_goods_count_top").html(data.count);
 				calcAllprice();
 			}, "json");
-		}
 	}
 
 
-	/*$(".del").click(function () {
+	$(".del").click(function () {
 		if(confirm("确定删除商品吗？")){
 			$(this).parents(".list_item").remove();
-			calcAllprice();
-			console.log(66666666666666)
+			/*calcAllprice();
+			console.log(66666666666666)*/
 		}
-	})*/
+	})
 
 
 	      $("#goods_pay").click(function(){

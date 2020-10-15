@@ -43,6 +43,7 @@
 								</a>
 							</div>
 							<div>
+								<input type="hidden" name="id" class="objid" th:value="${obj.id}">
 								<a th:href="@{/buyer/address_del.htm(mulitId=${obj.id})}">
 								<svg class="icon bt_icon" aria-hidden="true">
 									<use xlink:href="#icon-shanchu"></use>
@@ -68,7 +69,7 @@
 			$(".font_color_text").click(function(){
 				var id = $(this).attr("data-id");
 				if(id){
-					$.post('/buyer/address_save.htm',{'id':id,'isdefault':1 },function(res){
+					$.post('/buyer/address_save_default.htm',{'id':id,'isdefault':"1" },function(res){
 						console.log(res);
 					});
 				}
@@ -85,7 +86,7 @@
 			});
 
 
-			$(".main_content").click(function() {
+			/*$(".main_content").click(function() {
 				var person = $(this).find(".person").text();
 				var phone = $(this).find(".phone").text();
 				var address = $(this).find(".content_dizhi").text();
@@ -97,10 +98,11 @@
 
 				window.sessionStorage.setItem("obj",JSON.stringify(obj));
 
-				/*window.location.href="/goods_cart2";*/
+			})*/
 
 
-
+			$(".bt_icon").click(function(){
+				$(this).parents(".main_content").remove();
 			})
 
 		})

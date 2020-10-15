@@ -3,18 +3,17 @@
 
 
  import com.xdj.interfaces.mallinterface.mapper.ShoppingAddressMapper;
- import com.xdj.interfaces.mallinterface.service.IAddressService;
- import com.xdj.www.entity.ShoppingAddress;
- import org.springframework.cache.annotation.CacheEvict;
- import org.springframework.cache.annotation.CachePut;
- import org.springframework.cache.annotation.Cacheable;
- import org.springframework.stereotype.Service;
- import org.springframework.transaction.annotation.Transactional;
+import com.xdj.interfaces.mallinterface.service.IAddressService;
+import com.xdj.www.entity.ShoppingAddress;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
- import javax.annotation.Resource;
- import java.io.Serializable;
- import java.util.List;
- import java.util.Map;
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
  /**
   * 收货地址
@@ -51,7 +50,7 @@
    }
 
    @Override
-   @CacheEvict(cacheNames = "delAddress", allEntries = true, beforeInvocation = true, condition = "#id >0" )
+   @CacheEvict(cacheNames = "delAddress", allEntries = true, beforeInvocation = true, condition = "#id !=null" )
    public int delete(Long id) {
      try {
        this.addressDao.deleteByPrimaryKey(id);
@@ -75,23 +74,23 @@
 
    @Override
    @CachePut(cacheNames = "updAddress",condition = "#address != null", unless = "#result>0")
-   public boolean update(ShoppingAddress address) {
+   public int update(ShoppingAddress address) {
      try {
-       this.addressDao.updateByPrimaryKeySelective(address);
-       return true;
+        return this.addressDao.updateByPrimaryKeySelective(address);
      } catch (Exception e) {
        e.printStackTrace();
-     }return false;
+     }
+     return 0;
    }
 
      @Override
-     @Cacheable(cacheNames = "conditionAddress")
+     /*@Cacheable(cacheNames = "conditionAddress")*/
      public List<ShoppingAddress> queryByCondition(Map params) {
          return addressDao.queryByCondition(params);
      }
 
      @Override
-     @Cacheable(cacheNames = "countAddress")
+     /*@Cacheable(cacheNames = "countAddress")*/
      public int count(Map params) {
          return addressDao.count(params);
      }

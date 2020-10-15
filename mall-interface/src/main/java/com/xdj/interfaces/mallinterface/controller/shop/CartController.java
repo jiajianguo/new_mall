@@ -717,13 +717,14 @@ public class CartController {
 
     @SecurityMapping(display = false, rsequence = 0, title = "购物车中收货地址保存", value = "/cart_address_save.htm*", rtype = "buyer", rname = "购物流程3", rcode = "goods_cart", rgroup = "在线购物")
     @RequestMapping({"/cart_address_save.htm"})
-    public void cart_address_save(HttpServletRequest request, HttpServletResponse response, String id, String area_id, String store_id) throws IOException {
+    public void cart_address_save(HttpServletRequest request, HttpServletResponse response, String id, String ids, String store_id) throws IOException {
         ShoppingAddress address = null;
         if (id == null || "".equals(id)) {
             address = new ShoppingAddress();
             address.setAddtime(new Date());
             address.setDeletestatus(false);
             address.setIsdefault(false);
+            address.setUserId(SecurityUserHolder.getCurrentUser().getId());
             address.setTruename(request.getParameter("trueName"));
             address.setAreaInfo(request.getParameter("area_info"));
             address.setZip(request.getParameter("zip"));
@@ -735,15 +736,15 @@ public class CartController {
         } else {
             address = this.addressService.getObjById(Long.valueOf(Long.parseLong(id)));
         }
-        address.setUserId(SecurityUserHolder.getCurrentUser().getId());
+
         // ShoppingArea area = this.areaService.getObjById(CommUtil.null2Long(area_id));
-        address.setAreaId(CommUtil.null2Long(area_id));
+        //address.setAreaId(CommUtil.null2Long(area_id));
         if (id == null || "".equals(id)) {
             this.addressService.save(address);
         } else {
             this.addressService.update(address);
         }
-        response.sendRedirect("/goods_cart2.htm?store_id=" + store_id); //"redirect: +;
+        response.sendRedirect("/goods_cart2.htm?ids="+ids+"&store_id=" + store_id); //"redirect: +;
     }
 
 
@@ -1398,7 +1399,7 @@ public class CartController {
 
     @SecurityMapping(display = false, rsequence = 0, title = "地址新增", value = "/*", rtype = "buyer", rname = "购物流程3", rcode = "goods_cart", rgroup = "在线购物")
     @RequestMapping({"/cart_address.htm"})
-    public ModelAndView cart_address(HttpServletRequest request, HttpServletResponse response, String id, String store_id) {
+    public ModelAndView cart_address(HttpServletRequest request, HttpServletResponse response, String ids, String store_id) {
         ModelAndView mv = new JModelAndView("cart_address.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
         String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
@@ -1406,13 +1407,13 @@ public class CartController {
             mv = new JModelAndView("wap/cart_address.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
         }
-        Map<String, Object> params = new HashMap<>();
+        /*Map<String, Object> params = new HashMap<>();
         params.put("parent_id", "is null");
         List<ShoppingArea> areas = this.areaService.queryByCondition(params);
-        //areaViewTools.addGrandson(areas);
-        mv.addObject("areas", areas);
+        areaViewTools.addGrandson(areas);
+        mv.addObject("areas", areas);*/
         mv.addObject("store_id", store_id);
-        mv.addObject("id", id);
+        mv.addObject("ids", ids);
         return mv;
     }
 
