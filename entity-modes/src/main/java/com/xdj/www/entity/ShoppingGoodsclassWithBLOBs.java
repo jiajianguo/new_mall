@@ -19,6 +19,16 @@ public class ShoppingGoodsclassWithBLOBs extends ShoppingGoodsclass {
 
     private ShoppingGoodstype goodsType;
 
+    private ShoppingAccessory acc;
+
+    public ShoppingAccessory getAcc() {
+        return acc;
+    }
+
+    public void setAcc(ShoppingAccessory acc) {
+        this.acc = acc;
+    }
+
     public ShoppingGoodstype getGoodsType() {
         return goodsType;
     }

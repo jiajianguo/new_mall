@@ -108,11 +108,11 @@ public class CartController {
     @SecurityMapping(display = false, rsequence = 0, title = "订单支付详情", value = "/order_pay_view.htm*", rtype = "buyer", rname = "购物流程3", rcode = "goods_cart", rgroup = "在线购物")
     @RequestMapping({"/order_pay_view.htm"})
     public ModelAndView order_pay_view(HttpServletRequest request, HttpServletResponse response, String id) {
-        ModelAndView mv = new JModelAndView("order_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+        ModelAndView mv = new JModelAndView("/order_pay.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
         ShoppingOrderform of = this.orderFormService.getObjById(CommUtil.null2Long(id));
         if (of.getOrderStatus() == 10) {
             mv.addObject("of", of);
-            mv.addObject("paymentTools", this.paymentTools);
+            //mv.addObject("paymentTools", this.paymentTools);
             mv.addObject("url", CommUtil.getURL(request));
         } else if (of.getOrderStatus() < 10) {
             mv = new JModelAndView("error.html", this.configService.getSysConfig(),
@@ -153,7 +153,6 @@ public class CartController {
     @RequestMapping({"/order_pay.htm"})
     public ModelAndView order_pay(HttpServletRequest request, HttpServletResponse response, String payType, String order_id) throws UnsupportedEncodingException {
         ModelAndView mv = null;
-        log.info("-----order-id-----{}-----payType----{}", order_id, payType);
         List<ShoppingOrderformWithBLOBs> ofs= orderFormService.selectByOrderNo(order_id);
         if(ofs != null){
             if (ofs.get(0).getOrderStatus() == 10) {

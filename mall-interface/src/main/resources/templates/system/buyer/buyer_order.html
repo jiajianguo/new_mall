@@ -61,7 +61,7 @@ jQuery("a[id^=delete_order_]").click(function(){
 function order_delete(){
 	 var order_id=jQuery("#delete_order_id").val();
 	 var currentPage=jQuery("#currentPage").val();
-	 window.location.href="/buyer/order_delete.htm?id="+order_id+"&currentPage="+currentPage;
+	 window.location.href="/?id="+order_id+"&currentPage="+currentPage;
 }
 //
 });

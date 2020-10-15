@@ -789,6 +789,7 @@ public class IndexViewAction {
 				ugcaccsorry.addAll(gcs);
 			}
 			mv.addObject( "gcs", ugcs );
+			mv.addObject("store_id",storeId);
 		}else{
 			params.put("orderBy","sequence");
 			params.put("sort","asc");
@@ -799,6 +800,7 @@ public class IndexViewAction {
 					params.clear();
 					params.put("parent_id","=".concat(s.getId()+""));
 					List<ShoppingGoodsclassWithBLOBs> child = goodsClassService.queryByCondition(params);
+					accessViewTools.addGcImgs(child);
 					s.setChilds(child);
 				}
 			}

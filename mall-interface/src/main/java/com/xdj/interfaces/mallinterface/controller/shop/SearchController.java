@@ -226,12 +226,10 @@ public class SearchController {
                 order_by = "addTime";
             }
             Sort sort = new Sort();
-            if (!CommUtil.null2String(order_by).equals("")) {
-                //sort = new Sort(new SortField(order_by, SortField.Type.STRING,order_type));
-                //sort.setSort(new SortField(order_by, SortField.Type.STRING,order_type));
-                sort = new Sort(new SortField(order_by, SortField.Type.DOUBLE, order_type));
+            if (StringUtils.isNotBlank(order_by)) {
+                sort.setSort(new SortField(order_by, SortField.Type.STRING,order_type));
             }else{
-                sort.setSort(new SortField("addTime", SortField.Type.STRING,order_type));
+                sort.setSort(new SortField("add_time", SortField.Type.STRING,order_type));
             }
             PageQuery query = new PageQuery();
             query.setGoods(good);

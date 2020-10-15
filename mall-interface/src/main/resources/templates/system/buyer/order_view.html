@@ -210,7 +210,7 @@ jQuery("#ship_info_a").click(
           </li>
           <li>
               <span class="orseet">收货地址:</span>
-              <span class="orseet2" th:text="${obj.addr.area.parent.parent==null?obj.addr.area.parent.areaname:obj.addr.area.parent.parent.areaname}+${obj.addr.area.parent.areaname+obj.addr.area.areaname+obj.addr.areaInfo}"></span>
+              <span class="orseet2" th:text="${obj.addr.countries}+${obj.addr.city + obj.addr.areaInfo}"></span>
           </li>
           <li>
               <span class="orseet">邮政编码:</span>

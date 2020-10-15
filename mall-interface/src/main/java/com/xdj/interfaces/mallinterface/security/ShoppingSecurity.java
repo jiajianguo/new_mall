@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CompositeFilter;
 
 import javax.annotation.Resource;
@@ -100,13 +101,13 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 		return new ClientResources("facebook");
 	}
 
-/*
+
 	@Bean
 	@ConfigurationProperties("google")
 	public ClientResources google() {
 		return new ClientResources("google");
 	}
-*/
+
 
 	@Bean
 	public FilterRegistrationBean<OAuth2ClientContextFilter> oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
@@ -120,7 +121,7 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 		CompositeFilter filter = new CompositeFilter();
 		List<Filter> filters = new ArrayList<>();
 		filters.add(ssoFilter(facebook(), "/login/facebook", facebookPrincipalExtractor));
-		//filters.add(ssoFilter(google(), "/login/google", facebookPrincipalExtractor));
+		filters.add(ssoFilter(google(), "/login/google", facebookPrincipalExtractor));
 		filter.setFilters(filters);
 		return filter;
 	}
@@ -175,7 +176,7 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 					//其他请求，认证后才可访问
 					.anyRequest().authenticated()
 			.and()
-				//.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
+				.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
 		//登录配置
 			.formLogin()
 			.loginPage(SecurityConstants.DEFAULT_LOGIN_URL)

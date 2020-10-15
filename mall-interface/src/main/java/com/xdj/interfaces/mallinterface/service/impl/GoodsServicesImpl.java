@@ -41,10 +41,11 @@ public class GoodsServicesImpl implements GoodsService {
             vo.setVo_id( goods.getId() );
             vo.setVo_title( goods.getGoodsName() );
             vo.setVo_content( goods.getGoodsDetails() );
-            vo.setVo_type( "goods" );
+            vo.setVo_type("goods");
             vo.setVo_store_price( CommUtil.null2Float( goods.getStorePrice() ) );
             vo.setVo_add_time( goods.getAddtime().getTime() );
             vo.setVo_goods_salenum( goods.getGoodsSalenum() );
+            vo.setVo_goods_collect(goods.getGoodsCollect()+"");
             goods_vo_list.add( vo );
         }
         luceneService.createProductIndex(goods_vo_list);

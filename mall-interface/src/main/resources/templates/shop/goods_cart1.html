@@ -18,30 +18,6 @@
     <script th:src="@{/js/top.js}"></script>
     <script th:src="@{/js/head.js}"></script>
     <script>
-        function goods_count_adjust(cart_id, store_id, count) {
-            jQuery.post("/goods_count_adjust", {
-                "cart_id": cart_id,
-                "store_id": store_id,
-                "count": count
-            }, function (data) {
-                if (data.err == "200") {
-                    jQuery("#goods_count_" + cart_id).val(count);
-                    jQuery("#goods_count_" + cart_id).attr("goods_count", count)
-                    jQuery("#goods_total_price_" + cart_id).html("¥" + data.sc_total_price);
-                    jQuery("#total_price_" + store_id).html(data.sc_total_price);
-                    jQuery("#top_total_price_" + store_id).html(data.sc_total_price);
-                }
-                if (data.err == "400") {
-                    alert("库存不足，请重新选择数量！");
-                    jQuery("#goods_count_" + cart_id).val(jQuery("#goods_count_" + cart_id).attr("goods_count"));
-                }
-               /* if (data.error == "300") {
-                    alert("团购库存不足，请重新选择数量！");
-                    jQuery("#goods_count_" + cart_id).val(jQuery("#goods_count_" + cart_id).attr("goods_count"));
-                }*/
-            }, "json");
-        }
-
         function confirm_cart() {
             //判断勾选商品
             var flag= false;
@@ -63,8 +39,29 @@
             }
 
         }
-
         jQuery(document).ready(function () {
+            function goods_count_adjust(cart_id, store_id, count) {
+                jQuery.post("/goods_count_adjust", {
+                    "cart_id": cart_id,
+                    "store_id": store_id,
+                    "count": count
+                }, function (data) {
+                    if (data.err == "200") {
+                        jQuery("#goods_count_" + cart_id).val(count);
+                        jQuery("#goods_count_" + cart_id).attr("goods_count", count)
+                        jQuery("#goods_total_price_" + cart_id).html("¥" + data.sc_total_price);
+                        //jQuery("#total_price_" + store_id).html(data.sc_total_price);
+                        //jQuery("#top_total_price_" + store_id).html(data.sc_total_price);
+                        goods_cart_price();
+                    }
+                    if (data.err == "400") {
+                        alert("库存不足，请重新选择数量！");
+                        jQuery("#goods_count_" + cart_id).val(jQuery("#goods_count_" + cart_id).attr("goods_count"));
+                    }
+                }, "json");
+            }
+
+            goods_cart_price();
             jQuery("a[id^=favorite_]").click(function () {
                 var userId=jQuery("#userId").val();
                 var id=jQuery("#storeuserId")
@@ -85,6 +82,7 @@
                     window.location.href = "/user/login.htm?url=/goods_cart1.htm"
 
             });
+
             /**
              * 减数量
              */
@@ -94,7 +92,8 @@
                 var store_id = jQuery(this).attr("store_id");
                 if (count > 1) {
                     count--;
-                    goods_count_adjust(cart_id, store_id, count)
+                    goods_count_adjust(cart_id, store_id, count);
+
                 }
             });
 
@@ -113,13 +112,14 @@
              */
             jQuery("input[id^=goods_count_]").keyup(function () {
                 var cart_id = jQuery(this).attr("cart_id");
-                var count = jQuery("#goods_count_" + cart_id).val().replace(/\D/g, '');
+                var count = jQuery("#goods_count_" + cart_id).val();
                 if (count == "") {
                     count = 1;
                 }
                 var store_id = jQuery(this).attr("store_id");
                 if (count > 0) {
                     goods_count_adjust(cart_id, store_id, count);
+
                 }
             });
 
@@ -132,29 +132,28 @@
                 jQuery(this).parent().find(".arrow").hide();
                 jQuery(this).parent().find(".baby_group").hide();
             });
+
             /**
              * 选中结算商品
              */
             jQuery(".table tr td input[type=checkbox]").click(function(){
                 goods_cart_price();
             });
+
             function goods_cart_price (){
-                console.log('更改选中结算的价格')
+                console.log('调用方法');
                 var s=jQuery(".table tr td ").find("input[type=checkbox]");
                 var price=0;
                 if(s){
                     s.each(function(){
                         if(jQuery(this).is(':checked')){
                             var id=jQuery(this).val();
-                            console.log(id);
                             var p = jQuery("#goods_total_price_"+id).text();
-                            console.log(p);
                             var ps=p.slice(1,p.length);
-                            console.log(ps);
-                            price=price+parseFloat(p.slice(1,p.length)) ;
+                            price=price+parseFloat(p.slice(1,p.length));
                         }
                     })
-                    jQuery("#orange_price").text(price);
+                    jQuery("#orange_price").text(price.toFixed(2));
                 }
             }
 
@@ -328,17 +327,6 @@
         </div>
         <form  status="no_submit" id="cart_goods_form" method="post" target="_blank" th:action="@{/goods_cart2.htm}">
             <input  th:id="userId" th:value="${user.id}" type="hidden"/>
-            <!--<input  th:id="storeuserId" th:value="${sc.storeId}" type="hidden"/>-->
-           <!-- <div class="h1">
-                <span class="h1_l">
-                  店铺名称：
-                    <a th:href="@{/store.htm(id=${sc.storeId})}" target="_blank" th:text="${sc.store.storeName}"></a>
-                </span>
-                <span class="h1_r">
-                  商品总价(不含运费)：<b>¥<span th:id="'top_total_price_'+${sc.store.id}" th:text="${sc.totalPrice}"></span></b>
-                  <a href="javascript:void(0);" th:onclick="'confirm_cart(' + ${sc.store.id} + ');'">结算</a>
-                </span>
-            </div>-->
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
@@ -352,7 +340,7 @@
                     <tr th:each="sc :${carts}" >   <!--th:attr="goods_list='goods_info_'+${obj.id}" th:id="${obj.id}"-->
                         <span th:each="obj,index :${sc.gcs}" th:data-id="${obj.id}" th:if="${index.index <1}">
                            <td class="goods_ids">
-                                <input type="checkbox" name="ids" th:value="${obj.id}" >
+                                <input type="checkbox" name="ids" th:value="${obj.id}" checked="checked" >
                             </td>
                             <td class="baby">
                                 <img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}"
@@ -405,7 +393,7 @@
                                        th:store_id="${sc.store.id}">
                                       <img th:src="@{/style/system/front/default/images/add.jpg}" width="12" height="12"/>
                                     </a>
-                                  </span>
+                                </span>
                             </td>
                             <td align="center">
                                 <strong class="orange" th:id="${'goods_total_price_'+obj.id}" th:text="'¥'+${obj.count *(obj.price == null?1: obj.price)}">

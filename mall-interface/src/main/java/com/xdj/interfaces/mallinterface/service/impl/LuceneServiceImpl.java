@@ -15,6 +15,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,14 +65,18 @@ public class LuceneServiceImpl implements LuceneService {
         doc.add(new TextField("title", luceneVo.getVo_title(), Field.Store.YES));
         doc.add(new TextField("content", luceneVo.getVo_content(), Field.Store.YES));
         doc.add(new TextField("type", luceneVo.getVo_type(), Field.Store.YES));
-        // 保存price,
-        float price = luceneVo.getVo_store_price();
         // 建立倒排索引
-        doc.add(new FloatPoint("store_price", price));
+
+        doc.add(new FloatPoint("store_price", luceneVo.getVo_store_price()));
+        doc.add(new SortedDocValuesField("store_price",new BytesRef(luceneVo.getVo_store_price()+"")));
         // 正排索引用于排序、聚合
         doc.add(new StringField("add_time", CommUtil.null2String(Long.valueOf(luceneVo.getVo_add_time())),Field.Store.YES));
+        doc.add(new SortedDocValuesField("add_time",new BytesRef(luceneVo.getVo_add_time()+"")));
         // 存储到索引库
         doc.add(new StringField("goods_salenum", CommUtil.null2String(Integer.valueOf(luceneVo.getVo_goods_salenum())), Field.Store.YES));
+        doc.add(new SortedDocValuesField("goods_salenum",new BytesRef(luceneVo.getVo_goods_salenum()+"")));
+        doc.add(new StringField("goods_collect",luceneVo.getVo_goods_collect(),Field.Store.YES));
+        doc.add(new SortedDocValuesField("goods_collect",new BytesRef(luceneVo.getVo_goods_collect()+"")));
         if(luceneVo.getPath() != null){
             doc.add(new StringField("path",luceneVo.getPath(),Field.Store.YES));
         }
@@ -176,8 +181,8 @@ public class LuceneServiceImpl implements LuceneService {
         searcherManager.maybeRefresh();
         IndexSearcher indexSearcher = searcherManager.acquire();
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
-        log.info("-------need_looking_string------{}",query.getGoods().getGoodsName());
         builder.add(new QueryParser("title", analyzer).parse(query.getGoods().getGoodsName()), BooleanClause.Occur.MUST);
+
         if ((begin_price >= 0.0D) && (end_price > 0.0D)) {
             builder.add(FloatPoint.newRangeQuery("store_price", begin_price, end_price), BooleanClause.Occur.MUST);
         }
@@ -186,9 +191,10 @@ public class LuceneServiceImpl implements LuceneService {
         if(query.getPageNow() >1){
             count = (query.getPageNow()-1) * pageSize;
         }
+
+        log.info("sort--------{}",sort);
         TopDocs topDocs = indexSearcher.search(builder.build(),count, sort);
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-        log.info("查询条数结果------{}",topDocs.totalHits.value);
         int pages = (scoreDocs.length+ this.pageSize - 1) / this.pageSize;
         int intPageNo = query.getPageNow() > pages ? pages : query.getPageNow();
         if (intPageNo < 1) {

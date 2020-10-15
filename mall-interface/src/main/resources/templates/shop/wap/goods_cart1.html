@@ -12,7 +12,34 @@
 </head>
 <body>
 	<div class="ui-pane">
-		<div class="Nav"></div>
+		<div class="Nav">
+			<div class="ui-nav">
+				<a class="item" href="/wap/index.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-dianpu"></use>
+					</svg>
+					<span class="item-text">首页</span>
+				</a>
+				<a class="item active" href="/goodsclass.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-classify-on"></use>
+					</svg>
+					<span class="item-text">分类</span>
+				</a>
+				<a class="item" href="/goods_cart1.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-gouwuche-zhuangtai"></use>
+					</svg>
+					<span class="item-text">购物车</span>
+				</a>
+				<a class="item" href="/member_center.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-icon_mine"></use>
+					</svg>
+					<span class="item-text">我的</span>
+				</a>
+			</div>
+		</div>
 		<div class="ui-content">
 			<div class="page_address flex-between">
 				<div class="address_left" id="user_address">
@@ -30,7 +57,7 @@
 			<div class="goodscartList"  >
 				<div th:each="sc :${carts}"  th:id="'cart_'+${sc.storeId}"   class="list_item flex-between">
 					<div th:each="obj :${sc.gcs}" class="flex-between">
-						<input type="checkbox" name="goodscart" th:id="${obj.id}" th:value="${obj.id}" />
+						<input type="checkbox" name="goodscart" th:id="${obj.id}" th:value="${obj.id}" checked="checked" />
 						<div class="item_right">
 							<div class="right_top flex-between">
 								<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
@@ -110,6 +137,8 @@
 </body>
 <script type="text/javascript">
 
+	calcAllprice();
+
 	function cart_remove(id,store_id) {
 			jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
 				$(this).parents(".list_item").remove();
@@ -172,8 +201,6 @@
 				});
 				$(this).parents(".num_box").find(".goods_num").text(val);
 				calcAllprice();
-
-
 			})
 
 			$(".add").click(function(){

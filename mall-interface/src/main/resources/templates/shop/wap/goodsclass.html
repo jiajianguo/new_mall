@@ -18,13 +18,40 @@
 		font-size:.2rem;
 	}
 
-	.mian_left > div:hover{
-		background-color: #ee921e;
-	}
+	/*.mian_left > div:hover{
+		background-color: #ee921e !important;
+	}*/
 </style>
 <body>
 	<div class="ui-pane">
-		<div class="Nav"></div>
+		<div class="">
+			<div class="ui-nav">
+				<a class="item" href="/wap/index.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-dianpu"></use>
+					</svg>
+					<span class="item-text">首页</span>
+				</a>
+				<a class="item active" href="/goodsclass.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-classify-on"></use>
+					</svg>
+					<span class="item-text">分类</span>
+				</a>
+				<a class="item" href="/goods_cart1.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-gouwuche-zhuangtai"></use>
+					</svg>
+					<span class="item-text">购物车</span>
+				</a>
+				<a class="item" href="/member_center.htm">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#icon-icon_mine"></use>
+					</svg>
+					<span class="item-text">我的</span>
+				</a>
+			</div>
+		</div>
 		<div class="ui-content">
 			<div class="search_box flex-star">
 				<svg class="icon" aria-hidden="true">
@@ -35,18 +62,18 @@
 			<div class="page_main flex-between">
 				<div class="mian_left">
 					<!--<div class="mian_left_act">所有商品</div>-->
-					<div th:each="gc :${gcs}" th:text="${gc.classname}" th:data-id="${gc.id}"></div>
+					<div th:each="gc,index :${gcs}" th:text="${gc.classname}" th:data-id="${gc.id}" th:style="${index.index==0?'background-color:#f2f2f2;':''}"></div>
 				</div>
 				<div class="main_right" >
 					<img class="right_banner" src="asset/img/class_banner.png" >
-					<div class="classify_box flex-star"  th:each="gc :${gcs}" th:data-id="${gc.id}" style="display: none">
-						<div class="ify_item" th:each="gc1 :${gc.childs}">
-							<a th:href="@{/store_goods_list.htm(gc_id = ${gc1.id})}" >
-								<img src="asset/img/化妆品.png" >
-								<br>
-								<span th:text="${gc1.classname}"> </span>
-							</a>
-						</div>
+					<div class="classify_box flex-star" th:each="gc,index :${gcs}"   th:data-id="${gc.id}" th:style="${index.index==0?'display: flex;':'display: none;'}">
+						<a class="ify_item" th:href="@{/goods_list.htm(gc_id = ${gc1.id})}"   th:each="gc1 :${gc.childs}">
+							<div   class="item_img flex-center" >
+								<img th:if="${gc1.acc}" th:src="@{${'/'+gc1.acc.path+'/'+gc1.acc.name }}" >
+								<img th:unless="${gc1.acc}" src="asset/img/化妆品.png" >
+							</div>
+							<p th:text="${gc1.classname}"></p>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -54,22 +81,16 @@
 	</div>
 </body>
 <script type="text/javascript">
-	var defShow=$(".main_right").find('.classify_box');
-	if(defShow.length>0){
-		var s=defShow[0];
-		s.css('display','block');
-	}
-	$(".mian_left > div").mouseover(function(){
+	$(".mian_left").children(":first").css("background-color","#ee921e");
+
+	$(".mian_left > div").click(function(){
+		var divs=$(".mian_left > div").css("background-color","#f2f2f2");
+		$(this).css("background-color","#ee921e");
 		 var gc_id= $(this).attr('data-id');
-		 var s=$('.mian_left > div');
-		 if(s){
-		 	s.each(function(){
-		 		$(this).css("background-color","#f2f2f2");
-			})
-		 }
-		 $(this).show();
+
 		 access(gc_id);
 	});
+
 	function access(gc_id){
 		var s= $(".classify_box");
 		if(s){
@@ -77,7 +98,7 @@
 				var gcid=$(this).attr('data-id');
 				$(this).css("display",'none');
 				if(gc_id ==  gcid){
-					$(this).css("display",'block');
+					$(this).css("display",'flex');
 				}
 			})
 		}

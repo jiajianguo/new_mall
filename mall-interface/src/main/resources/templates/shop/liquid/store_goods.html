@@ -10,15 +10,10 @@
     <meta property="og:title"         th:content="${obj.goodsName}"/>
     <meta property="og:description"   content="description" />
     <meta property="og:image"         th:content="'https://www.your-domain.com/shopping/upload/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}"/>
-
-
     <!-- 只在详情页和列表页展示-->
     <meta property="og:image" content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
-    <meta property="og:image:secure_url"
-          content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
+    <meta property="og:image:secure_url"  content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
     <meta name="twitter:image" content="https://img.xshoppy.shop/uploader/cdbb82d7dee80786c9bd55d2a1bc805a.png">
-
-
     <meta name="baidu-site-verification" content="ipKHZuNHRp">
     <meta name="360-site-verification" content="1cbc8ac732b3cff1a60147d4698401f3">
     <meta name="keywords" content="">
@@ -33,12 +28,9 @@
     <meta name="renderer" content="webkit">
     <meta name="aplus-terminal" content="1">
     <meta name="format-detection" content="telephone=no, email=no">
-
     <script type="text/javascript" src="https://lib.baomitu.com/jquery/3.5.0/jquery.js"></script>
-    <link rel="icon"
-          href="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
-          type="image/x-icon">
-    <script async="" th:src="@{js/scevent.min.js}"></script>
+    <link rel="icon"  href="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  type="image/x-icon">
+
     <!--<script src="https://bat.bing.com/bat.js" async=""></script>-->
     <script type="text/javascript" th:src="@{/js/init.js}"></script>
     <script th:src="@{js/checkout.min.js}"></script>
@@ -89,65 +81,70 @@
 
     <link rel="stylesheet" href="/style/common/css/styles.min.css">
     <link rel="stylesheet" href="/style/common/css/sail006.comm.min.css">
-    <style type="text/css">@font-face {
+    <style type="text/css">
+        @font-face {
         font-family: "Arapey";
         src: url(https://static.xshoppy.shop/buyer/public/css/font/arapey-italic.ttf?v=liquid.xshoppy.shop);
         font-weight: normal;
         font-style: italic;
     }
 
-    @font-face {
-        font-family: "Montserrat";
-        src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-Regular.ttf?v=liquid.xshoppy.shop);
-        font-weight: normal;
-        font-style: normal;
-    }
+        @font-face {
+            font-family: "Montserrat";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-Regular.ttf?v=liquid.xshoppy.shop);
+            font-weight: normal;
+            font-style: normal;
+        }
 
-    @font-face {
-        font-family: "Montserrat";
-        src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-SemiBold.ttf?v=liquid.xshoppy.shop);
-        font-weight: 700;
-        font-style: normal;
-    }
+        @font-face {
+            font-family: "Montserrat";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/Montserrat-SemiBold.ttf?v=liquid.xshoppy.shop);
+            font-weight: 700;
+            font-style: normal;
+        }
 
-    @font-face {
-        font-family: "OldStandard";
-        src: url(https://static.xshoppy.shop/buyer/public/css/font/OldStandard-Regular.ttf?v=liquid.xshoppy.shop);
-    }</style>
-    <style type="text/css" class="buyer-font-style">@font-face {
-        font-family: HelveticaNeue;
-        src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
-    }
+        @font-face {
+            font-family: "OldStandard";
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/OldStandard-Regular.ttf?v=liquid.xshoppy.shop);
+        }
+    </style>
+    <style type="text/css" class="buyer-font-style">
+        @font-face {
+            font-family: HelveticaNeue;
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
+        }
 
-    @font-face {
-        font-family: HelveticaNeue;
-        src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
-    }
+        @font-face {
+            font-family: HelveticaNeue;
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
+        }
 
-    @font-face {
-        font-family: HelveticaNeue;
-        src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
-    }
+        @font-face {
+            font-family: HelveticaNeue;
+            src: url(https://static.xshoppy.shop/buyer/public/css/font/HelveticaNeue.ttf?v=liquid.xshoppy.shop)
+        }
 
-    .sl-main-title, .sl-main-title a {
-        font-family: HelveticaNeue !important;
-        font-size: 30px !important;
-        line-height: 34px !important
-    }
+        .sl-main-title, .sl-main-title a {
+            font-family: HelveticaNeue !important;
+            font-size: 30px !important;
+            line-height: 34px !important
+        }
 
-    .banner .sl-main-title {
-        font-size: 50px !important;
-        line-height: 54px !important
-    }
+        .banner .sl-main-title {
+            font-size: 50px !important;
+            line-height: 54px !important
+        }
 
-    .sl-subhead-title, .sl-subhead-title a {
-        font-family: HelveticaNeue !important
-    }
+        .sl-subhead-title, .sl-subhead-title a {
+            font-family: HelveticaNeue !important
+        }
 
-    body, input, .product-details * {
-        font-family: HelveticaNeue !important;
-        font-size: 16px !important
-    }</style>
+        body, input, .product-details * {
+            font-family: HelveticaNeue !important;
+            font-size: 16px !important
+        }
+    </style>
+
     <title>Liquid模板</title>
 </head>
 <body class="template6-body" style="">
@@ -166,13 +163,6 @@
 <input type="hidden" class="J-language" value="en">
 <input type="hidden" class="J-TemplateStyle" value="general">
 <div class="PageContainer J-PageContainer" style="padding-top: 136px;">
-    <!--
-    <div class="domain-tips">
-        <span class="iconfont icon-gantanhao"></span>
-        店铺仅供体验使用,请尽快绑定您的域名.
-        <a href="/admin/domainSettings">去绑定</a>
-    </div>
--->
     <input type="hidden" class="JH-page-location" value="PAGE_PRODUCT_DETAIL">
     <input type="hidden" value="1" class="JH-currency-tag">
     <input type="hidden" class="JH-Event-Name" value="product-detail">
@@ -182,7 +172,6 @@
     <div class="JH-Columns">
         <!--头部 ==> 开始-->
         <div class="header J-Header fixed-top" style="transform: translate3d(0px, 0px, 0px);">
-
             <!--LOGO & 搜索 & 自定义图标-->
             <div class="logo-box">
                 <!-- LOGO -->
@@ -601,8 +590,8 @@
                         <input type="hidden" id="ggCount" th:value="${groupGood.ggCount}"/>
                         <span class="detbt">团购价格：</span>
                         <span class="pricedata">
-                                        <strong class="orange" id="group_price"><span
-                                                th:text="${'¥'+groupGood.ggPrice}"></span></strong>
+                                        <strong class="orange" ><span>￥</span>
+                                            <span id="group_price" th:text="${groupGood.ggPrice}"></span></strong>
                                     </span>
                         <div class="sale-tag sl-subhead-title">
                             Save

@@ -90,6 +90,8 @@ public class GoodsController {
     private IStoreCartService storeCartService;
     @Resource
     private GoodsCartTools goodsCartTools;
+    @Resource
+    private AccessoryViewTools accessoryViewTools;
 
     private Logger log = LoggerFactory.getLogger("goodsController");
 
@@ -337,12 +339,11 @@ public class GoodsController {
             storeViewTools.addBanner(store);
             storeViewTools.addStoreLogo(store);
             storeViewTools.addPoint(store);
-
             String template = "default";
             if ((store.getTemplate() != null) && (!store.getTemplate().equals(""))) {
                 template = store.getTemplate();
             }
-            ModelAndView mv = new JModelAndView(template + "/goods_list.html", this.configService.getSysConfig(),
+            ModelAndView mv = new JModelAndView(template + "/goods_lists.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
             String shopping_view_type = CommUtil.null2String(request.getSession(false).getAttribute("shopping_view_type"));
             if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
@@ -369,9 +370,7 @@ public class GoodsController {
                         ShoppingUsergoodsclass temp_ugc = this.userGoodsClassService.getObjById(g_id);
                         ugc_list.add(temp_ugc);
                     }
-
                     params.put("ugc_ids", ids);
-                    System.err.println("ugc_ids=====" + ids);
                 } else {
                     ugc = new ShoppingUsergoodsclass();
                     ugc.setClassname("全部商品");
@@ -402,14 +401,14 @@ public class GoodsController {
                 page.setCurrentPage(pageNow);
                 page.setRowCount(count);
                 page.setPages(count/20);
-                com.xdj.interfaces.mallinterface.util.CommUtil.saveIPageList2ModelAndView("", "", "", page, mv);
+               CommUtil.saveIPageList2ModelAndView("", "", "", page, mv);
             }
             String url = this.configService.getSysConfig().getAddress();
             if ((url == null) || (url.equals(""))) {
                 url = CommUtil.getURL(request);
             }
 
-            ShoppingUser  user = userService.queryOneByStoreId(CommUtil.null2Long(store_id));
+            /*ShoppingUser  user = userService.queryOneByStoreId(CommUtil.null2Long(store_id));
             params.clear();
             params.put("user_id", user.getId());
             params.put("display", 1);
@@ -418,7 +417,8 @@ public class GoodsController {
             params.put("sort","asc");
             List<ShoppingUsergoodsclass> ugcs = this.userGoodsClassService.queryByCondition(params);
             userGoodsClassTools.addChilds(ugcs);
-            mv.addObject("ugcs", ugcs);
+            mv.addObject("ugcs", ugcs);*/
+            add_store_common_info(mv,store);
             mv.addObject("store", store);
             mv.addObject("recommend", recommend);
             mv.addObject("begin_price", begin_price);
@@ -426,14 +426,14 @@ public class GoodsController {
             mv.addObject("goodsViewTools", this.goodsViewTools);
             mv.addObject("storeViewTools", this.storeViewTools);
             mv.addObject("areaViewTools", this.areaViewTools);
-            ShoppingGoodsExample ex = new ShoppingGoodsExample();
+            /*ShoppingGoodsExample ex = new ShoppingGoodsExample();
             ex.createCriteria()
                     .andGoodsStoreIdEqualTo(store.getId())
                     .andGoodsStatusEqualTo(0);
             List<ShoppingGoodsWithBLOBs>  list= goodsService.selectExample(ex);
             if(list != null){
                 mv.addObject("goods_counts",list.size());
-            }
+            }*/
             return mv;
         }
         ModelAndView mv = new JModelAndView("error.html",
@@ -449,8 +449,19 @@ public class GoodsController {
     @RequestMapping({"/goodsList.htm"})
     public ModelAndView goodsist(HttpServletRequest request, HttpServletResponse response, String gc_id, String store_id, String recommend, String currentPage, String orderBy, String orderType, String begin_price, String end_price)
     {
+        ModelAndView mv = null;
         ShoppingStoreWithBLOBs store = this.storeService.getObjById(CommUtil.null2Long(store_id));
         if (store != null) {
+            String template = "default";
+            if ((store.getTemplate() != null) && (!store.getTemplate().equals(""))) {
+                template = store.getTemplate();
+            }
+            mv = new JModelAndView(template + "/goods_list.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
+            String shopping_view_type = CommUtil.null2String(request.getSession(false).getAttribute("shopping_view_type"));
+            if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+                mv = new JModelAndView("wap/store_goods_list.html", this.configService.getSysConfig(),
+                        this.userConfigService.getUserConfig(), 1, request, response);
+            }
             if(store.getAreaId() != null){
                 storeViewTools.addArea(store);
             }
@@ -459,16 +470,7 @@ public class GoodsController {
             storeViewTools.addBanner(store);
             storeViewTools.addStoreLogo(store);
             storeViewTools.addPoint(store);
-            String template = "default";
-            if ((store.getTemplate() != null) && (!store.getTemplate().equals(""))) {
-                template = store.getTemplate();
-            }
-            ModelAndView mv = new JModelAndView(template + "/goods_list.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response);
-            String shopping_view_type = CommUtil.null2String(request.getSession(false).getAttribute("shopping_view_type"));
-            if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
-                mv = new JModelAndView("wap/store_goods_list.html", this.configService.getSysConfig(),
-                        this.userConfigService.getUserConfig(), 1, request, response);
-            }
+            add_store_common_info(mv,store);
             Map<String,Object> params = new HashMap<>();
             params.put("goods_store_id",store.getId());
             params.put("orderBy",orderBy);
@@ -490,10 +492,7 @@ public class GoodsController {
                         ShoppingUsergoodsclass temp_ugc = this.userGoodsClassService.getObjById(g_id);
                         ugc_list.add(temp_ugc);
                     }
-
                     params.put("ugc_ids", ids);
-                    System.err.println("ugc_ids=====" + ids);
-
                 } else {
                     ugc = new ShoppingUsergoodsclass();
                     ugc.setClassname("全部商品");
@@ -503,7 +502,6 @@ public class GoodsController {
             }
             if ((recommend != null) && (!recommend.equals(""))) {
                 params.put("goods_recommend",Boolean.valueOf(CommUtil.null2Boolean(recommend)));
-
             }
 
             if ((begin_price != null) && (!begin_price.equals(""))) {
@@ -531,16 +529,6 @@ public class GoodsController {
                 url = CommUtil.getURL(request);
             }
 
-            ShoppingUser  user = userService.queryOneByStoreId(CommUtil.null2Long(store_id));
-            params.clear();
-            params.put("user_id", user.getId());
-            params.put("display", 1);
-            params.put("parent_id","is null");
-            params.put("orderBy","sequence");
-            params.put("sort","asc");
-            List<ShoppingUsergoodsclass> ugcs = this.userGoodsClassService.queryByCondition(params);
-            userGoodsClassTools.addChilds(ugcs);
-            mv.addObject("ugcs", ugcs);
             mv.addObject("store", store);
             mv.addObject("recommend", recommend);
             mv.addObject("begin_price", begin_price);
@@ -554,17 +542,44 @@ public class GoodsController {
                 mv.addObject("goods_counts",list.size());
             }
             return mv;
+        }else{
+            mv = new JModelAndView("error.html",
+                    this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request,
+                    response);
+            mv.addObject("op_title", "请求参数错误");
+            mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }
-        ModelAndView mv = new JModelAndView("error.html",
-                this.configService.getSysConfig(),
-                this.userConfigService.getUserConfig(), 1, request,
-                response);
-        mv.addObject("op_title", "请求参数错误");
-        mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
+
         return mv;
     }
 
 
+    private void add_store_common_info(ModelAndView mv, ShoppingStoreWithBLOBs store) {
+        Map params = new HashMap();
+        params.put("user_id", store.getUser().getId());
+        params.put("parent_id","is null");
+        params.put("display", Boolean.valueOf(true));
+        params.put("orderBy","sequence");
+        params.put("sort","asc");
+        List<ShoppingUsergoodsclass> ugcs = this.userGoodsClassService.queryByCondition(params);
+        List<ShoppingUsergoodsclass> ugcaccsorry= new ArrayList<>();
+        for(ShoppingUsergoodsclass s: ugcs){
+            params.clear();
+            params.put("parent_id","=".concat(s.getId().toString()));
+            params.put("user_id", store.getUser().getId());
+            List<ShoppingUsergoodsclass> gcs = userGoodsClassService.queryByCondition(params);
+            if(gcs != null){
+                for(ShoppingUsergoodsclass gc: gcs){
+                    accessoryViewTools.addUserGcImgs(gc);
+                }
+            }
+            s.setChilds(gcs);
+            ugcaccsorry.addAll(gcs);
+        }
+        mv.addObject("ugcaccsorry",ugcaccsorry);
+        mv.addObject("ugcs", ugcs);
+    }
 
     private Set<Long> genericUserGcIds(ShoppingUsergoodsclass ugc)
     {

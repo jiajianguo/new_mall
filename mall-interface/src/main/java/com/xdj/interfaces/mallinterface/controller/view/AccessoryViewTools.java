@@ -148,4 +148,19 @@ public class AccessoryViewTools {
         }
 
     }
+
+    public void addGcImgs(List<ShoppingGoodsclassWithBLOBs> child) {
+        if(child != null){
+            for(ShoppingGoodsclassWithBLOBs s: child){
+                addGcImg(s);
+            }
+        }
+    }
+
+    public void addGcImg(ShoppingGoodsclassWithBLOBs child) {
+        if(child != null){
+            ShoppingAccessory accessory =accessoryService.getObjById(child.getIconAccId());
+            child.setAcc(accessory);
+        }
+    }
 }

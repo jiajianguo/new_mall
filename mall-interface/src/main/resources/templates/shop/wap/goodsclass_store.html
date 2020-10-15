@@ -22,24 +22,51 @@
         </div>
         <div class="page_main flex-between">
             <div class="mian_left">
-                <div th:each="ugc :${ugcaccsorry}" th:text="${ugc.classname}">
-                    <div class="main_right">
-                        <img class="right_banner" src="asset/img/class_banner.png" >
-                        <div class="classify_box flex-star">
-                            <div th:each="gc1 :${gc.childs}" >
-                                <div class="ify_item" th:each="gc2 :${gc1.childs}">
-                                    <a th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}" th:text="${gc2.classname}"></a>
-                                </div>
-                            </div>
+                <div th:each="ugc :${gcs}" th:data-id="${ugc.id}" th:text="${ugc.classname}">
+                </div>
+            </div>
+            <div class="main_right">
+                <img class="right_banner" src="asset/img/class_banner.png" >
+                <div class="classify_box flex-star" th:each="ugc,index :${gcs}"  th:data-id="${ugc.id}" th:style="${index.index==0?'display:flex':'display:none'}">
+                    <a class="ify_item" th:each="gc1 :${ugc.childs}" th:href="@{/goods_list.htm(gc_id = ${gc1.id},store_id=${store_id})}" >
+                        <div  class="item_img flex-center">
+                            <img th:if="${gc1.store_gc_img}"  data-widths="[]"
+                                 th:data-original="${'/'+gc1.store_gc_img.path+'/'+gc1.store_gc_img.name }"
+                                 th:src="@{${'/'+gc1.store_gc_img.path+'/'+gc1.store_gc_img.name }}" alt="">
+                            <img th:unless="${gc1.store_gc_img}" src="asset/img/化妆品.png" >
                         </div>
-                        <div>
-                        </div>
-                    </div>
-
+                        <p th:text="${gc1.classname}"></p>
+                    </a>
+                </div>
+                <div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 </body>
 <script type="text/javascript">
+    $(".mian_left").children(":first").css("background-color","#ee921e");
+
+    $(".mian_left > div").click(function(){
+        var divs=$(".mian_left > div").css("background-color","#f2f2f2");
+        $(this).css("background-color","#ee921e");
+        var gc_id= $(this).attr('data-id');
+
+        access(gc_id);
+    });
+
+    function access(gc_id){
+        var s= $(".classify_box");
+        if(s){
+            s.each(function(){
+                var gcid=$(this).attr('data-id');
+                $(this).css("display",'none');
+                if(gc_id ==  gcid){
+                    $(this).css("display",'flex');
+                }
+            })
+        }
+    }
 </script>
 </html>

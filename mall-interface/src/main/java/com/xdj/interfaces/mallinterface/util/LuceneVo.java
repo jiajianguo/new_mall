@@ -20,8 +20,17 @@
    private float vo_store_price;
    private long vo_add_time;
    private int vo_goods_salenum;
+   private String  vo_goods_collect;
    private String  path;
    private String name;
+
+   public String getVo_goods_collect() {
+     return vo_goods_collect;
+   }
+
+   public void setVo_goods_collect(String vo_goods_collect) {
+     this.vo_goods_collect = vo_goods_collect;
+   }
 
    public String getPath() {
      return path;

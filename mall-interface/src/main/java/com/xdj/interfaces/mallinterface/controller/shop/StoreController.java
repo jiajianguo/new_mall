@@ -168,19 +168,17 @@ public class StoreController {
                 storeViewTools.addBanner(store);
                 mv.addObject("nav_idnav_id", "store_index");
                 viewTools.store_nav(mv,request,store);
-                viewTools.topHandle(mv,request);
+                //viewTools.topHandle(mv,request);
                 viewTools.storeHead(mv,store);
             }
             storeViewTools.store_credits(store.getId(),mv);
             mv.addObject("goodsStore", store);
         } else {
-            log.info("----store-err-msg----");
             mv = new JModelAndView("error.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request,response);
             mv.addObject("op_title", "店铺已经关闭或者未开通店铺");
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }
-
         return mv;
     }
 
@@ -229,14 +227,14 @@ public class StoreController {
         accessoryViewTools.addMainPhotos(goods_new);
         mv.addObject("goods_recommend", goods_recommend);
         mv.addObject("goods_new", goods_new);
-        ShoppingGoodsExample ex = new ShoppingGoodsExample();
+       /* ShoppingGoodsExample ex = new ShoppingGoodsExample();
         ex.createCriteria()
                 .andGoodsStoreIdEqualTo(store.getId())
                 .andGoodsStatusEqualTo(0);
         List<ShoppingGoodsWithBLOBs>  list= goodsService.selectExample(ex);
         if(list != null){
             mv.addObject("goods_counts",list.size());
-        }
+        }*/
 
     }
 
@@ -344,22 +342,23 @@ public class StoreController {
         params.put("start",(pageNow-1)*20);
         params.put("pageSize",20);
         List<ShoppingGoodsWithBLOBs> pList = this.goodsService.queryByCondition(params);
-        List<ShoppingGoodsWithBLOBs> sale_goods= goodsViewTools.sort_sale_goods(store.getId()+"",5);
+       /* List<ShoppingGoodsWithBLOBs> sale_goods= goodsViewTools.sort_sale_goods(store.getId()+"",5);
         accessoryViewTools.addMainPhotos(sale_goods);
         mv.addObject("sale_goods",sale_goods);
-        List<ShoppingGoodsWithBLOBs> collect_goods=goodsViewTools.sort_collect_goods(store.getId()+"",5);
+        List<ShoppingGoodsWithBLOBs> collect_goods= goodsViewTools.sort_collect_goods(store.getId()+"",5);
         accessoryViewTools.addMainPhotos(collect_goods);
         mv.addObject("collect_goods",collect_goods);
-        viewTools.store_nav(mv,request,store);
+        viewTools.store_nav(mv,request,store); */
         storeViewTools.addGrade(store);
         storeViewTools.addUser(store);
         storeViewTools.addStoreLogo(store);
         storeViewTools.addPoint(store);
         storeViewTools.addBanner(store);
         storeViewTools.addArea(store);
-        viewTools.footerHandle(mv);
-        viewTools.storeHead(mv,store);
-        int credit =storeViewTools.generic_store_credit(store.getId().toString());
+        add_store_common_info(mv,store);
+     /*   viewTools.footerHandle(mv);
+        viewTools.storeHead(mv,store);*/
+        /*int credit =storeViewTools.generic_store_credit(store.getId().toString());
         String creditsImg= "";
         if(0< credit && credit <10){
             credit = credit/2 +1;
@@ -383,7 +382,7 @@ public class StoreController {
         }
         mv.addObject("creditsImg",creditsImg);
         mv.addObject("credit",credit);
-        mv.addObject("credits",credits);
+        mv.addObject("credits",credits);*/
         if(pList != null){
             int count = goodsService.count(params);
             accessoryViewTools.addMainPhotos(pList);
