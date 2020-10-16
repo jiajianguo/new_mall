@@ -28,7 +28,7 @@ import java.util.Map;
    private ShoppingAddressMapper addressDao;
 
    @Override
-   @CachePut(cacheNames = "insertAddress",condition = "#address != null" )
+   @CachePut(cacheNames = "insertAddress",condition = "#address != null")
    public boolean save(ShoppingAddress address){
      try{
        this.addressDao.insertSelective(address);

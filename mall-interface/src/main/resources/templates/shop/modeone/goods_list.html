@@ -365,10 +365,10 @@
                         <p class="name" th:text="${goods.goodsName}"></p>
                         <p class="price">
                             <span class="visually-hidden" aria-hidden="false" >Sale price</span>
-                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
-                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
+                            <span class="pay-price sl-subhead-title" th:data-seller-price="${goods.storePrice}" th:data-price="${goods.storePrice}"
+                                  itemprop="price" th:content="${goods.storePrice}" th:text="${goods.storePrice}"></span>
                             <span class="visually-hidden" aria-hidden="false">Regular price</span>
-                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
+                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goods.goodsPrice}" th:data-price="${goods.goodsPrice}" th:text="${goods.goodsPrice}"></span>
                         </p>
                     </div>
                 </a>
@@ -385,10 +385,11 @@
                         <p class="name" th:text="${goods.goodsName}"></p>
                         <p class="price">
                             <span class="visually-hidden" aria-hidden="false" >Sale price</span>
-                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
-                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
+                            <span class="pay-price sl-subhead-title">￥</span>
+                            <span class="pay-price sl-subhead-title" th:data-seller-price="${goods.storePrice}" th:data-price="${goods.storePrice}"
+                                  itemprop="price" th:content="${goods.storePrice}" th:text="${goods.storePrice}"></span>
                             <span class="visually-hidden" aria-hidden="false">Regular price</span>
-                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
+                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goods.goodsPrice}" th:data-price="${goods.goodsPrice}"></span>
                         </p>
                     </div>
                 </a>

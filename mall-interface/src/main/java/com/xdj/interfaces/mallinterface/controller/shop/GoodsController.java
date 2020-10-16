@@ -343,7 +343,7 @@ public class GoodsController {
             if ((store.getTemplate() != null) && (!store.getTemplate().equals(""))) {
                 template = store.getTemplate();
             }
-            ModelAndView mv = new JModelAndView(template + "/goods_lists.html", this.configService.getSysConfig(),
+            ModelAndView mv = new JModelAndView(template + "/goods_list.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
             String shopping_view_type = CommUtil.null2String(request.getSession(false).getAttribute("shopping_view_type"));
             if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {

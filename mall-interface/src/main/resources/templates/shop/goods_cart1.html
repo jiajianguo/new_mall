@@ -39,6 +39,25 @@
             }
 
         }
+
+
+        /**
+         * 删出购物车商品
+         */
+        function cart_remove(id,store_id,_this){
+            jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
+                jQuery("div[class=table] tr[id="+id+"]").remove();
+                jQuery(".shopping[id="+id+"]").remove();
+                jQuery(".shopp_ingtop[id="+id+"]").remove();
+                $(this).parents(".list_item").remove();
+                jQuery("#cart_goods_count_top").html(data.count);
+            }, "json");
+
+            console.log($(_this));
+            $(_this).parents("tr").remove();
+            goods_cart_price()
+
+        }
         jQuery(document).ready(function () {
             function goods_count_adjust(cart_id, store_id, count) {
                 jQuery.post("/goods_count_adjust", {
@@ -140,24 +159,24 @@
                 goods_cart_price();
             });
 
-            function goods_cart_price (){
-                console.log('调用方法');
-                var s=jQuery(".table tr td ").find("input[type=checkbox]");
-                var price=0;
-                if(s){
-                    s.each(function(){
-                        if(jQuery(this).is(':checked')){
-                            var id=jQuery(this).val();
-                            var p = jQuery("#goods_total_price_"+id).text();
-                            var ps=p.slice(1,p.length);
-                            price=price+parseFloat(p.slice(1,p.length));
-                        }
-                    })
-                    jQuery("#orange_price").text(price.toFixed(2));
-                }
-            }
-
         });
+
+        function goods_cart_price (){
+            console.log('调用方法');
+            var s=jQuery(".table tr td ").find("input[type=checkbox]");
+            var price=0;
+            if(s){
+                s.each(function(){
+                    if(jQuery(this).is(':checked')){
+                        var id=jQuery(this).val();
+                        var p = jQuery("#goods_total_price_"+id).text();
+                        var ps=p.slice(1,p.length);
+                        price=price+parseFloat(p.slice(1,p.length));
+                    }
+                })
+                jQuery("#orange_price").text(price.toFixed(2));
+            }
+        }
     </script>
     <head>
 <body>
@@ -495,19 +514,6 @@
     }*/
 
 
-
-    function cart_remove(id,store_id,_this){
-        jQuery.post('/remove_goods_cart.htm', {"id": id, "store_id": store_id}, function (data) {
-            jQuery("div[class=table] tr[id="+id+"]").remove();
-            jQuery(".shopping[id="+id+"]").remove();
-            jQuery(".shopp_ingtop[id="+id+"]").remove();
-            $(this).parents(".list_item").remove();
-            jQuery("#cart_goods_count_top").html(data.count);
-        }, "json");
-
-        console.log($(_this));
-        $(_this).parents("tr").remove();
-    }
 
     jQuery(document).ready(function(){
         jQuery("#cart_goods_top_menu").mouseover(function(){

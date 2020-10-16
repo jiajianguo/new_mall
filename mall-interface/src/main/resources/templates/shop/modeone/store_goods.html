@@ -123,8 +123,8 @@
                     </div>
 
                     <div th:if="${ obj.groupBuy ==2 }" th:each="groupGood :${groupGoods}">
-                        <span> 店铺价:&nbsp;&nbsp;</span>
-                        <span id="gg_price" th:text="${'￥'+groupGood.ggPrice}"></span>
+                        <span> 店铺价:&nbsp;&nbsp;</span><span>￥</span>
+                        <span id="gg_price" th:text="${groupGood.ggPrice}"></span>
                     </div>
                 </div>
                 <div class="spec_box">
