@@ -35,13 +35,14 @@ jQuery(function(){
   <div class="pageright" id="site-nav">
     <ul class="quick-menu">
       <li class="mytaobao menu-item menupx">
-        <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
           <div class="menu-bd">
             <div class="menu-bd-panel">
               <div>
-                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"></a>
               </div>
             </div>
           </div>
@@ -49,19 +50,20 @@ jQuery(function(){
       </li>
       <li class="mytaobao menu-item menupx">
         <div class="menu">
-          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
           <div class="menu-bd">
             <div class="menu-bd-panel">
               <div>
-                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
-                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
-                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.center}"></a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
                 <span th:switch="${user != null}">
 									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
-                                       rel="nofollow">我的店铺</a>
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
                                     <a th:case="false" th:href="@{/seller/store_create_first.htm}"
-                                       rel="nofollow">商家入驻</a>
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
 								</span>
+
               </div>
             </div>
           </div>
@@ -70,35 +72,34 @@ jQuery(function(){
 
       <li class="search menu-item menupx">
         <div class="menu" id="cart_menu">
-               <span class="menu-hd" id="cart_goods_top_menu">
+           <span class="menu-hd" id="cart_goods_top_menu">
                     <s></s>
-                    <a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+                    <a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
                   </span>
         </div>
       </li>
       <li class="menupx">
-        <a th:href="@{/buyer/message.htm}">
-          站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+        <a th:href="@{/buyer/message.htm}"> 站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
       </li>
       <li class="mytaobao menu-item menupx">
         <div class="menu">
-          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
           <div class="menu-bd">
             <div class="menu-bd-panel">
               <div>
-                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
-                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
               </div>
             </div>
           </div>
         </div>
       </li>
 
-      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
-        <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+      <li th:if="${suer != null && user.userRole == 'ADMIN'}" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
       </li>
       <li class="menupx" th:if="${navs != null}">
-        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.}">帮助中心</a>
       </li>
 
       <li class="menupx" style="background:none;" th:if="${navs == null}">
@@ -124,18 +125,19 @@ jQuery(function(){
         <span th:switch="${user != null}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
-			  <span>您好,欢迎来到</span>
+			  <span th:text="#{messages.welcome.word}"></span>
 			  <span th:text=" ${config.websitename}"></span>
-             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
           </span>
           <span th:case="false">
-			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+              <span th:text="${config.websitename}"></span>
              <span class="pxlr">
-               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
              </span>
-            <span class="pxlr">或</span>
+            <span class="pxlr" th:text="#{messages.or}"></span>
             <span class="pxlr">
-              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}"></a>
             </span>
           </span>
         </span>
@@ -162,13 +164,13 @@ jQuery(function(){
             <div class="toph_bigsearch">
               <div class="toph_sear">
                 <ul class="toph_bgsear">
-                  <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
-                  <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                  <li class="this" type="goods"><a href="javascript:void(0);" th:text="#{messages.baby}"><s></s></a></li>
+                  <li style="display:none" type="store"><a href="javascript:void(0);" th:text="#{messages.shop}"></a></li>
                 </ul>
                 <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
                        lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
                        class="toph_sear_txt"/>
-                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;"
                        onclick="search_form();" class="toph_sear_btn"/>
               </div>
               <div class="keyword">
@@ -190,7 +192,7 @@ jQuery(function(){
         <h2>
           <a th:href="@{/goods_class.htm}">
                         <span>
-                            全部分类
+                           <span th:text="#{messages.type.all}"></span>
                             <em>
                                 <img th:src="@{/style/system/front/default/images/nav_left.png}">
                             </em>
@@ -269,7 +271,7 @@ jQuery(function(){
       <span th:each="date :${dates}">
       <a th:if="${bg_time == #dates.format(date,'yyyy-MM-dd')}" class="this" th:href="@{/bargain.htm(bg_time=${#dates.format(date,'yyyy-MM-dd')})}">
         <span th:unless="${elocityCount==1}" th:text="${#dates.format(date,'yyyy-MM-dd')}"></span>
-        <span th:if="${elocityCount==1}" >（今日）</span>
+        <span th:if="${elocityCount==1}"  th:text="#{messages.today}"</span>
       </a>
     </span>
     </div>
@@ -293,19 +295,22 @@ jQuery(function(){
               <span th:if="${obj.bg_goods.bargainStatus==2}">
               <a th:if="${obj.bg_goods.goodsInventory>0}" class="price_right">
                 <img th:src="@{/style/system/front/default/images/special_2.jpg}" width="84" height="25" /></a>
-              <a th:unless="${obj.bg_goods.goodsInventory>0}" href="javascript:void(0);" class="finish">已抢完</a>
+              <a th:unless="${obj.bg_goods.goodsInventory>0}" href="javascript:void(0);" class="finish" th:text="#{messages.sale.out}"></a>
               </span>
 
-              <a th:unless="${obj.bg_goods.bargainStatus==2}" class="soon" href="javascript:void(0);">即将开抢</a> #end
+              <a th:unless="${obj.bg_goods.bargainStatus==2}" class="soon" href="javascript:void(0);" th:text="#{messages.will.start}"></a> #end
             </li>
 
             <li class="special_price">
-              <a th:href="@{/goods.htm(id=${obj.bg_goods.id})}" class="market_price" th:text="'市场价：¥'+${obj.bg_goods.goodsPrice}"></a>
-              <a th:href="@{/goods.htm(id=${obj.bg_goods.id})}" class="price_right" th:text="'仅剩：'+${obj.bg_goods.goodsInventory}">件</a>
+              <span th:text="#{messages.goods.price}+#{messages.money.class}"></span>
+              <a th:href="@{/goods.htm(id=${obj.bg_goods.id})}" class="market_price" th:text="${obj.bg_goods.goodsPrice}"></a>
+              <span th:text="#{messages.order.residue}"></span>
+              <a th:href="@{/goods.htm(id=${obj.bg_goods.id})}" class="price_right" th:text="${obj.bg_goods.goodsInventory}"></a>
+              <span th:text="#{messages.unit.piece}"></span>
             </li>
 
           </ul>
-          <i class="deep"><b th:text="${obj.bgRebate}"></b>折</i>
+          <i class="deep"><b th:text="${obj.bgRebate} +#{messages.fold}"></b></i>
         </div>
 
 
@@ -314,10 +319,10 @@ jQuery(function(){
             <span>
               <img th:src="@{/style/system/front/default/images/sigh.png}" width="120" height="109" />
             </span>
-            <b>今天没有特价商品!</b>
+            <b th:text="#{messages.bargain.no}">!</b>
           </div>
         </div>
-        <div th:if="${bgs.size()>0}" class="special_times">即将开抢</div>
+        <div th:if="${bgs.size()>0}" class="special_times" th:text="#{messages.will.start}"></div>
         <div th:each="obj :${bgs}" class="special_list">
           <ul  class="special_list_ul">
             <li class="special_list_pic">
@@ -336,13 +341,14 @@ jQuery(function(){
             </li>
             <li class="special_price">
               <a class="price_left" th:href="@{/goods.htm(id=${obj.bg_goods.id})}" th:text="'¥'+${obj.bgPrice}"></a>
-              <a class="soon">即将开抢</a>
+              <a class="soon" th:text="#{messages.will.start}"></a>
             </li>
             <li class="special_price">
-              <a href="javascript:void(0);" class="market_price" th:text="'市场价：¥'+${obj.bg_goods.goodsPrice}"></a>
+
+              <a href="javascript:void(0);" class="market_price" th:text="#{messages.goods.price}+#{messages.money.class}+${obj.bg_goods.goodsPrice}"></a>
             </li>
           </ul>
-          <i class="deep"><b th:text="${obj.bgRebate}"></b>折</i> </div>
+          <i class="deep"><b th:text="${obj.bgRebate} + #{messages.fold}"></b></i> </div>
 
        </div>
       <div class="fenye" style="margin:0px auto; float:none; clear:both;">

@@ -21,7 +21,7 @@
     <script th:src="@{/js/head.js}"></script>
 
     <script>
-        jQuery(document).ready(function () {
+        jQuery(document).ready(function() {
             var address = jQuery("#addr").val();
             var person_info = jQuery("#person_info").val();
             jQuery("#order_address_info").html("寄送至:" + address);
@@ -94,7 +94,6 @@
                     data: {'addr_id': addr_id, "store_id": storeId},
                     dataType: 'json',
                     success: function (data) {
-                        console.log('加载地址成功' + data);
                         jQuery("#ship_price").empty();
                         jQuery(data).each(function (index, item) {
                             jQuery("#ship_price").append("<option value='" + item.value + "'>" + item.key + "</option>");
@@ -158,13 +157,14 @@
     <div class="pageright" id="site-nav">
         <ul class="quick-menu">
             <li class="mytaobao menu-item menupx">
-                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"></a>
                             </div>
                         </div>
                     </div>
@@ -172,18 +172,18 @@
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.center}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
                                 <span th:switch="${user != null}">
 									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
-                                       rel="nofollow">我的店铺</a>
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
                                     <a th:case="false" th:href="@{/seller/store_create_first.htm}"
-                                       rel="nofollow">商家入驻</a>
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
 								</span>
 
                             </div>
@@ -196,33 +196,32 @@
                 <div class="menu" id="cart_menu">
            <span class="menu-hd" id="cart_goods_top_menu">
                     <s></s>
-                    <a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+                    <a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
                   </span>
                 </div>
             </li>
             <li class="menupx">
-                <a th:href="@{/buyer/message.htm}">
-                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+                <a th:href="@{/buyer/message.htm}"> 站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
-                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
 
-            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
-                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            <li th:if="${suer != null && user.userRole == 'ADMIN'}" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
             </li>
             <li class="menupx" th:if="${navs != null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.}">帮助中心</a>
             </li>
 
             <li class="menupx" style="background:none;" th:if="${navs == null}">
@@ -248,18 +247,19 @@
         <span th:switch="${user != null}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
-			  <span>您好,欢迎来到</span>
+			  <span th:text="#{messages.welcome.word}"></span>
 			  <span th:text=" ${config.websitename}"></span>
-             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
           </span>
           <span th:case="false">
-			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+              <span th:text="${config.websitename}"></span>
              <span class="pxlr">
-               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
              </span>
-            <span class="pxlr">或</span>
+            <span class="pxlr" th:text="#{messages.or}"></span>
             <span class="pxlr">
-              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}"></a>
             </span>
           </span>
         </span>
@@ -272,12 +272,10 @@
             <div class="head clearFix">
                 <div class="logo">
                     <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
-                        <img width="180" height="60"
-                             th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
+                        <img width="180" height="60"  th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
                     </a>
                     <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
-                        <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"
-                             border="0"/>
+                        <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}" border="0"/>
                     </a>
                 </div>
                 <div class="searchForm">
@@ -286,13 +284,13 @@
                         <div class="toph_bigsearch">
                             <div class="toph_sear">
                                 <ul class="toph_bgsear">
-                                    <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
-                                    <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                                    <li class="this" type="goods"><a href="javascript:void(0);" th:text="#{messages.baby}"><s></s></a></li>
+                                    <li style="display:none" type="store"><a href="javascript:void(0);" th:text="#{messages.shop}"></a></li>
                                 </ul>
                                 <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
                                        lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
                                        class="toph_sear_txt"/>
-                                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                                <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;"
                                        onclick="search_form();" class="toph_sear_btn"/>
                             </div>
                             <div class="keyword">
@@ -311,11 +309,11 @@
     <div class="Steps_box">
         <div class="Steps">
             <ul>
-                <li class="done prev">1.查看购物车</li>
-                <li class="this">2.确认订单信息</li>
-                <li>3.付款到卖家</li>
-                <li>4.确认收货</li>
-                <li class="last">5.评价</li>
+                <li class="done prev" th:text="#{messages.view.cart}"></li>
+                <li class="this" th:text="#{ messages.confirm.order }"></li>
+                <li th:text="#{messages.payto.seller}"></li>
+                <li th:text="#{messages.confirm.goods}"></li>
+                <li class="last" th:text="#{messages.evalution }"></li>
             </ul>
         </div>
         <form th:action="@{/goods_cart3.htm}" method="post" th:enctype="@{/goods_cart3.htm}" id="cart_form">
@@ -330,10 +328,10 @@
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td width="57%" align="center" class="title">店铺商品</td>
-                        <td width="10%" align="center" class="title">单价</td>
-                        <td width="11%" align="center" class="title">数量</td>
-                        <td width="11%" align="center" class="title">小计</td>
+                        <td width="57%" align="center" class="title" th:text="#{messages.store.goods}"></td>
+                        <td width="10%" align="center" class="title" th:text="#{messages.unit.price}"></td>
+                        <td width="11%" align="center" class="title" th:text="#{messages.amount}"></td>
+                        <td width="11%" align="center" class="title" th:text="#{messages.subtotal}"></td>
                     </tr>
                     <span th:each="d : ${data}">
                         <tr th:each="gc :${d.carts}">
@@ -346,11 +344,11 @@
                                 <p>
                                     <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank"
                                        th:text="${gc.goods.goodsName}"></a>
-                                    <span th:if="${gc.goods.groupBuy==2}" style="color:#F00">(团购)</span>
-                                    <span th:if="${gc.goods.bargainStatus==2}" style="color:#F00">(特价)</span>
-                                    <span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span>
+                                    <span th:if="${gc.goods.groupBuy==2}" style="color:#F00" th:text="'('+#{messages.group.buy}+')'"></span>
+                                    <span th:if="${gc.goods.bargainStatus==2}" style="color:#F00" th:text="'('+#{messages.bargain}+')'"></span>
+                                    <span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00" th:text="#{messages.buy.giving}"></span>
                                 <div th:if="${gc.cartType=='combin'}" class="baby_gp">
-                                    <a href="javascript:void(0);" style="color:#F00;">[组合商品]</a>
+                                    <a href="javascript:void(0);" style="color:#F00;" th:text="#{messages.combin.goods}"></a>
                                     <div class="baby_group" style="display:none;">
                                         <div class="baby_group_box">
                                             <ul class="group_ul">
@@ -392,20 +390,19 @@
                     <div class="sendhright">
                         <span class="sendperbtn">
                             <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id},ids=${ids})}"
-                             dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address">新增地址</a>
+                             dialog_title="新增地址" dialog_width="480" dialog_height="100" dialog_id="cart_address" th:text="#{messages.address.add}"></a>
                         </span>
                         <span class="sendperbtn">
-                            <a th:href="@{/buyer/address.htm}" target="_blank">管理收货地址</a>
+                            <a th:href="@{/buyer/address.htm}" target="_blank" th:text="#{messages.manage.address}"></a>
                         </span>
                     </div>
-                    <span class="sendperadr">收货人地址</span>
+                    <span class="sendperadr" th:text="#{messages.consignee.address}"></span>
                 </h1>
                 <div class="writeok">
                     <ul>
                         <li th:each="addr :${addrs}">
                             <strong>
-                                <img th:src="@{/style/system/front/default/images/Steps_02.gif}" width="14"
-                                     height="23"/>
+                                <img th:src="@{/style/system/front/default/images/Steps_02.gif}" width="14"  height="23"/>
                             </strong>
                             <label>
                                 <strong>
@@ -422,15 +419,18 @@
                     </ul>
                 </div>
 
-                <h1><span class="sendperadr margin10">发票信息</span></h1>
+                <h1><span class="sendperadr margin10" th:text="#{messages.invoice.info}"></span></h1>
                 <div class="sendmethod">
                     <ul>
                         <li>
                             <label>
-                                <input name="invoiceType" type="radio" id="invoiceType" value="0" checked="checked"/>个人
+                                <input name="invoiceType" type="radio" id="invoiceType" value="0" checked="checked" />
+                                <span th:text="#{messages.invoice.personal}"></span>
                             </label>
                             <label>
-                                <input name="invoiceType" id="invoiceType" type="radio" value="1"/>单位</label>
+                                <input name="invoiceType" id="invoiceType" type="radio" value="1"/>
+                                <span th:text="#{messages.invoice.unit}"> </span>
+                            </label>
                         </li>
                         <li>
                             <table style="color: #3f4c58;">
@@ -451,11 +451,11 @@
                                     <th colspan="4" th:text="${user.telephone}"></th>
                                 </tr>
                                 <tr>
-                                    <th>商品名</th>
-                                    <th>原价</th>
-                                    <th>税价</th>
-                                    <th>数量</th>
-                                    <th>小计金额</th>
+                                    <th th:text="#{messages.goods.name}"></th>
+                                    <th th:text="#{messages.unit.price}"></th>
+                                    <th th:text="#{messages.rate.price}"></th>
+                                    <th th:text="#{messages.amount}"></th>
+                                    <th th:text="#{messages.subtotal}"></th>
                                 </tr>
                                 </thead>
                                 <span th:each="d : ${data}">
@@ -469,11 +469,11 @@
                                 </span>
 
                                 <tr>
-                                    <td>应付金额</td>
+                                    <td th:text="#{messages.payable.price}" ></td>
                                     <td colspan="4" th:text="${totalPrice}"></td>
                                 </tr>
                                 <tr>
-                                    <td>实付金额</td>
+                                    <td th:text="#{messages.payable.real}"></td>
                                     <td colspan="4" th:text="${totalPrice}"></td>
                                 </tr>
                                 <tbody>
@@ -482,20 +482,20 @@
                             </table>
                         </li>
                         <li id="invoice_info" style="display:none;">
-                            <span style="margin-bottom:5px;">发票抬头：</span>
+                            <span style="margin-bottom:5px;" th:text="#{messages.invoice.rise}"></span>
                             <input name="invoice" type="text" id="invoice" size="40" style="height:20px;"/>
                         </li>
                     </ul>
                 </div>
 
                 <h1 th:if="${couponinfos}">
-                    <span class="sendperadr margin10">使用优惠券</span>
+                    <span class="sendperadr margin10" th:text="#{messages.use.coupon}"></span>
                 </h1>
                 <div class="sendmethod"  th:if="${couponinfos}">
                     <ul>
-                        <li><span style="margin-bottom:5px;">可用优惠券：</span>
+                        <li><span style="margin-bottom:5px;" th:text="#{messages.coupon.enable}" ></span>
                             <select name="coupon_id" id="coupon_id">
-                                <option value="" selected="selected" coupon_amount="0">请选择优惠券</option>
+                                <option value="" selected="selected" coupon_amount="0" th:text="#{messages.coupon.select}"></option>
                                 <option th:each="info :${couponinfos}" th:value="${info.id}"
                                         th:coupon_amount="${info.coupon.couponAmount}"
                                         th:text="${info.couponSn+'['+info.coupon.couponName+']'}"></option>
@@ -505,12 +505,12 @@
                 </div>
 
                 <h1 ><!--th:if="${goodsDelivery}"-->
-                    <span class="sendperadr margin10">配送方式</span>
+                    <span class="sendperadr margin10" th:text="#{messages.send.method}"></span>
                 </h1>
                 <div class="sendmethod">
                     <ul>
                         <li>
-                            <span style="margin-bottom:5px;">可用配送方式：</span>
+                            <span style="margin-bottom:5px;" th:text="#{messages.send.enable}"></span>
                             <select name="ship_price" style="width:110px;" id="ship_price">
                                 <option th:each="sm : ${sms}" th:value="${(velocitycount==1) ? sm.value:0}"
                                         th:text="${sm.key}"></option>
@@ -520,25 +520,25 @@
                     </ul>
                 </div>
                 <h1>
-                    <span class="sendperadr margin10">买家附言</span>
+                    <span class="sendperadr margin10" th:text="#{messages.buyer.remark}"></span>
                 </h1>
                 <div class="sendmeg">
                     <textarea name="msg" cols="" rows="" id="msg"></textarea>
                 </div>
                 <div class="paysend" id="order_coupon_div" style="display:none;">
-                    优惠券抵消：
+                     <span th:text="#{messages.coupon.deduction}"></span>
                     <strong class="red" style=" font-size:24px;" id="order_coupon"></strong>
                 </div>
 
                 <div class="paysend">
-                    店铺合计：
+                    <span th:text="#{messages.shop.totalprice}"></span>
                     <strong class="red" style=" font-size:24px;" id="order_store_amount"  th:text="${'¥'+totalPrice}"></strong>
                 </div>
                 <div class="paysend">
                     <div class="paysd">
                         <div class="paysd_box">
                             <span>
-                                实付款：<strong></strong>
+                                <strong th:text="#{messages.payable.price}"></strong>
                                 <b id="order_pay_fee"  th:text="${'¥'+totalPrice}"></b>
                             </span>
                             <ul>
@@ -551,7 +551,7 @@
                 <div class="paybtn">
                     <input name="cart_session" type="hidden" id="cart_session" th:if="${cart_session != null}"th:value="${cart_session}"/>
                     <input name="goods_amount" type="hidden" id="goods_amount" th:value="${totalPrice}"/>
-                    <input name="order_save" type="button" value="提交订单并支付" onclick="save_order();" style="cursor:pointer;" id="order_save"/>
+                    <input name="order_save" type="button" th:value="#{messages.order.submit}" onclick="save_order();" style="cursor:pointer;" id="order_save"/>
 
                 </div>
             </div>

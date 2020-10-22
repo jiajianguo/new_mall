@@ -91,13 +91,14 @@ function ajaxPage(url,currentPage,obj){
     <div class="pageright" id="site-nav">
         <ul class="quick-menu">
             <li class="mytaobao menu-item menupx">
-                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}" ></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}" ></a>
                             </div>
                         </div>
                     </div>
@@ -105,19 +106,20 @@ function ajaxPage(url,currentPage,obj){
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.cneter}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
                                 <span th:switch="${user != null}">
 									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
-                                       rel="nofollow">我的店铺</a>
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
                                     <a th:case="false" th:href="@{/seller/store_create_first.htm}"
-                                       rel="nofollow">商家入驻</a>
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
 								</span>
+
                             </div>
                         </div>
                     </div>
@@ -126,21 +128,25 @@ function ajaxPage(url,currentPage,obj){
 
             <li class="search menu-item menupx">
                 <div class="menu" id="cart_menu">
+                  <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
 
+                  </span>
                 </div>
             </li>
             <li class="menupx">
                 <a th:href="@{/buyer/message.htm}">
-                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+                    <span  style="color:#FF3300;" th:text="#{messages.plateform.message}+${ msgs != null?msgs.size():0}"></span></a>
             </li>
+
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
-                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow"  th:text="#{messages.collect.shop}"></a>
                             </div>
                         </div>
                     </div>
@@ -148,19 +154,19 @@ function ajaxPage(url,currentPage,obj){
             </li>
 
             <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
-                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+                <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
             </li>
             <li class="menupx" th:if="${navs != null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
             </li>
 
             <li class="menupx" style="background:none;" th:if="${navs == null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}" ></a>
             </li>
 
             <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">更多链接<b></b></a>
+                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.more.link}"><b></b></a>
                     <div class="menu-bd" style="height:auto;">
                         <div class="menu-bd-panel">
                             <div th:each="nav : ${navs}">
@@ -173,27 +179,30 @@ function ajaxPage(url,currentPage,obj){
 
         </ul>
     </div>
+
     <div class="pageleft">
         <span th:switch="${user != null}">
           <span th:case="true">
-             <span th:text="${user.username}"></span>
-			  <span>您好,欢迎来到</span>
+              <span th:text="${user.username}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
 			  <span th:text=" ${config.websitename}"></span>
-             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
           </span>
           <span th:case="false">
-			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+              <span th:text="${config.websitename}"></span>
              <span class="pxlr">
-               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
              </span>
             <span class="pxlr">或</span>
             <span class="pxlr">
-              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.login.out}">注册</a>
             </span>
           </span>
         </span>
     </div>
 </div>
+
 <!--store-head -->
 <div class="page_width">
     <div class="main_top">
@@ -214,14 +223,14 @@ function ajaxPage(url,currentPage,obj){
                             <div class="top_sear_kf">
                                 <a th:href="@{/store.htm(id=${store.id})}" th:text="${store.storeName}"></a>
                                 <a target="_blank"  th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${store.storeQq},Site=${store.storeQq},Menu=yes)}">
-                                    <img alt="点击给我发消息" th:src="@{http://wpa.qq.com/pa(p='2:'+${store.storeQq} +':51')}"/></a>
+                                    <img th:alt="#{messages.click.sendmessage}" th:src="@{http://wpa.qq.com/pa(p='2:'+${store.storeQq} +':51')}"/></a>
                                 <!--th:src="@{http://wpa.qq.com/pa(p=2:${store.storeQq}:51)}"-->
                             </div>
                             <div class="top_sear_star">
-                                <a th:if="${user == null}" th:href="@{/user_dialog_login.htm}" th:text="点击收藏"
+                                <a th:if="${user == null}" th:href="@{/user_dialog_login.htm}" th:text="#{messages.click.collect}"
                                    class="top_sc" dialog_width="450" dialog_height="100"></a>
                                 <a href="javascript:void(0);" dialog_width="450" dialog_height="100"
-                                   dialog_id="user_login">点击收藏</a>
+                                   dialog_id="user_login" th:text="#{messages.click.collect}"></a>
                                 <span th:if="${credit==0}">
                                     <img th:src="@{style/common/images/level_-1.gif}"/>
                                 </span>
@@ -236,13 +245,20 @@ function ajaxPage(url,currentPage,obj){
                     <b class="top_b"></b><b class="top_b2" style="display:none"></b>
                     <div class="top_sear_bom" style="display:none;">
                         <dl class="top_dl">
-                            <dt><b>店铺动态评分</b><i>与同行业相比</i></dt>
+                            <dt>
+                                <b th:text="#{messages.evalution.dynamic}"></b>
+                                <i th:text="#{messages.compare.other}"></i>
+                            </dt>
                             <dd>
                                 <ul class="top_dl_ul">
-                                    <li><i>描述相符：</i><b th:text="${store.point.descriptionEvaluate}"></b><em
-                                            class="description_css"><strong th:text="${description_type}"></strong>
-                                    </em></li>
-                                    <li><i>服务态度：</i>
+                                    <li>
+                                        <i th:text="#{messages.describle.equal}"></i>
+                                        <b th:text="${store.point.descriptionEvaluate}"></b>
+                                        <em class="description_css">
+                                            <strong th:text="${description_type}"></strong>
+                                        </em>
+                                    </li>
+                                    <li><i th:text="#{messages.service.attitude}"></i>
                                         <b th:if="${store.point}"
                                            th:text="${store.point.serviceEvaluate}"></b>
                                         <em th:class="${service_css}">
@@ -251,7 +267,7 @@ function ajaxPage(url,currentPage,obj){
                                         </em>
                                     </li>
                                     <li>
-                                        <i>发货速度：</i>
+                                        <i th:text="#{messages.delivery.speed}"></i>
                                         <b th:text="${store.point.shipEvaluate}"></b>
                                         <em th:class="${ship_css}">
                                             <strong th:text="${ship_type}"></strong>
@@ -262,7 +278,7 @@ function ajaxPage(url,currentPage,obj){
                             <dd>
                         </dl>
                         <dl class="top_dl">
-                            <dt>店铺认证</dt>
+                            <dt th:text="#{messages.shop.certification}">店铺认证</dt>
                             <dd>
                                 <span>
                                   <img th:src="@{'/style/common/images/card_approve_'+${store.cardApprove}+'.gif'}"/>
@@ -273,14 +289,25 @@ function ajaxPage(url,currentPage,obj){
                             <dd>
                         </dl>
                         <dl class="top_dl">
-                            <dt>店铺信息</dt>
-                            <dd><span class="top_dl_width">商品数量：<span
-                                    th:text="${goods_count == null ?0: goods_count}"></span>件</span><span
-                                    class="top_dl_width">好评率：<span
-                                    th:text="${store.point.storeEvaluate1 +'%'}"></span></span><span
-                                    class="top_dl_width">创店时间：<span
-                                    th:text="${#dates.format(store.addtime,'yyyy-MM-dd')}"></span></span><span
-                                    class="top_dl_width">收藏人气：<span th:text="${store.favoriteCount}"></span></span>
+                            <dt th:text="#{messages.shop.information}"></dt>
+                            <dd>
+                                <span class="top_dl_width">
+                                    <span th:text="#{messages.goods.amount}"></span>
+                                    <span  th:text="${goods_count == null ?0: goods_count}"></span>
+                                    <span th:text="#{messages.unit.piece}"></span>
+                                </span>
+                                <span class="top_dl_width">
+                                   <span th:text="#{messages.praise.rate}"></span>
+                                    <span th:text="${store.point.storeEvaluate1 +'%'}"></span>
+                                </span>
+                                <span class="top_dl_width">
+                                    <span th:text="#{messages.store.creattime}"> </span>
+                                    <span th:text="${#dates.format(store.addtime,'yyyy-MM-dd')}"></span>
+                                </span>
+                                <span class="top_dl_width">
+                                    <span th:text="#{messages.favorite.popularity}"></span>
+                                    <span th:text="${store.favoriteCount}"></span>
+                                </span>
                             </dd>
                         </dl>
                     </div>
@@ -307,7 +334,7 @@ function ajaxPage(url,currentPage,obj){
 
 <div class="banner_width">
   <div class="shopbanner">
-      <img src="$!banner" width="1002"/>
+      <img th:src="${banner}" width="1002"/>
       <img th:if="${store.store_banner}" th:src="@{'/'+${store.store_banner.path}+'/'+${store.store_banner.name}}"
            width="1002" height="100"/>
       <img th:unless="${store.store_banner}" th:src="@{'/style/shop/'+${store.template}+'/images/banner.jpg'}"
@@ -321,19 +348,19 @@ function ajaxPage(url,currentPage,obj){
         <div class="shopnavul">
             <ul>
                 <li id="store_index">
-                    <a th:href="@{/store.htm(id=${store.id})}" >首页</a>
+                    <a th:href="@{/store.htm(id=${store.id})}" th:text="#{messages.home.page}"></a>
                 </li>
                 <li th:if="${goods_view}==true" id="store_goods" class="this">
-                    <a th:href="@{/store.htm(goods_id=${goods_id})}">商品详情</a>
+                    <a th:href="@{/store.htm(goods_id=${goods_id})}" th:text="#{messages.goods.details}"></a>
                 </li>
                 <li th:if="${goods_list}==true" id="store_goods" class="this">
-                    <a th:href="@{/goods_list.htm(sc_id=${store.id})}">商品列表</a>
+                    <a th:href="@{/goods_list.htm(sc_id=${store.id})}" th:text="#{messages.goods.list}"></a>
                 </li>
                 <li id="store_credit">
-                    <a th:href="@{/store_credit.htm(store_id=${store.id})}" >信用评价</a>
+                    <a th:href="@{/store_credit.htm(store_id=${store.id})}" th:text="#{messages.credit.rating}"></a>
                 </li>
                 <li id="store_info">
-                    <a th:href="@{/store_info.htm(id=${store.id})}">店铺详情</a>
+                    <a th:href="@{/store_info.htm(id=${store.id})}" th:text="#{messages.store.details}"></a>
                 </li>
                 <li th:each="nav : ${navs}" th:id="${nav.id}">
                     <input type="hidden" id="navId" th:value="${nav.id}">
@@ -395,27 +422,46 @@ function ajaxPage(url,currentPage,obj){
                             </span>
                             </span>
                             <span class="hui2">
-                                  好评率：<span th:text="${store.point.storeEvaluate1}"></span>
+                                <span th:text="#{messages.praise.rate}"></span>
+                                <span th:text="${store.point.storeEvaluate1}"></span>
                              </span>
                         </dd>
 
                     </dl>
-                    <h1>店铺信息</h1>
+                    <h1 th:text="#{messages.shop.info}"></h1>
                     <ul>
-                        <li>创店时间：<span th:text="${#dates.format(store.addtime,'yyyy-MM-dd')}"></span></li>
-                        <li>所在地区：<span th:text="${area}"> </span></li>
-                        <<li>店铺类型：<span th:text="${store.sc.classname}"> </span></li>
-                        <li>商品数量：<strong class="blue" th:text="${store.goods_list.size()}"></strong>件商品</li>
-                        <li>店铺收藏：<strong class="blue" th:text="${store.favoriteCount}"></strong>人收藏</li>
-                        <li>联系电话：<span th:text="${store.storeTelephone}"></span></li>
+                        <li>
+                            <span th:text="#{messages.store.creattime}"></span>
+                            <span th:text="${#dates.format(store.addtime,'yyyy-MM-dd')}"></span>
+                        </li>
+                        <li>
+
+                            <span th:text="#{messages.store.address}"></span>
+                            <span th:text="${area}"> </span></li>
+                        <li>
+                            <span th:text="#{messages.store.classify}"></span>
+                            <span th:text="${store.sc.classname}"> </span>
+                        </li>
+                        <li>
+                            <span th:text="#{messages.goods.amount}"></span>
+                            <strong class="blue" th:text="${store.goods_list.size()}"></strong>
+                        </li>
+                        <li>
+                            <span th:text="#{messages.store.collect}"></span>
+                            <strong class="blue" th:text="${store.favoriteCount}"></strong>
+                        </li>
+                        <li>
+                            <span th:text="#{messages.mobile}"></span>
+                            <span th:text="${store.storeTelephone}"></span>
+                        </li>
                     </ul>
-                    <h1>联系方式</h1>
+                    <h1 th:text="#{messages.contact.way}"></h1>
                     <ul>
                         <li class="shopcusser">
-                            <span>店铺客服：</span>
+                            <span th:text="#{messages.store.waiter}">店铺客服：</span>
                             <span>
                         <a target="_blank" th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${store.storeQq},Site=${store.storeQq},Menu=yes)}">
-                            <img alt="点击这里给我发消息" th:src="@{'http://wpa.qq.com/pa(p=2:'+${store.storeQq}+':51'}"/>
+                            <img th:alt="#{messages.click.sendmessage}" th:src="@{'http://wpa.qq.com/pa(p=2:'+${store.storeQq}+':51'}"/>
                         </a>
                     </span>
                         </li>
@@ -425,20 +471,24 @@ function ajaxPage(url,currentPage,obj){
                     <ul class="shopboh">
                         <li class="collection">
                             <a th:if="${user != null}" href="javascript:void(0);" id="store_fav" >
-                                <span>收藏店铺</span>
+                                <span th:text="#{messages.collect.shop}"></span>
                             </a>
                             <a th:unless="${user != null}" href="javascript:void(0);" id="store_fav" th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录"
                                dialog_width="450" dialog_height="100" dialog_id="user_login">
-                                <span>收藏店铺</span>
+                                <span th:text="#{messages.collect.shop}"></span>
                             </a>
                         </li>
                         <li class="this">
-                              <span class="twocoad">店铺二维码
+                              <span class="twocoad">
+                                  <span th:text="#{messages.store.qrcode}"></span>
                                 <div class="shop_botmhbox" style="display:none;">
                                     <span>
                                         <img th:src="@{'/'+${config.uploadfilepath}+'/store/'+${store.id}+'/code.png'}" width="140" height="140"/>
                                     </span>
-                                    <i>手机扫描二维码<br/>快速收藏店铺</i>
+                                    <i >
+                                        <span th:text="#{messages.scan.code}"></span>
+                                        <br/>
+                                        <span th:text="#{messages.quick.collect}"> </span></i>
                                 </div>
                               </span>
                         </li>
@@ -449,16 +499,16 @@ function ajaxPage(url,currentPage,obj){
 
       <div class="shopindex_right">
         <div class="evaluation">
-          <div class="goodevalu" th:text="'好评率:'+${store.point.storeEvaluate1*100}+'%'"></div>
+          <div class="goodevalu" th:text="#{messages.praise.rate}+${store.point.storeEvaluate1*100}+'%'"></div>
           <div class="goodevt">
             <table width="797" border="0" cellspacing="0" cellpadding="0" class="goodevtable">
               <tr>
                 <td width="90">&nbsp;</td>
-                <td align="center" width="150">最近一周</td>
-                <td align="center" width="150">最近一个月</td>
-                <td align="center" width="150">最近6个月</td>
-                <td align="center" width="150">6个月前</td>
-                <td align="center" width="150">总计</td>
+                <td align="center" width="150" th:text="#{messages.last.week}"></td>
+                <td align="center" width="150" th:text="#{messages.last.month}"></td>
+                <td align="center" width="150" th:text="#{messages.last.halfyear}"></td>
+                <td align="center" width="150" th:text="#{messages.before.halfyear}"></td>
+                <td align="center" width="150" th:text="#{messages.total}"></td>
               </tr>
               <tr>
                 <td align="center">
@@ -466,7 +516,7 @@ function ajaxPage(url,currentPage,obj){
                         <i class="flower">
                             <img th:src="@{'/style/shop/'+${store.template}+'/images/flower3.gif'}" width="16" height="16">
                         </i>
-                        好评
+                        <span th:text="#{messages.praise.nice}"></span>
                     </strong>
                 </td>
                 <td align="center" th:text="${eva_week_0}"></td>
@@ -480,7 +530,8 @@ function ajaxPage(url,currentPage,obj){
                     <strong class="green">
                         <i class="flower">
                             <img th:src="@{'/style/shop/'+${store.template}+'/images/flower2.gif'}" width="16" height="16">
-                        </i>中评
+                        </i>
+                        <span th:text="#{messages.praise.normal}"></span>
                     </strong>
                 </td>
                 <td align="center" th:text="${eva_week_1}"></td>
@@ -495,7 +546,7 @@ function ajaxPage(url,currentPage,obj){
                         <i class="flower">
                             <img th:src="@{'style/shop/'+${store.template}+'/images/flower1.gif'}" width="16" height="16">
                         </i>
-                        差评
+                        <span th:text="#{messages.praise.low}"></span>
                     </strong>
                 </td>
                   <td align="center" th:text="${eva_week_2}"></td>
@@ -506,7 +557,7 @@ function ajaxPage(url,currentPage,obj){
               </tr>
               <tr>
                 <td align="center">
-                    <strong class="blue2">总计</strong>
+                    <strong class="blue2" th:text="#{messages.total}"></strong>
                 </td>
                 <td align="center" th:text="${eva_week_0+eva_week_1+eva_week_2}" ></td>
                 <td align="center" th:text="${eva_month_0+eva_month_1+eva_month_2}"></td>
@@ -519,20 +570,20 @@ function ajaxPage(url,currentPage,obj){
         </div>
         <div class="eval_service">
           <div class="eval_service_box">
-            <h3>店铺半年内动态评分</h3>
+            <h3 th:text="#{messages.notice.store}"></h3>
             <div class="eval_service_bt">
               <div class="eval_tab">
                 <ul>
                   <li eva_type="description_evaluate">
-                      <b>宝贝与描述相符：</b>
+                      <b th:text="#{messages.notice.baby}"></b>
                       <i th:text="${store.point.descriptionEvaluateHalfyear}"></i><em>分</em>
                   </li>
                   <li eva_type="service_evaluate">
-                      <b>卖家的服务态度：</b>
+                      <b th:text="#{messages.service.store}"></b>
                       <i th:text="${store.point.serviceEvaluateHalfyear}"></i><em>分</em>
                   </li>
                   <li eva_type="ship_evaluate" class="this">
-                      <b>卖家的发货速度：</b>
+                      <b th:text="#{messages.speed.store}"></b>
                       <i th:text="${store.point.shipEvaluateHalfyear}"></i><em>分</em>
                   </li>
                 </ul>
@@ -545,13 +596,16 @@ function ajaxPage(url,currentPage,obj){
                         <input th:each="c : ${credits}" name="description_evaluate_halfyear" class="description_evaluate_halfyear {split:5}" type="radio" th:value="${c}"  disabled="disabled" />
                     </span>
                     <span>
-                        <b th:text="${store.point.descriptionEvaluateHalfyear}"></b>分
+                        <b th:text="${store.point.descriptionEvaluateHalfyear}"></b>
+                        <span th:text="#{messages.minutes}"></span>
                     </span>
-                        共<span th:text="${description_total}">人</span>
+                        <span th:text="#{}"></span>
+                        <span th:text="${description_total}"></span>
+                        <span th:text="#{messages.person}"></span>
                     </li>
                     <li>
                         <span class="smstart_5"></span>
-                        <span>4-5分</span>
+                        <span th:text="#{messages.range.one}"></span>
                         <span>
                             <div class="eval_bar" th:style="${'width:'}+${description_total==0?'0':store.point.descriptionEvaluateHalfyearCount5/description_total*100}+${'px;'}"></div>
                         </span>
@@ -560,7 +614,7 @@ function ajaxPage(url,currentPage,obj){
                         </span>
                      </li>
                     <li>
-                        <span class="smstart_4"></span><span>3-4分</span>
+                        <span class="smstart_4"></span><span th:text="#{messages.range.two}"></span>
                         <span>
                          <div class="eval_bar" th:style="${'width:'}+${description_total==0?'0':store.point.descriptionEvaluateHalfyearCount4/description_total*100}+${'px;'}"></div>
                         </span>
@@ -570,7 +624,7 @@ function ajaxPage(url,currentPage,obj){
                     </li>
                    <li>
                         <span class="smstart_3"> </span>
-                        <span>2-3分</span>
+                        <span th:text="#{messages.range.three}"></span>
                         <span>
                          <div class="eval_bar" th:style="${'width:'}+${description_total==0?'0':store.point.descriptionEvaluateHalfyearCount3/description_total*100}+${'px;'}"></div>
                         </span>
@@ -580,7 +634,7 @@ function ajaxPage(url,currentPage,obj){
                     </li>
                    <li>
                     <span class="smstart_2"></span>
-                    <span>1-2分</span>
+                    <span th:text="#{messages.range.four}"></span>
                        <span>
                          <div class="eval_bar" th:style="${'width:'}+${description_total==0?'0':store.point.descriptionEvaluateHalfyearCount2/description_total*100}+${'px;'}"></div>
                         </span>
@@ -591,7 +645,7 @@ function ajaxPage(url,currentPage,obj){
 
                    <li>
                     <span class="smstart_1"></span>
-                       <span>0-1分</span>
+                       <span th:text="#{messages.range.five}"></span>
                        <span>
                          <div class="eval_bar" th:style="${'width:'}+${description_total==0?'0':store.point.descriptionEvaluateHalfyearCount1/description_total*100}+${'px;'}"></div>
                         </span>
@@ -614,12 +668,12 @@ function ajaxPage(url,currentPage,obj){
                     <span>
                         <b th:text="${store.point.serviceEvaluateHalfyear+'分'}"></b>
                     </span>
-                        <span th:text="${'共'+service_total+'人'}"></span>
+                        <span th:text="#{messages.in.all}+${service_total}+#{messages.person}"></span>
                     </li>
 
                     <li>
                         <span class="smstart_5"></span>
-                        <span>4-5分</span>
+                        <span th:text="#{messages.range.one}"></span>
                         <span>
                             <div class="eval_bar" th:style="${'width:'}+${service_total==0?'0':store.point.serviceEvaluateHalfyearCount5/service_total*100}+${'px;'}"></div>
                         </span>
@@ -630,7 +684,7 @@ function ajaxPage(url,currentPage,obj){
 
                     <li>
                         <span class="smstart_4"></span>
-                        <span>3-4分</span>
+                        <span th:text="#{messages.range.two}"></span>
                         <span>
                             <div class="eval_bar" th:style="${'width:'}+${service_total==0?'0':store.point.serviceEvaluateHalfyearCount4/service_total*100}+${'px;'}"></div>
                         </span>
@@ -640,7 +694,7 @@ function ajaxPage(url,currentPage,obj){
                     </li>
                    <li>
                         <span class="smstart_3"></span>
-                       <span>2-3分</span>
+                       <span th:text="#{messages.range.three}"></span>
                        <span>
                             <div class="eval_bar" th:style="${'width:'}+${service_total==0?'0':store.point.serviceEvaluateHalfyearCount3/service_total*100}+${'px;'}"></div>
                         </span>
@@ -651,7 +705,7 @@ function ajaxPage(url,currentPage,obj){
 
                    <li>
                        <span class="smstart_2"></span>
-                       <span>1-2分</span>
+                       <span th:text="#{messages.range.four}"></span>
                        <span>
                             <div class="eval_bar" th:style="${'width:'}+${service_total==0?'0':store.point.serviceEvaluateHalfyearCount2/service_total*100}+${'px;'}"></div>
                         </span>
@@ -662,7 +716,7 @@ function ajaxPage(url,currentPage,obj){
 
                    <li>
                        <span class="smstart_1"></span>
-                       <span>0-1分</span>
+                       <span th:text="#{messages.range.five}"></span>
                        <span>
                             <div class="eval_bar" th:style="${'width:'}+${service_total==0?'0':store.point.serviceEvaluateHalfyearCount1/service_total*100}+${'px;'}"></div>
                         </span>
@@ -682,14 +736,14 @@ function ajaxPage(url,currentPage,obj){
                         <input  th:each="c : ${credits}" name="ship_evaluate_halfyear" class="ship_evaluate_halfyear {split:5}" type="radio" th:value="${c}"  disabled="disabled" />
                     </span>
                     <span>
-                        <b th:text="${store.point.shipEvaluateHalfyear+'分'}"></b>
+                        <b th:text="${store.point.shipEvaluateHalfyear}+#{messages.minutes}"></b>
                     </span>
-                    <span th:text="${'共'+ship_total+'人'}"></span>
+                    <span th:text="#{messages.in.all}+${ship_total}+#{messages.person}"></span>
                     </li>
 
                     <li>
                         <span class="smstart_5"></span>
-                        <span>4-5分</span>
+                        <span th:text="#{messages.range.one}"></span>
                         <span>
                             <div class="eval_bar" th:style="${'width:'}+${ship_total==0?'0':store.point.point.shipEvaluateHalfyearCount5/ship_total*100}+${'px;'}"></div>
                         </span>
@@ -700,7 +754,7 @@ function ajaxPage(url,currentPage,obj){
 
                     <li>
                         <span class="smstart_4"></span>
-                        <span>3-4分</span>
+                        <span th:text="#{messages.range.two}"></span>
                         <span>
                             <div class="eval_bar" th:style="${'width:'}+${ship_total==0?'0':store.point.point.shipEvaluateHalfyearCount4/ship_total*100}+${'px;'}"></div>
                         </span>
@@ -711,7 +765,7 @@ function ajaxPage(url,currentPage,obj){
 
                    <li>
                        <span class="smstart_3"></span>
-                       <span>2-3分</span>
+                       <span th:text="#{messages.range.three}"></span>
                        <span>
                             <div class="eval_bar" th:style="${'width:'}+${ship_total==0?'0':store.point.point.shipEvaluateHalfyearCount3/ship_total*100}+${'px;'}"></div>
                         </span>
@@ -722,7 +776,7 @@ function ajaxPage(url,currentPage,obj){
 
                    <li>
                         <span class="smstart_2"></span>
-                       <span>1-2分</span>
+                       <span th:text="#{messages.range.four}"></span>
                        <span>
                             <div class="eval_bar" th:style="${'width:'}+${ship_total==0?'0':store.point.point.shipEvaluateHalfyearCount2/ship_total*100}+${'px;'}"></div>
                         </span>
@@ -733,7 +787,7 @@ function ajaxPage(url,currentPage,obj){
 
                    <li>
                         <span class="smstart_1"></span>
-                       <span>0-1分</span>
+                       <span th:text="#{messages.range.five}"></span>
                        <span>
                             <div class="eval_bar" th:style="${'width:'}+${ship_total==0?'0':store.point.point.shipEvaluateHalfyearCount1/ship_total*100}+${'px;'}"></div>
                         </span>
@@ -754,39 +808,50 @@ function ajaxPage(url,currentPage,obj){
     <div class="evaludetail">
           <div class="evlua">
             <ul>
-              <li class="this" th:attr="uri='/store_eva.htm?id='+${store.id}"><strong><a href="javascript:void(0);">全部评价</a></strong></li>
-              <li th:attr="uri='/store_eva.htm?id='+${store.id}+'&eva_val=1'"><strong class="red">好评</strong></li>
-              <li th:attr="uri='/store_eva.htm?id='+${store.id}+'&eva_val=0'" ><strong class="green">中评</strong></li>
-              <li th:attr="uri='/store_eva.htm?id='+${store.id}+'&eva_val=-1'" ><strong>差评</strong></li>
+              <li class="this" th:attr="uri='/store_eva.htm?id='+${store.id}">
+                  <strong>
+                      <a href="javascript:void(0);" th:text="#{messages.evalution.all}"></a>
+                  </strong>
+              </li>
+              <li th:attr="uri='/store_eva.htm?id='+${store.id}+'&eva_val=1'">
+                  <strong class="red" th:text="#{messages.praise.nice}"></strong>
+              </li>
+              <li th:attr="uri='/store_eva.htm?id='+${store.id}+'&eva_val=0'" >
+                  <strong class="green" th:text="#{messages.praise.normal}"> </strong>
+              </li>
+              <li th:attr="uri='/store_eva.htm?id='+${store.id}+'&eva_val=-1'" >
+                  <strong th:text="#{messages.praise.low}"></strong>
+              </li>
             </ul>
           </div>
           <div class="evalubot">
             <div class="evaluone">
               <table width="797" border="0" cellspacing="0" cellpadding="0" class="evaluonetable">
                 <tr>
-                  <td width="80">评价</td>
-                  <td width="140">内容</td>
-                  <td width="100" align="center">商品</td>
-                  <td width="60" align="center">金额</td>
-                  <td width="100" align="center">买家</td>
-                  <td width="100" align="center">时间</td>
+                  <td width="80" th:text="#{messages.evalution}"></td>
+                  <td width="140" th:text="#{messages.content}"></td>
+                  <td width="100" align="center" th:text="#{messages.good}"></td>
+                  <td width="60" align="center" th:text="#{messages.money}"></td>
+                  <td width="100" align="center" th:text="#{messages.buyer}"></td>
+                  <td width="100" align="center" th:text="#{messages.time}"></td>
                 </tr>
 
                 <tr th:each="obj :${objs}">
-                  <td th:if="${obj.evaluateBuyerVal==1}">好评</td>
-                  <td th:if="${obj.evaluateBuyerVal==0}">中评</td>
-                  <td th:if="${obj.evaluateBuyerVal==-1}">差评</td>
-                  <td th:text="${obj.evaluateInfo ==null}? '这家伙什么都没说':${obj.evaluateInfo}"></td>
-                  <td class="goodsevalu">
-                      <span class="nameevalu">
-                          <a th:href="@{/goods.htm(id=${obj.evaluate_goods.id})}" target="_blank" th:text="${obj.evaluate_goods.goodsName}"></a>
-                      </span>
-                  </td>
-                  <td align="center">
-                      <strong class="orange" th:text="'¥'+${obj.of.totalprice}"></strong>
-                  </td>
-                  <td align="center" th:text="${obj.evaluate_user.username}"></td>
-                  <td align="center" th:text="${#dates.format(obj.addtime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:if="${obj.evaluateBuyerVal==1}" th:text="#{messages.praise.nice}"></td>
+                    <td th:if="${obj.evaluateBuyerVal==0}" th:text="#{messages.praise.normal}"></td>
+                    <td th:if="${obj.evaluateBuyerVal==-1}" th:text="#{messages.praise.low}"></td>
+                    <td th:if="${obj.evaluateInfo != null}" th:text="${obj.evaluateInfo}"></td>
+                    <td th:unless="${obj.evaluateInfo != null}" th:text="#{messages.praise.no}"></td>
+                    <td class="goodsevalu">
+                        <span class="nameevalu">
+                            <a th:href="@{/goods.htm(id=${obj.evaluate_goods.id})}" target="_blank" th:text="${obj.evaluate_goods.goodsName}"></a>
+                        </span>
+                    </td>
+                    <td align="center">
+                        <strong class="orange" th:text="'¥'+${obj.of.totalprice}"></strong>
+                    </td>
+                    <td align="center" th:text="${obj.evaluate_user.username}"></td>
+                    <td align="center" th:text="${#dates.format(obj.addtime,'yyyy-MM-dd HH:mm:ss')}"></td>
                 </tr>
 
               </table>

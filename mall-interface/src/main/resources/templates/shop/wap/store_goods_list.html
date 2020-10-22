@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>商品列表</title>
+	<title th:text="#{messages.goods.list}"></title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/wareslist.css" />
@@ -24,14 +24,14 @@
 					<svg class="icon icon_search" aria-hidden="true">
 						<use xlink:href="#icon-search"></use>
 					</svg>
-					<input class="setext" type="text" placeholder="搜索商品标题" />
+					<input class="setext" type="text" th:placeholder="#{messages.search.goods}" />
 				</div>
-				<input class="sebt" type="button" name="" id="" value="搜索" />
+				<input class="sebt" type="button" name="" id="" th:value="#{messages.search}" />
 			</div>
 
 			<div class="nav_top">
 				<div class="nav_text nav1 nav_text_act">
-					<span><a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='addTime',orderType='desc')}">综合</a> </span>
+					<span><a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='addTime',orderType='desc')}" th:text="#{messages.search.normal}"></a> </span>
 					<div>
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-sanjiao"></use>
@@ -40,20 +40,20 @@
 				</div>
 				<div class="nav_text nav_text1" data-select="0">
 					<span>
-						<a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='goods_salenum',orderType='desc')}">销量</a>
+						<a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='goods_salenum',orderType='desc')}" th:text="#{messages.sale}"></a>
 					</span>
 					<svg class="icon icon_nav" aria-hidden="true">
 						<use xlink:href="#icon-shangxia1-copy-copy"></use>
 					</svg>
 				</div>
 				<div class="nav_text nav_text1" data-select="0">
-					<span><a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='store_price',orderType='asc')}">价格</a> </span>
+					<span><a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='store_price',orderType='asc')}" th:text="#{messages.price}"></a> </span>
 					<svg class="icon icon_nav" aria-hidden="true">
 						<use xlink:href="#icon-shangxia1-copy-copy"></use>
 					</svg>
 				</div>
 				<div class="nav_text nav1">
-					<span>筛选</span>
+					<span th:text="#{messages.search.screening}"></span>
 					<svg class="icon icon_sx" aria-hidden="true">
 						<use xlink:href="#icon-shaixuan"></use>
 					</svg>
@@ -70,11 +70,11 @@
 				<div class="text_zong">
 					<div>
 						<div class="text1"> <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a></div>
-						<div class="textbq" th:text="${'出售：'+goods.goodsSalenum+'笔'}"></div>
+						<div class="textbq" th:text="#{messages.sold}+${goods.goodsSalenum}+#{messages.sum}"></div>
 					</div>
 					<div>
-						<del class="yjpay" th:text="'$'+${goods.goodsPrice}"></del>
-						<div class="paynumber" th:text="'$'+${goods.storePrice}"></div>
+						<del class="yjpay" th:text="#{messages.money.class}+${goods.goodsPrice}"></del>
+						<div class="paynumber" th:text="#{messages.money.class}+${goods.storePrice}"></div>
 					</div>
 				</div>
 			</div>

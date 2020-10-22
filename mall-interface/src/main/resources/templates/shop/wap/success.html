@@ -61,7 +61,9 @@
 	<div class="phone_hd">
 		<a class="back" href="javascript:history.go(-1);">
 			<img src="/style/system/front/wap/images/back.png" width="25" height="25">
-		</a>登录<a class="menu home" href="/wap/index.htm">
+		</a>
+		<span th:text="#{messages.login}"> </span>
+		<a class="menu home" href="/wap/index.htm">
 		<img src="/style/system/front/wap/images/home.png" width="25" height="25"></a>
 	</div>
 	<div class="phone_main">
@@ -87,15 +89,21 @@
 		<!--底部-->
 		<div class="phone_foot">
 			<div class="foot_top">
-				<span class="fl"><span><a
-						href="/login.htm">登录</a></span><b>|</b><span><a
-						href="/register.htm">注册</a></span></span><span
-					class="fr"><a href="#">TOP</a></span>
+				<span class="fl">
+					<span>
+						<a href="/login.htm" th:text="#{messages.login}"></a>
+					</span>
+					<b>|</b>
+					<span>
+						<a href="/register.htm" th:text="#{messages.register}"></a>
+				</span>
+				</span>
+				<span class="fr"><a href="#">TOP</a></span>
 			</div>
 			<div class="foot_nav">
-				<a class="this" href="javascript:void(0);">触屏版</a>
-				<a href="javascript:void(0);">电脑版</a> <a
-					href="javascript:void(0);">客户端</a>
+				<a class="this" href="javascript:void(0);" th:text="#{messages.phone}"></a>
+				<a href="javascript:void(0);" th:text="#{messages.pc}"></a>
+				<a href="javascript:void(0);" th:text="#{messages.client}"></a>
 			</div>
 			<!--<div class="foot_nav">$!webPath</div>-->
 		</div>

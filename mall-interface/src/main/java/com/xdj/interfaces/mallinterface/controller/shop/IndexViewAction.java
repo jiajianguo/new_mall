@@ -6,6 +6,7 @@ import com.xdj.interfaces.mallinterface.mv.JModelAndView;
 import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
 import com.xdj.interfaces.mallinterface.util.BCryptUtil;
+import com.xdj.www.core.constant.ResponseModel;
 import com.xdj.www.core.tools.CommUtil;
 import com.xdj.www.entity.*;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -90,6 +92,78 @@ public class IndexViewAction {
 
 
 	public static Logger log =LoggerFactory.getLogger("indexController" );
+
+	/**
+	 *发送邮箱信息
+	 * @param email 用户邮箱
+	 * @return
+	 */
+	@RequestMapping({"/sendEmail"})
+	@ResponseBody
+	public ResponseModel sendEmail(HttpServletRequest request,String email){
+		ResponseModel res = new ResponseModel();
+		res.setCode("400");
+		if(StringUtils.isNotBlank(email)){
+			ShoppingUser user=userService.findByEmail(email);
+			if(user == null){
+				res.setMsg("该邮箱用户不存在");
+				return res;
+			}
+			String email_code= CommUtil.randomString(6);
+			request.getSession().setAttribute("email_code",email_code);
+			request.getSession().setAttribute("email_user",email);
+			String content="尊敬的会员：\n 验证码为："+email_code+"，然后在验证码框内输入此验证码修改密码,感谢使用emode商城";
+			boolean result=sendMessageService.sendEmail(email,"edit password",content);
+			if(result){
+				res.setCode("200");
+				res.setMsg("success");
+			}else{
+				res.setMsg("发送邮箱失败，请重试");
+			}
+		}else{
+			res.setMsg("无效参数email");
+		}
+		return res;
+	}
+
+	@ResponseBody
+	@RequestMapping({"/editPasswordPage"})
+	public ModelAndView editPasswordPage(){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/shop/wap/edit_password.html");
+		return mv;
+	}
+
+
+	@RequestMapping({"/editPassword"})
+	@ResponseBody
+	public ModelAndView editPassword(HttpServletRequest request,String email_code ,String password){
+		ModelAndView mv = new ModelAndView();
+		if(StringUtils.isNotBlank(email_code) && StringUtils.isNotBlank(password)){
+			if(email_code.equalsIgnoreCase(request.getSession().getAttribute("email_code").toString())){
+				String email = request.getSession().getAttribute("email_user").toString();
+				ShoppingUser user=userService.findByEmail(email);
+				if(user == null){
+					mv.setViewName("error.html");
+					mv.addObject("option","用户不存在");
+					return mv;
+				}
+				request.getSession().removeAttribute("email_code");
+				request.getSession().removeAttribute("email_user");
+				user.setPassword(BCryptUtil.encode(password));
+				userService.update(user);
+				mv.setViewName("/shop/wap/login.html");
+			}else{
+				mv.setViewName("error.html");
+				mv.addObject("option","验证码错误");
+			}
+		}else{
+			mv.setViewName("error.html");
+			mv.addObject("option","参数有误");
+		}
+		return mv;
+	}
+
 
 	/**
 	 * 页面最上面部分
@@ -608,7 +682,7 @@ public class IndexViewAction {
 		params.put( "endTime", new Date() );
 		List<ShoppingGroup> groups = this.groupService.queryByCondition(params);
 				//( "select obj from Group obj where obj.beginTime<=:beginTime and obj.endTime>=:endTime", params, -1, -1 );
-		if( groups != null) {
+		if( groups != null && groups.size()>0) {
 			// 2、团购商品
 			params.clear();
 			params.put( "gg_status", Integer.valueOf(1));

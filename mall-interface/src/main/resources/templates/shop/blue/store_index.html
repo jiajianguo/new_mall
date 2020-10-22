@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title th:text="${goodsStore.storeName}"> - Powered by shopping</title>
+    <meta name="generator" content="shopping 2.0"/>
+    <meta name="author" content="www.shopping.com">
+    <meta name="copyright" content="shopping Inc. All Rights Reserved">
+    <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{'/style/shop/'+${goodsStore.template}+'/css/default.css'}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/style/common/css/overlay.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{/js/jquery-1.6.2.js}"></script>
+    <script th:src="@{/js/jquery-ui-1.8.21.js}"></script>
+    <script th:src="@{/js/jquery.lazyload.js}"></script>
+    <script th:src="@{/js/jcarousellite_1.0.1.min.js}"></script>
+    <script th:src="@{/js/jquery.shop.common.js}"></script>
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/js/top.js}"></script>
+    <script th:src="@{/js/store_left.js}"></script>
+   <!-- <script th:src="@{/js/store_head.js}"></script>-->
+    <script>
+        jQuery(document).ready(function () {
+            jQuery(".smallgoods .goodsimgs img").lazyload({effect: "fadeIn", width: 178, height: 170});
+            jQuery(".bigshopimg .img1").addClass("this");
+            //
+            jQuery(".bigshopimg").jCarouselLite({
+                btnGo: [".img1", ".img2", ".img3", ".img4", ".img5"],
+                auto: 3000,
+                speed: 600,
+                vertical: false,
+                visible: 1,
+                start: 1,
+                afterEnd: function (a) {
+                    var index = jQuery(a[0]).index();
+                    var sliderSize=jQuery("#sliderSize").val();
+                    if(sliderSize > 0){
+                        if(index > sliderSize){
+                            index=1;
+                        }
+                    }else if(index >4){
+                        index =1;
+                    }
+                    jQuery(".bigshopimg a").removeClass("this");
+                    jQuery(".bigshopimg .img" + index).addClass("this");
+                }
+            });
+        });
+    </script>
+    <script>
+        jQuery(".shopnavul li").each(function () {
+            var nav_id = jQuery(this).attr("id");
+            if (nav_id == "${nav_id}") {
+                jQuery(this).addClass("this");
+            } else jQuery(this).removeClass("this");
+        });
+    </script>
+</head>
+<body>
+<!--top-->
+<div class="top_page">
+    <div class="pageright" id="site-nav">
+        <ul class="quick-menu">
+            <li class="mytaobao menu-item menupx">
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.center}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
+                                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
+								</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="search menu-item menupx">
+                <div class="menu" id="cart_menu">
+                     <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s>
+                    <a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
+                  </span>
+                </div>
+            </li>
+            <li class="menupx">
+                <a th:href="@{/buyer/message.htm}">
+                    <span th:text="#{messages.plateform.message}"></span>
+                    <span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+            </li>
+            <li class="mytaobao menu-item menupx">
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
+                    <div class="menu-bd">
+                        <div class="menu-bd-panel">
+                            <div>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow" th:text="#{messages.collect.shop}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
+            </li>
+            <li class="menupx" th:if="${navs != null}">
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
+            </li>
+
+            <li class="menupx" style="background:none;" th:if="${navs == null}">
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
+            </li>
+
+            <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+                <div class="menu">
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow" th:text="#{messages.more.link}"><b></b></a>
+                    <div class="menu-bd" style="height:auto;">
+                        <div class="menu-bd-panel">
+                            <div th:each="nav : ${navs}">
+                                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+             <span th:text="${user.username}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
+          </span>
+          <span th:case="false">
+			  <span th:text="#{messages.welcome.word}"></span><span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
+             </span>
+            <span class="pxlr" th:text="#{messages.or}"></span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}"></a>
+            </span>
+          </span>
+        </span>
+    </div>
+</div>
+<!--store-head -->
+<div class="page_width">
+    <div class="main_top">
+        <div class="head">
+            <div>
+                <input type="hidden" id="user" th:value="${user}"/>
+                <input type="hidden" id="userId" th:value="${goodsStore.user.id}"/>
+                <input type="hidden" id="storeId" th:value="${goodsStore.id}"/>
+            </div>
+            <div class="logo">
+                <a th:href="@{/index.htm}">
+                    <img th:if="${goodsStore.storeLogo}"   th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}" border="0" width="180" height="60" />
+                    <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}" border="0"/>
+                </a>
+            </div>
+            <div class="shop_top_search">
+                <div class="top_search_left">
+                    <div class="filter_z">
+                        <div class="top_searleft"></div>
+                        <div class="top_nofilter">
+                            <div class="top_sear_kf">
+                                <a th:href="@{/store.htm(id=${goodsStore.id})}" th:text="${goodsStore.storeName}"></a>
+                                <a target="_blank" th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${goodsStore.storeQq},Site=${goodsStore.storeQq},Menu=yes)}">
+                                    <img th:alt="#{messages.click.sendmessage}" th:src="@{http://wpa.qq.com/pa(p='2:'+${goodsStore.storeQq} +':51')}"/>
+                                </a>
+                                <!--th:src="@{http://wpa.qq.com/pa(p=2:${goodsStore.storeQq}:51)}"-->
+                            </div>
+                            <div class="top_sear_star">
+                                <a th:if="${user == null}" th:href="@{/user_dialog_login.htm}" th:text="#{messages.click.collect}" class="top_sc" dialog_width="450" dialog_height="100"></a>
+                                <a th:unless="${user == null}" href="javascript:void(0);"  class="top_sc" th:text="#{messages.click.collect}"></a>
+                                <span th:if="${credit==0}">
+                                    <img th:src="@{style/common/images/level_-1.gif}"/>
+                                </span>
+                                <span th:unless="${credit == 0}">
+                                        <img th:each="c : ${credits}" style="margin-left:1px;"
+                                             th:src="@{style/common/images/level_2.gif}" width="18" height="18"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <b class="top_b"></b><b class="top_b2" style="display:none"></b>
+                    <div class="top_sear_bom" style="display:none;">
+                        <dl class="top_dl">
+                            <dt>
+                                <b th:text="#{messages.store.score}"></b>
+                                <i th:text="#{messages.compare.other}"></i>
+                            </dt>
+                            <dd>
+                                <ul class="top_dl_ul">
+                                    <li>
+                                        <i th:text="#{messages.consistent.description}"></i>
+                                        <b th:text="${goodsStore.point.descriptionEvaluate}"></b>
+                                        <em class="description_css">
+                                            <strong th:text="${description_type}"></strong>
+                                        </em>
+                                    </li>
+                                    <li>
+                                        <i th:text="#{messages.service.attitude}"></i>
+                                        <b th:if="${goodsStore.point}" th:text="${goodsStore.point.serviceEvaluate}"></b>
+                                        <em th:class="${service_css}">
+                                            <strong th:text="${service_type}"></strong>
+                                            <span th:text="${service_result}"></span>
+                                        </em>
+                                    </li>
+                                    <li>
+                                        <i th:text="#{messages.delivery.speed}"></i>
+                                        <b th:text="${goodsStore.point.shipEvaluate}"></b>
+                                        <em th:class="${ship_css}">
+                                            <strong th:text="${ship_type}"></strong>
+                                            <span th:text="${ship_result}"></span>
+                                        </em>
+                                    </li>
+                                </ul>
+                            <dd>
+                        </dl>
+                        <dl class="top_dl">
+                            <dt th:text="#{messages.shop.certification}"></dt>
+                            <dd>
+                                <span>
+                                  <img th:original="@{'/style/common/images/card_approve_'+${goodsStore.cardApprove}+'.gif'}"/>
+                                </span>
+                                <span>
+                                <img th:original="@{'/style/common/images/realstore_approve_'+${goodsStore.realstoreApprove}+'.gif'}"/>
+                                </span>
+                            <dd>
+                        </dl>
+                        <dl class="top_dl">
+                            <dt th:text="#{messages.shop.information}"></dt>
+                            <dd>
+                                <span class="top_dl_width">
+                                    <span th:text="#{messages.goods.amount}"></span>
+                                    <span th:text="${goods_count == null ?'0' : goods_count}"></span>
+                                </span>
+                                <span class="top_dl_width">
+                                    <span th:text="#{messages.praise.rate}"></span>
+                                    <span th:text="${goodsStore.point.storeEvaluate1*100}+'%'"></span>
+                                </span>
+                                <span  class="top_dl_width">
+                                    <span th:text="#{messages.store.creattime}"></span>
+                                    <span th:text="${#dates.format(goodsStore.addtime,'yyyy-MM-dd')}"></span>
+                                </span>
+                                <span  class="top_dl_width">
+                                    <span th:text="#{messages.favorite.popularity}"></span>
+                                    <span th:text="${goodsStore.favoriteCount}"></span>
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <form method="post" target="_blank" id="store_top_search_form">
+                    <input name="store_id" type="hidden" th:value="${goodsStore.id}"/>
+                    <div class="top_search_right">
+                        <div class="top_search_bg"></div>
+                        <div class="top_shop_seacher">
+                            <span class="sear_shop">
+                              <input name="keyword" type="text" id="keyword"/>
+                            </span>
+                            <span class="all_sear_btn">
+                              <input name="" type="button" th:value="#{messages.search.all}" search_area="site" style="cursor:pointer;"/>
+                            </span>
+                            <span class="shop_sear_btn">
+                              <input name="" type="button" th:value="#{messages.search.shop}" search_area="store" style="cursor:pointer;"/>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--store-head-enf-->
+
+<div class="banner_width">
+    <div class="shopbanner">
+        <img th:if="${goodsStore.store_banner}" th:src="@{'/'+${goodsStore.store_banner.path}+'/'+${goodsStore.store_banner.name}}"
+             width="1002" height="100"/>
+        <img th:unless="${goodsStore.store_banner}" th:src="@{'/style/shop/'+${goodsStore.template}+'/images/banner.jpg'}"
+             width="1002" height="100"/>
+    </div>
+</div>
+<div class="nav_width">
+    <div class="main">
+        <div class="nav_bg">
+            <div class="shopnav">
+                <!--store-nav-->
+                <div class="shopnavul">
+                    <ul>
+                        <li id="store_index">
+                            <a th:href="@{/store.htm(id=${storeNav.id})}" th:text="#{messages.home.page}"></a>
+                        </li>
+                        <li th:if="${goods_view}" id="store_goods" class="this">
+                            <a  th:href="@{/store.htm(id=${goods_id})}" th:text="#{messages.goods.details}"></a>
+                        </li>
+                        <li th:if="${goods_list}" id="store_goods" class="this">
+                            <a th:href="@{/goods_list.htm(store_id=${storeNav.id})}" th:text="#{messages.goods.list}"></a>
+                        </li>
+                        <li id="store_credit">
+                            <a th:href="@{/store_credit.htm(id=${storeNav.id})}" th:text="#{messages.credit.rating}"></a>
+                        </li>
+                        <li id="store_info">
+                            <a th:href="@{/store_info.htm(id=${storeNav.id})}" th:text="#{messages.store.details}"></a>
+                        </li>
+                        <li th:each="nav : ${navs}" th:id="${nav.id}">
+                            <a th:href="@{/store_url.htm(id=${nav.id})}" target="_blank" th:text="${nav.title}"></a>
+                            <!--#if($!nav.win_type=="new_win")-->
+                            <a th:if="${nav.url != null && nav.url != ''}" th:href="@{'/'+${nav.url}}" target="_blank" th:text="${nav.title}"></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--store-nav-end-->
+            </div>
+        </div>
+    </div>
+    <div class="navbotm"></div>
+</div>
+
+<div class="main">
+    <div class="shop">
+        <div class="shop_index">
+            <!-- store_left-->
+            <div class="shopindex_left">
+                <div class="shoptop">
+                    <h1 th:text="${goodsStore.storeName}"></h1>
+                    <div class="shopvalue">
+                        <dl class="shopvdl">
+                            <dt>
+                                <span>
+                                    <img th:if="${goodsStore.storeLogo}" th:src="@{${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}}" width="60" height="60" />
+                                    <img th:unless="${goodsStore.storeLogo}" th:src="@{'/'+${ config.storeImage.path+'/'+config.storeImage.name}}" width="60" height="60" />
+                                </span>
+                            </dt>
+                            <dd>
+                            <span >
+                                <a th:href="@{/buyer/message_send.htm(userName=${goodsStore.user.username})}" target="_blank" class="shopemail">
+                                  <img th:src="@{/style/shop/green/images/mail.jpg}" width="15" height="11" />
+                                </a>
+                            </span>
+                            <span th:if="${credit==0}">
+                                <img th:src="@{style/common/images/level_-1.gif}" />
+                                <img th:unless="${credit==0}" th:each="count : ${credits }" style="margin-left:1px;" th:src="${creditImg}" />
+                            </span>
+                                <span th:unless="${credit==0}">
+                                    <img  th:each="count : ${credits }" style="margin-left:1px;" th:src="@{${creditsImg}}" />
+                                  </span>
+                                <span class="hui2" th:text="#{messages.praise.rate}+${goodsStore.point.storeEvaluate1 * 100 +'%'}"></span>
+                            </dd>
+                        </dl>
+                        <h1 th:text="#{messages.store.score}"></h1>
+                        <ul class="shop_movepj">
+                            <li>
+                                <i th:text="#{messages.consistent.description}"></i>
+                                <b th:text="${goodsStore.point.descriptionEvaluate}"></b>
+                                <em th:class="${description_css}">
+                                    <strong th:text="${description_type}"></strong>
+                                    <span th:text="${description_result}"></span>
+                                </em>
+                            </li>
+                            <li>
+                                <i th:text="#{messages.service.attitude}"></i>
+                                <b th:text="${goodsStore.point.serviceEvaluate}"></b>
+                                <em th:class="${service_css}">
+                                    <strong th:text="${service_type}"></strong>
+                                    <span th:text="${service_result}"></span>
+                                </em>
+                            </li>
+                            <li>
+                                <i th:text="#{messages.delivery.speed}"></i>
+                                <b th:text="${goodsStore.point.shipEvaluate}"></b>
+                                <em th:class="${ship_css}">
+                                    <strong th:text="${ship_type}"></strong>
+                                    <span th:text="${ship_result}"></span>
+                                </em>
+                            </li>
+                        </ul>
+                        <h1 th:text="#{messages.shop.information}"></h1>
+                        <ul>
+                            <li>
+                                <span th:text="#{messages.store.creattime}"></span>
+                                <span th:text="${#dates.format(goodsStore.addtime,'YYYY-MM-DD')}"></span>
+                            </li>
+                            <li>
+                                <span th:text="#{messages.store.address}"></span>
+                                <span th:text="${area}"> </span>
+                            </li>
+
+                            <li>
+                                <span th:text="#{messages.goods.amount}"></span>
+                                <strong class="blue" th:text="${obj.goods_store.goods_list.size()}"></strong>
+                                <span th:text="#{messages.unit.items}"></span>
+
+                            </li>
+                            <li>
+                                <span th:text="#{messages.favorite.popularity}"></span>
+                                <strong class="blue" th:text="${goodsStore.favoriteCount}"></strong>
+                                <span th:text="#{messages.unit.collect}"></span>
+                            </li>
+                        </ul>
+                        <h1 th:text="#{messages.contact.way}"></h1>
+                        <ul>
+                            <li class="shopcusser">
+                                <span th:text="#{messages.plateform.customer}"></span>
+                                <span>
+
+                              <a th:if="${user!=null}" class="im_common" href="javascript:void(0);"
+                                 th:attr="user_id=${obj.goods_store.user.id},user_name=${obj.goods_store.user.username}" th:text="#{messages.consult.customer}"></a>
+                                    <!-- th:id="${'userDialog_img_contact_'+obj.user.id}"-->
+
+                               <a th:unless="${user!=null}" class="im_common" href="javascript:void(0);"
+                                  dialog_uri="/user_dialog_login.htm"
+                                  th:dialog_title="#{messages.memeber.login}"
+                                  dialog_width="450" dialog_height="100" dialog_id="user_login" th:text="#{messages.consult.customer}"> </a>
+                              </span>
+                            </li>
+                            <li class="shopcusser">
+                                <span th:text="#{messages.site-off.customer}"></span>
+                                <span>
+                                    <a target="_blank"
+                                       th:href="@{http://wpa.qq.com/msgrd(v=3,uin=${goodsStore.storeQq},Site=${goodsStore.storeQq},Menu=yes )}">
+                                        <img th:src="@{http://wpa.qq.com/pa(p='2:'+${goodsStore.storeQq}+':51')}"/>
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="shop_botm_hid">
+                        <ul class="shopboh">
+                            <li class="collection">
+                                <a  th:if="${user}" href="javascript:void(0);" id="store_fav" >
+                                    <span th:text="#{messages.collect.shop}"></span>
+                                </a>
+                                <a  th:unless="${user}" href="javascript:void(0);" id="store_fav"  dialog_uri="/user_dialog_login.htm" th:dialog_title="#{messages.memeber.login}" dialog_width="450" dialog_height="100" dialog_id="user_login" >
+                                    <span th:text="#{messages.collect.shop}"></span>
+                                </a>
+                            </li>
+                            <li class="this">
+                              <span class="twocoad">
+                                店铺二维码
+                                <div class="shop_botmhbox" style="display:none;">
+                                  <span>
+                                    <img th:src="@{${config.uploadfilepath +'/store/'+goodsStore.id+'/code.png'}}" width="140" height="140" />
+                                  </span>
+                                  <i>
+                                            <span th:text="#{messages.scan.qrcode}"></span>
+                                            <br/>
+                                            <span th:text="#{messages.quick.collect}"></span>
+                                        </i>
+                                </div>
+                              </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <form th:action="@{/store_goods_search.htm}" method="post" id="store_search_form">
+                    <div class="shopsearch">
+                        <ul>
+                            <li>
+                                <span class="searspan" th:text="#{messages.keyword}"></span>
+                                <span class="shopsear1">
+            <input name="keyword" type="text" id="keyword" />
+          </span>
+                            </li>
+                            <li>
+                                <span class="searspan">&nbsp;</span>
+                                <span class="searbtns">
+            <input name="input2" type="submit"  th:value="#{messages.search}"  style="cursor:pointer;"/>
+          </span>
+                                <input name="store_id" type="hidden" id="store_id" th:value="${goodsStore.id}" />
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+                <div class="shopclassify">
+                    <h1 th:text="#{messages.goods.categories}"></h1>
+                    <!--箭头sort_a,sort_b-->
+                    <div class="shop_sort">
+                        <a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='addTime',orderType='desc')}" th:text="#{messages.by.default}"></a>
+                        <a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='store_price',orderType='desc')}" th:text="#{messages.by.price}"></a>
+                        <a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='goods_salenum',orderType='desc')}" th:text="#{messages.by.sales}"></a>
+                        <a th:href="@{/goods_list.htm(store_id = ${goodsStore.id},orderBy='goods_click',orderType='desc')}" th:text="#{messages.by.popularity}"></a></div>
+                    <ul class="shopcul">
+                        <li>
+                            <span>
+                              <img th:src="@{${'/style/shop/'+goodsStore.template+'/images/add2.jpg'}}" width="15" height="15" />
+                            </span>
+                            <a th:href="@{/goods_list.htm(store_id=${goodsStore.id})}" class="oneclass" th:text="#{messages.all.goods}"></a>
+                        </li>
+                        <li th:each="ugc : ${ugcs}" th:if="${ugc.display == true}">
+                            <span th:id="${'ugc_'+ugc.id}" ugc_type="show" th:attr="ugc_id=${ugc.id}">
+                              <img th:src="@{${'/style/shop/'+goodsStore.template +'/images/add2.jpg'}}" width="15" height="15" />
+                            </span>
+                            <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}" class="oneclass" th:text="${ugc.classname}"></a>
+                            <ul th:if="${ugc.childs}"  th:id="${'ugc_child_'+ugc.id}">
+                                <li th:each="cugc : ${ugc.childs}" th:if="${cugc.display == true}">
+                                    <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}" th:text="${cugc.classname}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="shop_rank">
+                    <h3 th:text="#{messages.goods.ranking}"></h3>
+                    <div class="shop_rank_box">
+                        <div class="shop_rank_top">
+                            <ul>
+                                <li class="this" sort_id="sort_sale_goods" th:text="#{messages.topsale.ranking}"></li>
+                                <li sort_id="sort_collect_goods" th:text="#{messages.topcollect.ranking}"></li>
+                            </ul>
+                        </div>
+                        <div class="shop_rank_botm" id="sort_sale_goods">
+
+                            <dl th:each="goods :  ${sale_goods}">
+                                <dt>
+                                    <span class="imgcenter_span ">
+                                      <p>
+                                        <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                                          <img th:if="${goods.goods_main_photo}" width="58" height="58" th:src="@{${goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}" />
+                                          <img th:unless="${goods.goods_main_photo}" width="58" height="58" th:src="@{${config.goodsImage.path+'/'+config.goodsImage.name}}" />
+                                        </a>
+                                      </p>
+                                    </span>
+                                </dt>
+                                <dd>
+                                <span class="shop_rank_name">
+                                  <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a>
+                                </span>
+                                                        <span class="shop_rank_money">
+                                  <b th:text="#{messages.money.class}+${goods.storePrice}"></b>
+                                </span>
+                                                        <span class="shop_rank_show">
+                                  <strong th:text="#{messages.sold}+${goods.goodsSalenum}+#{messages.sum}"></strong>
+                                </span>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="shop_rank_botm" style="display:none;" id="sort_collect_goods">
+                            <dl th:each="goods : ${collect_goods}">
+                                <dt>
+            <span class="imgcenter_span ">
+              <p>
+                <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                  <img th:if="${goods.goods_main_photo}" width="58" height="58" th:src="@{${goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}" />
+                  <img th:unless="${goods.goods_main_photo}" width="58" height="58" th:src="@{${config.goodsImage.path+'/'+config.goodsImage.name}}" />
+                </a>
+              </p>
+            </span>
+                                </dt>
+                                <dd>
+            <span class="shop_rank_name">
+              <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a>
+            </span>
+                                    <span class="shop_rank_money">
+              <b th:text="#{messages.money.class}+${goods.storePrice}"></b>
+            </span>
+                                    <span class="shop_rank_show">
+             <strong th:text="${' 收藏：'+goods.goodsCollect+'次'}"> </strong>
+            </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="shop_check">
+                        <a th:href="@{/goods_list.htm(store_id=${goodsStore.id})}" class="shop_check_a" th:text="#{messages.see.storegoods}"></a>
+                    </div>
+                </div>
+                <div class="shopf">
+                    <h1 th:text="#{messages.friend.link}"></h1>
+                    <ul>
+                        <li th:each="partner : ${partners}">
+                            <a th:href="@{${partner.url}}" target="_blank" th:text="${partner.title}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--store_left end -->
+            <div class="shopindex_right">
+                <div class="bigshopimg">
+                    <div th:if="${goodsStore.slides!=null && goodsStore.slides.size()>0}" >
+                        <ul  class="shopslider">
+                            <li th:each="slide : ${goodsStore.slides}">
+                                <a th:href="@{'/'+${slide.url}}" target="_blank">
+                                    <img th:if="${slide.sliderImg != null }" th:src="@{'/'+${slide.sliderImg.path}+'/'+${slide.sliderImg.name}}" width="797" height="393"/>
+                                </a>
+                            </li>
+                        </ul>
+                        <span style="z-index:3;" th:each="slide,iterStat :${goodsStore.slides}">
+                          <a href="javascript:void(0);" th:class="${'img'+iterStat.count}" th:text="${iterStat.count}"></a>
+                        </span>
+                    </div>
+                    <div th:unless="${goodsStore.slides!=null && goodsStore.slides.size()>0}">
+                        <ul  class="shopslider">
+                           <li>
+                               <a href="#" target="_blank">
+                                   <img  th:src="@{/style/common/images/slide1.jpg}" width="797" height="393"/>
+                               </a>
+                           </li>
+                            <li>
+                                <a href="#" target="_blank">
+                                    <img th:src="@{/style/common/images/slide2.jpg}" width="797" height="393"/></a>
+                            </li>
+                                <li><a href="#" target="_blank"><img
+                                        th:src="@{/style/common/images/slide3.jpg}" width="797"
+                                        height="393"/></a></li>
+                                <li><a href="#" target="_blank"><img
+                                        th:src="@{/style/common/images/slide4.jpg}" width="797"
+                                        height="393"/></a>
+                                </li>
+                            </ul>
+                            <span style="z-index:3;">
+                      <a href="javascript:void(0);" class="img1">1</a>
+                      <a href="javascript:void(0);" class="img2">2</a>
+                      <a href="javascript:void(0);" class="img3">3</a>
+                      <a href="javascript:void(0);"  class="img4">4</a>
+                    </span>
+                        </div>
+                </div>
+                <div class="regoods">
+                    <h1>
+                      <a th:href="@{/goods_list.htm(store_id=${goodsStore.id},recommend=true)}" th:text="#{messages.more}"></a>
+                      <span th:text="#{messages.recommend.goods}"></span>
+                    </h1>
+                    <div class="smallgoods">
+                        <ul th:each="goods :${goods_recommend}">
+                            <li class="goodsimgs">
+                              <span class="goods_sp_span">
+                                  <p>
+                                    <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank">
+                                      <img  th:if="${goods.goods_main_photo}" th:original="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}"/>
+                                      <img  th:unless="${goods.goods_main_photo}" th:original="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" />
+                                    </a>
+                                  </p>
+                              </span>
+                            </li>
+                            <li class="goodslook">
+                                <a th:if="${config.secondDomainOpen}"
+                                   th:href="@{'http://'+${goods.goods_store.store_second_domain}+'.'+${domainPath}+'/goods.htm(id='+${goods.id}+')'}"
+                                   target="_blank" class="look" th:text="#{messages.see.details}"></a>
+                                <a th:unless="${config.secondDomainOpen}" th:href="@{/goods.htm(id=${goods.id})}"
+                                   target="_blank" class="look">查看详情</a>
+                                <strong th:text="#{messages.money.class}+${goods.storePrice}"></strong>
+                                   target="_blank" class="look" th:text="#{messages.see.details}"></a>
+                                <strong th:text="${goods.storePrice}"></strong>
+                            </li>
+                            <li class="goodsnames">
+                                <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a>
+                            </li>
+                            <li class="recentgoodsok"><strong th:text="#{messages.recent.transaction}+${goods.goodsSalenum}+#{messages.sum}"></strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="regoods">
+                    <h1>
+                      <a th:href="@{/goods_list.htm(store_id=${goodsStore.id})}" th:text="#{messages.more}"></a>
+                      <span th:text="#{messages.new.listed}"></span>
+                    </h1>
+                    <div class="smallgoods">
+                        <ul th:each="goods :${goods_new}">
+                            <li class="goodsimgs">
+                              <span class="goods_sp_span">
+                                <p>
+                                  <a th:href="@{goods.htm(id=${goods.id})}" target="_blank">
+                                    <img  th:if="${goods.goods_main_photo}"
+                                         th:original="@{'/'+${goods.goods_main_photo.path}+'/'+${goods.goods_main_photo.name}}" />
+                                    <img th:unless="${goods.goods_main_photo}"
+                                         th:original="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" />
+                                  </a>
+                                </p>
+                                </span>
+                            </li>
+                            <li class="goodslook">
+                                <a th:if="${config.secondDomainOpen}"
+                                   th:href="@{'http://'+${goods.goods_store.storeSecondDomain}+'.'+${domainPath}+'/goods.htm(id='+ ${goods.id }+')' }"
+                                   target="_blank" class="look" th:text="#{messages.see.details}"></a>
+                                   th:href="@{'http://'+${goodsStore.storeSecondDomain}+'.'+${config.sysDomain}+'/goods.htm(id='+ ${goods.id }+')' }"
+                                   target="_blank" class="look">查看详情</a>
+                                <a th:unless="${config.secondDomainOpen}" th:href="@{/goods.htm(id=${goods.id})}"
+                                   target="_blank" class="look" th:text="#{messages.see.details}"></a>
+                                <strong th:text="'￥'+${goods.storePrice}"></strong>
+                            </li>
+                            <li class="goodsnames">
+                              <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank"th:text="${goods.goodsName}"></a>
+                            </li>
+                            <li class="recentgoodsok">
+                                <span th:text="#{messages.recent.transaction}"></span>
+                                <strong th:text="${goods.goodsSalenum }+#{messages.sum}"></strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footerArea">
+            <ul>
+                <li>
+                <span th:each="nav : ${footer}">
+                    <a th:if="${nav.newWin == 1}" target="_blank" th:text="${nav.title}"> </a>
+                    <a th:if="${nav.newWin !=1 }" target="_blank" th:text="${nav.title}"> </a>
+                </span>
+                </li>
+                <li class="hui2">Copyright 2020 shopping Inc. All rights reserved</li>
+                <li class="hui2">Powered by shopping 2.x</li>
+                <li th:text="${config.codeStat}"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

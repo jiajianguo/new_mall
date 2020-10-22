@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>团购信息 - Powered by shopping</title>
+<title>grou info</title>
 <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
 <link th:href="@{/style/system/front/default/css/index.css}" type="text/css" rel="stylesheet"/>
 <link th:href="@{/style/system/front/default/css/groupbuy.css}" type="text/css" rel="stylesheet"/>
@@ -124,13 +124,14 @@
     <div class="pageright" id="site-nav">
         <ul class="quick-menu">
             <li class="mytaobao menu-item menupx">
-                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                <div class="menu">
+                    <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"></a>
                             </div>
                         </div>
                     </div>
@@ -138,18 +139,18 @@
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.center}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
                                 <span th:switch="${user != null}">
 									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
-                                       rel="nofollow">我的店铺</a>
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
                                     <a th:case="false" th:href="@{/seller/store_create_first.htm}"
-                                       rel="nofollow">商家入驻</a>
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
 								</span>
 
                             </div>
@@ -160,35 +161,34 @@
 
             <li class="search menu-item menupx">
                 <div class="menu" id="cart_menu">
-                     <span class="menu-hd" id="cart_goods_top_menu">
+           <span class="menu-hd" id="cart_goods_top_menu">
                     <s></s>
-                    <a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车</a><b></b>
+                    <a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
                   </span>
                 </div>
             </li>
             <li class="menupx">
-                <a th:href="@{/buyer/message.htm}">
-                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+                <a th:href="@{/buyer/message.htm}"> 站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
-                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
 
-            <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
-                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+            <li th:if="${suer != null && user.userRole == 'ADMIN'}" class="menupx">
+                <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
             </li>
             <li class="menupx" th:if="${navs != null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.}">帮助中心</a>
             </li>
 
             <li class="menupx" style="background:none;" th:if="${navs == null}">
@@ -214,18 +214,19 @@
         <span th:switch="${user != null}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
-			  <span>您好,欢迎来到</span>
+			  <span th:text="#{messages.welcome.word}"></span>
 			  <span th:text=" ${config.websitename}"></span>
-             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
           </span>
           <span th:case="false">
-			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+              <span th:text="${config.websitename}"></span>
              <span class="pxlr">
-               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
              </span>
-            <span class="pxlr">或</span>
+            <span class="pxlr" th:text="#{messages.or}"></span>
             <span class="pxlr">
-              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}"></a>
             </span>
           </span>
         </span>
@@ -252,7 +253,7 @@
                 <!--替换样式tuan_rs替换成tuan_active--三角图片tuansan2.gif-->
                 <div class="tuan_rs" id="group_area_switch">
                     <span>
-                      <i class="tuantxt" th:text="${ga}"></i>
+                      <i class="tuantxt" th:text="${messages.national}"></i>
                       <b class="tuanspan">
                         <img th:src="@{/style/system/front/default/images/group/tuansan2.gif}" width="9" height="6" id="group_area_img" />
                       </b>
@@ -265,7 +266,7 @@
                         </em>
                         <div class="tuan_address">
                             <i>
-                                <a th:href="@{/group.htm}">全国</a>
+                                <a th:href="@{/group.htm}" th:text="${messages.national}"  >全国</a>
                             </i>
                             <i th:each="ga :${gas}">
                                 <a th:href="@{/group.htm(ga_id=${ga.id})}" th:text="${ga.gaName}"></a>
@@ -282,11 +283,11 @@
             <div class="toph_bigsearch">
                 <div class="toph_sear">
                     <ul class="toph_bgsear">
-                        <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
-                        <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                        <li class="this" type="goods"><a href="javascript:void(0);" th:text="#{messages.baby}"><s></s></a></li>
+                        <li style="display:none" type="store"><a href="javascript:void(0);" th:text="#{messages.shop}"></a></li>
                     </ul>
                     <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()" class="toph_sear_txt"/>
-                    <input name="input" type="button" value="搜索" style="cursor:pointer;" onclick="search_form();" class="toph_sear_btn" />
+                    <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;" onclick="search_form();" class="toph_sear_btn" />
                 </div>
                 <div class="keyword">
                     <a th:each="info :${searchs}" href="javascript:void(0);" th:data-name="${info}" th:onclick="search_form(this.getAttribute('data-name'),'goods')" th:text="${info}"></a>
@@ -301,7 +302,7 @@
                 <h2>
                     <a th:href="@{/goods_class.htm}">
                         <span>
-                            全部分类
+                            <span th:text="#{messages.type.all}"></span>
                             <em>
                                 <img th:src="@{/style/system/front/default/images/nav_left.png}">
                             </em>
@@ -379,20 +380,22 @@
 
 
     <div class="index">
-        <div class="position">当前位置：<a th:href="@{/index.htm}">首页</a>
+        <div class="position">
+            <span th:text="#{messages.position.now}"></span>
+            <a th:href="@{/index.htm}" th:text="#{messages.home.page}"></a>
             <span>
-                <a th:href="@{/group.htm}">团购</a>
+                <a th:href="@{/group.htm}" th:text="#{messages.group.buy}"></a>
             </span>
         </div>
         <div class="index2">
             <div class="gp_goodstop">
                 <div class="gp_topbar"><span class="gp_topa">
-                  <a th:href="@{/secKillList.htm(time=soon)}">即将开始</a>|<a
-                     th:href="@{/group_list.htm(time=history)}">往期团购</a></span>
-                    <h2>秒杀商品</h2>
+                  <a th:href="@{/secKillList.htm(time=soon)}" th:text="#{messages.will.start}"></a>|
+                    <a th:href="@{/group_list.htm(time=history)}" th:text="#{messages.record.history}"></a></span>
+                    <h2 th:text="#{messages.goods.seconkill}"></h2>
                     <b>
                       <strong th:text="${group.groupName}"></strong>
-                      <span th:text="${#dates.format(group.begintime,'yyyy年MM月dd日 HH:mm') +'至'}"></span>
+                      <span th:text="${#dates.format(group.begintime,'yyyy年MM月dd日 HH:mm')}+#{messages.to}"></span>
                       <span th:text="${#dates.format(group.endtime,'yyyy年MM月dd日 HH:mm')}"></span>
                     </b>
                 </div>
@@ -401,7 +404,7 @@
                         <ul>
                             <li>
                               <span>分类：</span>
-                              <strong> <a href="javascript:void(0);" onclick="group_sel('gc_id','')"  id="gc_" class="this">不限</a>
+                              <strong> <a href="javascript:void(0);" onclick="group_sel('gc_id','')"  id="gc_" class="this" th:text="#{messages.infinite }"></a>
                                 <span th:each="gc :${groupGcs}">
                                     <!--|javascript:goqns('${naire.qnid}')|    'gc_id',-->
                                 |<a href="javascript:void(0);" th:data-id="${gc.id}" onclick="group_sel('gc_id',this.getAttribute('data-id'))" th:id="'gc_'+${gc.id}" th:text="${gc.gcName}"></a>
@@ -409,9 +412,9 @@
                               </strong>
                             </li>
                             <li>
-                              <span>价格：</span>
+                              <span th:text="#{messages.unit.price}+':'"></span>
                               <strong>
-                                <a  href="javascript:void(0);" onclick="group_sel('gpr_id','')" class="this" id="price_">不限</a>
+                                <a  href="javascript:void(0);" onclick="group_sel('gpr_id','')" class="this" id="price_" th:text="#{messages.infinite}"></a>
                                 <span th:each="gpr :${gprs}">
                                 |<a href="javascript:void(0);"  th:data-name="${gpr.id}" onclick="group_sel('gpr_id',this.getAttribute('data-name'))"  th:id="'price_'+${gpr.id}" th:text="${gpr.gprName}"></a>
                                 </span>
@@ -422,38 +425,45 @@
 
                     <div class="gp_time">
                       <span>
-                        <strong>距离本期结束</strong>
+                        <strong th:text="#{messages.unit.finish}"></strong>
                         <i>
 
                         </i>
                       </span>
                       <b>
                         <div id="time_down_info" th:endTime="${#dates.format(group.endtime,'MM/dd/yyyy HH:mm:ss')}">
-                            <em>366</em>天<em>9</em>小时<em>50</em>分<em>46</em>秒
+                            <em>366</em>
+                            <span th:text="#{messages.day}"></span>
+                            <em>9</em>
+                            <span th:text="#{messages.hour}"></span>
+                            <em>50</em>
+                            <span th:text="#{messages.minutes}"></span>
+                            <em>46</em>
+                            <span th:text="#{messages.second}"></span>
                         </div>
                     </b>
                     </div>
                 </div>
                 <div class="gp_scort">
-                  <b>排序：</b>
+                  <b th:text="#{messages.sort}"></b>
                   <em>
                         <a href="javascript:void(0);" th:data-name="${orderType=='desc'?'asc':'desc'}"  onclick="group_order('orderBy','addTime','orderType',this.getAttribute('data-name'))" class="this" th:id="addTime_+${orderType}">
-                        <span>默认</span>
+                        <span th:text="#{messages.by.default}"></span>
                           <i></i>
                         </a>
 
                         <a href="javascript:void(0);" th:data-name="${orderType=='desc'?'asc':'desc'}" onclick="group_order('orderBy','gg_price','orderType',this.getAttribute('data-name'))" th:id="gg_price_ + ${orderType}">
-                          <span>价格</span>
+                          <span th:text="#{messages.price}"></span>
                           <i></i>
                         </a>
 
                         <a href="javascript:void(0);" th:data-name="${orderType=='desc'?'asc':'desc'}" onclick="group_order('orderBy','gg_rebate','orderType',this.getAttribute('data-name'))" th:id="gg_rebate_+ ${orderType}">
-                          <span>折扣</span>
+                          <span th:text="#{messages.discount}"></span>
                           <i></i>
                         </a>
 
                         <a href="javascript:void(0);"  th:data-name="${orderType=='desc'?'asc':'desc'}" onclick="group_order('orderBy','gg_def_count','orderType',this.getAttribute('data-name'))" th:id="gg_def_count_+ ${orderType}">
-                            <span>销量</span>
+                            <span th:text="#{messages.sale}"></span>
                             <i></i>
                         </a>
                   </em>
@@ -489,20 +499,20 @@
                                     <a th:href="@{/group_view.htm(id=${obj.id})}"></a>
                                 </span>
 
-                                <b th:text="${obj.ggRebate}">折</b>
+                                <b th:text="${obj.ggRebate}+#{messages.fold}" ></b>
                             </li>
 
 
                             <li class="gp_listorder"><i>
-                                <em>原价:</em>
+                                <em th:text="#{messages.price.normal}"></em>
                                 <b class="gp_listorder_line" th:if="${obj.gg_goods!=null}"  th:text="'￥'+${obj.gg_goods.goodsPrice}"></b>
                             </i>
                                 <i>
-                                    <em>节省:</em>
+                                    <em th:text="#{messages.saving}"></em>
                                     <b class="gp_listorder_red" th:if="${obj.gg_goods!=null}" th:text="'￥'+${obj.gg_goods.goodsPrice - obj.ggPrice}"></b>
                                 </i>
                                 <i>
-                                    <em>已购买:</em>
+                                    <em th:text="#{messages.buy.have}"></em>
                                     <b  th:text="${obj.ggDefCount + obj.ggVirCount}">人</b>
                                 </i>
                             </li>
@@ -519,7 +529,7 @@
                         <i>
                             <img th:src="@{'/style/system/front/default/images/group/empty.jpg'}" width="120" height="109"/>
                         </i>
-                        <span>没有正在进行中的团购活动</span>
+                        <span th:text="#{messages.null.data}"></span>
                     </div>
                 </div>
 
@@ -527,7 +537,6 @@
                 <input name="gpr_id" type="hidden" id="gpr_id" th:value="${gpr_id}"/>
                 <input name="gc_id" type="hidden" id="gc_id" th:value="${ggGcId}"/>
                 <input name="orderBy" type="hidden" id="orderBy" th:value="${orderBy}"/>
-                <input name="orderType" type="hidden" id="orderType" th:value="${orderType}"/>
                 <input type="hidden" name="currentPage" id="currentPage"/>
             </form>
         </div>

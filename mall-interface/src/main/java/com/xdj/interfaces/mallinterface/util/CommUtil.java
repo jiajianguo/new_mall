@@ -861,17 +861,26 @@
      }
    }
    public static char randomChar() {
-     char[] chars = { 'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D',
-       'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J',
-       'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P',
-       'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V',
-       'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z' };
-     int index = (int)(Math.random() * 52.0D) - 1;
+     char[] chars = { 'a', 'A', 'b', 'B', 1,'c', 'C', 'd', 'D',
+       'e', 'E', 'f',7, 'F', 'g', 'G', 2,'h', 'H', 'i', 'I', 'j',9, 'J',
+       'k', 'K', 6,'l', 'L', 'm', 'M', 3,'n', 'N', 'o', 'O',5, 'p', 'P',
+       'q', 'Q', 'r', 'R', 's', 'S', 't', 4,'T', 'u', 'U', 'v', 'V',
+       'w', 'W',8, 'x', 'X', 'y', 'Y', 'z', 'Z',0 };
+     int index = (int)(Math.random() * 62.0D) - 1;
      if (index < 0) {
        index = 0;
      }
      return chars[index];
    }
+
+   public static String  getRandomChar(int size){
+     StringBuffer s= new StringBuffer();
+     for(int i=0;i<size;i++){
+       s.append(randomChar());
+     }
+     return s.toString();
+   }
+
 
    public static String[] splitByChar(String s, String c) {
      String[] list = s.split(c);

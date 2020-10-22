@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Shopping Bag</title>
+	<title >Shopping Bag</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/goods_cart.css"/>
@@ -18,40 +18,40 @@
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-dianpu"></use>
 					</svg>
-					<span class="item-text">首页</span>
+					<span class="item-text" th:text="#{messages.home.page}"></span>
 				</a>
 				<a class="item active" href="/goodsclass.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-classify-on"></use>
 					</svg>
-					<span class="item-text">分类</span>
+					<span class="item-text" th:text="#{messages.class}"></span>
 				</a>
 				<a class="item" href="/goods_cart1.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-gouwuche-zhuangtai"></use>
 					</svg>
-					<span class="item-text">购物车</span>
+					<span class="item-text" th:text="#{messages.goods.cart}"></span>
 				</a>
 				<a class="item" href="/member_center.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-icon_mine"></use>
 					</svg>
-					<span class="item-text">我的</span>
+					<span class="item-text" th:text="#{messages.my}"></span>
 				</a>
 			</div>
 		</div>
 		<div class="ui-content">
 			<div class="page_address flex-between">
 				<div class="address_left" id="user_address">
-					<p>收货地址</p>
+					<p th:text="#{messages.shipping.address}"></p>
 					<div th:if="${ address }" th:each="addr : ${address}">
 						<span style="display: none" id="person" th:text="${addr.truename } "></span>
 						<span style="display: none" id="mobile" th:text="${addr.mobile}"></span>
 						<div  th:text="${addr.countries} +${addr.city}+ ${addr.areaInfo}"></div>
 					</div>
-					<div th:unless="${address }">未添加默认地址</div>
+					<div th:unless="${address }" th:text="#{messages.default.addresno}"></div>
 				</div>
-				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'">添加</button>
+				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'" th:text="#{messages.add}"></button>
 			</div>
 			<form th:if="${carts.size()>0}"  status="no_submit" method="post"  target="_blank"  action="/goods_cart2.htm">
 			<div class="goodscartList"  >
@@ -99,7 +99,7 @@
 								<svg class="icon" aria-hidden="true" >
 									<use xlink:href="#icon-gantan"></use>
 								</svg>
-								<span>最终售出的商品不能退货</span>
+								<span th:text="#{messages.goods.notice}"></span>
 							</div>
 						</div>
 					</div>
@@ -112,8 +112,8 @@
 				<div class="price_line flex-star">
 					Total：<span class="allprice" >0.00</span>
 				</div>
-				<input type="button" class="pay_btn" name="" id="goods_pay" value="结算" />
-				<div class="pay_tips">支付可以使用优惠券商品更划算</div>
+				<input type="button" class="pay_btn" name="" id="goods_pay" th:value="#{messages.settlement}" />
+				<div class="pay_tips" th:text="#{messages.coupon.notice}"></div>
 			</div>
 			</form>
 
@@ -122,7 +122,7 @@
 					<div class="content">
 						<div class="content_text">
 							<img class="cartimg" src="/asset/img/carttp.png" >
-							<p>购物车空空的，快去选购商品吧！</p>
+							<p th:text="#{messages.cart.notice}"></p>
 						</div>
 					</div>
 				</div>

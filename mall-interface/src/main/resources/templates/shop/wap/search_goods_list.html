@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>商品列表</title>
+		<title th:text="#{messages.goods.list}"></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/wareslist.css" />
@@ -25,14 +25,16 @@
 							<svg class="icon icon_search" aria-hidden="true">
 								<use xlink:href="#icon-search"></use>
 							</svg>
-							<input class="setext" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="搜索关键字" />
+							<input class="setext" type="text" id="keyword" name="keyword" th:value="${keyword}" th:placeholder="#{messages.search.keyword}" />
 						</div>
 						<input class="sebt" type="submit" name="" id="" value="搜索"/>
 					</div>
 
 					<div class="nav_top">
 						<div class="nav_text nav1 nav_text_act">
-							<span><a class="order" href="javascript:void(0);" orderBy="addTime"  orderType="asc">综合</a> </span>
+							<span>
+								<a class="order" href="javascript:void(0);" orderBy="addTime"  orderType="asc" th:text="#{messages.search.normal}"></a>
+							</span>
 							<div>
 								<svg class="icon" aria-hidden="true">
 									<use xlink:href="#icon-sanjiao"></use>
@@ -40,20 +42,19 @@
 							</div>
 						</div>
 						<div class="nav_text nav_text1" data-select="0">
-							<span><a class="order" href="javascript:void(0);" orderBy="goods_salenum" orderType="desc">
-								销量</a></span>
+							<span><a class="order" href="javascript:void(0);" orderBy="goods_salenum" orderType="desc" th:text="#{messages.sale}"></a></span>
 							<svg class="icon icon_nav" aria-hidden="true">
 								<use xlink:href="#icon-shangxia1-copy-copy"></use>
 							</svg>
 						</div>
 						<div class="nav_text nav_text1" data-select="0">
-							<span><a class="order" href="javascript:void(0);" orderBy="store_price"   orderType="asc" >价格</a> </span>
+							<span><a class="order" href="javascript:void(0);" orderBy="store_price"   orderType="asc" th:text="#{messages.price}"></a> </span>
 							<svg class="icon icon_nav" aria-hidden="true">
 								<use xlink:href="#icon-shangxia1-copy-copy"></use>
 							</svg>
 						</div>
 						<div class="nav_text nav1">
-							<span>筛选</span>
+							<span th:text="#{messages.search.screening}"></span>
 							<svg class="icon icon_sx" aria-hidden="true">
 								<use xlink:href="#icon-shaixuan"></use>
 							</svg>
@@ -70,11 +71,11 @@
 						<div class="text_zong">
 							<div>
 								<div class="text1"> <a th:href="@{/goods.htm(id=${goods.id})}" target="_blank" th:text="${goods.goodsName}"></a></div>
-								<div class="textbq" th:text="${'出售：'+goods.goodsSalenum+'笔'}"></div>
+								<div class="textbq" th:text="#{messages.sold}+${goods.goodsSalenum}"></div>
 							</div>
 							<div>
-								<del class="yjpay" th:text="'$'+${goods.goodsPrice}"></del>
-								<div class="paynumber" th:text="'$'+${goods.storePrice}"></div>
+								<del class="yjpay" th:text="#{messages.money.class}+${goods.goodsPrice}"></del>
+								<div class="paynumber" th:text="#{messages.money.class}+${goods.storePrice}"></div>
 							</div>
 						</div>
 					</div>
@@ -87,7 +88,7 @@
 								<span>
 									<img th:src="@{/style/system/front/default/images/sigh.png}" width="120" height="109"/>
 								</span>
-								<b>对不起，没有对应的数据!</b>
+								<b th:text="#{messages.null.data}"></b>
 							</div>
 						</div>
 					</form>

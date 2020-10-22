@@ -1,12 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>个人资料</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+    <title th:text="#{messages.data.person}"></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="/asset/css/framework.css"/>
     <link rel="stylesheet" type="text/css" href="/asset/css/grdata.css"/>
-    <link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css" />
-    <link rel="stylesheet" type="text/css" href="/asset/css/user_info.css" />
+    <link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/asset/css/user_info.css"/>
     <script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
     <script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
@@ -20,64 +21,62 @@
                 <use xlink:href="#icon-left"></use>
             </svg>
         </a>
-        <div class="header-title">个人资料</div>
+        <div class="header-title" th:text="#{messages.data.person}"></div>
     </div>
     <div class="ui-content">
 
         <div class="content">
-            <div class="uesr_info_tips">基本信息</div>
+            <div class="uesr_info_tips" th:text="#{messages.basic.info}"></div>
 
             <div class="lin_box headimg_box flex-between">
-                <div class="textname" >username:</div>
+                <div class="textname">username:</div>
                 <span th:text="${user.username}"></span>
                 <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}"/>
                 <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}"/>
             </div>
             <div class="lin_box headimg_box flex-between">
-            <div class="text">
-                <div class="textname" >E-mail:</div>
-                <div>
-                    <span th:text="${user.email}"></span>
-                    <svg class="icon icon_right" aria-hidden="true">
-                        <use xlink:href="#icon-right"></use>
-                    </svg>
+                <div class="text">
+                    <div class="textname">E-mail:</div>
+                    <div>
+                        <span th:text="${user.email}"></span>
+                        <svg class="icon icon_right" aria-hidden="true">
+                            <use xlink:href="#icon-right"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="content_title" th:text="#{messages.account.safe}"></div>
+                <div class="text">
+                    <div class="textname"><a href="/buyer/account_password.htm" th:text="#{messages.edit.password}"></a>
+                        <div>
+                            <a href="/buyer/account_password.htm">
+                                <svg class="icon icon_right" aria-hidden="true">
+                                    <use xlink:href="#icon-right"></use>
+                                </svg>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="text">
+                    <div class="textname" th:text="#{messages.login.out}"></div>
+                    <div>
+                        <a href="/shopping_logout.htm">
+                            <svg class="icon icon_right" aria-hidden="true">
+                                <use xlink:href="#icon-right"></use>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <div class="content_title">账号安全</div>
-            <div class="text">
-                <div class="textname"><a href="/buyer/account_password.htm">修改密码</a>
-                <div>
-                    <a href="/buyer/account_password.htm">
-                    <svg class="icon icon_right" aria-hidden="true">
-                        <use xlink:href="#icon-right"></use>
-                    </svg>
-                    </a>
-                </div>
-
-                </div>
-            </div>
-            <div class="text">
-                <div class="textname">退出登录</div>
-                <div>
-                    <a href="/shopping_logout.htm">
-                    <svg class="icon icon_right" aria-hidden="true">
-                        <use xlink:href="#icon-right"></use>
-                    </svg>
-                    </a>
-                </div>
-            </div>
         </div>
-
     </div>
-</div>
 
     <div class="ui-content">
-        <div class="uesr_info_tips">
-            基本信息
+        <div class="uesr_info_tips" th:text="#{messages.basic.info}">
         </div>
         <div class="lin_box headimg_box flex-between">
-            <div class="textname" >username:</div>
+            <div class="textname" th:text="#{messages.username}"></div>
             <span th:text="${user.username}"></span>
             <img th:if="${user.photo}" th:src="@{'/'+${user.photo.path}+'/'+${user.photo.name}}"/>
             <img th:unless="${user.photo}" th:src="@{/style/system/front/default/images/usercenter/headimg.jpg}"/>
@@ -89,20 +88,21 @@
                 <use xlink:href="#icon-right"></use>
             </svg>
         </div>
-        <div class="uesr_info_tips">
-            账号安全
+        <div class="uesr_info_tips" th:text="#{messages.account.safe}">
+
         </div>
         <div class="lin_box flex-between">
-            <span><a href="/buyer/account_password.htm">修改密码</a></span>
+            <span><a href="/buyer/account_password.htm" th:text="#{messages.edit.password}"></a></span>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-right"></use>
             </svg>
         </div>
 
         <a href="/shopping_logout.htm">
-        <input type="button" class="btn" name="" id="" value="退出" />
+            <input type="button" class="btn" name="" id="" th:value="#{messages.login.out}"/>
         </a>
     </div>
+</div>
 </body>
 <script type="text/javascript">
 </script>

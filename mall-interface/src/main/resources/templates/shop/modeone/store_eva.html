@@ -5,18 +5,19 @@
 <div class="evaluone">
   <table width="797" border="0" cellspacing="0" cellpadding="0" class="evaluonetable">
     <tr>
-      <td width="80">评价</td>
-      <td width="140">内容</td>
-      <td width="100" align="center">商品</td>
-      <td width="60" align="center">金额</td>
-      <td width="100" align="center">买家</td>
-      <td width="100" align="center">时间</td>
+      <td width="80" th:text="#{messages.evalution}"></td>
+      <td width="140" th:text="#{messages.content}"></td>
+      <td width="100" align="center" th:text="#{messages.good}"></td>
+      <td width="60" align="center" th:text="#{messages.money}"></td>
+      <td width="100" align="center" th:text="#{messages.buyer}"></td>
+      <td width="100" align="center" th:text="#{messages.time}"></td>
     </tr>
     <tr th:each="obj :${objs}" >
-      <td th:if="${obj.evaluateBuyerVal==1}" >好评</td>
-      <td th:if="${obj.evaluateBuyerVal==0}" >中评</td>
-      <td th:if="${obj.evaluateBuyerVal==-1}" >差评</td>
-      <td th:text="${obj.evaluateInfo!='' ? obj.evaluateInfo :'这家伙什么都没说'}"></td>
+      <td th:if="${obj.evaluateBuyerVal==1}" th:text="#{messages.praise.nice}"></td>
+      <td th:if="${obj.evaluateBuyerVal==0}" th:text="#{messages.praise.normal}"></td>
+      <td th:if="${obj.evaluateBuyerVal==-1}" th:text="#{messages.praise.low}"></td>
+      <td th:if="${obj.evaluateInfo != null}" th:text="${ obj.evaluateInfo}"></td>
+      <td th:unless="${obj.evaluateInfo != null}" th:text="#{messages.praise.no}"></td>
       <td class="goodsevalu">
         <span class="nameevalu">
           <a th:href="@{/goods.htm(id=${obj.evaluateGoodsId})}" target="_blank" th:text="${obj.evaluate_goods.goodsName}"></a>

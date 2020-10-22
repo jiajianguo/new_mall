@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${goodsStore.storeName}"> </title>
-
     <meta name="description" content="liquid">
     <meta property="og:site_name" content="liquid">
     <meta property="og:url" content="http:emode.xdjplus.com/">
@@ -13,8 +12,6 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="liquid">
     <meta name="twitter:description" content="liquid">
-
-
     <meta name="baidu-site-verification" content="ipKHZuNHRp">
     <meta name="360-site-verification" content="1cbc8ac732b3cff1a60147d4698401f3">
     <meta name="keywords" content="">
@@ -360,8 +357,6 @@
         <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/jquery.js(v=0517)}"></script>
         <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js(v=0517)}"></script>
         <div class="swiper-wrapper" style="transition-duration: 0ms; height: 560px;">
-
-
                 <div th:if="${goodsStore.slides !=  null && goodsStore.slides.size() >0 }" class="swiper-slide" th:each="s : ${goodsStore.slides}">
                     <a th:href="@{/goods_list.htm(gc_id=${s.id},store_id=${goodsStore.id})}" class="swiper-img" style="">
                         <img th:src="@{'/'+${s.sliderImg.path+'/'+s.sliderImg.name}}" alt="">
@@ -650,11 +645,11 @@
                         <div class="sale-tag sl-subhead-title">
                             Save <span class="save-price" data-price="10.00" th:text="${#numbers.formatDecimal((goods.goodsPrice - goods.storePrice)/goods.goodsPrice*100,1,2)}+'%'"></span>
                         </div>
-                        <div data-id="10079583" data-show-sale-tag="1" data-show-inventory="0"
+                        <!--<div data-id="10079583" data-show-sale-tag="1" data-show-inventory="0"
                              class="jh-btn sl-main-btn JH-Event-BuyCart add-to-cart ">
                             <span data-handler="mouth-moment-snowgoggles"></span>
                            查看详情
-                        </div>
+                        </div>-->
                     </div>
 
                     <div class="good-info" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">

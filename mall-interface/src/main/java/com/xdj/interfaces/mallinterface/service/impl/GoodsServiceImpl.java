@@ -42,7 +42,6 @@
    }
 
    @Override
-   @Cacheable(cacheNames = "goods",condition = "#id != null" ,unless = "#result == null")
    public ShoppingGoodsWithBLOBs getObjById(Long id)
    {
        ShoppingGoodsWithBLOBs goods = this.goodsDao.getObjById(id);
@@ -79,7 +78,7 @@
    @Cacheable(cacheNames = "updategoods",condition = "#goods != null")
    public int update(ShoppingGoodsWithBLOBs goods) {
      try {
-       return this.goodsDao.updateByPrimaryKeyWithBLOBs(goods);
+       return this.goodsDao.updateByPrimaryKeySelective(goods);
      } catch (Exception e) {
        e.printStackTrace();
      }

@@ -33,23 +33,22 @@
   <div class="main">
   <div class="nav_bg">
     <div class="shopnav">
-
           <div class="shopnavul">
         <ul>
           <li id="store_index">
-            <a th:href="@{/store.htm(id=${store.id})}" >首页</a>
+            <a th:href="@{/store.htm(id=${store.id})}" th:text="#{messages.home.page}"></a>
           </li>
           <li th:if="${goods_view}==true" id="store_goods" class="this">
-            <a th:href="@{/store.htm(goods_id=${goods_id})}">商品详情</a>
+            <a th:href="@{/store.htm(goods_id=${goods_id})}" th:text="#{messages.goods.details}"></a>
           </li>
           <li th:if="${goods_list}==true" id="store_goods" class="this">
-            <a th:href="@{/goods_list.htm(sc_id=${store.id})}">商品列表</a>
+            <a th:href="@{/goods_list.htm(sc_id=${store.id})}" th:text="#{messages.goods.list}"></a>
           </li>
           <li id="store_credit">
-            <a th:href="@{/store_credit.htm(store_id=${store.id})}" >信用评价</a>
+            <a th:href="@{/store_credit.htm(store_id=${store.id})}" th:text="#{messages.credit.rating}" ></a>
           </li>
           <li id="store_info">
-            <a th:href="@{/store_info.htm(id=${store.id})}">店铺详情</a>
+            <a th:href="@{/store_info.htm(id=${store.id})}" th:text="#{messages.store.details}"></a>
           </li>
           <li th:each="nav : ${navs}" th:id="${nav.id}">
             <a th:href="@{/store_url.htm(id=${nav.id})}"   target="_blank" th:text="${nav.title}"></a><!--#if($!nav.win_type=="new_win")-->
@@ -72,7 +71,7 @@
         <div class="shop_introduct" th:if="${store.storeInfo}">
           <div class="shop_introt"></div>
           <div class="shop_intromid">
-            <h1>店铺介绍</h1>
+            <h1 th:text="#{messages.store.introduce}"></h1>
             <div class="shop_introp" th:utext="${store.storeInfo}">
             </div>
           </div>
@@ -86,17 +85,18 @@
                 <i>
                   <img  th:src="@{${'/'+config.uploadfilepath+'/store/'+ store.id+'/code.png'}}" width="85" height="85" />
                 </i>
-                <b>二维码收藏店铺</b></span>
+                <b th:text="#{messages.colletion.bycode}"></b>
+              </span>
               <dl class="shopcode_left">
                 <dt>
                   <img th:if="${store.storeLogo}" th:src="@{${store.storeLogo.path+'/'+store.storeLogo.name }}" width="90" height="90" />
                   <img th:unless="${store.storeLogo}" th:src="@{'/'+${config.storeImage.path+'/'+ config.storeImage.name}}" width="90" height="90" />
                 </dt>
                 <dd>
-                  <em th:text="${'店铺名称:'+ store.storeName }"></em>
-                  <em th:text="${'店铺等级：'+ store.grade.gradename}"></em>
+                  <em th:text=" #{messages.shop.name}+${ store.storeName }"></em>
+                  <em th:text="#{messages.shop.level}+${store.grade.gradename}"></em>
                   <em>
-                    认证信息：
+                    <span th:text="#{messages.auth.info}"></span>
                     <i>
                       <img  th:src="@{'/style/common/images/card_approve_'+${store.cardApprove}+'.gif'}" />
                     </i>
@@ -108,16 +108,16 @@
             </div>
             <div class="shopinfo_center"></div>
           </div>
-          <h6 class="shopinfo_h6">基本信息</h6>
+          <h6 class="shopinfo_h6" th:text="#{messages.basic.info}"></h6>
           <ul class="shop_info">
-            <li th:text="'创店时间：'+${#dates.format(store.addtime,'yyyy-MM-dd')}"></li>
-            <li th:text="'所在地区：'+ ${store.area.parent.areaname+store.area.areaname}"></li>
-            <li th:text="'详细地址：'+ ${store.storeAddress}"></li>
-            <li><strong class="blue" th:text="${'商品数量：'+goods_counts}"></strong>件商品</li>
-            <li><strong class="blue" th:text="${'店铺收藏：'+store.favoriteCount}"></strong>人收藏</li>
-            <li th:text="${'联系电话：'+store.storeTelephone}"></li>
-            <li th:text="${'店铺QQ：'+store.storeQq }"></li>
-            <li th:text="${'店铺MSN：'+store.storeMsn}"></li>
+            <li th:text="#{messages.store.creattime}+${#dates.format(store.addtime,'yyyy-MM-dd')}"></li>
+            <li th:text="#{messages.store.address}+ ${store.area.parent.areaname+store.area.areaname}"></li>
+            <li th:text="#{messages.detailed.address}+ ${store.storeAddress}"></li>
+            <li><strong class="blue" th:text="#{messages.goods.amount}+${goods_counts}"></strong></li>
+            <li><strong class="blue" th:text="#{messages.store.collect}+${store.favoriteCount}"></strong></li>
+            <li th:text="#{messages.contact.way}+':'+${store.storeTelephone}"></li>
+            <li th:text="#{messages.store.email}+${store.storeQq }"></li>
+            <li th:text="#{messages.store.facebook}+${store.storeMsn}"></li>
           </ul>
           <div class="shopinfo_bottom"></div>
         </div>
@@ -157,23 +157,21 @@
      marker.addEventListener("click", function () {
        this.openInfoWindow(infoWindow);
      });
-     //
    }else{
      map.centerAndZoom(new BMap.Point(123.425329,41.792454), 11);
    }
-
    map.enableScrollWheelZoom();
    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
  </script>
 
-<script th:if="${store.mapType=='google'}">
+<script th:if=" ${store.mapType == 'google'} ">
 var map;
 var marker;
 function initialize() {
   var storeLng=jQuery("#storeLng").val();
   var storeLat=jQuery("#storeLat").val();
   var storeName=jQuery("#storeName").val();
-if(storeLng&&storeLat){
+if(storeLng && storeLat){
   var pyrmont = new google.maps.LatLng(storeLat,storeLng);
 }else{
   var pyrmont = new google.maps.LatLng(39.92,116.46);

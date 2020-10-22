@@ -83,6 +83,11 @@ import java.util.Map;
    }
 
    @Override
+   public ShoppingUser findByEmail(String email) {
+     return userDAO.findByEmail(email);
+   }
+
+   @Override
    @CachePut(cacheNames = "saveuser",condition = "#user != null")
    public int save(ShoppingUser user)
    {

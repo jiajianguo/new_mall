@@ -110,7 +110,7 @@
   </sql>
 
   <select id="findByEmail" resultMap="BaseResultMap">
-     select * from shopping_user where email =#{email}
+     select * from shopping_user where email =#{email} limit 1;
   </select>
 
   <select id="getUserByOpenId" resultMap="BaseResultMap">

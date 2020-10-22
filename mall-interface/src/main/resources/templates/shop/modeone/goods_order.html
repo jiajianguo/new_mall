@@ -1,18 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:if="${rows==0}" class="novalue"> 还没有成交记录 </div>
+<div th:if="${rows==0}" class="novalue" th:text="#{messages.null.data}"></div>
 
 <div th:unless="${rows==0}" class="okcode" id="strike_tab" style="margin-top:10px;">
     <ul>
         <li>
             <table width="797" border="0" cellspacing="0" cellpadding="0" class="okcodetable">
                 <tr style=" background:#EEEDED; font-weight:bold">
-                    <td width="130">买家</td>
-                    <td width="80">商品价格</td>
-                    <td width="100">商品规格</td>
-                    <td width="80">购买数量</td>
-                    <td width="100">成交时间</td>
+                    <td width="130" th:text="#{messages.buyer}"></td>
+                    <td width="80" th:text="#{messages.unit.price}"></td>
+                    <td width="100" th:text="#{messages.goods.attribute}"></td>
+                    <td width="80" th:text="#{messages.amount}"></td>
+                    <td width="100" th:text="#{messages.trade.time}"></td>
                 </tr>
                 <tr th:each="obj :${objs}">
 

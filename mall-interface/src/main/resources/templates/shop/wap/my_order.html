@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>我的订单</title>
+		<title th:text="#{messages.my.order}"></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css"/>
@@ -20,39 +20,39 @@
 						<use xlink:href="#icon-left"></use>
 					</svg>
 				</a>
-				<div class="header-title">订单</div>
+				<div class="header-title" th:text="#{messages.my.order}"></div>
 			</div>
 			<div class="ui-content">
 				<div class="page_nav flex-between">
-					<div><a href="/buyer/order.htm">全部</a></div>
-					<div><a href="/buyer/order.htm?order_status=order_submit">待付款</a></div>
-					<div><a href="/buyer/order.htm?order_status=order_pay">待发货</a></div>
-					<div><a href="/buyer/order.htm?order_status=order_shipping">待收货</a></div>
-					<div><a href="/buyer/order.htm?order_status=order_receive">待评价</a></div>
+					<div><a href="/buyer/order.htm" th:text="#{messages.order.all}"></a></div>
+					<div><a href="/buyer/order.htm?order_status=order_submit" th:text="#{messages.waiting.pay}"></a></div>
+					<div><a href="/buyer/order.htm?order_status=order_pay" th:text="#{messages.waiting.ship}"></a></div>
+					<div><a href="/buyer/order.htm?order_status=order_shipping" th:text="#{messages.waiting.delivery}"></a></div>
+					<div><a href="/buyer/order.htm?order_status=order_receive" th:text="#{messages.waiting.evalution}"></a></div>
 				</div>
 
 				<div class="page_list_cont" >
 					<div class="list_item" th:if="${objs.size()>0}" th:each="obj : ${objs}">
 						<div class="item_tit flex-between">
-							<span th:text="${'订单编号：'+obj.orderId}"></span>
+							<span th:text="#{messages.order.orderNo}+${obj.orderId}"></span>
 							<!--<span th:text="${'下单时间：'+#dates.format(obj.addtime,'yyyy-MM-dd hh:mm:ss')}" ></span>-->
 							<p th:switch="${obj.orderStatus}">
-								<span th:case=" 0" th:text="${'已取消'}"></span>
-								<span th:case="10" th:text="${'待付款'}"></span>
-								<span th:case="15" th:text="${'线下支付待审核'}"></span>
-								<span th:case="16" th:text="${'货到付款待发货'}"></span>
-								<span th:case="20" th:text="${'待发货'}"></span>
-								<span th:case="30" th:text="${'待收货'}"></span>
-								<span th:case="40" th:text="${'已收货'}"></span>
-								<span th:case="45" th:text="${'买家申请退货'}"></span>
-								<span th:case="46" th:text="${'退货中'}"></span>
-								<span th:case="47" th:text="${'退货完成，已结束'}"></span>
-								<span th:case="48" th:text="${'卖家拒绝退货'}"></span>
-								<span th:case="49" th:text="${'退货失败'}"></span>
-								<span th:case="50" th:text="${'已完成,已评价'}"></span>
-								<span th:case="60" th:text="${'已结束'}"></span>
-								<span th:case="50" th:text="${'已结束，不可评价'}"></span>
-								<span th:case="50" th:text="${'已收货'}"></span>
+								<span th:case=" 0" th:text="#{messages.order.cancel}"></span>
+								<span th:case="10" th:text="#{messages.waiting.pay}"></span>
+								<span th:case="15" th:text="#{messages.order.audit}"></span>
+								<span th:case="16" th:text="#{messages.order.status1}"></span>
+								<span th:case="20" th:text="#{messages.waiting.ship}"></span>
+								<span th:case="30" th:text="#{messages.waiting.delivery}"></span>
+								<span th:case="40" th:text="#{messages.order.status4}"></span>
+								<span th:case="45" th:text="#{messages.order.status5}"></span>
+								<span th:case="46" th:text="#{messages.order.status6}"></span>
+								<span th:case="47" th:text="#{messages.order.status7}"></span>
+								<span th:case="48" th:text="#{messages.order.status8}"></span>
+								<span th:case="49" th:text="#{messages.order.status9}"></span>
+								<span th:case="50" th:text="#{messages.order.status10}"></span>
+								<span th:case="60" th:text="#{messages.order.status11}"></span>
+								<span th:case="50" th:text="#{messages.order.status12}"></span>
+
 							</p>
 						</div>
 						<div th:each="gc : ${obj.gcs}">
@@ -79,7 +79,7 @@
 						<div class="item_more_cont">
 							<div class="price_tips">
 								<!--共计1件商品 -->
-								合计支付:	<span th:text="${'$'+obj.totalprice}"></span>
+								<span th:text="#{messages.apy.total}+#{messages.money.class}+${obj.totalprice}"></span>
 							</div>
 							<!-- <div class="pay_tips">订单即将关闭，请尽快付款</div> -->
 						</div>

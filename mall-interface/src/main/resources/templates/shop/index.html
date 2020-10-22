@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>商城 </title>
+    <title>emode 商城 </title>
     <meta name="copyright" content="shopping Inc. All Rights Reserved">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>
@@ -235,12 +235,7 @@
                                 <i class="left_menu_i" th:if="${gc.iconType != null && gc.iconType == 0  && gc.iconSys != '' } ">
                                     <img width="16" height="16"  th:src="@{'/style/common/images/icon/icon_'+${gc.iconSys}+'.png'}">
                                 </i>
-                               <!-- <i class="left_menu_i" th:if="${gc.iconType != null && gc.iconType != 0  }">
-                                    <img width="16" height="16"   th:src="@{'/'+${gc.icon_acc.path}+'/'+${gc.icon_acc.name}}">
-                                </i>
-                                <i class="left_menu_i" th:if="${ gc.iconType == null  }">
-                                    <img width="16" height="16" th:src="@{/style/common/images/icon/default_icon.png}">
-                                </i>-->
+
                                 <strong class="left_menu_str">
                                     <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
                                 </strong>

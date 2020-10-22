@@ -32,6 +32,10 @@ public  interface IUserService {
   int count(Map<String, Object> map);
 
   ShoppingUser getUserByOpenId(String openId);
+
+  ShoppingUser findByEmail(String email);
+
+
 }
 
 

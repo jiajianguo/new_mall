@@ -14,7 +14,6 @@
 	<form action="/shopping_login.htm" method="post" id="theForm">
 		<div class="ui-pane">
 			<div class="ui-content">
-
 				<div class="content">
 					<div class="logozong">
 						<img class="logo" src="/asset/img/logo1.png">
@@ -69,11 +68,19 @@
 										<use xlink:href="#icon-wancheng"></use>
 									</svg>
 								</div>
-								<p class="goodts">The link to reset password has beensent to 1484031892@qq.com</p>
-								<div class="forget_ts"><div class="forget_dian">●</div>Emails may be delayed for a few minutes</div>
-								<div class="forget_ts"><div class="forget_dian">●</div> If you have not reeived an email,please checkyour junk maibox，and rejected list</div>
+								<p class="goodts"> </p>
+								<div class="forget_ts">
+									<div class="forget_dian">●</div>
+									Emails may be delayed for a few minutes
+								</div>
+								<div class="forget_ts">
+									<div class="forget_dian">●</div>
+									If you have not reeived an email,please checkyour junk maibox，and rejected list
+								</div>
 								<input class="good_bt" type="button" value="RETURN TO LOG IN" />
-								<div class="resendzong"><input class="resend_bt" type="button" value="Resend" /></div>
+								<div class="resendzong">
+									<input class="resend_bt" type="button" value="Resend" />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -100,6 +107,7 @@
 			}
 
 		});
+
 		 function verify(str){
 		 	if(!str){
 		 		return false;
@@ -135,7 +143,27 @@
 			})
 		})
 
-		$(".tbqxbt,.good_bt").click(function() {
+		$(".good_bt").click(function(){
+			$(".forget_text").addClass("forget_text1")
+			setTimeout(() => {
+				$(".forget1").css({
+					"display": "none",
+				})
+				$(".forget_text").removeClass("forget_text1")
+				$(".forget1_content").css({
+					"display":"block",
+				})
+				$(".good1").css({
+					"display":"none"
+				})
+			}, 250);
+
+			setTimeout(()=>{
+				window.location.href="/editPasswordPage";
+			},2000);
+		});
+
+		$(".tbqxbt").click(function() {
 			$(".forget_text").addClass("forget_text1")
 			setTimeout(() => {
 				$(".forget1").css({
@@ -152,12 +180,21 @@
 		})
 
 		$(".password1_bt").click(function(){
-			$(".forget1_content").css({
-				"display":"none",
-			})
-			$(".good1").css({
-				"display":"block"
-			})
+			var email =$(".password1").val();
+			$.post('/sendEmail',{'email':email},function(res){
+				if(res.code == '200'){
+					var content='The captcha has been sent to '+email;
+					$(".goodts").text(content);
+					$(".forget1_content").css({
+						"display":"none",
+					})
+					$(".good1").css({
+						"display":"block"
+					})
+				}else{
+					alert(res.msg);
+				}
+			});
 		})
 	</script>
 </html>

@@ -24,7 +24,7 @@
 				<div class="content">
 					<div class="pushdz">
 						<div>
-							<div class="push_title">收货地址</div>
+							<div class="push_title" th:text="#{messages.shipping.address}"></div>
 							<div th:data-id="${addr.id}" class="address_id" >
 								<span id="person" th:text="${addr.truename } "></span>
 								<span id="mobile" th:text="${addr.mobile}"></span>
@@ -48,9 +48,9 @@
 								<div class="text_row">
 									<div>
 										<a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank" th:text="${gc.goods.goodsName}"></a>
-										<span th:if="${gc.goods.groupBuy==2}" style="color:#F00">(团购)</span>
-										<span th:if="${gc.goods.bargainStatus==2}" style="color:#F00">(特价)</span>
-										<span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span>
+										<span th:if="${gc.goods.groupBuy==2}" style="color:#F00" th:text="#{messages.group.buy}"></span>
+										<span th:if="${gc.goods.bargainStatus==2}" style="color:#F00" th:text="#{messages.bargain}"></span>
+										<span th:if="${gc.goods.deliveryStatus==2}" style="color:#F00" th:text="#{messages.buy.get}"></span>
 									</div>
 									<div class="text_row_pay" th:text="${gc.price}"></div>
 								</div>
@@ -60,44 +60,45 @@
 						<div class="zfpay_text">
 							<div class="fptext">
 								<div class="fptextzong">
-									开具发票：
+									<span th:text="#{messages.invoice}"></span>
 									<div>
-										<span>是</span>
+										<span th:text="#{messages.is}"></span>
 										<input class="fpinput" type="radio" name="fp" />
 									</div>
 									<div>
-										<span>否</span>
+										<span th:text="#{messages.no}"></span>
 										<input class="fpinput" type="radio" name="fp"/>
 									</div>
 								</div>
-								<div class="look_info">查看详情></div>
+								<div class="look_info" th:text="#{messages.see.details}+'>'"></div>
 							</div>
 							<div class="zfpay_row">
-								<div>商品总额：</div>
+								<div th:text="#{messages.selected.goodsprice}+':'"></div>
 								<div>
-									<span th:text="'$'+ ${data.totalPrice }"></span>
+									<span th:text="#{messages.money.class}+ ${data.totalPrice }"></span>
 									<span class="fontd"></span>
 								</div>
 							</div>
 							<div class="zfpay_row">
-								<div>本地运费：</div>
+								<div th:text="#{messages.ship.fee}"></div>
 								<div>+￥0</div>
 							</div>
 							<div class="zfpay_row">
-								<div>服务费用：</div>
+								<div th:text="#{messages.service.fee}"></div>
 								<div>+￥0</div>
 							</div>
 							<div class="zfpay_row color1">
 								<div></div>
 								<div>
-									实付：<span th:text="'$'+${data.totalPrice }"></span>
+									<span th:text="#{messages.payment.real}"></span>
+									<span th:text="#{messages.money.class}+${data.totalPrice }"></span>
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<div class="zfmode">
-						<div class="text_title">支付方式</div>
+						<div class="text_title" th:text="#{messages.pay.method}"></div>
 						<div class="zfmode_text">
 							<input type="hidden" name="ids" id="ids" th:value="${ids}">
 							<!--<input type="hidden" id="orderNO" name="orderNo" th:value="${orderNo}">-->
@@ -164,23 +165,23 @@
 							<div class="bill_text bill_border">
 								<span th:each="gc :${carts}">
 								<div>
-									<div class="bill_title_color">商品名字</div>
+									<div class="bill_title_color" th:text="#{messages.goods.name}"></div>
 									<div th:text="${gc.goods.goodsName}"></div>
 								</div>
 								<div>
-									<div class="bill_title_color">商品税率</div>
+									<div class="bill_title_color" th:text="#{messages.goods.rate}"></div>
 									<div th:if="${gc.goods.rate}" th:text="${gc.goods.rate.rate}+'%'">10%</div>
 									<div th:unless="${gc.goods.rate}">10%</div>
 								</div>
 								<div>
-									<div class="bill_title_color">发票金额</div>
+									<div class="bill_title_color" th:text="#{messages.invoice.amount}" ></div>
 									<div th:text="${gc.count*gc.price}"></div>
 								</div>
 								</span>
 							</div>
 							<div class="bill_text">
 								<div>
-									<div class="bill_title_color">发票号码</div>
+									<div class="bill_title_color" th:text="#{messages.invoice.number}"></div>
 									<div>0111056322567</div>
 								</div>
 							</div>
@@ -191,12 +192,14 @@
 
 				<div class="ui-shade flex-center">
 					<div class="ui-modal">
-						<div class="modal_tit">地址列表</div>
+						<div class="modal_tit" th:text="#{messages.address.list}"></div>
 						<div class="modal_cont">
 							<div class="modal_item" th:each="address :${addressList}">
 								<div class="flex-between">
-									<div>收货人：<span class="userName" th:text="${address.truename}"></span></div>
-									<div>电话：<span class="phoneNumber" th:text="${address.mobile}"></span></div>
+									<div>
+										<span class="userName" th:text="#{messages.shipping.person}+${address.truename}"></span>
+									</div>
+									<div><span class="phoneNumber" th:text="#{messages.hone}+${address.mobile}"></span></div>
 								</div>
 								<div class="address_info" th:text="${address.countries} + ${address.city} +${address.areaInfo }">
 								</div>
@@ -248,7 +251,7 @@
 				"display": "block",
 			})
 		})
-		
+
 		$(".look_info").click(function () {
 			$(".bill").css("display","block");
 		})

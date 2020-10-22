@@ -4,7 +4,7 @@
   <div class="eva_bar_box">
     <div class="eva_bar">
       <div class="eva_bar_left">
-        <h4>与描述相符</h4>
+        <h4 th:text="#{messages.describle.equal}"></h4>
         <strong th:text="${goods.descriptionEvaluate}"></strong> </div>
 
       <div class="eva_bar_right">
@@ -14,17 +14,17 @@
             </span>
           </div>
           <ul class="scroller_ul">
-            <li>非常不满意</li>
-            <li>不满意</li>
-            <li>一般</li>
-            <li>满意</li>
-            <li>非常满意</li>
+            <li th:text="#{messages.satisfaction.veryNo}"></li>
+            <li th:text="#{messages.satisfaction.no}"></li>
+            <li th:text="#{messages.satisfaction.normal}"></li>
+            <li th:text="#{messages.satisfaction.yes}"></li>
+            <li th:text="#{messages.satisfaction.vertYes}"></li>
           </ul>
       </div>
     </div>
   </div>
 
-  <div th:if="${rows==0}" class="novalue"> 还没有评价内容 </div>
+  <div th:if="${rows==0}" class="novalue" th:text="#{messages.content.no}">  </div>
 
   <div th:unless="${rows==0}" th:each="obj : ${objs}"  class="evalone">
     <ul>

@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>个人中心</title>
+		<title th:text="#{messages.personal.center}"></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/my.css"/>
@@ -28,24 +28,24 @@
 							<img class="navimg" th:unless="${user.photo}" src="/asset/img/touxing1.png"/>
 							</a>
 							<strong th:if="${user!=null}" th:text="${user.username}"></strong>
-							<div th:if="${user==null}" class="logonbt">登录 ></div>
+							<div th:if="${user==null}" class="logonbt" th:text="#{messages.login}+'>'"></div>
 						</div>
 						<div class="new1">
 							<div>
 								<div th:text="${coupons}">1</div>
-								<div class="new_text">优惠券</div>
+								<div class="new_text" th:text="#{messages.coupon}"></div>
 							</div>
 							<div>
 								<div>0</div>
-								<div class="new_text">余额</div>
+								<div class="new_text" th:text="#{messages.balance}"></div>
 							</div>
 							<div>
 								<div>1</div>
-								<div class="new_text">礼品卡</div>
+								<div class="new_text" th:text="#{messages.gift.card}"></div>
 							</div>
 							<div>
 								<div>0</div>
-								<div class="new_text">累计总额</div>
+								<div class="new_text" th:text="#{messages.amount.total}"></div>
 							</div>
 						</div>
 
@@ -54,12 +54,10 @@
 						<div class="text_title">
 							<div class="text_title_row">
 								<div></div>
-								<span>
-									我的订单
-								</span>
+								<span th:text="#{messages.my.order}"></span>
 							</div>
 							<div class="text_titlebt">
-								<a href="/buyer/order.htm">所有订单 ></a>
+								<a href="/buyer/order.htm" th:text="#{messages.order.all} +' >'"></a>
 							</div>
 						</div>
 						<div class="order_text">
@@ -68,9 +66,7 @@
 									<svg class="icon icon_order" aria-hidden="true">
 										<use xlink:href="#icon-qianbao"></use>
 									</svg>
-									<div class="order_bttext">
-										待支付
-									</div>
+									<div class="order_bttext" th:text="#{messages.waiting.pay}">	</div>
 									<div class="orderbq" th:text="${waitingPay}"></div>
 								</a>
 
@@ -80,9 +76,7 @@
 									<svg class="icon icon_order" aria-hidden="true">
 										<use xlink:href="#icon-daifahuo"></use>
 									</svg>
-									<div class="order_bttext">
-										待发货
-									</div>
+									<div class="order_bttext" th:text="#{messages.waiting.ship}"></div>
 									<div class="orderbq" th:text="${waitingSend}"></div>
 								</a>
 							</div>
@@ -91,8 +85,8 @@
 									<svg class="icon icon_order" aria-hidden="true">
 										<use xlink:href="#icon-gerenzhongxindingdandaishouhuo"></use>
 									</svg>
-									<div class="order_bttext">
-										待收货
+									<div class="order_bttext" th:text="#{messages.waiting.delivery}">
+
 									</div>
 									<div class="orderbq" th:text="${waitingDeli}"></div>
 								</a>
@@ -102,9 +96,7 @@
 									<svg class="icon icon_order" aria-hidden="true">
 										<use xlink:href="#icon-xiaoxi1"></use>
 									</svg>
-									<div class="order_bttext">
-										待评价
-									</div>
+									<div class="order_bttext" th:text="#{messages.waiting.evalution}"></div>
 									<div class="orderbq" th:text="${waitingEval}">1</div>
 								</a>
 							</div>
@@ -112,7 +104,7 @@
 					</div>
 					<div class="serve" >
 						<div class="text_title">
-							<div class="text_title_row"><div></div><span>我的订单</span></div>
+							<div class="text_title_row"><div></div><span th:text="#{messages.my.order}"></span></div>
 							<div class="text_titlebt"></div>
 						</div>
 						<div class="order_text">
@@ -121,7 +113,7 @@
 									<use xlink:href="#icon-shoucang"></use>
 								</svg>
 								<div class="order_bttext" >
-									<a href="/buyer/favorite_goods.htm">我的收藏</a>
+									<a href="/buyer/favorite_goods.htm" th:text="#{messages.my.collect}"></a>
 
 								</div>
 							</div>
@@ -130,7 +122,7 @@
 									<use xlink:href="#icon-dizhi"></use>
 								</svg>
 								<div class="order_bttext">
-									<a href="/buyer/address.htm">我的地址</a>
+									<a href="/buyer/address.htm" th:text="#{messages.address.my}"></a>
 								</div>
 							</div>
 							<div>
@@ -138,7 +130,7 @@
 									<use xlink:href="#icon-liulan"></use>
 								</svg>
 								<div class="order_bttext">
-									<a href="#">浏览历史</a>
+									<a href="#" th:text="#{messages.browsing.history}"></a>
 								</div>
 							</div>
 							<div>
@@ -146,7 +138,7 @@
 									<use xlink:href="#icon-bangzhu"></use>
 								</svg>
 								<div class="order_bttext">
-									<a href="">帮助中心</a>
+									<a href="" th:text="#{messages.help.center}"></a>
 								</div>
 							</div>
 						</div>
@@ -161,25 +153,25 @@
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-dianpu"></use>
 						</svg>
-						<span class="item-text">首页</span>
+						<span class="item-text" th:text="#{messages.home.page}"></span>
 					</a>
 					<a class="item active" href="/goodsclass.htm">
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-classify-on"></use>
 						</svg>
-						<span class="item-text">分类</span>
+						<span class="item-text" th:text="#{messages.class}"></span>
 					</a>
 					<a class="item" href="/goods_cart1.htm">
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-gouwuche-zhuangtai"></use>
 						</svg>
-						<span class="item-text">购物车</span>
+						<span class="item-text" th:text="#{messages.goods.cart}"></span>
 					</a>
 					<a class="item" href="/member_center.htm">
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-icon_mine"></use>
 						</svg>
-						<span class="item-text">我的</span>
+						<span class="item-text" th:text="#{messages.my}">我的</span>
 					</a>
 				</div>
 			</div>

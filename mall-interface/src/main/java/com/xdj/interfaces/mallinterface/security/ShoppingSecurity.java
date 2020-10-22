@@ -169,6 +169,9 @@ public class ShoppingSecurity extends WebSecurityConfigurerAdapter {
 					"/",
 					"/newIndex.htm",
 					"/login/**",
+					"/sendEmail",
+					"/editPasswordPage",
+					"/editPassword",
 					"/shopping_login.htm/*",
 					"/static/**","/upload/**","/login*","/**/*.js","/**/*.jpg","/**/*.png","/**/*.css")
 					//以上请求所有人都可以访问

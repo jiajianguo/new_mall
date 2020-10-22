@@ -1,17 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>预付款支付 - Powered by shopping</title>
+<title th:text="#{messages.pay.beforebalance}"></title>
 <meta name="keywords" th:content="${config.keywords}" />
 <meta name="description" th:content="${config.description}" />
 <meta name="generator" content="shopping 2.0" />
 <meta name="author" content="www.shopping.com">
 <meta name="copyright" content="shopping Inc. All Rights Reserved">
-<link href="/static/style/system/front/default/css/public.css" type="text/css" rel="stylesheet" />
-<link href="/static/style/system/front/default/css/goods.css" type="text/css" rel="stylesheet" />
-<script src="/static/js/jquery-1.6.2.js"></script>
-<script src="/static/js/jquery.validate.min.js"></script>
+<link href="/style/system/front/default/css/public.css" type="text/css" rel="stylesheet" />
+<link href="/style/system/front/default/css/goods.css" type="text/css" rel="stylesheet" />
+<script src="/js/jquery-1.6.2.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
 <script>
 jQuery(document).ready(function(){
   jQuery("#theForm").validate({
@@ -28,38 +28,277 @@ jQuery(document).ready(function(){
 </script>
 </head>
 <body>
-$!httpInclude.include("/top.htm")
+<!-- top -->
+<div class="top_page">
+  <div class="pageright" id="site-nav">
+    <ul class="quick-menu">
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}" ></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}" ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.cneter}"></a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
+                <span th:switch="${user != null}">
+									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
+                                    <a th:case="false" th:href="@{/seller/store_create_first.htm}"
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
+								</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="search menu-item menupx">
+        <div class="menu" id="cart_menu">
+                  <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
+
+                  </span>
+        </div>
+      </li>
+      <li class="menupx">
+        <a th:href="@{/buyer/message.htm}">
+          <span  style="color:#FF3300;" th:text="#{messages.plateform.message}+${ msgs != null?msgs.size():0}"></span></a>
+      </li>
+
+      <li class="mytaobao menu-item menupx">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
+          <div class="menu-bd">
+            <div class="menu-bd-panel">
+              <div>
+                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow"  th:text="#{messages.collect.shop}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
+        <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
+      </li>
+      <li class="menupx" th:if="${navs != null}">
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
+      </li>
+
+      <li class="menupx" style="background:none;" th:if="${navs == null}">
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}" ></a>
+      </li>
+
+      <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
+        <div class="menu">
+          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.more.link}"><b></b></a>
+          <div class="menu-bd" style="height:auto;">
+            <div class="menu-bd-panel">
+              <div th:each="nav : ${navs}">
+                <a th:href="@{ '/' + ${ nav.url }}" rel="nofollow" th:text="${nav.title}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <div class="pageleft">
+        <span th:switch="${user != null}">
+          <span th:case="true">
+              <span th:text="${user.username}"></span>
+			  <span th:text="#{messages.welcome.word}"></span>
+			  <span th:text=" ${config.websitename}"></span>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
+          </span>
+          <span th:case="false">
+			  <span th:text="#{messages.welcome.word}"></span>
+              <span th:text="${config.websitename}"></span>
+             <span class="pxlr">
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
+             </span>
+            <span class="pxlr">或</span>
+            <span class="pxlr">
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.login.out}">注册</a>
+            </span>
+          </span>
+        </span>
+  </div>
+</div>
+
+<!-- top-end -->
 <div class="main">
-  $!httpInclude.include("/head.htm")
-  $!httpInclude.include("/nav1.htm")
+  <!--head-->
+  <div id="header_form">
+    <div id="head_h" class="head_width">
+      <div class="head clearFix">
+        <div class="logo">
+          <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
+            <img width="180" height="60"  th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" style="margin-top: -15px"/>
+          </a>
+          <a th:href="@{/index.htm}" th:unless="${config.websiteLogo != null}">
+            <img width="180" th:width="60" th:src="@{/style/system/front/default/images/logo.png}" border="0" style="margin-top: -15px"/>
+          </a>
+        </div>
+        <div class="searchForm">
+          <form action="/search.htm" method="post" target="_blank" id="searchForm">
+            <input name="type" type="hidden" id="type" th:value="${type}"/>
+            <div class="toph_bigsearch">
+              <div class="toph_sear">
+                <ul class="toph_bgsear">
+                  <li class="this" id="goodsMsg" type="goods">
+                    <a href="javascript:void(0);" th:onclick="msg('goods')" th:text="#{messages.baby}"><s></s></a>
+                  </li>
+                  <li id="storeMsg" style="display:none" type="store">
+                    <a href="javascript:void(0);" th:onclick="msg('store')" th:text="#{messages.shop}"></a>
+                  </li>
+                </ul>
+                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                       lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
+                       class="toph_sear_txt"/>
+                <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;"
+                       onclick="search_form();" class="toph_sear_btn"/>
+              </div>
+              <div class="keyword">
+						   <span th:each="info : ${config.hotsearch.split(',')}">
+							   <a href="javascript:void(0);" th:data-id="${info}"
+                                  th:onclick="search_form(this.getAttribute('data-id'),'goods');"
+                                  th:text="${info}"></a>
+						   </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--head-end -->
+  <div id="nav">
+    <div class="nav">
+      <div class="nav_center">
+        <div class="nav_left">
+          <h2>
+            <a th:href="@{/goods_class.htm}">
+                        <span >
+                            <span th:text="#{messages.type.all}"></span>
+                            <em>
+                                <img th:src="@{/style/system/front/default/images/nav_left.png}">
+                            </em>
+                        </span>
+            </a>
+          </h2>
+          <div class="index_topleft">
+            <div id="left_menu" class="left_menu">
+              <dl sc_color="rgb(249, 244, 245)" style="position:relative;" th:each="gc : ${gcs}" th:id="${gc.id}" class="left_menu_dl"  th:child_count="${gc.childs == null ?0 : gc.childs.size() }">
+                <dt th:id="'dts_'+${gc.id}" class="left_menu_dt">
+                  <i class="left_menu_i" th:if="${gc.iconType != null && gc.iconType == 0  && gc.iconSys != '' } ">
+                    <img width="16" height="16"  th:src="@{'/style/common/images/icon/icon_'+${gc.iconSys}+'.png'}">
+                  </i>
+
+                  <strong class="left_menu_str">
+                    <a th:href="@{/store_goods_list.htm(gc_id=${gc.id})}" th:text="${gc.classname}"></a>
+                  </strong>
+                </dt>
+
+                <dd th:id="${'child_'+gc.id }" style="display: none;" class="left_menu_dd">
+                  <div th:id="${'left_menu_con_15' }" class="left_menu_con this ">
+									<span class="left_menu_sp">
+										<div class="left_menu_con_center">
+											<div class="menu_con_right_top" style="background-color: rgb(230, 0, 18);">
+                                                <dl>
+                                                  <dt>
+                                                      <span th:each=" childs : ${gc.childs}"
+                                                            th:if="${childs.display == true}">
+                                                          <a th:href="@{/store_goods_list.htm(gc_id=${childs.id})}"
+                                                             target="_blank" th:text="${childs.classname}"></a>
+                                                      </span>
+                                                  </dt>
+                                                </dl>
+										    </div>
+										    <div class="left_menu_con_center_left" th:each="gc1 : ${gc.childs}">
+											  <dl th:if="${gc1.display}">
+												  <dt>
+													  <b> &gt; </b>
+													  <a th:href="@{/store_goods_list.htm(gc_id=${gc1.id})}"
+                                                         target="_blank"
+                                                         th:text="${gc1.classname}"></a>
+												  </dt>
+												  <dd th:if="${gc1.childs}">
+													  <a th:each="gc2 : ${gc1.childs}" th:if="${gc2.display}"
+                                                         th:href="@{/store_goods_list.htm(gc_id=${gc2.id})}"
+                                                         target="_blank" th:text="${gc2.classname}"></a>
+												  </dd>
+											  </dl>
+										   </div>
+										</div>
+									</span>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <ul id="navul">
+          <li th:each="nav : ${navs}">
+            <a th:id="${nav.id}" th:target='${nav.newWin ==1? "_blank":""}' th:original_url="${nav.originalUrl}"
+               th:href="@{${nav.url}}">
+              <span th:text="${nav.title}"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- head-end-->
+
   <div class="index">
    <form action="/order_pay_balance.htm" method="post" id="theForm">
     <div class="index2">
       <div class="buy_step_last">
         <ul>
           <li>
-            <h1>预存款支付</h1>
+            <h1 th:text="#{messages.pay.beforebalance}"></h1>
           </li>
           <li>
-            <h2>预存款支付</h2>
+            <h2 th:text="#{messages.pay.beforebalance}"></h2>
           </li>
           <li>
-            <h3>请输入预存款留言信息 (预存款留言有利于商家迅速辨别买家，您也可以稍后在用户中心“我的订单”中进行付款)：</h3>
+            <h3 th:text="#{messages.pay.noticewords}"></h3>
           </li>
           <li><span class="steptext">
             <textarea name="pay_msg" cols="" rows="6" id="pay_msg"></textarea>
           </span></li>
           <li><span class="stepbtn">
-            <input name="" type="submit"  value="提交" style="cursor:pointer;"/>
+            <input name="" type="submit"  th:value="#{messages.submit}" style="cursor:pointer;"/>
           </span>
-            <input name="order_id" type="hidden" id="order_id" value="$!order_id" />
+            <input name="order_id" type="hidden" id="order_id" th:value="${orderNo}" />
           </li>
         </ul>
       </div>
     </div>
     </form>
   </div>
- $!httpInclude.include("/footer.htm")
+ <!--$!httpInclude.include("/footer.htm")-->
 </div>
 </body>
 </html>

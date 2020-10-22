@@ -4,6 +4,9 @@ import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
 import com.xdj.www.core.tools.CommUtil;
 import com.xdj.www.entity.*;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,13 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Administrator
+ */
 @RestController
 public class FavoriteController {
-    @Resource
-    private ISysConfigService configService;
-
-    @Resource
-    private IUserConfigService userConfigService;
 
     @Resource
     private IFavoriteService favoriteService;
@@ -32,19 +33,17 @@ public class FavoriteController {
 
     @Autowired
     private IStoreService storeService;
+    public static Logger log= LoggerFactory.getLogger("favorite");
 
     @RequestMapping({"/add_goods_favorite.htm"})
-    public void add_goods_favorite(HttpServletResponse response, String id)
-    {
-
+    public void add_goods_favorite(HttpServletResponse response, String id) {
         ShoppingFavoriteExample example = new ShoppingFavoriteExample();
         example.createCriteria()
                 .andUserIdEqualTo(SecurityUserHolder.getCurrentUser().getId())
                 .andGoodsIdEqualTo(CommUtil.null2Long(id));
         List<ShoppingFavorite> list =  this.favoriteService.selectExample(example);
-
         int ret = 0;
-        if (list.size() == 0) {
+        if (list == null || list.size() < 1) {
             ShoppingGoodsWithBLOBs goods = this.goodsService.getObjById(CommUtil.null2Long(id));
             ShoppingFavorite obj = new ShoppingFavorite();
             obj.setAddtime(new Date());
@@ -54,6 +53,7 @@ public class FavoriteController {
             obj.setDeletestatus(false);
             this.favoriteService.save(obj);
             goods.setGoodsCollect(goods.getGoodsCollect() + 1);
+            log.info("----info---{}",goods.getGoodsCollect());
             this.goodsService.update(goods);
         } else {
             ret = 1;

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>分类</title>
+	<title th:text="#{messages.class}"></title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/classify.css"/>
@@ -30,27 +30,28 @@
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-dianpu"></use>
 					</svg>
-					<span class="item-text">首页</span>
+					<span class="item-text" th:text="#{messages.home.page}"></span>
 				</a>
 				<a class="item active" href="/goodsclass.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-classify-on"></use>
 					</svg>
-					<span class="item-text">分类</span>
+					<span class="item-text" th:text="#{messages.class}"></span>
 				</a>
 				<a class="item" href="/goods_cart1.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-gouwuche-zhuangtai"></use>
 					</svg>
-					<span class="item-text">购物车</span>
+					<span class="item-text" th:text="#{messages.goods.cart}"></span>
 				</a>
 				<a class="item" href="/member_center.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-icon_mine"></use>
 					</svg>
-					<span class="item-text">我的</span>
+					<span class="item-text" th:text="#{messages.my}"></span>
 				</a>
 			</div>
+
 		</div>
 		<div class="ui-content">
 			<div class="search_box flex-star">

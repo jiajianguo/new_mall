@@ -16,9 +16,6 @@
 <body>
 
 <div class="ui-pane">
-    <div>
-
-    </div>
     <div class="Nav"></div>
     <div class="ui-header">
         <div class="pclogo flex-star">
@@ -50,6 +47,20 @@
             </svg>
         </a>
     </div>
+    <style>
+        .page_nav > span{
+            height: 1rem;
+            line-height: 1rem;
+            text-align: center;
+        }
+        .page_nav >span>span{
+            height: 1rem;
+            line-height: 1rem;
+        }
+        .page_nav >span>span :hover{
+            background-color: #faad14;
+        }
+    </style>
     <div class="ui-content">
         <div class="page_nav flex-star">
 				<span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
@@ -61,6 +72,7 @@
 					</span>
 				</span>
         </div>
+        <hr>
         <div class="search_box flex-between">
             <input type="text" placeholder="搜索" name="keyword" id="keyword" value=""/>
             <svg class="icon" aria-hidden="true" id="search">

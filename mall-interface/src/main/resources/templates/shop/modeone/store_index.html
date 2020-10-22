@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org"   style="font-size: 40px;">
 <head>
     <meta charset="UTF-8" http-equiv="Content-Type">
-    <title>emode-店铺首页</title>
+    <title>emode-modeone</title>
     <meta name="description" content="default">
     <meta property="og:site_name" content="default">
     <meta property="og:title" content="default">
@@ -41,8 +41,7 @@
             r.src = n;
             var u = t.getElementsByTagName(s)[0];
             u.parentNode.insertBefore(r, u);
-        })(window, document,
-            'https://sc-static.net/scevent.min.js');
+        })(window, document,'/js/scevent.min.js');
         snaptr('init', '', {
             'user_email': ''
         });
@@ -425,23 +424,23 @@
                     <div class="model-title sl-main-title ">
                         <div style="font-size: 14px;" >
                             <div>
-                                <span >店铺名称：</span>
-                                <span th:text="${goodsStore.storeName}">平台自营店</span>
+                                <span th:text="#{messages.shop.name}+':'"></span>
+                                <span th:text="${goodsStore.storeName}"></span>
                             </div>
                             <div>
-                                <span >店&nbsp;&nbsp;铺&nbsp;&nbsp;号：</span>
+                                <span th:text="#{messages.store.no}"></span>
                                 <span th:text="${goodsStore.id}"></span>
                             </div>
                             <div>
-                                <span >店铺等级：</span>
+                                <span th:text="#{messages.shop.level}"></span>
                                 <span th:text="${goodsStore.id}"></span>
                             </div>
                             <div >
-                                <span >创建时间：</span>
+                                <span th:text="#{messages.store.creattime}"></span>
                                 <span th:text="${#dates.format(goodsStore.addtime,'yyyy-MM-dd')}"></span>
                             </div>
                             <div>
-                                <span >服务态度：</span>
+                                <span th:text="#{messages.service.attitude}"></span>
                                 <span >
                                     <b th:text="${goodsStore.point.serviceEvaluate}"></b>
                                     <em th:class="${service_css}">
@@ -451,7 +450,7 @@
                                 </span>
                             </div>
                             <div >
-                                <span >描述相符：</span>
+                                <span th:text="#{messages.describle.equal}"></span>
                                 <span >
                                     <b th:text="${goodsStore.point.descriptionEvaluate}"></b>
                                     <em th:class="${description_css}">
@@ -461,7 +460,7 @@
                                 </span>
                             </div>
                             <div>
-                                <span >发货速度：</span>
+                                <span th:text="#{messages.delivery.speed}"></span>
                                 <span >
                                     <b th:text="${goodsStore.point.shipEvaluate}"></b>
                                     <em th:class="${ship_css}">
@@ -471,11 +470,11 @@
                                 </span>
                             </div>
                             <div >
-                                <span >商品数量：</span>
-                                <span th:text="${goods_counts +'件商品'}"></span>
+                                <span th:text="#{messages.goods.amount}"></span>
+                                <span th:text="${goods_counts }"></span>
                             </div>
                             <div >
-                                <span >联系电话：</span>
+                                <span th:text="#{messages.contact.number}"></span>
                                 <span th:text="${goodsStore.storeTelephone}"></span>
                             </div>
                         </div>
@@ -483,17 +482,17 @@
                     <div class="model-describe">
                         <div style="font-size: 14px;">
                             <div >
-                                <span >站内客服：</span>
+                                <span th:text="#{messages.plateform.customer}"></span>
                                 <span >
                                      <a  th:if="${user}" class="im_common" href="javascript:void(0);" th:user_id="${goodsStore.user.id}" th:id="${'userDialog_img_contact_'+goodsStore.user.id}" th:user_name="${goodsStore.user.username}"> 咨询客服</a>
                                      <a th:unless="${user}" class="im_common" href="javascript:void(0);" th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">咨询客服 </a>
                                 </span>
                             </div>
                             <div >
-                                <span >站外客服：</span>
+                                <span th:text="#{messages.site-off.customer}"></span>
                                 <span >
                                      <a target="_blank" th:href="@{${'http://wpa.qq.com/msgrd?v=3&uin='+goodsStore.storeQq+'&Site='+goodsStore.storeQq +'&Menu=yes'}}">
-                                     <img alt="点击这里给我发消息" th:src="@{${'http://wpa.qq.com/pa?p=2:'+goodsStore.storeQq+':51'}}" />
+                                     <img th:alt="#{messages.click.sendmessage}" th:src="@{${'http://wpa.qq.com/pa?p=2:'+goodsStore.storeQq+':51'}}" />
                                    </a>
                                 </span>
                             </div>
@@ -510,7 +509,7 @@
     <!-- 产品类别 -->
     <div class="main best-sellers clearfloat JH-Columns ">
         <h3 class="title border sl-main-title">
-            <span>商品分类专区</span>
+            <span th:text="#{messages.goods.class}"></span>
         </h3>
         <ul class="sellers-ul four-col">
             <li class="sellers-item" th:each="c,index : ${ugcaccsorry}" th:if="${index.index <8}">
@@ -535,7 +534,7 @@
 	<!-- 主流商品区 -->
 	<div class="main goods-list clearfloat JH-Columns ">
         <h3 class="title border sl-main-title">
-            <span>推荐商品</span>
+            <span th:text="#{messages.recommend.goods}"></span>
         </h3>
         <ul class="classify-ul four-col">
             <li th:each="goods : ${goods_recommend}" class="classify-item" itemscope="" itemtype="http://schema.org/Product">
@@ -628,15 +627,13 @@
 <script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/lib/event.js?v=20200803012259"></script>
 <script>
     function add_store_favorite(storeId) {
-        console.log('添加收藏');
-            $.post('/add_store_favorite.htm',{id:storeId},function (res) {
-                console.log('返回值-----',res);
-                if(res == '1'){
-                    alert("收藏成功！")
-                }else{
-                    alert('该店铺已经被收藏！');
-                }
-            })
+        $.post('/add_store_favorite.htm',{id:storeId},function (res) {
+            if(res == '1'){
+                alert("收藏成功！")
+            }else{
+                alert('该店铺已经被收藏！');
+            }
+        })
     }
 
 

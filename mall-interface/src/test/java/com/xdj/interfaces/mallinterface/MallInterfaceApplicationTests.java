@@ -1,6 +1,7 @@
 package com.xdj.interfaces.mallinterface;
 
 import com.xdj.interfaces.mallinterface.service.SendMessageService;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,7 +13,7 @@ class MallInterfaceApplicationTests {
 
     //@Test
     void contextLoads() {
-        sendMessageService.sendHtmlTextMail("C:\\Users\\Administrator\\Desktop\\email-client.html","order","123456789","1328171006@qq.com");
+        sendMessageService.sendEmail("1328171006@qq.com","subject","https://www.baidu.com");
     }
 
 }

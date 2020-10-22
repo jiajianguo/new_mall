@@ -12,7 +12,8 @@
   <div class="menu-bd-panel">
     <div class="gwc">
       <h1 th:if="${ cart.size() >0}">
-        购物车商品总价：¥<span id="cart_goods_price_top" th:text="${total_price}"></span>
+          <span th:text="#{messages.cart.totalprice}+'：¥'"></span>
+        <span id="cart_goods_price_top" th:text="${total_price}"></span>
       </h1>
      <div th:each="gc : ${cart}">
        <div class="shopp_ingtop" th:id="${gc.id}">
@@ -30,15 +31,14 @@
            <span style="color:#F60; padding-left:15px;" th:text="'¥'+${gc.price *gc.count }"></span>
          </div>
          <div><span class="shopl_del">
-           <a href="javascript:void(0);" th:onclick="'cart_remove(' + ${gc.id} +','+ ${gc.goods.goodsStoreId} + ');'" >删除</a></span></div>
+           <a href="javascript:void(0);" th:onclick="'cart_remove(' + ${gc.id} +','+ ${gc.goods.goodsStoreId} + ');'" th:text="#{messages.delete}"></a></span></div>
        </div>
      </div>
-      <span th:unless="${ cart.size() >0}">
-         购物车暂时为空，赶紧挑选自己喜欢的商品去
+      <span th:unless="${ cart.size() >0}" th:text="#{messages.cart.empty}">
       </span>
 
       <div class="shopbtn" th:if="${ cart.size() >0}">
-        <a th:href="@{/goods_cart1.htm}" >查看我的购物车</a>
+        <a th:href="@{/goods_cart1.htm}" th:text="#{messages.see.cart}"></a>
       </div>
 
     </div>

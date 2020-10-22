@@ -3,7 +3,7 @@
 <head>
   <script>
     jQuery(document).ready(function(){
-      var data='$!obj.goods_property';
+      var data='obj.goods_property';
       var properties=eval("("+data+")");
       jQuery.each(properties,function(index,item){
         jQuery(".goodsintro").append("<span>"+item.name+":"+item.val+"</span>");

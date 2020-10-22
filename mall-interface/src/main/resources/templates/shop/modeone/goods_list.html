@@ -128,12 +128,10 @@
     </div>
     <ul class="nav-ul sl-subhead-title">
         <li class="nav-item sl-subhead-title">
-            <a href="/user/login.htm">
-                Log in </a>
+            <a href="/user/login.htm" th:text="#{messages.login}"></a>
         </li>
         <li class="nav-item sl-subhead-title">
-            <a href="/register.htm">
-                Create Account </a>
+            <a href="/register.htm" th:text="#{messages.register}"> </a>
         </li>
     </ul>
 
@@ -345,7 +343,8 @@
 	<!-- 主流商品区 -->
 	<div class="main goods-list clearfloat JH-Columns ">
         <h3 class="title border sl-main-title">
-            <span>搜索商品</span><span></span>
+            <span th:text="#{messages.search.goods}"></span>
+            <span></span>
         </h3>
         <ul class="classify-ul four-col" th:if="${objs}">
             <li th:each="goods :${objs}" class="classify-item" itemscope="" itemtype="http://schema.org/Product">
@@ -400,7 +399,7 @@
     <!-- 产品类别 -->
     <div th:if="${ugcs.size()>0}" class="main best-sellers clearfloat JH-Columns ">
         <h3 class="title border sl-main-title">
-            <span>商品分类专区</span>
+            <span th:text="messages.goods.categories"></span>
         </h3>
         <ul class="sellers-ul four-col">
             <li class="sellers-item" th:each="c,index : ${ugcs}" th:if="${index.index <8}">
@@ -455,17 +454,15 @@
 <script type="text/javascript" src="https://static.xshoppy.shop/buyer/public/js/lib/event.js?v=20200803012259"></script>
 <script>
     function add_store_favorite(storeId) {
-        console.log('添加收藏');
-            $.post('/add_store_favorite.htm',{id:storeId},function (res) {
-                console.log('返回值-----',res);
-                if(res == '1'){
-                    alert("收藏成功！")
-                }else{
-                    alert('该店铺已经被收藏！');
-                }
-            })
+        $.post('/add_store_favorite.htm',{id:storeId},function (res) {
+            console.log('返回值-----',res);
+            if(res == '1'){
+                alert("收藏成功！")
+            }else{
+                alert('该店铺已经被收藏！');
+            }
+        })
     }
-
 
 </script>
 

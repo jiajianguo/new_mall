@@ -61,13 +61,13 @@
     <ul class="quick-menu">
       <li class="mytaobao menu-item menupx">
         <div class="menu">
-          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+          <a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
           <div class="menu-bd">
             <div class="menu-bd-panel">
               <div>
-                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"></a>
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@
       </li>
       <li class="mytaobao menu-item menupx">
         <div class="menu">
-          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+          <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="">商家支持<b></b></a>
           <div class="menu-bd">
             <div class="menu-bd-panel">
               <div>
@@ -148,18 +148,18 @@
         <span th:switch="${user != null}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
-			  <span>您好,欢迎来到</span>
+			  <span th:text="#{messages.welcome.word}"></span>
 			  <span th:text=" ${config.websitename}"></span>
-             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
           </span>
           <span th:case="false">
-			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+			  <span th:text="#{messages.welcome.word}"></span><span th:text="${config.websitename}"></span>
              <span class="pxlr">
-               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
              </span>
-            <span class="pxlr">或</span>
+            <span class="pxlr" th:text="#{messages.or}"></span>
             <span class="pxlr">
-              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}"></a>
             </span>
           </span>
         </span>
@@ -183,19 +183,19 @@
         <div class="shopnavul">
           <ul>
             <li id="store_index">
-              <a th:href="@{/store.htm(id=${store.id})}" >首页</a>
+              <a th:href="@{/store.htm(id=${store.id})}" th:text="#{messages.home.page}"></a>
             </li>
             <li th:if="${goods_view}==true" id="store_goods" class="this">
-              <a th:href="@{/store.htm(goods_id=${goods_id})}">商品详情</a>
+              <a th:href="@{/store.htm(goods_id=${goods_id})}" th:text="#{messages.goods.details}"></a>
             </li>
             <li th:if="${goods_list}==true" id="store_goods" class="this">
-              <a th:href="@{/goods_list.htm(sc_id=${store.id})}">商品列表</a>
+              <a th:href="@{/goods_list.htm(sc_id=${store.id})}" th:text="#{messages.goods.list}"></a>
             </li>
             <li id="store_credit">
-              <a th:href="@{/store_credit.htm(store_id=${store.id})}" >信用评价</a>
+              <a th:href="@{/store_credit.htm(store_id=${store.id})}" th:text="#{messages.credit.rating}" ></a>
             </li>
             <li id="store_info">
-              <a th:href="@{/store_info.htm(id=${store.id})}">店铺详情</a>
+              <a th:href="@{/store_info.htm(id=${store.id})}" th:text="#{store}">店铺详情</a>
             </li>
             <li th:each="nav : ${navs}" th:id="${nav.id}">
               <a th:href="@{/store_url.htm(id=${nav.id})}"   target="_blank" th:text="${nav.title}"></a><!--#if($!nav.win_type=="new_win")-->

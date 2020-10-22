@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>shopping goods detail</title>
+	<title>emode goods detail</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
@@ -11,44 +11,17 @@
 	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/main-new.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 	<div class="ui-pane">
-		<div class="">
-			<div class="ui-nav">
-				<a class="item" href="/wap/index.htm">
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-dianpu"></use>
-					</svg>
-					<span class="item-text">首页</span>
-				</a>
-				<a class="item" th:href="@{/goodsclass.htm(storeId=${obj.goodsStoreId})}">
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-classify-on"></use>
-					</svg>
-					<span class="item-text">分类</span>
-				</a>
-				<a class="item" href="/goods_cart1.htm">
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-gouwuche-zhuangtai"></use>
-					</svg>
-					<span class="item-text">购物车</span>
-				</a>
-				<a class="item" href="/member_center.htm">
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-icon_mine"></use>
-					</svg>
-					<span class="item-text">我的</span>
-				</a>
-			</div>
-		</div>
 		<div class="ui-header">
 			<a href="" class="header-button">
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-left"></use>
 				</svg>
 			</a>
-			<div class="header-title">商品详情</div>
+			<div class="header-title" th:text="#{messages.goods.details}"></div>
 		</div>
 		<div class="ui-content">
 			<div class="swiper1 swiper-container">
@@ -70,11 +43,11 @@
 				<input type="hidden" id="goodsId" name="goodsId" th:value="${obj.id}">
 				<div class="price_box">
 					<div class="price" th:if="${obj.groupBuy !=2}">
-						<span>￥</span>
+						<span th:text="#{messages.money.class}"></span>
 						<span id="store_price" th:text="${obj.storePrice}"></span>
 					</div>
 					<div class="price" th:if="${obj.groupBuy ==2}" th:each="groupGood :${groupGoods}">
-						<span>￥</span>
+						<span th:text="#{messages.money.class}"></span>
 						<span id="gg_price" th:text="${groupGood.ggPrice}"></span>
 					</div>
 					<div class="price_del" >
@@ -95,14 +68,64 @@
 			<div class="cuxiao">
 				<div class="cux_tit flex-between">
 					<div>
-						<a th:href="@{/store.htm(id=${obj.goodsStoreId})}" style="color: #ff9900">进入店铺</a>
+						<a th:href="@{/store.htm(id=${obj.goodsStoreId})}" style="color: #ff9900" th:text="#{messages.store.in}"></a>
 					</div>
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-right"></use>
 					</svg>
 				</div>
 			</div>
-			<div class="goods_spec">
+
+			<div class="ui-shade">
+				<div class="ui-modal">
+					<svg class="icon modal_close" aria-hidden="true">
+						<use xlink:href="#icon-quxiao"></use>
+					</svg>
+					<div class="goods_into flex-star">
+						<img th:if="${obj.goods_main_photo != null }" th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+						<div class="goods_tit">
+							<div th:text="${obj.goodsName}"></div>
+							<div class="shose_spec">
+								已选: <span></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="goods_spec">
+						<div class="spec_line" id="specification" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
+							<div class="spec_tit">
+								<span th:text="${spec.name}"></span>
+								<b></b>
+							</div>
+							<div class="sepc_cont flex-star" >
+								<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}" th:attr="gsp=${gsp.id}">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="spec_line">
+						<div class="spec_tit" th:text="#{messages.amount}"></div>
+						<div class="num_opt flex-star">
+							<div id="sub_count" >-</div>
+							<input type="number" name="count" id="count" value="1" />
+							<div id="add_count">+</div>
+							&nbsp;&nbsp;&nbsp;
+							<input type="number" name="inventory" id="inventory" th:value="${obj.goodsInventory}" disabled="disabled" style="width: 1rem;" />
+						</div>
+					</div>
+
+					<div class="modal_btn flex-between">
+						<input type="button" class="" th:data-id="${obj.id}" name="mal_btn" id="add_cart" value="加入购物车" />
+						<input type="button" class="" th:data-id="${obj.id}" name="mal_btn" id="buy_goods" value="立即购买" />
+					</div>
+				</div>
+			</div>
+			<!--<div class="modal_btn flex-between">
+				<input type="button" class="btn" th:data-id="${obj.id}" name="" id="add_cart" value="加入购物车" />
+				<input type="button" style="margin-top: .2rem;background: #222" class="btn buy_btn" th:data-id="${obj.id}" name="" id="buy_goods" value="立即购买" />
+			</div>-->
+		<!--	<div class="goods_spec">
 				<div class="spec_line" id="specification" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
 					<div class="spec_tit">
 						<span th:text="${spec.name}"></span>
@@ -114,11 +137,11 @@
 					</div>
 				</div>
 				<div class="spec_line">
-					<div class="spec_tit">
-						数量
+					<div class="spec_tit" th:text="#{messages.amount}">
+
 					</div>
 					<div class="num_opt flex-star">
-						<div id="sub_count">-</div>
+						<div id="sub_count" >-</div>
 						<input type="number" name="count" id="count" value="1" />
 						<div id="add_count">+</div>
 						&nbsp;&nbsp;&nbsp;
@@ -126,19 +149,16 @@
 					</div>
 				</div>
 			</div>
-			<div class="btn_cont">
-				<input type="button" class="btn" th:data-id="${obj.id}" name="" id="add_cart" value="加入购物车" />
-				<input type="button" style="margin-top: .2rem;background: #222" class="btn buy_btn" th:data-id="${obj.id}" name="" id="buy_goods" value="立即购买" />
-			</div>
 
+
+-->
 			<div class="tips">
 				<!--<p>处理时间:当项目被选中时计算</p>-->
-				<p>发货时间:加急快递3-7个工作日</p>
+				<p th:text="#{messages.delivery.notice}"></p>
 			</div>
 
 			<div class="youguess" >
-				<div class="youguess_tit">
-					你可能会喜欢
+				<div class="youguess_tit" th:text="#{messages.can.like}">
 				</div>
 				<div class="swiper2 swiper-container">
 					<div class="swiper-pagination"></div>
@@ -167,10 +187,34 @@
 				</div>
 			</div>
 
+			<div class="page_bottom flex-between">
+				<div class="bottom_box flex-between">
+					<div class="bottom_icon">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-dianpu1"></use>
+						</svg>
+						<p><a th:href="@{/store.htm(id=${obj.goodsStoreId})}" th:text="#{messages.shop}"></a></p>
+					</div>
+					<div class="bottom_icon">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-kefu"></use>
+						</svg>
+						<p><a th:href="@{/waiter/call}" th:text="#{messages.customer}"> </a></p>
+					</div>
+					<div class="bottom_icon">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-gouwuchezhengpin"></use>
+						</svg>
+						<p><a  th:href="@{/goods_cart1.htm}" th:text="#{messages.goods.cart}"></a></p>
+						<div class="cart_num flex-center">1</div>
+					</div>
+				</div>
+				<input type="button" class="bottom_btn" name=""  value="加入购物车" />
+				<input type="button" class="bottom_btn" name=""  value="立即购买" />
+			</div>
 		</div>
 	</div>
 </body>
-<script src="/wap/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 
 	$(".buy_btn").click(function(){
@@ -218,7 +262,7 @@
 		}else{
 			alert('购物失败');
 		}
-	});
+	})
 
 	$("#buy_goods").on('click',function (){
 		var  id= $(this).attr('data-id');
@@ -390,10 +434,28 @@
 		loop: true
 	});
 
-	$(".sepc_cont div").click(function(){
+	/*$(".sepc_cont div").click(function(){
 		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
 		$(this).parents(".spec_line").find(".spec_tit b").text($(this).text());
 
-	});
+	});*/
+	$(".bottom_btn").click(function(){
+		$(".ui-shade").css("display","block");
+		$(".ui-modal").addClass("shadeshow");
+	})
+	$(".ui-modal").click(function(){
+		event.stopPropagation();
+	})
+	$(".ui-shade,.modal_close").click(function(){
+		$(".ui-shade").css("display","none")
+	})
+	let specarr = [];
+	$(".sepc_cont div").click(function() {
+		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
+		$(this).parents(".spec_line").find(".spec_tit span").text($(this).text());
+		let sepcindex = $(this).parents(".spec_line").index();
+		specarr[sepcindex] = $(this).text();
+		$(".shose_spec span").text(specarr.join("，"));
+	})
 </script>
 </html>

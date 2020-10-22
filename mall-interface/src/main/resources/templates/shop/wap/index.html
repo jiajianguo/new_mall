@@ -117,12 +117,12 @@
         </a>
         <!--<img src="/style/system/front/wap/images/wap_logo.png">-->
         <span class="log">
-            <a th:if="${user}" href="/shopping_logout.htm">退出</a>
-			<a th:unless="${user}" href="/user/login.htm">登录</a>
+            <a th:if="${user}" href="/shopping_logout.htm" th:text="#{messages.out}"></a>
+			<a th:unless="${user}" href="/user/login.htm" th:text="#{messages.login}"></a>
 		</span>
         <span class="log">
-			<a th:if="${user}" href="javascript:void(0);" th:text="${user.username+'您好'}"></a>
-			<a th:unless="${user}" href="/register.htm">注册</a>
+			<a th:if="${user}" href="javascript:void(0);" th:text="${user.username}+#{messages.hello}"></a>
+			<a th:unless="${user}" href="/register.htm" th:text="#{messages.register}"></a>
 		</span>
 
     </div>
@@ -131,7 +131,7 @@
         <div class="search_line">
 				<span>
 				<input type="hidden" name="type" value="goods"/>
-				<input type="text" placeholder="搜索商品" name="keyword" id="keyword">
+				<input type="text" th:placeholder="#{messages.search.goods}" name="keyword" id="keyword">
 				</span>
             <b><img src="/style/system/front/wap/images/search_icon.png" width="25" height="25"
                     onclick="search_form();"></b>
@@ -208,25 +208,25 @@
             <li>
                 <a href="/goodsclass.htm">
                     <img src="/style/system/front/wap/images/nav_fl.png">
-                    <p>分类</p>
+                    <p th:text="#{messages.class}"></p>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img  src="/style/system/front/wap/images/nav_pp.png">
-                    <p>品牌街</p>
+                    <p th:text="#{messages.brand.street}"></p>
                 </a>
             </li>
             <li>
                 <a href="/goods_cart1.htm">
                     <img src="/style/system/front/wap/images/nav_gwc.png">
-                    <p>购物车</p>
+                    <p th:text="#{messages.goods.cart}"></p>
                 </a>
             </li>
             <li>
                 <a href="/member_center.htm">
                     <img src="/style/system/front/wap/images/nav_yhzx.png">
-                    <p>用户中心</p>
+                    <p th:text="#{messages.account.center}">用户中心</p>
                 </a>
             </li>
         </ul>
@@ -235,7 +235,7 @@
     <!--精品推荐-->
     <div class="phone_floor">
         <h1>
-            <span class="fl">精品推荐</span>
+            <span class="fl" th:text="#{messages.product.recommond}"></span>
         </h1>
         <div class="recom">
             <div class="ohbox">
@@ -256,9 +256,9 @@
 
     <div id="phone_floor" class="phone_floor">
         <h1>
-            <span class="fl">品牌街</span>
+            <span class="fl" th:text="#{messages.brand.street}"></span>
             <span class="fr">
-                <a href="#">更多</a>
+                <a href="#" th:text="#{messages.more}"></a>
             </span>
         </h1>
         <div class="phone_brand">
@@ -274,15 +274,18 @@
 
     <div class="phone_floor">
         <div class="phone_activity">
-            <h1><span class="fl">促销商品</span><span class="fr"></span></h1>
+            <h1>
+                <span class="fl" th:text="#{messages.promotional.products}"></span>
+                <span class="fr"></span>
+            </h1>
             <ul>
                 <li th:each="goods : ${dgs}">
                     <a th:href="@{/goods.htm(id=${goods.d_goods.id})}">
                         <img th:if="${goods.d_goods.goods_main_photo}"   th:src="@{${'/'+goods.d_goods.goods_main_photo.path +'/'+goods.d_goods.goods_main_photo.name}}">
                         <img th:unless="${goods.d_goods.goods_main_photo}"  th:src="@{'/'+config.goodsImage.path +'/'+config.goodsImage.name}">
                         <p class="price" >
-                            <b th:text="${'¥'+goods.d_goods.storePrice}" style="font-size: 14px"></b>
-                            <del th:text="${'￥'+goods.d_goods.goodsCurrentPrice }" style="text-decoration: line-through;font-size: 14px"></del>
+                            <b th:text="#{messages.money.class}+${goods.d_goods.storePrice}" style="font-size: 14px"></b>
+                            <del th:text="#{messages.money.class}+${goods.d_goods.goodsCurrentPrice }" style="text-decoration: line-through;font-size: 14px"></del>
                         </p>
 
                     </a>

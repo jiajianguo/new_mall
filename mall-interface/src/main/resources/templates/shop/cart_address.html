@@ -63,7 +63,7 @@ jQuery(document).ready(function(){
   <table style="float:left;" width="100%" border="0" cellspacing="0" cellpadding="0" class="box_table">
     <tr>
       <td width="100" align="right" valign="top">
-        <span class="hui_table">收货人姓名：</span>
+        <span class="hui_table" th:text="#{messages.consignee.name}+':'"></span>
         <input name="id" type="hidden" id="id"  th:value="${obj!=null?obj.id:''}" />
       </td>
       <td align="left"><span class="dia_txt">
@@ -72,7 +72,7 @@ jQuery(document).ready(function(){
     </tr>
     <tr>
       <td width="100" align="right" valign="top">
-        <span class="hui_table">性别：</span>
+        <span class="hui_table" th:text="#{messages.sex}+':'"></span>
       </td>
       <td align="left" id="sex">
         <span class="dia_txt">
@@ -87,7 +87,7 @@ jQuery(document).ready(function(){
 
     <tr>
       <td width="100" align="right" valign="top">
-        <span class="hui_table">国家：</span>
+        <span class="hui_table" th:text="#{messages.countries}+':'">国家：</span>
       </td>
       <td align="left">
         <input name="countries" id="countries" th:value="${obj !=null ? obj.countries:''}" size="35" >
@@ -96,7 +96,7 @@ jQuery(document).ready(function(){
 
     <tr>
       <td width="100" align="right" valign="top">
-        <span class="hui_table">公司：</span>
+        <span class="hui_table" th:text="#{messages.company}+':'"></span>
       </td>
       <td align="left">
         <input name="company" type="text" id="company" th:value="${obj !=null ? obj.company:''}" size="35" />
@@ -106,7 +106,7 @@ jQuery(document).ready(function(){
 
     <tr>
       <td width="100" align="right" valign="top">
-        <span class="hui_table">城市名：</span>
+        <span class="hui_table" th:text="#{messages.city}+':'">/span>
       </td>
       <td align="left">
         <input name="city" type="text" id="city" th:value="${obj !=null ? obj.city:''}" size="35" />
@@ -135,7 +135,7 @@ jQuery(document).ready(function(){
     </tr>
    -->
     <tr>
-      <td align="right" valign="top"><span class="hui_table">详细地址</span>：</td>
+      <td align="right" valign="top"><span class="hui_table" th:text="#{messages.detailed.address}+':'"></span>：</td>
       <td align="left">
         <span class="dia_txt">
           <input name="area_info" type="text" id="area_info" th:value="${obj!=null?obj.areaInfo:''}" size="35" />
@@ -143,26 +143,26 @@ jQuery(document).ready(function(){
       </td>
     </tr>
     <tr>
-      <td align="right" valign="top"><span class="hui_table">邮政编码</span>：</td>
+      <td align="right" valign="top"><span class="hui_table" th:text="#{messages.zip}"></span>：</td>
       <td align="left"><span class="dia_txt">
         <input name="zip" type="text" id="zip" th:value="${obj!=null?obj.zip:''}" size="35" />
       </span></td>
     </tr>
     <tr>
-      <td align="right" valign="top"><span class="hui_table">手机号码</span>：</td>
+      <td align="right" valign="top"><span class="hui_table" th:text="#{messages.telephone}">手机号码</span>：</td>
       <td align="left" id="other_reason2"><span class="dia_txt">
         <input name="telephone" type="text" id="telephone" th:value="${obj!=null?obj.telephone:''}" size="35" />
       </span></td>
     </tr>
     <tr>
-      <td align="right" valign="top"><span class="hui_table">联系号码</span>：</td>
+      <td align="right" valign="top"><span class="hui_table" th:text="#{messages.mobile}">联系号码</span>：</td>
       <td align="left"><span class="dia_txt">
         <input name="mobile" type="text" id="mobile" th:value="${obj!=null?obj.mobile:''}" size="35" />
       </span></td>
     </tr>
     <tr>
       <td colspan="2" align="center"><span class="inputbtn">
-        <input name="" type="submit" value="提交" style="cursor:pointer;"/>
+        <input name="" type="submit" th:value="#{messages.submit}" style="cursor:pointer;"/>
         <input name="currentPage" type="hidden" id="currentPage" th:value="${currentPage}" />
       </span></td>
     </tr>

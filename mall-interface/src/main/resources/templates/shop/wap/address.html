@@ -2,7 +2,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>收货地址</title>
+		<title th:text="#{messages.shipping.address}"></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
 		<link rel="stylesheet" type="text/css" href="/asset/css/site.css" />
@@ -20,13 +20,16 @@
 						<use xlink:href="#icon-left"></use>
 					</svg>
 				</a>
-				<div class="header-title">收货地址</div>
+				<div class="header-title" th:text="#{messages.shipping.address}"></div>
 			</div>
 			<div class="ui-content" style="padding-bottom: 1rem;">
 
 				<div th:each="obj :${objs}" class="main_content public_padding">
 					<div class="content_name public_flex_between">
-						<div >收货人：<span th:text="${obj.truename}" class="person"></span> </div>
+						<div >
+							<span th:text="#{messages.shipping.person}"></span>
+							<span th:text="${obj.truename}" class="person"></span>
+						</div>
 						<div  class="phone" th:text="${obj.telephone}"></div>
 					</div>
 					<div class="content_dizhi"  th:text="${obj.countries == null?'':obj.countries } + ${obj.city== null?'':obj.city +obj.areaInfo}"></div>
@@ -54,11 +57,11 @@
 					</div>
 				</div>
 
-				
+
 				<div class="main_bt">
-					<button class="bt" id="new_address">添加新地址</button>
+					<button class="bt" id="new_address" th:text="#{messages.address.add}"></button>
 				</div>
-				
+
 			</div>
 		</div>
 	</body>
@@ -106,8 +109,8 @@
 			})
 
 		})
-		
-		
+
+
 	</script>
 
 </html>

@@ -8,6 +8,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 347747160606kv21bom4n6n0iddn3nb6k1inuuj9pjck.apps.googleusercontent.com
+            client-secret: yKNKfEY1HfhzVIZ-VRw8njOT
+          facebook:
+            client-id: bd1c0a783ccdd1c9b9e4
+            client-secret: 1a9030fbca47a5b2c28e92f19050bb77824b5ad1
   messages:
     basename: static/i18n/messages
     encoding: UTF-8
@@ -53,7 +63,7 @@ spring:
 logging:
   level:
     org.springframework: info
-    #com.xdj.interfaces.mallinterface.mapper: debug
+    com.xdj.interfaces.mallinterface.mapper: debug
 # mybatis 相关配置
 mybatis:
   mapper-locations: classpath:mybatis/*.*

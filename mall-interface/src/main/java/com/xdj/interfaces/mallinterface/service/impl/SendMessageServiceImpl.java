@@ -60,8 +60,10 @@ public class SendMessageServiceImpl implements SendMessageService {
         mailMessage.setText(content);
         mailMessage.setSentDate(new Date());
         javaMailSenderImpl.send(mailMessage);
-        return false;
+        return true;
     }
+
+
 
     @Override
     public void sendTextMail(String subject, String content, String... to) {
@@ -110,6 +112,8 @@ public class SendMessageServiceImpl implements SendMessageService {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void sendTextMail(String subject, String content, List<String> ccList, String... tos) {

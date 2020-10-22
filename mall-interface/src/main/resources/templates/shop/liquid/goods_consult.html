@@ -1,17 +1,18 @@
 ﻿﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="proevalueation">
-    <div th:if="${rows==0}" class="novalue"> 还没有咨询内容 </div>
+    <div th:if="${rows==0}" class="novalue" th:text="#{messages.content.no}">  </div>
     <div th:unless="${rows==0}" class="havevaluelist">
         <dl th:each="obj :${objs}">
             <dt>
                 <span class="blue">咨询内容：</span>
                 <i th:text="${obj.consultContent}"></i>
-                <em th:text="${obj.consult_user!=null ? obj.consult_user.username :'匿名'}"></em>
+                <em th:if="${obj.consult_user!=null}" th:text="${obj.consult_user.username}"></em>
+                <em  th:unless="${obj.consult_user!=null}" th:text="#{messages.anonymous}"></em>
                 <b th:text="${#dates.format(obj.addtime,'yyyy-MM-dd')}"></b>
             </dt>
             <dd>
-                <span th:if="${obj.consultReply}" class="orange">店家回复：</span>
+                <span th:if="${obj.consultReply}" class="orange" th:text="#{messages.shop.reply}"></span>
                 <i th:text="${obj.consultReply}"></i>
                 <em></em>
                 <b th:text="${#dates.format(obj.replyTime,'yyyy-MM-dd')}"></b>
@@ -60,17 +61,16 @@
         <div class="havevalue">
             <table width="797" border="0" cellspacing="0" cellpadding="0" class="havetable">
                 <tr>
-                    <td width="60" valign="top">我要咨询：</td>
+                    <td width="60" valign="top" th:text="#{messages.me.consult}"></td>
                     <td colspan="3" class="havetext">
                         <textarea name="consult_content" id="consult_content" cols="45" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td>电子邮件：</td>
+                    <td th:text="#{messages.email}"></td>
                     <td width="159" class="haveinput">
                         <input name="consult_email" type="text" id="consult_email" th:value="${user==null?'': user.email }" /></td>
-                    <td width="50" align="right" th:if="${config.securitycodeconsult}">
-                        验证码：</td>
+                    <td width="50" align="right" th:if="${config.securitycodeconsult}" th:text="#{messages.code}"> </td>
                     <td width="528" class="havecode">
 
                         <span th:if="${config.securitycodeconsult}" class="haveinput">
@@ -92,8 +92,9 @@
                         </span>
                          <span class="nonamef">
                           <input name="Anonymous" type="checkbox" value="true" id="Anonymous" />
-                          &nbsp;&nbsp;匿名发表</span><span class="havebtn">
-                          <input name="" type="submit"  value="发表咨询" style="cursor:pointer;"/>
+                             <span th:text="#{messages.anonymous.publish}"></span>
+                          &nbsp;&nbsp;</span><span class="havebtn">
+                          <input name="" type="submit"  th:value="#{messages.publish.consult}" style="cursor:pointer;"/>
                           <input name="goods_id" type="hidden" id="goods_id" th:value="${goods_id}" />
                         </span>
                     </td>

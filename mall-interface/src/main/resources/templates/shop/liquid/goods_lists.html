@@ -370,27 +370,27 @@
     <div class="JH-Columns main section featured-product grid-four featured-product-1Aa  ">
         <div class="select-nav"  style="background-color: #eee;color:#f2f2f2;">
             <ul style="color: #faad14;margin-left: 25px;">
-                <li class="nav-items" >排序：</li>
+                <li class="nav-items" th:text="#{messages.sort}+':'"></li>
                 <li class="nav-items">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}"> 默认</a>
+                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.default}"> </a>
                 </li>
                 <li class="nav-items">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}"> 价格</a>
+                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.price}"> </a>
                 </li>
                 <li class="nav-item">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}"> 销量</a>
+                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.sale}"></a>
                 </li>
                 <li class="nav-item">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}"> 人气</a>
+                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.by.popularity}"> 人气</a>
                 </li>
                 <li class="nav-item">
-                    价格：
+                    <span th:text="#{messages.price}+':'"></span>
                     <from action="/goodsList.htm" method="POST" >
                         <input type="hidden" name="store_id" th:value="${store.id}">
                         <input type="text"   name="begin_price"  >
                         <span>~</span>
                         <input type="text" name="end_price" >
-                        <input  type="submit" value="提交" >
+                        <input  type="submit" th:value="#{messages.submit}" >
                     </from>
                 </li>
             </ul>
@@ -430,11 +430,11 @@
                         <div class="sale-tag sl-subhead-title">
                             Save <span class="save-price" data-price="10.00" th:text="${#numbers.formatDecimal((goods.goodsPrice - goods.storePrice)/goods.goodsPrice*100,1,2)}+'%'"></span>
                         </div>
-                        <div data-id="10079583" data-show-sale-tag="1" data-show-inventory="0"
+                        <!--<div data-id="10079583" data-show-sale-tag="1" data-show-inventory="0"
                              class="jh-btn sl-main-btn JH-Event-BuyCart add-to-cart ">
                             <span data-handler="mouth-moment-snowgoggles"></span>
                             查看详情
-                        </div>
+                        </div>-->
                     </div>
 
                     <div class="good-info" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
