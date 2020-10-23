@@ -197,7 +197,7 @@
 
             <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
                 <div class="menu">
-                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow" th:text="#{messages.more.link}"><b></b></a>
                     <div class="menu-bd" style="height:auto;">
                         <div class="menu-bd-panel">
                             <div th:each="nav : ${navs}">

@@ -40,10 +40,10 @@ function querySpare(){
         <div class="bigsearch">
             <div class="search_box">
                 <span class="search_box_sp">
-                    <input th:if="${keyword}" name="keyword" type="text" id="keyword" th:value="${keyword}" placeholder="这里就可以找到您需要的二手商品！" />
+                    <input th:if="${keyword}" name="keyword" type="text" id="keyword" th:value="${keyword}" th:placeholder="#{messages.get.sparegoods}" />
                 </span>
-                    <input type="submit" onclick="querySpare()" class="search_btn_a" value="搜二手" style="cursor:pointer;"/>
-                    <input type="button" onclick="queryInSite()" class="search_btn_b" value="搜全站" style="cursor:pointer;"/>
+                    <input type="submit" onclick="querySpare()" class="search_btn_a" th:value="#{messages.search.secondhand}" style="cursor:pointer;"/>
+                    <input type="button" onclick="queryInSite()" class="search_btn_b" th:value="#{messages.search.all}" style="cursor:pointer;"/>
             </div>
 
           <div class="keyword">

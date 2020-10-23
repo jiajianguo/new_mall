@@ -3,10 +3,10 @@ package com.xdj.interfaces.mallinterface.controller.shop;
 import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
 import com.xdj.www.core.tools.CommUtil;
-import com.xdj.www.entity.*;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.xdj.www.entity.ShoppingFavorite;
+import com.xdj.www.entity.ShoppingFavoriteExample;
+import com.xdj.www.entity.ShoppingGoodsWithBLOBs;
+import com.xdj.www.entity.ShoppingStoreWithBLOBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,15 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * @author Administrator
- */
 @RestController
 public class FavoriteController {
+    @Resource
+    private ISysConfigService configService;
+
+    @Resource
+    private IUserConfigService userConfigService;
 
     @Resource
     private IFavoriteService favoriteService;
@@ -33,7 +33,6 @@ public class FavoriteController {
 
     @Autowired
     private IStoreService storeService;
-    public static Logger log= LoggerFactory.getLogger("favorite");
 
     @RequestMapping({"/add_goods_favorite.htm"})
     public void add_goods_favorite(HttpServletResponse response, String id) {
@@ -43,7 +42,9 @@ public class FavoriteController {
                 .andGoodsIdEqualTo(CommUtil.null2Long(id));
         List<ShoppingFavorite> list =  this.favoriteService.selectExample(example);
         int ret = 0;
-        if (list == null || list.size() < 1) {
+        if (list!=null && list.size()!=0) {
+            ret=1;
+        } else {
             ShoppingGoodsWithBLOBs goods = this.goodsService.getObjById(CommUtil.null2Long(id));
             ShoppingFavorite obj = new ShoppingFavorite();
             obj.setAddtime(new Date());
@@ -53,10 +54,7 @@ public class FavoriteController {
             obj.setDeletestatus(false);
             this.favoriteService.save(obj);
             goods.setGoodsCollect(goods.getGoodsCollect() + 1);
-            log.info("----info---{}",goods.getGoodsCollect());
             this.goodsService.update(goods);
-        } else {
-            ret = 1;
         }
         response.setContentType("text/plain");
         response.setHeader("Cache-Control", "no-cache");
@@ -81,7 +79,10 @@ public class FavoriteController {
         List<ShoppingFavorite> list = this.favoriteService.selectExample(example);
 
         int ret = 0;
-        if (list.size() == 0) {
+        if (list!=null && list.size()!=0) {
+            ret=1;
+
+        } else {
             ShoppingFavorite obj = new ShoppingFavorite();
             obj.setAddtime(new Date());
             obj.setType(1);
@@ -92,8 +93,6 @@ public class FavoriteController {
             ShoppingStoreWithBLOBs store = storeService.getObjById(CommUtil.null2Long(id));
             store.setFavoriteCount(store.getFavoriteCount() + 1);
             this.storeService.update(store);
-        } else {
-            ret = 1;
         }
         response.setContentType("text/plain");
         response.setHeader("Cache-Control", "no-cache");

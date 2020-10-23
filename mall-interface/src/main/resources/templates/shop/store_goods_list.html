@@ -24,13 +24,13 @@
     <div class="pageright" id="site-nav">
         <ul class="quick-menu">
             <li class="mytaobao menu-item menupx">
-                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow">我的订单<b></b></a>
+                <div class="menu"><a class="menu-hd" th:href="@{/buyer/index.htm}" rel="nofollow" th:text="#{messages.my.order}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow">待支付</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow">待收货</a>
-                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow">待评价</a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_submit)}" rel="nofollow" th:text="#{messages.waiting.pay}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_shipping)}" rel="nofollow" th:text="#{messages.waiting.delivery}"></a>
+                                <a th:href="@{/buyer/order.htm(order_status=order_receive)}" rel="nofollow" th:text="#{messages.waiting.evalution}"> </a>
                             </div>
                         </div>
                     </div>
@@ -38,18 +38,18 @@
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow">商家支持<b></b></a>
+                    <a class="menu-hd" th:href="@{/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.support}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow">商家中心</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow">商家订单</a>
-                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow">商家商品</a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/index.htm}" rel="nofollow" th:text="#{messages.merchants.center}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/order.htm}" rel="nofollow" th:text="#{messages.merchants.order}"></a>
+                                <a th:href="@{http://emode.xdjplus.com:8080/seller/goods.htm}" rel="nofollow" th:text="#{messages.merchants.goods}"></a>
                                 <span th:switch="${user != null}">
 									<a th:case="true" th:href="@{/store.htm(id=${user.storeId})}"
-                                       rel="nofollow">我的店铺</a>
+                                       rel="nofollow" th:text="#{messages.my.shop}"></a>
                                     <a th:case="false" th:href="@{/seller/store_create_first.htm}"
-                                       rel="nofollow">商家入驻</a>
+                                       rel="nofollow" th:text="#{messages.merchants.in}"></a>
 								</span>
 
                             </div>
@@ -60,26 +60,25 @@
 
             <li class="search menu-item menupx">
                 <div class="menu" id="cart_menu">
-                    <span class="menu-hd" id="cart_goods_top_menu">
-                        <s></s><a th:href="@{/goods_cart1.htm}" rel="nofollow">购物车
-                        <span id="cart_goods_count_top" class="top_car" th:text="${cart.size()}"></span>种商品</a><b></b>
-                    </span>
+                     <span class="menu-hd" id="cart_goods_top_menu">
+                    <s></s>
+                    <a th:href="@{/goods_cart1.htm}" rel="nofollow" th:text="#{messages.goods.cart}"></a><b></b>
+                  </span>
                 </div>
             </li>
-
-
             <li class="menupx">
                 <a th:href="@{/buyer/message.htm}">
-                    站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+                    <span th:text="#{messages.plateform.message}"></span>
+                    <span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
-                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏夹<b></b></a>
+                    <a class="menu-hd" th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.my.collect}"><b></b></a>
                     <div class="menu-bd">
                         <div class="menu-bd-panel">
                             <div>
-                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow">收藏商品</a>
-                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow">收藏店铺</a>
+                                <a th:href="@{/buyer/favorite_goods.htm}" rel="nofollow" th:text="#{messages.collect.goods}"></a>
+                                <a th:href="@{/buyer/favorite_store.htm}" rel="nofollow" th:text="#{messages.collect.shop}"></a>
                             </div>
                         </div>
                     </div>
@@ -87,19 +86,19 @@
             </li>
 
             <li th:if="${suer != null && user.userRole == 'ADMIN' }" class="menupx">
-                <a th:href="@{/admin/index.htm}" target="_blank">管理后台</a>
+                <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
             </li>
             <li class="menupx" th:if="${navs != null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
             </li>
 
             <li class="menupx" style="background:none;" th:if="${navs == null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}"></a>
             </li>
 
             <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
                 <div class="menu">
-                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow" th:text="#{messages.more.link}"><b></b></a>
                     <div class="menu-bd" style="height:auto;">
                         <div class="menu-bd-panel">
                             <div th:each="nav : ${navs}">
@@ -116,18 +115,18 @@
         <span th:switch="${user != null}">
           <span th:case="true">
              <span th:text="${user.username}"></span>
-			  <span>您好,欢迎来到</span>
+			  <span th:text="#{messages.welcome.word}"></span>
 			  <span th:text=" ${config.websitename}"></span>
-             <a th:href="@{/shopping_logout.htm}" class="lightblue">[退出]</a>
+             <a th:href="@{/shopping_logout.htm}" class="lightblue" th:text="#{messages.login.out}"></a>
           </span>
           <span th:case="false">
-			  <span>亲，欢迎来到</span><span th:text="${config.websitename}"></span>
+			  <span th:text="#{messages.welcome.word}"></span><span th:text="${config.websitename}"></span>
              <span class="pxlr">
-               <a th:href="@{/user/login.htm}" class="lightblue">登录</a>
+               <a th:href="@{/user/login.htm}" class="lightblue" th:text="#{messages.login}"></a>
              </span>
-            <span class="pxlr">或</span>
+            <span class="pxlr" th:text="#{messages.or}"></span>
             <span class="pxlr">
-              <a th:href="@{/register.htm}" class="lightblue">注册</a>
+              <a th:href="@{/register.htm}" class="lightblue" th:text="#{messages.register}"></a>
             </span>
           </span>
         </span>
@@ -140,27 +139,27 @@
             <div class="head clearFix">
                 <div class="logo">
                     <a th:href="@{/index.htm}" th:if="${config.websiteLogo != null}">
-                        <img
-                             th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0" width="180" height="60"/>
+                        <img width="180" height="60"
+                             th:src="@{'/'+${config.websiteLogo.path}+'/'+${config.websiteLogo.name}}" border="0"/>
                     </a>
                     <a th:href="@{/index.htm}" th:if="${config.websiteLogo == null}">
-                        <img  th:src="@{/style/system/front/default/images/logo.png}"
-                             border="0" width="180" height="60"/>
+                        <img width="180" height="60" th:src="@{/style/system/front/default/images/logo.png}"
+                             border="0"/>
                     </a>
                 </div>
                 <div class="searchForm">
                     <form action="/search.htm" method="post" target="_blank" id="searchForm">
-                        <input name="type" type="hidden" id="type" value="${type}"/>
+                        <input name="type" type="hidden" id="type" th:value="${type}"/>
                         <div class="toph_bigsearch">
                             <div class="toph_sear">
                                 <ul class="toph_bgsear">
-                                    <li class="this" type="goods"><a href="javascript:void(0);">宝贝<s></s></a></li>
-                                    <li style="display:none" type="store"><a href="javascript:void(0);">店铺</a></li>
+                                    <li class="this" type="goods"><a href="javascript:void(0);" th:text="#{messages.baby}"><s></s></a></li>
+                                    <li style="display:none" type="store"><a href="javascript:void(0);" th:text="#{messages.shop}"></a></li>
                                 </ul>
-                                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                                <input name="keyword" type="text" id="keyword" th:placeholder="#{messages.search.simple}" x-webkit-speech
                                        lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
                                        class="toph_sear_txt"/>
-                                <input name="input" type="button" value="搜索" style="cursor:pointer;"
+                                <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;"
                                        onclick="search_form();" class="toph_sear_btn"/>
                             </div>
                             <div class="keyword">
@@ -182,7 +181,7 @@
                 <h2>
                     <a th:href="@{/goods_class.htm}">
                         <span>
-                            全部分类
+                           <span th:text="#{messages.type.all}"></span>
                             <em>
                                 <img th:src="@{/style/system/front/default/images/nav_left.png}">
                             </em>
@@ -257,8 +256,9 @@
 
     <div class="index">
         <div class="position">
-            当前位置：<a th:href="@{/index.htm}">首页</a>>
-            <a th:href="@{/goods_class.htm}" class="pos">商品分类</a> >
+            <span th:text="#{messages.position.now}"></span>
+            <a th:href="@{/index.htm}" th:text="#{messages.home.page}"></a>>
+            <a th:href="@{/goods_class.htm}" class="pos" th:text="#{messages.goods.class}"></a> >
             <a th:if="${gc.parent != null  && gc.parent.parent !=  null}"
                th:href="@{/store_goods_list.htm(gc_id=${gc.parent.parent.id})}"
                th:text="${gc.parent.parent.classname}"> ></a>
@@ -274,7 +274,7 @@
                     <div class="opclass">
                         <div class="classify" th:if="${gc.goodsType != null} ">
                             <div class="chosen">
-                                <div class="chosena">您已经选择：</div>
+                                <div class="chosena" th:text="#{messages.have.selected}"></div>
                                 <div class="chosenb" th:if="${goods_property.size()>0}">
                                   <span th:each="map : ${goods_property}" class="chose">
                                     <strong class="hui2" th:text="${map.get('name')}">:</strong>
@@ -299,14 +299,14 @@
                                  th:each="info : ${gc.goodsType.gss}">
                                 <div class="classmore" th:if="${info.properties.size()>12}">
                                     <a href="javascript:void(0);" class="class_more"
-                                       mark="gss${info.id}_${info.id}">更多</a>
-                                    <a href="javascript:void(0);" style="display:none" class="class_income">收起</a>
+                                       mark="gss${info.id}_${info.id}" th:text="#{messages.more}">更多</a>
+                                    <a href="javascript:void(0);" style="display:none" class="class_income" th:text="#{messages.pack.up}">收起</a>
                                 </div>
                                 <div class="classa" th:text="${info.name}">:</div>
                                 <div class="classb">
                                   <span th:if="${info.properties}" th:each="v_info : ${info.properties}">
-                                  <a href="javascript:void(0);"
-                                     onclick="goods_property_generic('gs','${v_info.id}','${v_info.value}')"
+                                  <a href="javascript:void(0);" th:data-id="${v_info.id}" th:data="${v_info.value}"
+                                     onclick="goods_property_generic('gs',this.getAttribute('data-id'),this.getAttribute('data'))"
                                      th:text="${v_info.value}"></a>
                                   </span>
                                 </div>
@@ -315,8 +315,8 @@
                                  class="classia">
                                 <div class="classmore">
                                     <a href="javascript:void(0);" class="class_more"
-                                       mark="properties${info.id}_${info.id}">更多</a>
-                                    <a href="javascript:void(0);" style="display:none" class="class_income">收起</a>
+                                       mark="properties${info.id}_${info.id}" th:text="#{messages.more}">更多</a>
+                                    <a href="javascript:void(0);" style="display:none" class="class_income" th:text="#{messages.pack.up}">收起</a>
                                 </div>
                                 <div class="classa" th:text="${info.name}"></div>
                                 <div class="classb">
@@ -329,10 +329,10 @@
                             </div>
                             <div th:if="${gc.goodsType.gbs != null }" class="classia">
                                 <div th:if="${gc.goodsType.gbs.size()>12}" class="classmore">
-                                    <a href="javascript:void(0);" class="class_more" mark="brand_0">更多</a>
-                                    <a href="javascript:void(0);" style="display:none" class="class_income">收起</a>
+                                    <a href="javascript:void(0);" class="class_more" mark="brand_0" th:text="#{messages.more}"></a>
+                                    <a href="javascript:void(0);" style="display:none" class="class_income" th:text="#{messages.pack.up}">收起</a>
                                 </div>
-                                <div class="classa">品牌:</div>
+                                <div class="classa" th:text="#{messages.brand}+':'"></div>
                                 <div class="classb">
                                   <span th:if="${gc.goodsType.gbs != null }" th:each="info : ${gc.goodsType.gbs}">
                                     <a href="javascript:void(0);"
@@ -350,42 +350,41 @@
                         <div class="brandsort_screen" id="search_bar">
                             <div class="brandsort_show">
                                 <a href="javascript:void(0);" goods_view="thumb" id="thumb_view"
-                                   class="brandsort_show_big"><i class="big_hide"></i>大图</a>
+                                   class="brandsort_show_big"><i class="big_hide"></i><span th:text="#{messages.big.img}"></span></a>
                                 <a href="javascript:void(0);" goods_view="list" id="list_view"
-                                   class="brandsort_show_list"><i class="list_hide"></i>列表</a>
+                                   class="brandsort_show_list"><i class="list_hide"></i><span th:text="#{messages.list}"></span></a>
                             </div>
                             <div class="brandsort_sort">
                                 <a href="javascript:void(0);" class="sort_a this" orderBy="addTime"
-                                   orderType="asc">默认排序</a>
+                                   orderType="asc" th:text="#{messages.default.sort}"></a>
                                 <a href="javascript:void(0);" class="sort_a" orderBy="goods_salenum" orderType="desc"><i
-                                        class="sort_a1">销量</i></a>
+                                        class="sort_a1" th:text="#{messages.sale}"></i></a>
                                 <a href="javascript:void(0);" class="sort_a" orderBy="goods_collect" orderType="desc"><i
-                                        class="sort_a1">人气</i></a>
+                                        class="sort_a1" th:text="#{messages.by.popularity}"></i></a>
                                 <a href="javascript:void(0);" class="sort_a" orderBy="store_price" orderType="asc"><i
-                                        class="sort_a1">价格</i></a>
+                                        class="sort_a1" th:text="#{messages.price}"></i></a>
                             </div>
                             <div class="brandsort_fineprice">
                                 <div class="brandsort_price_top">
                                     <input placeholder="¥" name="store_price_begin" th:value="${store_price_begin}"
-                                           type="text" title="按照价格区间筛选 最低价" class="brandsort_price_input"/>
+                                           type="text" th:title="#{messages.search.startprice}" class="brandsort_price_input"/>
                                     <i>-</i>
                                     <input placeholder="¥" name="store_price_end" th:value="${store_price_end}"
-                                           type="text" title="按照价格区间筛选 高价" class="brandsort_price_input"/>
+                                           type="text" th:title="#{messages.search.endprice}" class="brandsort_price_input"/>
                                 </div>
                                 <div class="brandsort_price_bottom" style="display:none">
-                                    <a href="javascript:void(0);" mark="clear" class="brandsort_btn_clear">清空</a>
-                                    <a href="javascript:void(0);" class="brandsort_btn_com">确定</a></div>
+                                    <a href="javascript:void(0);" mark="clear" class="brandsort_btn_clear" th:text="#{messages.clear}"></a>
+                                    <a href="javascript:void(0);" class="brandsort_btn_com" th:text="#{messages.confirm}">确定</a></div>
                             </div>
                             <div class="brandsort_sc_area">
-                <span class="brandsort_area_span" th:if="${area }">
-                  所在地
+                <span class="brandsort_area_span" th:if="${area }" th:text="#{messages.location}">
                 </span>
                                 <div class="area_detail" style="display:none">
-                                    <h1>所有地区</h1>
+                                    <h1 th:text="#{messages.all.area}"></h1>
                                     <div class="area_adress">
                                         <input type="text" th:if="${area != null}" class="adre_sear" id="area_name"
-                                               name="area_name" placeholder="请输入地区名称" th:value="${area_name}"/>
-                                        <input class="adre_btn" type="submit" value="确定"/>
+                                               name="area_name" th:placeholder="#{messages.input.area}" th:value="${area_name}"/>
+                                        <input class="adre_btn" type="submit" th:value="#{messages.confirm}"/>
                                     </div>
                                     <ul class="areaul">
                                         <li th:each="area : ${areas}">
@@ -397,8 +396,8 @@
                             </div>
                             <div class="brandsort_input">
                                 <input class="brandsort_input_txt" type="text" id="goods_name" name="goods_name"
-                                       th:value="${goods_name}" placeholder="搜索关键字"/>
-                                <input type="submit" style="cursor:pointer;" value="确定" class="brandsort_input_btn"/>
+                                       th:value="${goods_name}" th:placeholder="#{messages.search.keyword}"/>
+                                <input type="submit" style="cursor:pointer;" th:value="#{messages.confirm}" class="brandsort_input_btn"/>
                             </div>
                         </div>
                         <div th:if="${objs}" class="smallgoods">
@@ -417,37 +416,40 @@
                     </p>
                   </span>
                                 </li>
-                                <li class="goodslook"><strong>商城价：¥ <span
-                                        th:text="${obj.goodsCurrentPrice}"></span></strong></li>
-                                <li class="goodslook"><span class="marketprice">市场价：¥ <span
-                                        th:text="${obj.goodsPrice}"></span></span></li>
+                                <li class="goodslook"><strong>
+                                    <span th:text="#{messages.emode.price}+#{messages.money.class}+${obj.goodsCurrentPrice}"></span></strong></li>
+                                <li class="goodslook"><span class="marketprice"><span
+                                        th:text="#{messages.goods.price}+#{messages.money.class}+${obj.goodsPrice}"></span></span></li>
                                 <li class="goodsnames">
                                     <a th:href="@{/goods.htm(id=${obj.id})}" target="_blank">
-                                        <span th:if="${obj.groupBuy==2}" style="color:#F00;">[团购]</span>
-                                        <span th:if="${obj.activityStatus==2}" style="color:#F00;">[活动]</span>
-                                        <span th:if="${obj.combinStatus==2}" style="color:#F00;">[组合]</span>
-                                        <span th:if="${obj.bargainStatus==2}" style="color:#F00;">[特价]</span>
-                                        <span th:if="${obj.deliveryStatus==2}" style="color:#F00;">[买就送]</span>
+                                        <span th:if="${obj.groupBuy==2}" style="color:#F00;" th:text="#{messages.group.buy}">[团购]</span>
+                                        <span th:if="${obj.activityStatus==2}" style="color:#F00;" th:text="#{messages.activity}">[活动]</span>
+                                        <span th:if="${obj.combinStatus==2}" style="color:#F00;" th:text="#{messages.combin}">[组合]</span>
+                                        <span th:if="${obj.bargainStatus==2}" style="color:#F00;" th:text="#{messages.bargain}">[特价]</span>
+                                        <span th:if="${obj.deliveryStatus==2}" style="color:#F00;" th:text="#{messages.buy.get}">[买就送]</span>
                                         <span th:text="${obj.goodsName}"></span>
                                     </a>
                                 </li>
-                                <li class="recentgoodsok">最近成交<strong th:text="${obj.goodsSalenum}"></strong>笔</li>
+                                <li class="recentgoodsok"><strong th:text="#{messages.recent.transaction}+${obj.goodsSalenum}+#{messages.sum}"></strong></li>
                                 <li class="goodshidden" style="display:none">
                   <span class="goods_description">
-                    与描述相符: <b style="color:#F00" th:text="${obj.descriptionEvaluate}"></b> 分
+                      <span th:text="#{messages.describle.equal}"></span>
+                     <b style="color:#F00" th:text="${obj.descriptionEvaluate}"></b>
+                      <span th:text="#{messages.score}"></span>
                   </span>
                                     <span class="goodshshop_name">
-                    店铺名称：<a th:href="@{/store.htm(id=${obj.goodsStoreId})}" target="_blank">
+                                        <span th:text="#{messages.store.name}"></span>
+                    <a th:href="@{/store.htm(id=${obj.goodsStoreId})}" target="_blank">
                       <i th:text="${obj.goods_store.storeName}"></i>
                     </a>
                   </span>
                                     <span class="goods_eva">
                     <i>
-                      <em>累计评价</em>
+                      <em th:text="#{messages.evalution.add}"></em>
                       <p th:text="${obj.evaluates.size()}"></p>
                     </i>
                     <i>
-                      <em>店铺等级</em>
+                      <em th:text="#{messages.shop.level}"></em>
                       <p th:text="${obj.goods_store.grade.gradename}"></p>
                   </i></span></li>
                             </ul>
@@ -471,21 +473,23 @@
                                 <ul class="goodsul">
                                     <li class="goodsli1">
                                         <span class="goods2name">
-                                          <span th:if="${obj.groupBuy==2}" style="color:#F00;">[团购]</span>
-                                          <span th:if="${obj.activityStatus==2}" style="color:#F00;">[活动]</span>
-                                          <span th:if="${obj.combinStatus==2}" style="color:#F00;">[组合]</span>
-                                          <span th:if="${obj.bargainStatus==2}" style="color:#F00;">[特价]</span>
-                                          <span th:if="${obj.deliveryStatus==2}" style="color:#F00;">[买就送]</span>
+                                          <span th:if="${obj.groupBuy==2}" style="color:#F00;" th:text="#{messages.group.buy}">[团购]</span>
+                                          <span th:if="${obj.activityStatus==2}" style="color:#F00;" th:text="#{messages.activity}">[活动]</span>
+                                          <span th:if="${obj.combinStatus==2}" style="color:#F00;" th:text="#{messages.combin}">[组合]</span>
+                                          <span th:if="${obj.bargainStatus==2}" style="color:#F00;" th:text="#{messages.bargain}">[特价]</span>
+                                          <span th:if="${obj.deliveryStatus==2}" style="color:#F00;" th:text="#{messages.buy.get}">[买就送]</span>
                                           <a th:href="@{goods.htm(id=${obj.id})}" target="_blank" th:text="${obj.goodsName}"></a>
                                         </span>
                                         <span class="goods2market">
-                                            市场价：¥ <span th:text="${obj.goodsPrice}"></span>
+                                            <span th:text="#{messages.goods.price}+#{messages.money.class}${obj.goodsPrice}"></span>
                                         </span>
                                          <span class="goods2shop">
-                                          商城价：<strong th:text="'￥'+${obj.storePrice}"></strong>
+                                          <strong th:text="#{messages.emode.price}+#{messages.money.class}${obj.storePrice}"></strong>
                                         </span>
                                         <span class="recent">
-                                          累计售出<strong class="orange" th:text="${obj.goodsSalenum}"></strong>笔
+                                            <span th:text="#{messages.sale.count}"></span>
+                                            <strong class="orange" th:text="${obj.goodsSalenum}"></strong>
+                                            <span th:text="#{messages.sum}"></span>
                                         </span>
                                     </li>
                                     <li class="goodsli2">
@@ -494,14 +498,16 @@
                                             店铺名称：<a th:href="@{/storehtm(id=${obj.goods_store.id})}"
                                                     th:text="${obj.goods_store.storeName}"></a>
                                           </span>
-                                            <span class="goods2send" th:text="'店铺等级：'+${obj.goods_store.grade.gradename}"></span>
+                                            <span class="goods2send" th:text="#{messages.shop.level}'+${obj.goods_store.grade.gradename}"></span>
                                         </p>
                                         <p class="goodsli2_p">
                                             <span class="goodsli2_p_sp">
-                                                与描述相符：<b style="color:#F00" th:text="${obj.descriptionEvaluate}"></b> 分
+                                                <span th:text="#{messages.describle.equal}"></span>
+                                                <b style="color:#F00" th:text="${obj.descriptionEvaluate}"></b> 分
                                             </span>
                                             <span class="goodsli2_p_eva">
-                                                累计评价：<i th:text="${obj.evaluates.size()}"></i>
+                                                <span th:text="#{messages.evalution.add}"></span>
+                                                <i th:text="${obj.evaluates.size()}"></i>
                                             </span>
                                         </p>
                                     </li>
@@ -513,7 +519,7 @@
                 <span>
                   <img th:src="@{/style/system/front/default/images/sigh.png}" width="120" height="109"/>
                 </span>
-                                <b>对不起，没有对应的数据!</b>
+                                <b th:text="#{messages.sorry.none}"></b>
                             </div>
                         </div>
                     </div>
@@ -544,8 +550,9 @@
             </form>
             <!--直通车热卖商品-->
             <div class="index2_left">
-                <h1>热卖商品 <a th:href="@{/ztc_goods_list.htm}" target="_blank"
-                            style="float:right; font-size:12px;">更多>></a></h1>
+                <h1><span th:text="#{messages.hot.goods}"></span>
+                     <a th:href="@{/ztc_goods_list.htm}" target="_blank"
+                            style="float:right; font-size:12px;" th:text="#{messages.more}+'>>'"></a></h1>
                 <div class="hotgoods">
                     <ul >
                         <span th:each="ztc_good : ${ztc_goods} ">
@@ -563,7 +570,7 @@
                         <li class="blue2">
                             <a th:href="@{/goods.htm(id=${ztc_good.id})}" target="_blank" th:text="${ztc_good.goodsName}"></a>
                         </li>
-                        <li class="center">最近成交 <span th:text="${ztc_good.goodsSalenum}"></span>件</li>
+                        <li class="center"><span th:text="#{messages.recent.transaction}+${ztc_good.goodsSalenum}+#{messages.unit.piece}"></span></li>
                         </span>
                     </ul>
                 </div>

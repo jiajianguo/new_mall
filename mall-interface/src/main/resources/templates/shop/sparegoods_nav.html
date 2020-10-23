@@ -39,7 +39,7 @@ jQuery(document).ready(function(){
 <div class="Idle_nav">
   <div class="Idle_menu">
     <div class="Classify" >
-      <a href="javascript:void(0);">所有分类</a><span>|</span>
+      <a href="javascript:void(0);" th:text="#{messages.all.class}"></a><span>|</span>
     </div>
     <ul class="navigation">
       <li th:each="nav :${navs}">
@@ -49,17 +49,17 @@ jQuery(document).ready(function(){
     <div class="My_idle">
       <a href="javascript:void(0);" th:user_id="${user.id}"
          th:if="${user}" th:dialog_uri="@{/user_dialog_login.htm}"
-         dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" >我的闲置
+         th:dialog_title="#{messages.memeber.login}" dialog_width="450" dialog_height="100" dialog_id="user_login" th:text="#{messages.my.spare}">
       </a>
       <div class="My_idle_list" style="display:none">
         <ul>
-          <li><a th:href="@{/seller/spare_goods.htm(type=0)}" target="_blank">出售中: <span th:text="${selling}"> </span>件</a></li>
-          <li><a th:href="@{/seller/spare_goods.htm(type=-1)}" target="_blank">下架中: <span th:text="${down}"></span>件</a></li>
-          <li><a th:href="@{/seller/spare_goods.htm}" target="_blank">违规中: <span th:text="${drops}"></span>件</a></li>
+          <li><a th:href="@{/seller/spare_goods.htm(type=0)}" target="_blank"> <span th:text="#{messages.selling}+${selling}+#{messages.unit.piece}"> </span></a></li>
+          <li><a th:href="@{/seller/spare_goods.htm(type=-1)}" target="_blank"><span th:text="#{messages.shelve}+${down}+#{messages.unit.piece}"></span></a></li>
+          <li><a th:href="@{/seller/spare_goods.htm}" target="_blank"> <span th:text="#{messages.drops}+${drops}+#{messages.unit.piece}"></span></a></li>
         </ul>
       </div>
     </div>
-    <div class="release"><a th:href="@{/seller/add_spare_goods.htm}" target="_blank">发布宝贝</a></div>
+    <div class="release"><a th:href="@{/seller/add_spare_goods.htm}" target="_blank" th:text="#{messages.release.baby}"></a></div>
     <!--所有分类下拉 start-->
     <div class="Classify_ul" style="display:none;">
       <ul>

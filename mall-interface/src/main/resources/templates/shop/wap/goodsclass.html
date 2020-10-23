@@ -68,7 +68,7 @@
 				<div class="main_right" >
 					<img class="right_banner" src="asset/img/class_banner.png" >
 					<div class="classify_box flex-star" th:each="gc,index :${gcs}"   th:data-id="${gc.id}" th:style="${index.index==0?'display: flex;':'display: none;'}">
-						<a class="ify_item" th:href="@{/goods_list.htm(gc_id = ${gc1.id})}"   th:each="gc1 :${gc.childs}">
+						<a class="ify_item" th:href="@{/store_goods_list.htm(gc_id = ${gc1.id})}"   th:each="gc1 :${gc.childs}">
 							<div   class="item_img flex-center" >
 								<img th:if="${gc1.acc}" th:src="@{${'/'+gc1.acc.path+'/'+gc1.acc.name }}" >
 								<img th:unless="${gc1.acc}" src="asset/img/化妆品.png" >

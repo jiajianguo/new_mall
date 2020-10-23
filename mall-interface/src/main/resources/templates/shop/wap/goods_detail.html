@@ -58,7 +58,7 @@
 					<svg class="icon collect_act" data-iscollect="1" aria-hidden="true">
 						<use xlink:href="#icon-shoucang"></use>
 					</svg>
-					<p th:text="${obj.goodsCollect}"></p>
+					<p id="goodscollect" th:text="${obj.goodsCollect}"></p>
 				</div>
 			</div>
 			<div class="goods_tit" th:text="${obj.goodsName}">
@@ -338,12 +338,14 @@
 			alert("不能收藏自己的商品");
 		else {
 			var goodsId=jQuery("#goodsId").val();
+			var goodscollect=jQuery("#goodscollect").text();
 			jQuery.post("/add_goods_favorite.htm", {"id": goodsId}, function (data) {
 				if (data == 0) {
 					alert("商品收藏成功！");
+					jQuery("#goodscollect").text(parseInt(goodscollect)+parseInt(1));
 				}
 				if (data == 1) {
-					alert("已经收藏该商品！");
+					alert("已经收藏过该商品！");
 				}
 			}, "text");
 		}

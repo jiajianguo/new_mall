@@ -28,8 +28,8 @@
 				</a>
 				<div class="item_right">
 					<div class="right_top flex-between">
-						<div th:text="${obj.goods.goodsName}"></div>
-						<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank">
+						<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" th:text="${obj.goods.goodsName}">
+							<!--<div ></div>-->
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-fenxiang"></use>
 						</svg>
