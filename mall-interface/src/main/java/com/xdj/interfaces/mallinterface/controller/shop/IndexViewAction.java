@@ -412,7 +412,7 @@ public class IndexViewAction {
         }
     }
 
-	@RequestMapping( { "/footer.htm" } )
+	@RequestMapping({"/footer.htm"} )
 	public ModelAndView footer( HttpServletRequest request, HttpServletResponse response ) {
 		ModelAndView mv = new JModelAndView( "footer.html", this.configService.getSysConfig(), this.userConfigService.getUserConfig(), 1, request, response );
 		String shopping_view_type = CommUtil.null2String( request.getSession().getAttribute( "shopping_view_type" ) );

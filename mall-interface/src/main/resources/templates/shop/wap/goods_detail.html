@@ -37,7 +37,7 @@
 			</div>
 
 			<div class="intro_line flex-between">
-				<input type="hidden" id="gropBuy" name="gropBuy" th:value="${obj.groupBuy}">
+				<input type="hidden" id="groupBuy" name="groupBuy" th:value="${obj.groupBuy}">
 				<input type="hidden" id="store_id" name="store_id" th:value="${obj.goodsStoreId}">
 				<input type="hidden" id="user_store_id" name="user_store_id" th:value="${user.storeId}">
 				<input type="hidden" id="goodsId" name="goodsId" th:value="${obj.id}">
@@ -86,7 +86,8 @@
 						<div class="goods_tit">
 							<div th:text="${obj.goodsName}"></div>
 							<div class="shose_spec">
-								已选: <span></span>
+								<b th:text="#{messages.cart.select}"></b>
+								<span></span>
 							</div>
 						</div>
 					</div>
@@ -98,7 +99,7 @@
 								<b></b>
 							</div>
 							<div class="sepc_cont flex-star" >
-								<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}" th:attr="gsp=${gsp.id}">
+								<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:data-id="${obj.id}"  th:text="${gsp.value}" th:attr="gsp=${gsp.id}">
 								</div>
 							</div>
 						</div>
@@ -121,37 +122,7 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="modal_btn flex-between">
-				<input type="button" class="btn" th:data-id="${obj.id}" name="" id="add_cart" value="加入购物车" />
-				<input type="button" style="margin-top: .2rem;background: #222" class="btn buy_btn" th:data-id="${obj.id}" name="" id="buy_goods" value="立即购买" />
-			</div>-->
-		<!--	<div class="goods_spec">
-				<div class="spec_line" id="specification" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
-					<div class="spec_tit">
-						<span th:text="${spec.name}"></span>
-						<b></b>
-					</div>
-					<div class="sepc_cont flex-star" >
-						<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:text="${gsp.value}" th:attr="gsp=${gsp.id}">
-						</div>
-					</div>
-				</div>
-				<div class="spec_line">
-					<div class="spec_tit" th:text="#{messages.amount}">
 
-					</div>
-					<div class="num_opt flex-star">
-						<div id="sub_count" >-</div>
-						<input type="number" name="count" id="count" value="1" />
-						<div id="add_count">+</div>
-						&nbsp;&nbsp;&nbsp;
-						<input type="number" name="inventory" id="inventory" th:value="${obj.goodsInventory}" disabled="disabled" style="width: 1rem;" />
-					</div>
-				</div>
-			</div>
-
-
--->
 			<div class="tips">
 				<!--<p>处理时间:当项目被选中时计算</p>-->
 				<p th:text="#{messages.delivery.notice}"></p>
@@ -173,7 +144,6 @@
 								 />
 							</a>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -197,16 +167,16 @@
 					</div>
 					<div class="bottom_icon">
 						<svg class="icon" aria-hidden="true">
-							<use xlink:href="#icon-kefu"></use>
+							<use xlink:href="#icon-classify-on"></use>
 						</svg>
-						<p><a th:href="@{/waiter/call}" th:text="#{messages.customer}"> </a></p>
+						<p><a th:href="@{/goodsclass.htm(storeId=${obj.goodsStoreId})}" th:text="#{messages.class}"> </a></p>
 					</div>
 					<div class="bottom_icon">
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-gouwuchezhengpin"></use>
 						</svg>
 						<p><a  th:href="@{/goods_cart1.htm}" th:text="#{messages.goods.cart}"></a></p>
-						<div class="cart_num flex-center">1</div>
+						<div class="cart_num flex-center" id="cart_unm" th:text="${cartSize != null?cartSize: 0 }"></div>
 					</div>
 				</div>
 				<input type="button" class="bottom_btn" name=""  value="加入购物车" />
@@ -216,10 +186,6 @@
 	</div>
 </body>
 <script type="text/javascript">
-
-	$(".buy_btn").click(function(){
-
-	})
 
 	$("#add_cart").on('click',function (){
 		var  id= $(this).attr('data-id');
@@ -331,6 +297,30 @@
 		}
 	}
 
+	/**
+	 * 根据不同的规格加载不同的价格
+	 * @param id 商品id
+	 * @param gsp gspid
+	 */
+	function goods_spec_set(id,gsp) {
+		var load = true;
+		if (load) {
+			$.post("/load_goods_gsp.htm", {"id":id, "gsp": gsp},function (data) {
+				var res =JSON.parse(data);
+				var  goods_inventory = res.count;
+				var  store_price = res.price;
+				var groupBuy = $("#groupBuy").val();
+				if(groupBuy == '2'){
+					$("#gg_price").text(store_price);
+				}else{
+					$("#store_price").text(store_price);
+				}
+				$("#inventory").text(goods_inventory);
+
+			});
+		}
+	}
+
 	jQuery("#add_favorite").click(function () {
 		var storeId=jQuery("#store_id").val();
 		var user_store_id=jQuery("#user_store_id").val();
@@ -384,6 +374,8 @@
 				if(flag){
 					window.location.href = "/goods_cart1.htm";
 				}else{
+					var num=$("#cart_unm").text();
+					$("#cart_unm").text(parseInt(num)+1);
 					alert('添加到购物车成功');
 				}
 			}else{
@@ -435,12 +427,6 @@
 		spaceBetween : 10,
 		loop: true
 	});
-
-	/*$(".sepc_cont div").click(function(){
-		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
-		$(this).parents(".spec_line").find(".spec_tit b").text($(this).text());
-
-	});*/
 	$(".bottom_btn").click(function(){
 		$(".ui-shade").css("display","block");
 		$(".ui-modal").addClass("shadeshow");
@@ -458,6 +444,10 @@
 		let sepcindex = $(this).parents(".spec_line").index();
 		specarr[sepcindex] = $(this).text();
 		$(".shose_spec span").text(specarr.join("，"));
+		var id= $(this).attr('data-id');
+		var gsp =$(this).attr('gsp');
+		goods_spec_set(id,);
 	})
+
 </script>
 </html>

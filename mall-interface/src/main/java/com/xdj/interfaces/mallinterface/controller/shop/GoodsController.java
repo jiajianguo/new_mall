@@ -611,8 +611,8 @@ public class GoodsController {
         int count = 0;
         double price = 0.0D;
         goodsViewTools.addGroup(goods);
-        goodsViewTools.addgroupGoodsList(goods);
-        if ((goods.getGroup() != null) && (goods.getGroupBuy() == 2)) {
+        if(goods.getGroupBuy() ==2 ){
+            goodsViewTools.addgroupGoodsList(goods);
             for (ShoppingGroupGoods gg : goods.getGroup_goods_list()){
                 if (gg.getGroupId().equals(goods.getGroup().getId())) {
                     count = gg.getGgGroupCount() - gg.getGgDefCount();
@@ -645,8 +645,7 @@ public class GoodsController {
         response.setContentType("text/plain");
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("UTF-8");
-        try
-        {
+        try{
             PrintWriter writer = response.getWriter();
             writer.print(map.toJSONString());
             writer.flush();
@@ -1183,8 +1182,7 @@ public class GoodsController {
     }
 
     @RequestMapping({"/ztc_goods_list.htm"})
-    public ModelAndView ztc_goods_list(HttpServletRequest request, HttpServletResponse response, String currentPage, String orderBy, String orderType, String goods_view)
-    {
+    public ModelAndView ztc_goods_list(HttpServletRequest request, HttpServletResponse response, String currentPage, String orderBy, String orderType, String goods_view) {
         ModelAndView mv = new JModelAndView("ztc_goods_list.html",
                 this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);

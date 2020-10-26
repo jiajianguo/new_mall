@@ -25,14 +25,13 @@
 					<div class="pushdz">
 						<div>
 							<div class="push_title" th:text="#{messages.shipping.address}"></div>
-							<div th:data-id="${addr.id}" class="address_id" >
+							<div th:if="${addr}"  th:data-id="${addr.id}" class="address_id" >
 								<span id="person" th:text="${addr.truename } "></span>
 								<span id="mobile" th:text="${addr.mobile}"></span>
 								<div class="pushdz_text"   th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>
 							</div>
 						</div>
 						<input class="pushdzbt" id="user_address" type="button" value="设置地址" />
-
 					</div>
 					<div class="spnew" th:each="data : ${cartData} ">
 						<div class="text_title">
@@ -56,7 +55,27 @@
 								</div>
 								<div class="textnumber" th:text="${'x'+gc.count}"></div>
 							</div>
+
 						</div>
+						<div th:if="${data.couponin != null && data.couponin.size() >0 }">
+							<p class="text_title flex-between" style="margin-top: .1rem">
+								<span th:text="#{messages.coupon}"></span>
+								<select class="select_oo">
+									<option  th:each="obj : ${data.couponin}" th:data-id="{obj.id}" th:value="${obj.couponAmount}" th:text="${obj.couponName}"> </option>
+								</select>
+							</p>
+						</div>
+
+						<style>
+							.select_oo{
+								height: .6rem;
+								padding: 0 .3rem;
+								border: 1px solid #aaa;
+								border-radius: 4px;
+								background: transparent;
+							}
+						</style>
+
 						<div class="zfpay_text">
 							<div class="fptext">
 								<div class="fptextzong">
@@ -94,8 +113,12 @@
 									<span th:text="#{messages.money.class}+${data.totalPrice }"></span>
 								</div>
 							</div>
+
 						</div>
+
 					</div>
+
+
 
 					<div class="zfmode">
 						<div class="text_title" th:text="#{messages.pay.method}"></div>

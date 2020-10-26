@@ -20,6 +20,7 @@ public abstract interface ICouponService {
   public abstract boolean update(ShoppingCoupon paramCoupon);
 
 
+  public abstract  List<ShoppingCoupon> queryByCondition(Map params);
 }
 
 

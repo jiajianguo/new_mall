@@ -802,7 +802,17 @@
      }
      return v;
    }
-
+   public static BigDecimal null2BigDecimal(Object price) {
+      BigDecimal v=BigDecimal.ZERO;
+      if(price != null){
+        try {
+          v = BigDecimal.valueOf(null2Float(price));
+        } catch (Exception localException) {
+          localException.printStackTrace();
+        }
+      }
+      return  v;
+   }
    public static float null2Float(Object s) {
      float v = 0.0F;
      if (s != null){
@@ -1304,4 +1314,6 @@
 
      return system_domain;
    }
+
+
  }

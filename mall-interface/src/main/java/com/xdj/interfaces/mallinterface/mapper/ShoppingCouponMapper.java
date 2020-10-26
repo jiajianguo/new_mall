@@ -3,6 +3,7 @@ package com.xdj.interfaces.mallinterface.mapper;
 import com.xdj.www.entity.ShoppingCoupon;
 import com.xdj.www.entity.ShoppingCouponExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +33,6 @@ public interface ShoppingCouponMapper {
     int updateByPrimaryKeySelective(ShoppingCoupon record);
 
     int updateByPrimaryKey(ShoppingCoupon record);
+
+    List<ShoppingCoupon> queryByCondition(Map params);
 }

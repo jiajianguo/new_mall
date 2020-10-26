@@ -39,6 +39,7 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -68,6 +69,7 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Base_Column_List">
     id, addTime, deleteStatus, coupon_sn, status, coupon_id, user_id
   </sql>

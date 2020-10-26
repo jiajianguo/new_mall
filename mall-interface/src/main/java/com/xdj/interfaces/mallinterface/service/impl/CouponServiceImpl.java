@@ -13,6 +13,7 @@
 
  import javax.annotation.Resource;
  import java.util.List;
+ import java.util.Map;
 
  /**
   * @author Administrator
@@ -80,6 +81,11 @@
        e.printStackTrace();
      }return false;
    }
+
+     @Override
+     public List<ShoppingCoupon> queryByCondition(Map params) {
+         return  this.couponDao.queryByCondition(params);
+     }
 
 
  }

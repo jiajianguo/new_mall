@@ -42,6 +42,7 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -71,10 +72,27 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Base_Column_List">
     id, addTime, deleteStatus, coupon_amount, coupon_begin_time, coupon_count, coupon_end_time,
     coupon_name, coupon_order_amount, coupon_acc_id
   </sql>
+
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    select co.*  from shopping_coupon_info ci
+    left join shopping_coupon co on ci.coupon_id=co.id
+    <where>
+      1=1
+      <if test="user_id != null "> and ci.user_id =#{user_id}</if>
+      <if test="status != null "> and ci.status=#{status}</if>
+      <if test="coupon_end_time != null "> and co.coupon_end_time &lt;= #{coupon_end_time}</if>
+      <if test="coupon_order_amount != null "> and co.coupon_order_amount &lt;= #{coupon_order_amount}</if>
+      <if test="coupon_begin_time != null "> and co.coupon_begin_time &gt;= #{coupon_begin_time}</if>
+      <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+      <if test="start != null and pageSize != null "> limit #{start},#{pageSize}</if>
+    </where>
+  </select>
+
   <select id="selectByExample" parameterType="com.xdj.www.entity.ShoppingCouponExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -89,16 +107,19 @@
       order by ${orderByClause}
     </if>
   </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from shopping_coupon
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from shopping_coupon
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <delete id="deleteByExample" parameterType="com.xdj.www.entity.ShoppingCouponExample">
     delete from shopping_coupon
     <if test="_parameter != null">

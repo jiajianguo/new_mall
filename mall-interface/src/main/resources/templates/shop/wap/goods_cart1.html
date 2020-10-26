@@ -53,69 +53,89 @@
 				</div>
 				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'" th:text="#{messages.add}"></button>
 			</div>
-			<form th:if="${carts.size()>0}"  status="no_submit" method="post"  target="_blank"  action="/goods_cart2.htm">
-			<div class="goodscartList"  >
-				<div th:each="sc :${carts}"  th:id="'cart_'+${sc.storeId}"   class="list_item flex-between">
-					<div th:each="obj :${sc.gcs}" class="flex-between">
-						<input type="checkbox" name="goodscart" th:id="${obj.id}" th:value="${obj.id}" checked="checked" />
-						<div class="item_right">
-							<div class="right_top flex-between">
-								<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
-								<img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" >
-								<div class="right_top_rgiht">
-									<div class="goods_tit flex-between">
-										<div class="wordNoWarp">
-											<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" th:text="${obj.goods.goodsName}"></a>
+				<div class="goodscartList"  >
+					<div th:each="sc : ${data}">
+						<div class="goodscartStore">
+							<div class="goods_left" th:text="${sc.store.storeName}"> </div>
+							<div class="goods_right">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-right"></use>
+								</svg>
+							</div>
+						</div>
+						<div class="list_item flex-between" th:each="obj :${sc.carts}">
+							<input type="checkbox" th:data-id="${obj.id}" checked="checked" th:value="${obj.id}" />
+							<div class="item_right">
+								<div class="right_top flex-between">
+									<img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+									<img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" >
+									<div class="right_top_rgiht">
+										<div class="goods_tit flex-between">
+											<div class="wordNoWarp" >
+												<a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank" th:text="${obj.goods.goodsName}"></a>
+											</div>
+											<a href="javascript:void(0);" th:data-id="${obj.id}"  th:data-name="${sc.store.id}"  onclick="cart_remove(this.getAttribute('data-id'),this.getAttribute('data-name'));">
+												<svg class="icon del" aria-hidden="true">
+													<use xlink:href="#icon-shanchu"></use>
+												</svg>
+											</a>
 										</div>
-										<svg class="icon" aria-hidden="true">
-											<use xlink:href="#icon-shoucang"></use>
-										</svg>
-									</div>
-									<div class="price_box flex-between">
-										<div th:text="'$'+${obj.price}"></div>
-										<a href="javascript:void(0);" th:data-id="${obj.id}"  th:data-name="${sc.store.id}"  onclick="cart_remove(this.getAttribute('data-id'),this.getAttribute('data-name'));">
-										<svg class="icon del" aria-hidden="true">
-											<use xlink:href="#icon-shanchu"></use>
-										</svg>
-										</a>
-										<!--<span>$ 199.00</span>-->
-									</div>
-									<div class="goods_opt flex-between">
-										<div class="spec_box flex-star">
-											<span th:text="${obj.specInfo}"></span>
-											<svg class="icon" aria-hidden="true">
-												<use xlink:href="#icon-bottom"></use>
-											</svg>
+										<div class="price_box flex-star">
+											<div th:id="${'price_'+obj.id}" th:text="#{messages.money.class}+${obj.price}"></div>
 										</div>
-										<div class="num_box flex-between">
-											<div class="reduce" th:data-id="${obj.id}">-</div>
-											<div class="goods_num" th:text="${obj.count!=null?obj.count:1}"></div>
-											<div class="add" th:data-id="${obj.id}">+</div>
+										<br>
+										<div class="goods_opt flex-between">
+											<div class="spec_box flex-star" th:data-id="${obj.goods.id}" th:data-name="${obj.id}">
+												<span th:id="${'spec_info'+ obj.id}" th:text="${obj.specInfo}"></span>
+												<svg class="icon" aria-hidden="true">
+													<use xlink:href="#icon-bottom"></use>
+												</svg>
+											</div>
+											<div class="num_box flex-between">
+												<div class="reduce" th:data-id="${obj.id}">-</div>
+												<div class="goods_num" th:text="${obj.count!=null?obj.count:1}"></div>
+												<div class="add" th:data-id="${obj.id}">+</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class= "goods_tips">
-								<svg class="icon" aria-hidden="true" >
-									<use xlink:href="#icon-gantan"></use>
-								</svg>
-								<span th:text="#{messages.goods.notice}"></span>
+								<div class= "goods_tips">
+									<svg class="icon" aria-hidden="true" >
+										<use xlink:href="#icon-gantan"></use>
+									</svg>
+									<span th:text="#{messages.goods.notice}"></span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
-
-
-			</div>
-			<div class="page_bottom">
-				<div class="price_line flex-star">
-					Total：<span class="allprice" >0.00</span>
+				<div class="page_bottom">
+					<div class="bottom_box1 flex-between">
+						<label class="flex-star">
+							<input type="checkbox" class="cheakall" checked="checked" name=""  value="" />
+							<span th:text="#{messages.select.all}"></span>
+						</label>
+						<div class="bottom_right flex-star">
+							<div class="allprice_cont">
+								<div class="price_line flex-star">
+									Total：<span class="allprice" th:text="#{messages.money.class}+'0.00'"></span>
+								</div>
+								<!--<p class="qyprice">已经优惠<span>$0.00</span></p>-->
+							</div>
+							<input type="button" class="pay_btn" name="" id="goods_pay" th:value="#{messages.pay}" />
+						</div>
+					</div>
+					<!--<div class="pay_tips">支付可以使用优惠券商品更划算</div>-->
+					<!--
+					<div class="price_line flex-star">
+						Total：<span class="allprice" >0.00</span>
+					</div>
+					<input type="button" class="pay_btn" name="" id="goods_pay" th:value="#{messages.settlement}" />
+					<div class="pay_tips" th:text="#{messages.coupon.notice}"></div>
+					-->
 				</div>
-				<input type="button" class="pay_btn" name="" id="goods_pay" th:value="#{messages.settlement}" />
-				<div class="pay_tips" th:text="#{messages.coupon.notice}"></div>
-			</div>
-			</form>
+
 
 			<div th:unless="${carts.size()>0}" class="ui-pane">
 				<div class="ui-content">
@@ -129,13 +149,161 @@
 				<div class="Nav"></div>
 			</div>
 
+			<div class="page_modal_box">
+				<div class="ui-shade">
+					<input type="hidden" name="gc_id" id="gc_id" value="">
+					<div class="ui-modal"  onclick="modal(event)">
+						<svg class="icon modal_close" aria-hidden="true">
+							<use xlink:href="#icon-quxiao"></use>
+						</svg>
+						<div class="goods_into flex-star">
+							<img class="goods_img" src="" >
+							<div class="goods_tit">
+								<div id="goods_name"></div>
+								<div class="shose_spec">
+									<b>已选:</b>
+									<span></span>
+								</div>
+							</div>
+						</div>
+						<div class="goods_spec">
+						</div>
+						<!--<div class="spec_line">
+							<div class="spec_tit">
+								Quantité
+							</div>
+							<div class="num_opt flex-star">
+								<div class="flex-center" id="add_count">-</div>
+								<input type="number" name="" id="goods_count" value="1" />
+								<div class="flex-center" id="sub">+</div>
+							</div>
+						</div>-->
+						<div class="modal_btn flex-between">
+							<input type="button" class="" name="mal_btn" id="sure" value="Oui." />
+							<input type="button" class="" name="mal_btn" id="cancel" value="Annuler" />
+						</div>
 
-
-
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
+	$(".spec_box").click(function(){
+		var id=$(this).attr('data-id');
+		var gcid= $(this).attr('data-name');
+		$("#gc_id").val('');
+		$("#gc_id").val(gcid);
+		if(id){
+			$(".shose_spec span").text('');
+			cartMolda(id)
+			$(".ui-shade").css("display","block");
+			$(".ui-modal").addClass("shadeshow");
+		}else{
+			alert('数据信息有误不能更改属性');
+		}
+	})
+
+	function modal($event){
+		$event.stopPropagation();
+	}
+
+	$(".page_modal_box").on("click",".modal_close,.ui-shade",function(){
+		$(".ui-shade").css("display","none")
+	})
+
+	$(".modal_close,.ui-shade").on("click",function(){
+		$(".ui-shade").css("display","none")
+	})
+
+	$("#sure").click(function(){
+		var eles=$("div[class=sepc_act]");
+		var ids='';
+		if(eles){
+			eles.each(function(){
+				if($(this).attr('gsp') != 'undefined' && $(this).attr('gsp') != undefined && $(this).attr('gsp')  != ''){
+					ids=ids+$(this).attr('gsp')+',';
+				}
+			});
+		}
+		var gc_id=$("#gc_id").val();
+		if(gc_id){
+			if(ids){
+				$.post('/eidtGoodscart',{id:gc_id,ids:ids},function(res){
+					if(res.code == '200' ){
+						$("#spec_info"+gc_id).text('');
+						$("#spec_info"+gc_id).text(res.data.specInfo);
+						$("#price_"+gc_id).text('');
+						$("#price_"+gc_id).text('$'+res.data.price);
+						$(".ui-shade").css("display","none")
+					}else{
+						alert(res.msg);
+					}
+				});
+			}else{
+
+			}
+		}else{
+			alert('');
+		}
+	});
+	$("#cancel").click(function(){
+		$(".ui-shade").css("display","none")
+	});
+	let specarr = [];
+	function getspec(_that){
+		$(_that).addClass("sepc_act").siblings().removeClass("sepc_act");
+		$(_that).parents(".spec_line").find(".spec_tit span").text($(_that).text());
+		let sepcindex = $(_that).parents(".spec_line").index();
+		specarr[sepcindex] = $(_that).text();
+		$(".shose_spec span").text(specarr.join("，"));
+	}
+
+
+
+	function cartMolda(id){
+		$.post('/goodsGsp',{id:id},function(res){
+			if(res.code == '200'){
+				var gsp='';
+				var gsps=res.data.specification;
+				$(".goods_img").removeAttr('src');
+				$(".goods_img").attr('src','/'+res.data.goods_main_photo.path+'/'+res.data.goods_main_photo.name);
+				$("#goods_name").text("");
+				$("#goods_name").text(res.data.goodsName);
+				if(gsps){
+					$.each(gsps,function(i,n){
+						gsp=gsp +`<div class="spec_line">
+									<div class="spec_tit">`
+								+n.name+
+								`<span></span>
+									</div>
+									<div class="sepc_cont flex-star" >`;
+						var specs= res.data.goods_specs;
+						var spec;
+						if(specs){
+							spec=specsdata(n,specs);
+						}
+						gsp=gsp+spec+`</div> </div>`;
+					});
+					$(".goods_spec").html(gsp);
+				}
+			}
+		});
+	}
+
+	function specsdata(gsp,spec){
+		if(spec){
+			var specs="";
+			$.each(spec,function (i,n) {
+				if(n.spec.id == gsp.id){
+					specs =specs+`<div onclick="getspec(this)"  gsp="`+n.id +`">`+n.value+`</div>`;
+				}
+			});
+			return specs;
+		}
+	}
+
 
 	calcAllprice();
 
@@ -152,7 +320,7 @@
 		if(confirm("确定删除商品吗？")){
 			$(this).parents(".list_item").remove();
 			/*calcAllprice();
-			console.log(66666666666666)*/
+			*/
 		}
 	})
 
@@ -160,7 +328,6 @@
 	      $("#goods_pay").click(function(){
 	      	//获取选中的IDS
 			var checkboxs =  $(".goodscartList .list_item").find("input[type=checkbox]");
-			console.log(checkboxs);
 			if(checkboxs.length){
 				var ids="";
 				checkboxs.each(function(){
@@ -179,12 +346,40 @@
 		  });
 
 			calcAllprice();
-			$(".list_item input[type=checkbox]").click(function(){
+			/*$(".list_item input[type=checkbox]").click(function(){
 				var length = $(".list_item input[type=checkbox]").length;
 				var checknum = 0;
 				calcAllprice();
+				if(!$(this).is(":checked")){
+					$('.cheakall').prop("checked",false);
+				}
 
-			})
+			})*/
+	$(".list_item input[type=checkbox]").click(function(){
+		var length = $(".list_item input[type=checkbox]").length;
+		var checknum = 0;
+		$(".list_item input[type=checkbox]").each(function(){
+			if($(this).is(":checked")){
+				checknum++;
+				if(checknum == length){
+					$(".cheakall").prop("checked",true);
+				}else{
+					$(".cheakall").prop("checked",false);
+				}
+			}
+		})
+
+		calcAllprice();
+	})
+
+	$(".cheakall").click(function(){
+		if($(this).is(":checked")){
+			$(".list_item input[type=checkbox]").prop("checked",true);
+		}else{
+			$(".list_item input[type=checkbox]").prop("checked",false);
+		}
+		calcAllprice();
+	})
 
 
 			$(".reduce").click(function(){
@@ -194,7 +389,7 @@
 				}
 				$.post('/goods_count_adjust',{'cart_id':$(this).attr('data-id'),'count': val},function(res){
 					if(res.err == '200'){
-						console.log(res.err+",,,,"+res.errmsg);
+						console.log(res.err+","+res.errmsg);
 					}else{
 						alert("数据有误")
 					}
@@ -208,7 +403,7 @@
 					val++;
 				$.post('/goods_count_adjust',{'cart_id':$(this).attr('data-id'),'count': val},function(res){
 					if(res.err == '200'){
-						console.log(res.err+",,,,"+res.errmsg);
+						console.log(res.err+","+res.errmsg);
 					}else{
 						alert("数据有误")
 					}

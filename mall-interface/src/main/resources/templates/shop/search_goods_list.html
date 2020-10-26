@@ -529,6 +529,7 @@ jQuery(document).ready(function(){
               </div>
             </div>
           </div>
+
           <div class="fenye">
             <div class="fenyes">
               <input name="currentPage" type="hidden" id="currentPage" th:value="${currentPage}" />
@@ -542,7 +543,10 @@ jQuery(document).ready(function(){
       </form>
       <!--直通车热卖商品-->
       <div class="index2_left">
-        <h1>热卖商品 <a th:href="@{/ztc_goods_list.htm}" target="_blank" style="float:right; font-size:12px;">更多>></a></h1>
+        <h1>
+          <span th:text="#{messages.sell.hot}"></span>
+          <a th:href="@{/ztc_goods_list.htm}" target="_blank" style="float:right; font-size:12px;" th:text="#{messages.more}+'>>'"></a>
+        </h1>
         <div class="hotgoods" >
           <ul th:each="ztc_good : ${ztc_goods}">
             <li>
@@ -555,9 +559,13 @@ jQuery(document).ready(function(){
                   <img th:unless="${ztc_good.goods_main_photo != null}" th:src="@{${'/'+config.goodsImage.path +'/'+config.goodsImage.name}}" width="160" height="160" />
               </a>
             </li>
-            <li class="center"><strong class="orange" th:text="${'|￥'+ztc_good.storePrice}+'|'"></strong></li>
+            <li class="center"><strong class="orange" th:text="${'|'}+#{messages.money.class}+${ztc_good.storePrice}+'|'"></strong></li>
             <li class="blue2"><a href="$!goods_url" target="_blank" th:text="${ztc_good.goodsName}"></a></li>
-            <li class="center">最近成交<span th:text="${ztc_good.goodsSalenum}"></span>件</li>
+            <li class="center">
+              <span th:text="#{messages.trade.last}"></span>
+              <span th:text="${ztc_good.goodsSalenum}"></span>
+              <span th:text="#{messages.unit.piece}"></span>
+            </li>
           </ul>
         </div>
       </div>
