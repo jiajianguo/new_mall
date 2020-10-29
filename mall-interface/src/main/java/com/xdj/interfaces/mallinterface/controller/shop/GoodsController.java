@@ -665,10 +665,16 @@ public class GoodsController {
                                          String all_property_status, String detail_property_status) {
         ModelAndView mv = new JModelAndView("store_goods_list.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
-        ShoppingGoodsclassWithBLOBs gc = this.goodsClassService.getObjById(CommUtil.null2Long(gc_id));
-        goodsViewTools.addAllChilds(gc);
-        goodsViewTools.addParent(gc);
-        goodsViewTools.addGoodsClassType(gc);
+        String shopping_view_type = com.xdj.www.core.tools.CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
+        if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+            mv = new JModelAndView("wap/store_goods_list.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+        }
+
+            ShoppingGoodsclassWithBLOBs gc = this.goodsClassService.getObjById(CommUtil.null2Long(gc_id));
+            goodsViewTools.addAllChilds(gc);
+            goodsViewTools.addParent(gc);
+            goodsViewTools.addGoodsClassType(gc);
         if ((orderBy == null) || (orderBy.equals(""))) {
             orderBy = "addTime";
         }
@@ -676,9 +682,9 @@ public class GoodsController {
             mv.addObject("op", op);
         }
         String orderBy1 = orderBy;
-        if (this.configService.getSysConfig().getZtcStatus()) {
+        /*if (this.configService.getSysConfig().getZtcStatus()) {
             orderBy = "ztc_dredge_price desc,obj." + orderBy;
-        }
+        }*/
         Set ids = genericIds(gc);
         Map paras = new HashMap();
         paras.put("gcIds", ids);

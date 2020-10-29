@@ -32,7 +32,7 @@
 					</svg>
 					<span class="item-text" th:text="#{messages.home.page}"></span>
 				</a>
-				<a class="item active" href="/goodsclass.htm">
+				<a class="item" href="/goodsclass.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-classify-on"></use>
 					</svg>
@@ -51,16 +51,27 @@
 					<span class="item-text" th:text="#{messages.my}"></span>
 				</a>
 			</div>
-
+		</div>
+		<div class="Nav"></div>
+		<div class="ui-header">
+			<a href="" class="header-button">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-left"></use>
+				</svg>
+			</a>
+			<div class="header-title" th:text="#{messages.goods.class}"></div>
 		</div>
 		<div class="ui-content">
-			<div class="search_box flex-star">
+			<!--<div class="search_box flex-star">
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-sousuo"></use>
 				</svg>
 				<input type="text" name="" id="" placeholder="请输入您要搜索的内容" />
-			</div>
-			<div class="page_main flex-between">
+			</div>-->
+
+
+
+			<div class="page_main flex-between page_main1">
 				<div class="mian_left">
 					<!--<div class="mian_left_act">所有商品</div>-->
 					<div th:each="gc,index :${gcs}" th:text="${gc.classname}" th:data-id="${gc.id}" th:style="${index.index==0?'background-color:#f2f2f2;':''}"></div>

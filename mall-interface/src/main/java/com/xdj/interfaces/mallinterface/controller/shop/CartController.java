@@ -570,6 +570,7 @@ public class CartController {
                     ShoppingStorecart sc = storeCartService.getObjById(cart.getScId());
                     sc.setTotalPrice(cart.getPrice());
                 }
+                System.out.println("------"+spec_info);
                 goodsCartService.update(cart);
                 res.setCode("200");
                 res.setMsg("success");

@@ -335,7 +335,7 @@
       </if>
       <if test="store_status != null "> and s.store_status =#{store_status}</if>
       <if test="goods_status != null ">and g.goods_status =#{goods_status}</if>
-      <if test="orderBy != null and sort != null "> order by concat("g.",#{orderBy}) #{sort}</if>
+      <if test="orderBy != null and sort != null "> order by concat('g.',${orderBy})  ${sort}</if>
       <if test="start != null and pageSize != null"> limit #{start},#{pageSize} </if>
     </where>
   </select>

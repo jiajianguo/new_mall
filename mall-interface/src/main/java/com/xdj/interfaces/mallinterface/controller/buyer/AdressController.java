@@ -102,7 +102,7 @@ public class AdressController {
      */
     @SecurityMapping(display = false, rsequence = 0, title="新增收货地址", value="/buyer/address_add.htm*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
     @RequestMapping({"/buyer/address_add.htm"})
-    public ModelAndView address_add(HttpServletRequest request, HttpServletResponse response, String currentPage) {
+    public ModelAndView address_add(HttpServletRequest request, HttpServletResponse response,String ids, String currentPage) {
         ModelAndView mv = new JModelAndView("buyer/address_add.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 0, request, response);
         String shopping_view_type = CommUtil.null2String( request.getSession().getAttribute( "shopping_view_type" ) );
@@ -116,6 +116,9 @@ public class AdressController {
         areaViewTools.addManyChilds(areas,true);
         mv.addObject("areas", areas);
         mv.addObject("currentPage", currentPage);
+        if (ids!=null&&!"".equals(ids)){
+            mv.addObject("ids",ids);
+        }
         return mv;
     }
 
@@ -140,7 +143,7 @@ public class AdressController {
 
     @SecurityMapping(display = false, rsequence = 0, title="收货地址保存", value="/buyer/address_save.htm*", rtype="buyer", rname="用户中心", rcode="user_center", rgroup="用户中心")
     @RequestMapping({"/buyer/address_save.htm"})
-    public void address_save(HttpServletRequest request, HttpServletResponse response, String id, String currentPage) throws IOException {
+    public void address_save(HttpServletRequest request,String ids, HttpServletResponse response, String id, String currentPage) throws IOException {
         ShoppingUser user=SecurityUserHolder.getCurrentUser();
         ShoppingAddress address = null;
         if (id == null || "".equals(id)) {
@@ -180,7 +183,13 @@ public class AdressController {
         if(StringUtils.isBlank(currentPage)){
             pageNow=Integer.valueOf(currentPage);
         }
-        response.sendRedirect("address.htm?currentPage=" + pageNow);
+        if (ids!=null&&!"".equals(ids)){
+            response.sendRedirect("/goods_cart2?ids=" + ids);
+        }else{
+            response.sendRedirect("address.htm?currentPage=" + pageNow);
+        }
+
+
 
     }
 

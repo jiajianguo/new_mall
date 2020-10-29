@@ -20,7 +20,7 @@
 					</svg>
 					<span class="item-text" th:text="#{messages.home.page}"></span>
 				</a>
-				<a class="item active" href="/goodsclass.htm">
+				<a class="item" href="/goodsclass.htm">
 					<svg class="icon" aria-hidden="true">
 						<use xlink:href="#icon-classify-on"></use>
 					</svg>
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<div class="ui-content">
-			<div class="page_address flex-between">
+			<!--<div class="page_address flex-between">
 				<div class="address_left" id="user_address">
 					<p th:text="#{messages.shipping.address}"></p>
 					<div th:if="${ address }" th:each="addr : ${address}">
@@ -52,16 +52,22 @@
 					<div th:unless="${address }" th:text="#{messages.default.addresno}"></div>
 				</div>
 				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'" th:text="#{messages.add}"></button>
-			</div>
+			</div>-->
+				<div class="page_tit">购物车</div>
 				<div class="goodscartList"  >
 					<div th:each="sc : ${data}">
-						<div class="goodscartStore">
-							<div class="goods_left" th:text="${sc.store.storeName}"> </div>
-							<div class="goods_right">
+						<div class="goodscartStore flex-between">
+							<div class="Store_box flex-star">
 								<svg class="icon" aria-hidden="true">
-									<use xlink:href="#icon-right"></use>
+									<use xlink:href="#icon-dianpu1"></use>
 								</svg>
+								<a th:href="@{/store.htm(id=${sc.store.id})}">
+								<div class="goods_left" th:text="${sc.store.storeName}"> </div>
+								</a>
 							</div>
+							<svg class="icon" aria-hidden="true">
+								<use xlink:href="#icon-right"></use>
+							</svg>
 						</div>
 						<div class="list_item flex-between" th:each="obj :${sc.carts}">
 							<input type="checkbox" th:data-id="${obj.id}" checked="checked" th:value="${obj.id}" />
@@ -149,7 +155,7 @@
 				<div class="Nav"></div>
 			</div>
 
-			<div class="page_modal_box">
+			<div class="page_modal_box" style="position:relative;z-index: 1000;">
 				<div class="ui-shade">
 					<input type="hidden" name="gc_id" id="gc_id" value="">
 					<div class="ui-modal"  onclick="modal(event)">

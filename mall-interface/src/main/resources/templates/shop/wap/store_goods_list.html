@@ -31,7 +31,10 @@
 
 			<div class="nav_top">
 				<div class="nav_text nav1 nav_text_act">
-					<span><a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='addTime',orderType='desc')}" th:text="#{messages.search.normal}"></a> </span>
+					<span>
+						<a th:if="${store!=null}" th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='addTime',orderType='desc')}" th:text="#{messages.search.normal}"></a>
+						<a th:unless="${store!=null}" th:href="@{/store_goods_list.htm(gc_id = ${gc.id},orderBy='addTime',orderType='desc')}" th:text="#{messages.search.normal}"></a>
+					</span>
 					<div>
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-sanjiao"></use>
@@ -40,14 +43,18 @@
 				</div>
 				<div class="nav_text nav_text1" data-select="0">
 					<span>
-						<a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='goods_salenum',orderType='desc')}" th:text="#{messages.sale}"></a>
+						<a th:if="${store!=null}" th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='goods_salenum',orderType='desc')}" th:text="#{messages.sale}"></a>
+						<a th:unless="${store!=null}" th:href="@{/store_goods_list.htm(gc_id= ${gc.id},orderBy='goods_salenum',orderType='desc')}" th:text="#{messages.sale}"></a>
 					</span>
 					<svg class="icon icon_nav" aria-hidden="true">
 						<use xlink:href="#icon-shangxia1-copy-copy"></use>
 					</svg>
 				</div>
 				<div class="nav_text nav_text1" data-select="0">
-					<span><a th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='store_price',orderType='asc')}" th:text="#{messages.price}"></a> </span>
+					<span>
+						<a th:if="${store!=null}" th:href="@{/goods_list.htm(store_id = ${store.id},orderBy='store_price',orderType='asc')}" th:text="#{messages.price}"></a>
+						<a th:unless="${store!=null}" th:href="@{/store_goods_list.htm(gc_id= ${gc.id},orderBy='store_price',orderType='asc')}" th:text="#{messages.price}"></a>
+					</span>
 					<svg class="icon icon_nav" aria-hidden="true">
 						<use xlink:href="#icon-shangxia1-copy-copy"></use>
 					</svg>
@@ -90,6 +97,11 @@
 			$(this).addClass("nav_text_act").siblings().removeClass("nav_text_act")
 			$(".icon_nav use").attr("xlink:href", "#icon-shangxia1-copy-copy")
 		})
+
+		$(".icon_left").click(function () {
+			window.history.go(-1);
+		})
+
 
 		$(".nav1").click(function() {
 			$(".nav_text1").attr("data-select", 0)

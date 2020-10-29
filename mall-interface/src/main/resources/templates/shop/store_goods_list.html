@@ -481,10 +481,10 @@
                                           <a th:href="@{goods.htm(id=${obj.id})}" target="_blank" th:text="${obj.goodsName}"></a>
                                         </span>
                                         <span class="goods2market">
-                                            <span th:text="#{messages.goods.price}+#{messages.money.class}${obj.goodsPrice}"></span>
+                                            <span th:text="#{messages.goods.price}+#{messages.money.class}+${obj.goodsPrice}"></span>
                                         </span>
                                          <span class="goods2shop">
-                                          <strong th:text="#{messages.emode.price}+#{messages.money.class}${obj.storePrice}"></strong>
+                                          <strong th:text="#{messages.emode.price}+#{messages.money.class}+${obj.storePrice}"></strong>
                                         </span>
                                         <span class="recent">
                                             <span th:text="#{messages.sale.count}"></span>
@@ -498,7 +498,7 @@
                                             店铺名称：<a th:href="@{/storehtm(id=${obj.goods_store.id})}"
                                                     th:text="${obj.goods_store.storeName}"></a>
                                           </span>
-                                            <span class="goods2send" th:text="#{messages.shop.level}'+${obj.goods_store.grade.gradename}"></span>
+                                            <span class="goods2send" th:text="#{messages.shop.level}+${obj.goods_store.grade.gradename}"></span>
                                         </p>
                                         <p class="goodsli2_p">
                                             <span class="goodsli2_p_sp">

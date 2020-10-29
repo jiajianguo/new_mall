@@ -82,16 +82,16 @@
         <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
       </li>
       <li class="menupx" th:if="${navs != null}">
-        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.}">帮助中心</a>
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}">帮助中心</a>
       </li>
 
       <li class="menupx" style="background:none;" th:if="${navs == null}">
-        <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+        <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}">帮助中心</a>
       </li>
 
       <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
         <div class="menu">
-          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+          <a class="menu-hd" href="/buyer/index.htm" rel="nofollow" th:text="#{messages.more.link}">更多链接<b></b></a>
           <div class="menu-bd" style="height:auto;">
             <div class="menu-bd-panel">
               <div th:each="nav : ${navs}">
@@ -148,7 +148,7 @@
                   <li class="this" type="goods"><a href="javascript:void(0);" th:text="#{messages.baby}"><s></s></a></li>
                   <li style="display:none" type="store"><a href="javascript:void(0);" th:text="#{messages.shop}"></a></li>
                 </ul>
-                <input name="keyword" type="text" id="keyword" placeholder="搜索其实真的很简单！" x-webkit-speech
+                <input name="keyword" type="text" id="keyword" th:placeholder="#{messages.search.simple}" x-webkit-speech
                        lang="zh-CN" onwebkitspeechchange="jQuery('#searchForm').submit()"
                        class="toph_sear_txt"/>
                 <input name="input" type="button" th:value="#{messages.search}" style="cursor:pointer;"
@@ -180,7 +180,7 @@
               </span>
           </a>
         </h2>
-        <div id="other_menu" class="other_menu" style="display:none;">
+        <!--<div id="other_menu" class="other_menu" style="display:none;">
           <div id="left_menu" class="left_menu">
             <dl th:each="gc : ${navgcs}" sc_color="#E60012" style="position:relative;" th:id="${gc.id}"
                 child_count="${gc.childs.size()}" class="left_menu_dl">
@@ -229,7 +229,7 @@
             </dl>
           </div>
 
-        </div>
+        </div>-->
       </div>
 
       <ul id="navul">

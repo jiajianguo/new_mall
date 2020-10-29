@@ -76,12 +76,13 @@
    @CachePut(cacheNames = "updategoodsCart",condition = "#goodsCart !=  null")
    public int update(ShoppingGoodscart goodsCart) {
      try {
-       this.goodsCartDao.updateByPrimaryKey(goodsCart);
+       this.goodsCartDao.updateByPrimaryKeyWithBLOBs(goodsCart);
        return 1;
      } catch (Exception e) {
        e.printStackTrace();
      }return 0;
    }
+
 
      @Override
      public List<ShoppingGoodscart> queryByCondition(Map params) {

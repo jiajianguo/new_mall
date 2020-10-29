@@ -165,13 +165,13 @@
 						</svg>
 						<p><a th:href="@{/store.htm(id=${obj.goodsStoreId})}" th:text="#{messages.shop}"></a></p>
 					</div>
-					<div class="bottom_icon">
+					<div class="bottom_icon enterclassify">
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-classify-on"></use>
 						</svg>
 						<p><a th:href="@{/goodsclass.htm(storeId=${obj.goodsStoreId})}" th:text="#{messages.class}"> </a></p>
 					</div>
-					<div class="bottom_icon">
+					<div class="bottom_icon entercart">
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-gouwuchezhengpin"></use>
 						</svg>
@@ -186,6 +186,15 @@
 	</div>
 </body>
 <script type="text/javascript">
+
+	$(".enterclassify").click(function () {
+		window.sessionStorage.setItem("newindex",1);
+	})
+
+	$(".entercart").click(function () {
+		window.sessionStorage.setItem("newindex",2);
+	})
+
 
 	$("#add_cart").on('click',function (){
 		var  id= $(this).attr('data-id');

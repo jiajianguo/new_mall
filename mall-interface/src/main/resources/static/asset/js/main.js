@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.getElementsByTagName("head")[0].appendChild(ICONJs);
 
 
-	let NavEle = document.getElementsByClassName("Nav")[0];
+	// let NavEle = document.getElementsByClassName("Nav")[0];
 	/*NavEle ? NavEle.innerHTML =
 		`<div class="ui-nav">
 			<a class="item" href="">
@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				</svg>
 				<span class="item-text">首页</span>
 			</a>
+			
+
 			<a class="item" href="">
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-classify-on"></use>
@@ -32,8 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				</svg>
 				<span class="item-text">我的</span>
 			</a>
-		</div>` : "";
-*/
+		</div>` : "";*/
 
 	if(document.getElementsByClassName("header-button")[0]){
 		document.getElementsByClassName("header-button")[0].addEventListener("click", function(event) {

@@ -205,7 +205,7 @@
     <!--导航菜单-->
     <div class="nav">
         <ul>
-            <li>
+            <li class="enterclassify" data-index=1>
                 <a href="/goodsclass.htm">
                     <img src="/style/system/front/wap/images/nav_fl.png">
                     <p th:text="#{messages.class}"></p>
@@ -217,13 +217,13 @@
                     <p th:text="#{messages.brand.street}"></p>
                 </a>
             </li>
-            <li>
+            <li data-index=2>
                 <a href="/goods_cart1.htm">
                     <img src="/style/system/front/wap/images/nav_gwc.png">
                     <p th:text="#{messages.goods.cart}"></p>
                 </a>
             </li>
-            <li>
+            <li data-index=3>
                 <a href="/member_center.htm">
                     <img src="/style/system/front/wap/images/nav_yhzx.png">
                     <p th:text="#{messages.account.center}">用户中心</p>
@@ -297,4 +297,13 @@
 
 
 </body>
+<script>
+
+    $(".nav li").click(function () {
+        if($(this).attr("data-index")){
+            window.sessionStorage.setItem("newindex",parseInt($(this).attr("data-index")));
+        }
+    })
+
+</script>
 </html>

@@ -18,6 +18,10 @@
     <script th:src="@{/js/top.js}"></script>
     <script th:src="@{/js/head.js}"></script>
     <script>
+
+
+
+
         function confirm_cart() {
             //判断勾选商品
             var flag= false;
@@ -155,15 +159,29 @@
             /**
              * 选中结算商品
              */
-            jQuery(".table tr td input[type=checkbox]").click(function(){
+            jQuery(".table tr.shop_list td input[type=checkbox]").click(function(){
                 goods_cart_price();
             });
 
+            $(".checkall input").click(function () {
+                if($(this).is(":checked")){
+                    jQuery(".table tr.shop_list td ").find("input[type=checkbox]").prop("checked",true);
+                    goods_cart_price();
+                }else {
+                    jQuery(".table tr.shop_list td ").find("input[type=checkbox]").prop("checked",false);
+                    $("#orange_price").text("0.00")
+                }
+            })
+
         });
+
+
+
+
 
         function goods_cart_price (){
             console.log('调用方法');
-            var s=jQuery(".table tr td ").find("input[type=checkbox]");
+            var s=jQuery(".table tr.shop_list td ").find("input[type=checkbox]");
             var price=0;
             if(s){
                 s.each(function(){
@@ -229,7 +247,7 @@
                 </div>
             </li>
             <li class="menupx">
-                <a th:href="@{/buyer/message.htm}"> 站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
+                <a th:href="@{/buyer/message.htm}" th:text="#{messages.plateform.message}"> 站内短信<span th:if="${msgs != null }" style="color:#FF3300;" th:text="${msgs.size()}"></span></a>
             </li>
             <li class="mytaobao menu-item menupx">
                 <div class="menu">
@@ -249,16 +267,16 @@
                 <a th:href="@{/admin/index.htm}" target="_blank" th:text="#{messages.manage.nohup}"></a>
             </li>
             <li class="menupx" th:if="${navs != null}">
-                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}">帮助中心</a>
             </li>
 
             <li class="menupx" style="background:none;" th:if="${navs == null}">
-                <a th:href="@{/articlelist.htm(param=help)}">帮助中心</a>
+                <a th:href="@{/articlelist.htm(param=help)}" th:text="#{messages.help.center}">帮助中心</a>
             </li>
 
             <li class="mytaobao menu-item menupx" style="background:none;" th:if="${navs != null }">
                 <div class="menu">
-                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow">更多链接<b></b></a>
+                    <a class="menu-hd" href="/buyer/index.htm" rel="nofollow" th:text="#{messages.more.link}">更多链接<b></b></a>
                     <div class="menu-bd" style="height:auto;">
                         <div class="menu-bd-panel">
                             <div th:each="nav : ${navs}">
@@ -350,14 +368,16 @@
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td width="" align="center" class="title" th:text="#{messages.selected}"></td>
+                        <td width="" align="center" class="title checkall">
+                            <input type="checkbox"><span  th:text="#{messages.select.all }"></span>
+                        </td>
                         <td width="50%" align="center" class="title" th:text="#{messages.store.goods}"></td>
                         <td width="8%" align="center" class="title" th:text="#{messages.unit.price}"></td>
                         <td width="12%" align="center" class="title" th:text="#{messages.amount}"></td>
                         <td width="8%" align="center" class="title" th:text="#{messages.subtotal}"></td>
                         <td align="center" class="title" th:text="#{messages.operation}"></td>
                     </tr>
-                    <tr th:each="sc :${carts}" >   <!--th:attr="goods_list='goods_info_'+${obj.id}" th:id="${obj.id}"-->
+                    <tr class="shop_list" th:each="sc :${carts}" >   <!--th:attr="goods_list='goods_info_'+${obj.id}" th:id="${obj.id}"-->
                         <span th:each="obj,index :${sc.gcs}" th:data-id="${obj.id}" th:if="${index.index <1}">
                            <td class="goods_ids">
                                 <input type="checkbox" name="ids" th:value="${obj.id}" checked="checked" >

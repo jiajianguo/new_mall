@@ -791,7 +791,7 @@ em { font-style:normal;}
 .h1 .h1_r a { padding:2px 15px; background-color:#fe913b; color:#FFF; margin-left:10px; border:1px solid #ff6a00;}
 .Steps_box .table { width:990px; float:left;}
 .Steps_box .table .title {height:40px; line-height:40px; background-color:#e2f4ff; border-top:1px solid #a7cbff;}
-.Steps_box .table .title input { margin-left:10px;}
+.Steps_box .table .title input { margin-right: 5px; }
 .Steps_box .table .baby img { float:left; margin:10px 10px 10px 0px;}
 .Steps_box .table .baby p { float:left; line-height:24px; margin-top:5px;}
 .Steps_box .table .baby p span { color:#999;}
@@ -816,7 +816,7 @@ em { font-style:normal;}
 .paysd_box ul {width:300px; float:right; margin-top:10px;}
 .paysd_box ul li {width:300px; float:right; text-align:right; font-weight:normal; line-height:24px; color:#333}
 
-.baby { margin-top:10px; float:left; width:550px;}
+.baby { margin-top:10px; float:left; width:530px;}
 .baby .size,.baby .color { width:450px; float:left; line-height:24px;}
 .baby_aname { width:370px; float:left;}
 .baby_name {width:450px; float:left;}

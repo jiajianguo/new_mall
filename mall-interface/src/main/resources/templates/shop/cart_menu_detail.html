@@ -25,7 +25,7 @@
          <div>
            <span class="shopl">
              <a th:href="@{/goods.htm(id=${gc.goods.id})}" target="_blank">
-              <span style="color:#F00;float:right;" th:text="${gc.goods.goods_name }+${gc.cartType ==true ? '[组合]':''}" th:if="${gc.cartType}"></span>
+              <span style="color:#F00;float:right;" th:text="${gc.goods.goodsName }+${gc.cartType ==true ? '[组合]':''}" th:if="${gc.cartType}"></span>
                </a>
            </span>
            <span style="color:#F60; padding-left:15px;" th:text="'¥'+${gc.price *gc.count }"></span>

@@ -107,6 +107,10 @@
 				$(".nav_text1").attr("data-select", 0)
 			});
 
+			$(".icon_left").click(function () {
+				window.history.go(-1);
+			})
+
 			$(".nav_text1").click(function() {
 				$(this).addClass("select1").siblings().removeClass("select1")
 				$(".icon_nav use").attr("xlink:href", "#icon-shangxia1-copy-copy")

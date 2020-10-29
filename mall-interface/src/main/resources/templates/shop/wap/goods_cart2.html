@@ -27,7 +27,7 @@
 							<div class="push_title" th:text="#{messages.shipping.address}"></div>
 							<div th:if="${addr}"  th:data-id="${addr.id}" class="address_id" >
 								<span id="person" th:text="${addr.truename } "></span>
-								<span id="mobile" th:text="${addr.mobile}"></span>
+								<span id="telephone" th:text="${addr.telephone}"></span>
 								<div class="pushdz_text"   th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>
 							</div>
 						</div>
@@ -167,14 +167,17 @@
 						<input class="content_bt" type="button" id="orderPay" value="立即支付" />
 					</div>
 					<!--弹窗发票-->
-					<div class="bill">
+					<div class="bill flex-center">
 						<div class="bill_content">
 							<div class="back1"></div>
 							<div class="bill_title">Contact Info</div>
 							<div class="bill_text bill_border">
 								<div>
 									<div class="bill_title_color">address</div>
-									<div th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>
+									<div class="page_address">
+<!--										<div class="address_box" th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>-->
+										<textarea class="address_box" th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></textarea>
+									</div>
 								</div>
 								<div>
 									<div class="bill_title_color">email</div>
@@ -215,14 +218,17 @@
 
 				<div class="ui-shade flex-center">
 					<div class="ui-modal">
-						<div class="modal_tit" th:text="#{messages.address.list}"></div>
+						<div class="modal_tit" style="position: relative">
+							<div th:text="#{messages.address.list}"></div>
+							<a class="address" th:href="@{/buyer/address_add.htm(ids=${ids})}">添加地址</a>
+						</div>
 						<div class="modal_cont">
 							<div class="modal_item" th:each="address :${addressList}">
 								<div class="flex-between">
 									<div>
 										<span class="userName" th:text="#{messages.shipping.person}+${address.truename}"></span>
 									</div>
-									<div><span class="phoneNumber" th:text="#{messages.hone}+${address.mobile}"></span></div>
+									<div><span class="phoneNumber" th:text="#{messages.hone}+${address.telephone}"></span></div>
 								</div>
 								<div class="address_info" th:text="${address.countries} + ${address.city} +${address.areaInfo }">
 								</div>
@@ -250,6 +256,13 @@
 						color: #333;
 					}
 
+					.address{
+						position: absolute;
+						font-size: .28rem;
+						right: .6rem;
+						top: calc(50% - .1rem);
+					}
+
 					.modal_item{
 						margin-top: .1rem;
 						box-shadow: 0 0 4px rgba(0,0,0,.1);
@@ -275,13 +288,18 @@
 			})
 		})
 
-		$(".look_info").click(function () {
-			$(".bill").css("display","block");
-		})
-
 
 		$(".ui-shade").click(function () {
 			$(".ui-shade").css("display","none");
+		})
+		$(".page_address").click(function () {
+
+		})
+
+		$(".address_box").change(function () {
+
+
+
 		})
 
 
@@ -312,7 +330,7 @@
 			event.stopPropagation()
 		})
 		$(".look_info").click(function(){
-			$(".bill").css("display","block")
+			$(".bill").css("display","flex")
 		})
 
 		$(".bill").click(function(){

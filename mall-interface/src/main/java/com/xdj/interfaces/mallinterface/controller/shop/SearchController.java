@@ -76,6 +76,7 @@ public class SearchController {
             mv = new JModelAndView("wap/search_goods_list.html", this.configService.getSysConfig(),
                     this.userConfigService.getUserConfig(), 1, request, response);
         }
+        viewTools.navHandle(mv);
         int pageNow =1;
         String data = new String("");
         if(StringUtils.isNotBlank(currentPage)){

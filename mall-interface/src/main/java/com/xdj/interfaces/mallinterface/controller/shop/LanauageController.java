@@ -34,6 +34,6 @@ public class LanauageController {
         }else if("fr".equals(lang)){
             request.getSession().setAttribute("LOCALE_SESSION_ATTRIBUTE_NAME",new Locale("fr","FR"));
         }
-        //response.sendRedirect("/user/login.htm");
+        response.sendRedirect("/index.htm");
     }
 }
