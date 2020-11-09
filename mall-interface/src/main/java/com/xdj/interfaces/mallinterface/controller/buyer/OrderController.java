@@ -200,7 +200,7 @@ public class OrderController {
             params.put("beginTime", CommUtil.formatDate(beginTime));
             mv.addObject("beginTime", beginTime);
         }
-        if (!CommUtil.null2String(beginTime).equals("")) {
+        if (!CommUtil.null2String(endTime).equals("")) {
             params.put("endTime", CommUtil.formatDate(endTime));
             /*ofqo.addQuery("obj.addTime",
                     new SysMap("endTime", CommUtil.formatDate(endTime)), "<=");*/

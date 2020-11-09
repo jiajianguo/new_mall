@@ -17,9 +17,10 @@
     <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{/js/top.js}"></script>
     <script th:src="@{/js/head.js}"></script>
+    <link rel="stylesheet" type="text/css" href="/asset/css/swiper.min.css"/>
+    <script src="/asset/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+
     <script>
-
-
 
 
         function confirm_cart() {
@@ -196,6 +197,11 @@
             }
         }
     </script>
+    <style type="text/css">
+
+
+
+    </style>
     <head>
 <body>
 
@@ -358,9 +364,9 @@
             <ul>
                 <li class="this" th:text="'1.'+#{messages.view.cart}"></li>
                 <li th:text="'2.'+#{messages.confirm.order}"></li>
-                <li th:text="'3.'+#{messages.payto.seller}"></li>
-                <li th:text="'4.'+#{messages.confirm.goods}"></li>
-                <li class="last" th:text="'5.'+#{messages.evalution}"></li>
+                <li th:text="'3.'+#{messages.submit.success }"></li>
+               <!-- <li th:text="'4.'+#{messages.confirm.goods}"></li>
+                <li class="last" th:text="'5.'+#{messages.evalution}"></li>-->
             </ul>
         </div>
         <form  status="no_submit" id="cart_goods_form" method="post" target="_blank" th:action="@{/goods_cart2.htm}">
@@ -375,7 +381,7 @@
                         <td width="8%" align="center" class="title" th:text="#{messages.unit.price}"></td>
                         <td width="12%" align="center" class="title" th:text="#{messages.amount}"></td>
                         <td width="8%" align="center" class="title" th:text="#{messages.subtotal}"></td>
-                        <td align="center" class="title" th:text="#{messages.operation}"></td>
+<!--                        <td align="center" class="title" th:text="#{messages.operation}"></td>-->
                     </tr>
                     <tr class="shop_list" th:each="sc :${carts}" >   <!--th:attr="goods_list='goods_info_'+${obj.id}" th:id="${obj.id}"-->
                         <span th:each="obj,index :${sc.gcs}" th:data-id="${obj.id}" th:if="${index.index <1}">
@@ -387,7 +393,9 @@
                                      width="65" height="65"/>
                                 <img th:unless="${obj.goods.goods_main_photo}"
                                      th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}" width="65" height="65"/>
-                                <p>
+                                <div>
+
+                                    <p>
                                     <a th:href="@{/goods.htm(id=${obj.goods.id})}" target="_blank"
                                        th:text="${obj.goods.goodsName}"></a>
                                     <span th:if="${obj.goods.groupBuy==2}" style="color:#F00" th:text="'('+#{messages.group.buy}+')'"></span>
@@ -413,9 +421,18 @@
                                     <span class="arrow" style="display:none;"></span>
                                 </div>
                                 <span th:if="${obj.goods.deliveryStatus==2}" style="color:#F00">[买就送]</span> <br/>
-                                <!--<span th:each="gsp : ${obj.gsps}" th:if="${gsp.spec}" class="color"  th:text="${gsp.spec.name}+':'+${gsp.value}"></span><br/>-->
-                                <span class="color"  th:text="${obj.specInfo}"></span><br/>
-                                </p>
+                                    <!--<span th:each="gsp : ${obj.gsps}" th:if="${gsp.spec}" class="color"  th:text="${gsp.spec.name}+':'+${gsp.value}"></span><br/>-->
+
+                                <br/>
+                                    </p>
+
+                                    <div class="spec_box flex-star" th:data-id="${obj.goods.id}" th:data-name="${obj.id}">
+                                <span class="color" style="background: #f7f7f7;" th:id="${'spec_info'+ obj.id}" th:text="${obj.specInfo}" th:data-id="${obj.goods.id}" th:data-name="${obj.id}"></span>
+                                <span>▼</span>
+                                </div>
+
+                                </div>
+
                             </td>
                             <td align="center" th:class="${'goods_price'+obj.id}" th:id="${'goods_price'+obj.id}"  th:text="'￥'+${obj.price}"></td>
                             <td class="input" align="center">
@@ -513,6 +530,92 @@
             </ul>
         </div>
     </div>
+
+</div>
+
+
+<div class="page_shade flex-center">
+    <div class="page_modal flex-star">
+        <input type="hidden" name="gc_id" id="gc_id" value="">
+        <div class="swiper_box">
+            <div class="swiper-container swiper">
+                <div class="swiper-pagination"></div>
+                <div class="swiper-wrapper">
+                    <img class="goods_img" src="" >
+                   <!-- <div class="swiper-slide">
+                        <img src="asset/img/idcard_right.png" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="asset/img/idcard_right.png" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="asset/img/idcard_right.png" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="asset/img/idcard_right.png" />
+                    </div>-->
+                </div>
+            </div>
+
+            <!--<div class="swiper-container thumbs">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="asset/img/idcard_right.png" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="asset/img/idcard_right.png" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="asset/img/idcard_right.png" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="asset/img/idcard_right.png" />
+                </div>
+            </div>
+        </div>
+-->
+        </div>
+        <div class="modal_right">
+            <div class="goods_num">商品名称商品名称商品名称商品名称商品名称商品名称商品名称</div>
+            <div class="shose_spec">
+                <b>已选:</b>
+                <span></span>
+            </div>
+            <div class="price_box">$688.00</div>
+            <div class="spec_box" style="display: block">
+                <div class="goods_spec">
+                </div>
+                <!--<div class="spec_box_line">
+                    <p class="spec_tit">color</p>
+                    <div class="color_box flex-star">
+                        <div style="background: red;"></div>
+                        <div style="background: blue;"></div>
+                        <div style="background: yellow;"></div>
+                    </div>
+                </div>
+
+                <div class="spec_box_line">
+                    <p>size</p>
+                    <div class="color_box flex-star">
+                        <div>S</div>
+                        <div>M</div>
+                        <div>L</div>
+                    </div>
+                </div>-->
+                <!--<div class="spec_box_line">
+                    <p>number</p>
+                    <div class="color_box">
+                        <div>-</div>
+                        <input type="number" name="" id="" value="1" />
+                        <div>+</div>
+                    </div>
+                </div>-->
+            </div>
+            <input type="button" class="modal_btn" name="" id="sure" value="Oui." />
+            <input type="button" class="modal_btn" name="" id="cancel" value="Annuler" />
+        </div>
+    </div>
 </div>
 <script>
     /*function cart_remove(id,store_id){
@@ -535,8 +638,135 @@
     }*/
 
 
+/*    var thumbsSwiper = new Swiper('.thumbs',{
+        spaceBetween: 10,
+        slidesPerView: 4,
+        watchSlidesVisibility: true,//防止不可点击
+    })
+    var gallerySwiper = new Swiper('.swiper',{
+        spaceBetween: 10,
+        thumbs: {
+            swiper: thumbsSwiper,
+        }
+    })*/
+
+    $(".color").click(function () {
+        $(".page_shade ").css("z-index","10").css("opacity","1");
+        var id=$(this).attr('data-id');
+        var gcid= $(this).attr('data-name');
+        $("#gc_id").val('');
+        $("#gc_id").val(gcid);
+        if(id){
+            //$(".page_shade").css("display","block");
+            $(".shose_spec span").text('');
+            cartMolda(id);
+        }else{
+            alert('数据信息有误不能更改属性');
+        }
+    })
+
+    $(".page_modal").click(function(e){
+        let ev = event || e;
+        ev.stopPropagation()
+    })
+
+    $(".page_shade").click(function () {
+        $(".page_shade ").css("z-index","-10").css("opacity","0");
+
+    })
+
+
+    function cartMolda(id){
+        $.post('/goodsGsp',{id:id},function(res){
+            if(res.code == '200'){
+                var gsp='';
+                var gsps=res.data.specification;
+                $(".goods_img").removeAttr('src');
+                $(".goods_img").attr('src','/'+res.data.goods_main_photo.path+'/'+res.data.goods_main_photo.name);
+                $(".goods_num").text("");
+                $(".goods_num").text(res.data.goodsName);
+                $(".price_box").text("");
+                $(".price_box").text('$'+res.data.storePrice);
+                if(gsps){
+                    $.each(gsps,function(i,n){
+                        gsp=gsp +`<div class="spec_box_line">
+									<div class="spec_tit">`
+                            +n.name+
+                            `<span></span>
+									</div>
+									<div class="color_box flex-star" >`;
+                        var specs= res.data.goods_specs;
+                        var spec;
+                        if(specs){
+                            spec=specsdata(n,specs);
+                        }
+                        gsp=gsp+spec+`</div> </div>`;
+                    });
+                    $(".goods_spec").html(gsp);
+                }
+            }
+        });
+    }
+
+    function specsdata(gsp,spec){
+        if(spec){
+            var specs="";
+            $.each(spec,function (i,n) {
+                if(n.spec.id == gsp.id){
+                    specs =specs+`<div onclick="getspec(this)"  gsp="`+n.id +`">`+n.value+`</div>`;
+                }
+            });
+            return specs;
+        }
+    }
+
+    $("#sure").click(function(){
+        var eles=$("div[class=color-box-act]");
+        var ids='';
+        if(eles){
+            eles.each(function(){
+                if($(this).attr('gsp') != 'undefined' && $(this).attr('gsp') != undefined && $(this).attr('gsp')  != ''){
+                    ids=ids+$(this).attr('gsp')+',';
+                }
+            });
+        }
+        var gc_id=$("#gc_id").val();
+        if(gc_id){
+            if(ids){
+                $.post('/eidtGoodscart',{id:gc_id,ids:ids},function(res){
+                    if(res.code == '200' ){
+                        $("#spec_info"+gc_id).text('');
+                        $("#spec_info"+gc_id).text(res.data.specInfo);
+                        $("#goods_price"+gc_id).text('');
+                        $("#goods_price"+gc_id).text('$'+res.data.price);
+                        $(".page_shade ").css("z-index","-10").css("opacity","0");
+                    }else{
+                        alert(res.msg);
+                    }
+                });
+            }else{
+
+            }
+        }else{
+            alert('');
+        }
+    });
+    $("#cancel").click(function(){
+        $(".page_shade ").css("z-index","-10").css("opacity","0");
+    });
+    let specarr = [];
+
+    function getspec(_that){
+        $(_that).addClass("color-box-act").siblings().removeClass("color-box-act")
+        $(_that).parents(".spec_box_line").find(".spec_tit span").text($(_that).text());
+        let sepcindex = $(_that).parents(".spec_box_line").index();
+        specarr[sepcindex] = $(_that).text();
+        $(".shose_spec span").text(specarr.join("，"));
+    }
 
     jQuery(document).ready(function(){
+
+
         jQuery("#cart_goods_top_menu").mouseover(function(){
             jQuery.ajax({type:'POST',url:'/cart_menu_detail.htm',data:'',
                 beforeSend:function(){
@@ -553,6 +783,8 @@
             jQuery("#cart_goods_top_info").hide();
         });
     });
+
+
 </script>
 </body>
 </html>

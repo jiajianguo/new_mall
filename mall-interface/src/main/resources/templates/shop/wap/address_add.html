@@ -24,6 +24,12 @@
 
 				<div class="content">
 					<input name="id" type="hidden" id="id"  th:value="${obj!=null?obj.id:''}" />
+
+					<div class="content_text">
+						<div class="text_title"><span>*</span>Company</div>
+						<input class="text" type="text" name="company" id="company" th:value="${obj !=null ? obj.company:''}"/>
+					</div>
+
 					<div class="content_text">
 						<div class="text_title">
 							<span>*</span>

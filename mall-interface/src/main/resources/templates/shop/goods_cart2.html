@@ -22,7 +22,7 @@
 
     <script>
         jQuery(document).ready(function() {
-            var address = jQuery("#addr").val();
+            var address = jQuery("#address").text();
             var person_info = jQuery("#person_info").val();
             jQuery("#order_address_info").html("寄送至:" + address);
             jQuery("#order_person_info").html("收货人:" + person_info);
@@ -132,6 +132,11 @@
                 var transport = text.substring(0, text.indexOf("["));
                 jQuery("#transport").val(transport);
             });
+
+            $(".return_cart").click(function () {
+                window.history.go(-1);
+            })
+
             //
             jQuery(".baby_gp>a").mouseover(function () {
                 jQuery(this).parent().find(".arrow").show();
@@ -150,6 +155,8 @@
         function save_order() {
             jQuery("#cart_form").submit();
         }
+
+
     </script>
 </head>
 <body>
@@ -311,20 +318,23 @@
             <ul>
                 <li class="done prev" th:text="#{messages.view.cart}"></li>
                 <li class="this" th:text="#{ messages.confirm.order }"></li>
-                <li th:text="#{messages.payto.seller}"></li>
-                <li th:text="#{messages.confirm.goods}"></li>
-                <li class="last" th:text="#{messages.evalution }"></li>
+                <li th:text="#{messages.submit.success}"></li>
+                <!--<li th:text="#{messages.confirm.goods}"></li>
+                <li class="last" th:text="#{messages.evalution }"></li>-->
             </ul>
         </div>
         <form th:action="@{/goods_cart3.htm}" method="post" th:enctype="@{/goods_cart3.htm}" id="cart_form">
-            <div class="h1">
-               <!-- <span class="h1_l">店铺名称：
+            <div class="paybtn"> <!--class="h1"-->
+                <input type="button" class="return_cart"  style="cursor:pointer;" th:value="'<<<'+#{messages.return.home}">
+                <!--<span class="h1_l">店铺名称：
                   <a th:href="@{/store.htm(id=${sc.store.id})}" target="_blank" th:text="${sc.store.storeName}"></a>
                   <input name="store_id" type="hidden" th:id="store_id" th:value="${sc.store.id}"/>
                   <input name="addrs" type="hidden" th:id="${addrs}" th:value="${addrs.size()}"/>
                 </span>-->
                 <input type="hidden" name="ids" th:value="${ids}">
             </div>
+
+
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
@@ -332,6 +342,7 @@
                         <td width="10%" align="center" class="title" th:text="#{messages.unit.price}"></td>
                         <td width="11%" align="center" class="title" th:text="#{messages.amount}"></td>
                         <td width="11%" align="center" class="title" th:text="#{messages.subtotal}"></td>
+                        <!--<td align="center" class="title" ><a href="/goods_cart1.htm" th:text="#{messages.return.home}"> </a> </td>-->
                     </tr>
                     <span th:each="d : ${data}">
                         <tr th:each="gc :${d.carts}">
@@ -400,7 +411,7 @@
                 </h1>
                 <div class="writeok">
                     <ul>
-                        <li th:each="addr :${addrs}">
+                        <li th:if="${addr!=null}">
                             <strong>
                                 <img th:src="@{/style/system/front/default/images/Steps_02.gif}" width="14"  height="23"/>
                             </strong>
@@ -408,21 +419,82 @@
                                 <strong>
                                     <input type="radio" name="addr_id" id="addr_id" th:value="${addr.id}" th:checked="${ velocitycount==1 ?'checked':'' }"/>
                                 </strong>
-                                <span id="address" th:if="${addr!= null }" th:text="${ addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"></span>
-                                <input type="hidden" id="addr" th:if="${addr != null }"
-                                       th:value="${addr.countries}+${addr.city}+${addr.areaInfo!=null?addr.areaInfo:''}"/>
+                                <span id="company" th:if="${addr.company!=null}" th:text="${addr.company}"></span>
                                 <span id="person" th:text="${addr.truename}"></span>
-                                <span id="mobile" th:text="${addr.mobile}"></span>
+                                <span id="telephone" th:text="${addr.telephone}"></span>
+                                <span id="address" th:if="${addr!= null }" th:text="${addr.areaInfo!=null?addr.areaInfo:''}+${addr.city}+'  '+${addr.countries}"></span>
+                                <!--<input type="hidden" id="addr" th:if="${addr != null }" th:text="${addr.areaInfo!=null?addr.areaInfo:''}+${addr.city}+'  '+${ addr.countries}"/>-->
                                 <input type="hidden" id="person_info" th:value="${addr.truename}+':'+${addr.mobile}"/>
+                                <input class="updress" type="button" value="修改地址">
                             </label>
+                            <div class="popup-dz">
+                                <div class="po-text">
+                                    <div class="poput-text flex-star" th:if="${addressList.size()>0}" th:each="ad :${addressList}">
+                                        <input class="addr" type="hidden" th:value="${ad.id}">
+                                        <span class="com" th:if="${ad.company!=null}" th:text="${ad.company}"></span>
+                                            <span class="name" th:text="${ad.truename}"></span>
+                                            <span class="phone" th:text="${ad.telephone}"></span>
+                                            <span class="ad" th:if="${ad!= null }" th:text="${ad.areaInfo!=null?ad.areaInfo:''}+${ad.city}+'  '+${ad.countries}"></span>
+                                        <button type="button" class="po-bt">选择</button>
+                                    </div>
+
+                                    <img src="/style/common/images/close.jpg" alt="">
+
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
+                <script>
+                    $(function(){
+                        $(".updress").click(function(){
+                            $(".popup-dz").css({"display":"block"})
+                        })
+                        $(".po-bt").click(function(){
+                            var company = $(this).parents(".poput-text").find(".com").text();
+                            var name = $(this).parents(".poput-text").find(".name").text();
+                            var phone = $(this).parents(".poput-text").find(".phone").text();
+                            var ad = $(this).parents(".poput-text").find(".ad").text();
+                            var id=$(this).parents(".poput-text").find(".addr").val();
+                            $("#addr_id").val(id);
+                            $("#address,#invoice_address,#order_address_info").text(ad);
+                            $("#company").text(company);
+                            $("#order_person_info").text(name+':'+phone);
+                            $("#person").text(name)
+                            $("#telephone").text(phone);
+                            $(".popup-dz").css({"display":"none"})
+                        })
+                        $(".po-text img").click(function(){
+                            $(".popup-dz").css({"display":"none"})
+                        })
 
-                <h1><span class="sendperadr margin10" th:text="#{messages.invoice.info}"></span></h1>
+                        $(".showtitle").click(function(){
+                            if( $(this).attr("data-nu") == "show"){
+                                $(this).attr("data-nu","hide")
+                            }else{
+                                $(this).attr("data-nu","show")
+                            }
+                            $(this).attr("data-nu") == "show" ? $(".showdata").css({"display":"block"}) : $(".showdata").css({"display":"none"})
+
+                        })
+                    })
+                </script>
+
+                <h1>
+                    <div class="sendhright">
+                        <span class="sendperbtn">
+                            <a href="javascript:void(0);" th:dialog_uri="@{/cart_address.htm(store_id=${store_id},ids=${ids})}"
+                               dialog_title="新增发票地址" dialog_width="480" dialog_height="100" dialog_id="cart_address" th:text="#{messages.invoiceaddr.add}"></a>
+                        </span>
+                        <span class="sendperbtn">
+                            <a th:href="@{/buyer/address.htm}" target="_blank" th:text="#{messages.manage.invoiceaddr}"></a>
+                        </span>
+                    </div>
+                    <span class="sendperadr margin10" th:text="#{messages.invoice.info}"></span>
+                </h1>
                 <div class="sendmethod">
                     <ul>
-                        <li>
+                       <!-- <li>
                             <label>
                                 <input name="invoiceType" type="radio" id="invoiceType" value="0" checked="checked" />
                                 <span th:text="#{messages.invoice.personal}"></span>
@@ -431,7 +503,7 @@
                                 <input name="invoiceType" id="invoiceType" type="radio" value="1"/>
                                 <span th:text="#{messages.invoice.unit}"> </span>
                             </label>
-                        </li>
+                        </li>-->
                         <li>
                             <table style="color: #3f4c58;">
                                 <thead>
@@ -440,17 +512,17 @@
                                 </tr>
                                 <tr>
                                     <th>address</th>
-                                    <th colspan="4" id="invoice_address"></th>
+                                    <th colspan="4" ><span id="invoice_address" name="invoice"></span> </th>
                                 </tr>
-                                <tr>
+                                <!--<tr>
                                     <th>email</th>
                                     <th colspan="4" th:text="${user.email}"></th>
                                 </tr>
                                 <tr>
                                     <th>phone</th>
                                     <th colspan="4" th:text="${user.telephone}"></th>
-                                </tr>
-                                <tr>
+                                </tr>-->
+                                <tr class="showtitle" data-nu="show">
                                     <th th:text="#{messages.goods.name}"></th>
                                     <th th:text="#{messages.unit.price}"></th>
                                     <th th:text="#{messages.rate.price}"></th>
@@ -459,10 +531,11 @@
                                 </tr>
                                 </thead>
                                 <span th:each="d : ${data}">
-                                    <tr th:each="gc :${d.carts}">
+                                    <tr class="showdata"  th:each="gc :${d.carts}">
                                         <td th:text="${gc.goods.goodsName}"></td>
                                         <td th:text="${gc.price}"></td>
-                                        <td th:text="${'10%'}"></td>
+                                        <td th:if="${gc.goods.rate}" th:text="${gc.goods.rate.rate}+'%'"></td>
+                                        <td th:unless="${gc.goods.rate}">10%</td>
                                         <td th:text="${gc.count}"></td>
                                         <td th:text="${gc.count*gc.price}"></td>
                                     </tr>

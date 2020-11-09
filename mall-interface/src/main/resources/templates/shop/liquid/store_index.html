@@ -36,6 +36,7 @@
     <script type="text/javascript" src="https://lib.baomitu.com/jquery/3.5.0/jquery.js"></script>
     <script th:src="@{/js/checkout.min.js}"></script>
     <script async="true" id="xo-pptm" th:src="@{/js/pptm.js}"></script>
+    <!--<link th:href="@{/style/system/front/default/css/public.css}" type="text/css" rel="stylesheet"/>-->
     <!-- Snap Pixel Code -->
     <script type="text/javascript">
         (function (e, t, n) {
@@ -88,6 +89,9 @@
             font-family: "OldStandard";
             src: url(/font/OldStandard-Regular.ttf);
         }
+
+
+
     </style>
     <style type="text/css" class="buyer-font-style">
         @font-face {
@@ -226,9 +230,9 @@
                 <div class="nav-box">
                     <div class="currency-select">
                         <select>
-                            <option data-currency-code="USD">
+                            <!--<option data-currency-code="USD">
                                 USD
-                            </option>
+                            </option>-->
                             <option data-currency-code="EUR">
                                 EUR
                             </option>
@@ -239,7 +243,7 @@
                         <div class="background"></div>
                         <ul class="nav sl-subhead-title J-NavList">
                             <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
-                                <a href="/">
+                                <a th:href="@{/store.htm(id=${goodsStore.id})}">
                                     Home </a>
                             </li>
 
@@ -305,6 +309,28 @@
 
                     <a class="head-buycart iconfont icon-gouwu " th:href="@{/goods_cart1.htm}">
                         <i style="display: none;"></i>
+                        <div class="goods_num" th:text="${cartSize!=null?cartSize:0}"></div>
+
+                        <div class="cart_hover">
+                            <!--<p th:text="'商品总价：￥'+ ">￥666</p>-->
+                            <div class="flex-between hover_goods_item" th:each="obj :${goodscarts}">
+                                <div class="flex-star goods_intro">
+                                    <object>
+                                        <a th:href="@{/goods.htm(id=${obj.goods.id})}">
+                                    <img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+                                    <img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
+                                        </a>
+                                    </object>
+                                    <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
+
+                                </div>
+                                <div>
+                                    <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>
+                                    <p class="del" th:data-id="${obj.id}">删除</p>
+                                </div>
+
+                            </div>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -482,7 +508,30 @@
 
         </div>
         <script type="text/javascript">
+
+
             $(function () {
+
+                $(".del").click(function () {
+                    var gcId=$(this).attr("data-id");
+                    jQuery.post('/remove_goods_cart.htm', {"id": gcId}, function (data) {
+                        $(".goods_num").text(data.count);
+                    }, "json");
+                    $(this).parents(".hover_goods_item").remove();
+                })
+                
+                
+                $(".hover_goods_item img").click(function () {
+                    let href = $(this).parent().attr("href");
+                    window.location.href = href;
+                })
+
+
+                $(".cart_hover").click(function (e) {
+                    e.preventDefault();
+                })
+
+
                 var delay_time = parseInt('7000');
                 var auto_play = parseInt('1');
                 var banner_open = parseInt('0');
@@ -804,7 +853,7 @@
                 <div class="footer-menu">
                     <h4 class="J-FooterMenu">Footer menu</h4>
                     <div>
-                        <a href="/">
+                        <a th:href="@{/store.htm(id=${goodsStore.id})}">
                             Home </a>
                         <a th:href="@{/store_goods_search.htm}">
                             Search </a>

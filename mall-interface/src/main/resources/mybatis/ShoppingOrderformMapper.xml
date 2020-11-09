@@ -118,8 +118,8 @@
           <if test="beginTime != null">and addTime &gt;= #{beginTime} </if>
           <if test="endTime != null "> and addTime &lt;= #{endTime}</if>
           <if test="order_status != null"> and order_status =#{order_status}</if>
-          <if test="orderBy != null and sort != null "> order by #{orderBy} ${sort}</if>
-          <if test="start != null and pageSize != null "> limit #{start} ,${pageSize}</if>
+          <if test="orderBy != null and sort != null "> order by ${orderBy} ${sort}</if>
+          <if test="start != null and pageSize != null "> limit ${start} ,${pageSize}</if>
         </where>
   </select>
 

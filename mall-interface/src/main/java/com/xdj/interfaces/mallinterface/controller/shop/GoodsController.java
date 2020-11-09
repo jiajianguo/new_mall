@@ -1139,24 +1139,19 @@ public class GoodsController {
         }
 
         ShoppingUser user =SecurityUserHolder.getCurrentUser();
-        List<ShoppingStorecart> cart = getCart(user.getId());
+        List<ShoppingStorecart> cart = goodsViewTools.getCart(user.getId());
         int count = 0;
         for (ShoppingStorecart sc2 : cart) {
             goodsCartTools.addGcs(sc2);
             for (ShoppingGoodscart gc1 : sc2.getGcs()) {
-                count += 1;
+                count =count+gc1.getCount();
             }
         }
         mv.addObject("cartSize",count);
         return mv;
     }
 
-    private List<ShoppingStorecart> getCart(Long userId){
-        Map params = new HashMap();
-        params.put("user_id", userId);
-        params.put("sc_status", Integer.valueOf(0));
-        return this.storeCartService.queryByCondition(params);
-    }
+
 
     public void goodsEvalutioin(String id,String currentPage,HttpServletRequest request,ModelAndView mv){
         ShoppingStoreWithBLOBs store = this.storeService.getObjById(CommUtil.null2Long(id));

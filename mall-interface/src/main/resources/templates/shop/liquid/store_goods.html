@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <title>Goods Details - </title>
     <!-- 只在详情页展示-->
-    <meta property="og:url"           content="https://emode.xdjplus.com/goods.htm" />
+    <meta property="og:url"           content="http://emode.xdjplus.com/goods.htm" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         th:content="${obj.goodsName}"/>
     <meta property="og:description"   content="description" />
@@ -141,6 +141,18 @@
             font-family: HelveticaNeue !important;
             font-size: 16px !important
         }
+        .add_cart_bt{
+            width: 100%;
+            height: 44px;
+            border: none;
+            background-color: #202020;
+            color: rgb(252, 252, 252);
+            margin-bottom: 10px;
+        }
+        .add_cart_bt:hover{
+            cursor: pointer;
+            background-color: rgb(96, 98, 102) ;
+        }
     </style>
 
     <title>Liquid model</title>
@@ -153,7 +165,7 @@
 <input type="hidden" class="sail-event-page-handler" value="character-sport-bike-helmet">
 <input type="hidden" class="sail-event-recommend-product" value="0">
 <input type="hidden" class="J-isPreview" value="0">
-<input type="hidden" class="sail-event-referer" value="https://liquid.xshoppy.shop/">
+<input type="hidden" class="sail-event-referer" value="http://emode.xdjplus.com/">
 <input type="hidden" class="J-PaypalClientId" value="0">
 <input type="hidden" class="J-getCurrentState" value="HK" data-flag="https://static.xshoppy.shop/country_image/HK.png">
 <!-- 访客地区 -->
@@ -274,9 +286,9 @@
                 <div class="nav-box">
                     <div class="currency-select">
                         <select>
-                            <option data-currency-code="USD">
+                            <!--<option data-currency-code="USD">
                                 USD
-                            </option>
+                            </option>-->
                             <option data-currency-code="EUR">
                                 EUR
                             </option>
@@ -287,7 +299,7 @@
                         <div class="background" style="width: 0px; left: 0px;"></div>
                         <ul class="nav sl-subhead-title J-NavList">
                             <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
-                                <a href="http://emode.xdjplus.com/index.htm">
+                                <a th:href="@{/store.htm(id=${goodsStore.id})}">
                                     Home </a>
                             </li>
 
@@ -426,7 +438,7 @@
         <meta itemprop="url" content="">
         <meta itemprop="image" content="">
         <div class="breadcrumb">
-            <a href="http://emode.xdjplus.com/index.htm">Home</a> / <span>Goods Details</span>
+            <a th:href="@{/store.htm(id=${goodsStore.id})}">Home</a> / <span>Goods Details</span>
         </div>
         <div class="big-image" style="display: none; top: 0px;">
             <div class="show-img"
@@ -651,16 +663,16 @@
                 </div>
                 <!-- 加购  paypal -->
                 <div>
-                    <button class="jh-btn sl-subhead-title sl-secondary-btn JH-Event-BuyCart JH-BuyCart"> <!-- class="btn-text" data-handler="character-sport-bike-helmet"-->
-                        <span th:data-id="${obj.id}" th:data-name="${obj.goodsStoreId}" th:onclick="add_cart(this.getAttribute('data-id'),this.getAttribute('data-name'))">Add To Cart </span>
-                        <span class="iconfont icon-jiazai loading"></span>
-                    </button>
+                    <input type="button" th:data-id="${obj.id}" th:data-name="${obj.goodsStoreId}" id="add_cart" value="Add To Cart " class="add_cart_bt"> <!--class="jh-btn sl-subhead-title sl-secondary-btn JH-Event-BuyCart JH-BuyCart"-->
+                        <!--<span >Add To Cart </span>
+                        <span class="iconfont icon-jiazai loading"></span>-->
+                    </input>
 
                     <input type="hidden" class="J-isSetPaypalPayment" value="0">
 
-                    <button class="jh-btn sl-subhead-title sl-secondary-btn JH-Event-BuyCart JH-BuyCart" style="" >
-                        <span th:data-name="${obj.id }" th:data-id="${obj.goodsStoreId}" th:onclick="buy_goods(this.getAttribute('data-name'),this.getAttribute('data-id'))">Buy It Now</span>
-                    </button>
+                    <input type="button" th:data-id="${obj.id }" th:data-name="${obj.goodsStoreId}" id="buy_goods" style="" value="Buy It Now" class="add_cart_bt"> <!--class="jh-btn sl-subhead-title sl-secondary-btn JH-Event-BuyCart JH-BuyCart"-->
+                        <!--<span >Buy It Now</span>-->
+                    </input>
 
                     <div class="J-PaypalBtn" style="display: none">
                         <div class="paypal-btn">
@@ -1030,7 +1042,7 @@
                 <div class="footer-menu">
                     <h4 class="J-FooterMenu">Footer menu</h4>
 
-                        <a href="/">
+                        <a th:href="@{/store.htm(id=${goodsStore.id})}">
                             Home </a>
                         <a href="/search">
                             Search </a>
@@ -1077,28 +1089,99 @@
         }
     })
 
-    function add_cart(id,storeId) {
-        var groupBuy = jQuery("#gropBuy").val();
-        var userstoreId = jQuery("#userstoreId").val();
-        var userId = jQuery("#userId").val();
-        if (groupBuy == '2') {
-            var price=jQuery("#group_price").text();
-            var ggMaxCount=jQuery("#ggMaxCount").val();
-            if (ggMaxCount>0){
-                var goods_inventory=ggMaxCount;
-            }else{
-                var goods_inventory=jQuery("#ggCount").val();
+    jQuery(document).ready(function() {
+
+        // $("#add_cart").on('click', function () {
+            $("#add_cart").click(function(){
+            console.log("add_cart============")
+            var id = $(this).attr('data-id');
+            var storeId = $(this).attr('data-name');
+            var groupBuy = jQuery("#gropBuy").val();
+            var userstoreId = jQuery("#userstoreId").val();
+            var userId = jQuery("#userId").val();
+            if (groupBuy == '2') {
+                var price = jQuery("#group_price").text();
+                var ggMaxCount = jQuery("#ggMaxCount").val();
+                if (ggMaxCount > 0) {
+                    var goods_inventory = ggMaxCount;
+                } else {
+                    var goods_inventory = jQuery("#ggCount").val();
+                }
+
+            } else {
+                var price = jQuery("#store_price").text();
+                var goods_inventory = jQuery("#goodsInventory").text();
+            }
+            if (userId != null) {
+                if (userstoreId == storeId) {
+                    alert("不能购买自己的商品！");
+                } else {
+                    var add = true;
+                    var gsp = "";
+                    if ($("#specification").length == 0) {
+                        add = true;
+                    } else {
+                        jQuery("#specification").each(function () {
+                            jQuery.each($(".gsp option:selected"), function () {
+                                gsp = $(this).val() + "," + gsp;
+                            });
+                            if ($(".gsp option:selected").val() == 0) {
+                                add = false;
+                                alert("请选择规格！！！")
+                            }
+                        });
+                    }
+                    console.log(gsp);
+                    var count = jQuery("#goods_count").val();
+                    if (count == 0) {
+                        add = false;
+                        alert("至少购买一件商品!");
+                        return;
+                    }
+                    if (goods_inventory == 0) {
+                        add = false;
+                        alert("商品库存为0,不能购买!");
+                        return;
+                    }
+
+                    if (add) {
+                        add_goods_to_cart(id, count, price, gsp, false)
+                    } else {
+                        jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
+                        jQuery("#goods_spec_info_close").show();
+                        jQuery("#goods_spec_chose").show();
+                    }
+                }
+            } else {
+                alert("请登录再添加");
             }
 
-        }else{
-            var price=jQuery("#store_price").text();
-            var goods_inventory = jQuery("#goodsInventory").text();
-        }
-        if (userId !=null ){
-            if (userstoreId == storeId) {
+        })
+
+        $("#buy_goods").on('click',function (){
+            var  id= $(this).attr('data-id');
+            var  storeId= $(this).attr('data-name');
+            var userId = jQuery("#userId").val();
+            var groupBuy = jQuery("#gropBuy").val();
+            var userstoreId = jQuery("#userstoreId").val();
+            if (groupBuy == '2') {
+                var price=jQuery("#group_price").text();
+                var ggMaxCount=jQuery("#ggMaxCount").val();
+                if (ggMaxCount>0){
+                    var goods_inventory=ggMaxCount;
+                }else{
+                    var goods_inventory=jQuery("#ggCount").val();
+                }
+
+            }else{
+                var price=jQuery("#store_price").text();
+                var goods_inventory = jQuery("#goodsInventory").text();
+            }
+
+            if (userstoreId == storeId){
                 alert("不能购买自己的商品！");
-            } else {
-                var add = true;
+            }else {
+                var add = true
                 var gsp="";
                 if($("#specification").length==0){
                     add=true;
@@ -1109,11 +1192,9 @@
                         });
                         if ($(".gsp option:selected").val() == 0){
                             add = false;
-                            alert("请选择规格！！！")
                         }
                     });
                 }
-                console.log(gsp);
                 var count = jQuery("#goods_count").val();
                 if (count == 0) {
                     add = false;
@@ -1125,20 +1206,18 @@
                     alert("商品库存为0,不能购买!");
                     return;
                 }
-
+                var buy_type = arguments[4];
+                console.log("购买类型---"+buy_type);
                 if (add) {
-                    add_goods_to_cart(id,count,price,gsp,false)
+                    add_goods_to_cart(id,count,price,gsp,true)
                 } else {
                     jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
                     jQuery("#goods_spec_info_close").show();
                     jQuery("#goods_spec_chose").show();
                 }
             }
-        } else {
-            alert("请登录再添加");
-        }
-
-    }
+        })
+    })
 
     function add_goods_to_cart(id,count,price,gsp,flag){
         console.log('gsp',gsp);
@@ -1167,7 +1246,7 @@
                     window.location.href = "/goods_cart1.htm";
                 }else{
                     alert('添加到购物车成功');
-                    $(".goods_num").text(parseInt(num)+parseInt(1))
+                    $(".goods_num").text(parseInt(num)+parseInt(res.data))
                 }
             }else{
                 alert(res.msg);
@@ -1177,63 +1256,6 @@
     }
 
 
-    function buy_goods(id,storeId) {
-        var userId = jQuery("#userId").val();
-        var groupBuy = jQuery("#gropBuy").val();
-        var userstoreId = jQuery("#userstoreId").val();
-        if (groupBuy == '2') {
-            var price=jQuery("#group_price").text();
-            var ggMaxCount=jQuery("#ggMaxCount").val();
-            if (ggMaxCount>0){
-                var goods_inventory=ggMaxCount;
-            }else{
-                var goods_inventory=jQuery("#ggCount").val();
-            }
-
-        }else{
-            var price=jQuery("#store_price").text();
-            var goods_inventory = jQuery("#goodsInventory").text();
-        }
-
-        if (userstoreId == storeId){
-            alert("不能购买自己的商品！");
-        }else {
-            var add = true
-            var gsp="";
-            if($("#specification").length==0){
-                add=true;
-            }else{
-                jQuery("#specification").each(function () {
-                    jQuery.each($(".gsp option:selected"), function () {
-                        gsp =$(this).val() + "," + gsp;
-                    });
-                    if ($(".gsp option:selected").val() == 0){
-                        add = false;
-                    }
-                });
-            }
-            var count = jQuery("#goods_count").val();
-            if (count == 0) {
-                add = false;
-                alert("至少购买一件商品!");
-                return;
-            }
-            if (goods_inventory == 0) {
-                add = false;
-                alert("商品库存为0,不能购买!");
-                return;
-            }
-            var buy_type = arguments[4];
-            console.log("购买类型---"+buy_type);
-            if (add) {
-                add_goods_to_cart(id,count,price,gsp,true)
-            } else {
-                jQuery("#goods_spec_info").removeClass().addClass("detailsbottom detailsbottom_hover");
-                jQuery("#goods_spec_info_close").show();
-                jQuery("#goods_spec_chose").show();
-            }
-        }
-    }
 </script>
 </body>
 </html>

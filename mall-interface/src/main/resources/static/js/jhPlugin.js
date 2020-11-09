@@ -106,17 +106,20 @@ window.SAIL_ENV = {
                     }
                 }
             })
-        }, goTop: function () {
+        },
+        goTop: function () {
             $(document).on("click", ".J-GoTop", function () {
                 $("html, body").animate({scrollTop: "0"}, 300)
             })
-        }, query: function () {
+        },
+        query: function () {
             var t = new Object;
             window.location.search && window.location.search.substr(1).split("&").forEach(function (e, a) {
                 t[e.split("=")[0]] = e.split("=")[1]
             });
             return t
-        }, Pages: function (e, a, t) {
+        },
+        Pages: function (e, a, t) {
             if (0 == t.length || t.length <= e) return $(".J-Pages").empty(), !1;
             var n = "", s = parseInt(t / e), o = !1;
             s = t % e == 0 ? s : s + 1, 1 == a ? $(".J-PagesPrev").hide() : $(".J-PagesPrev").show(), a == s ? $(".J-PagesLast").hide() : $(".J-PagesLast").show();
@@ -204,9 +207,9 @@ window.SAIL_ENV = {
                 page_name: $(".sail-event-page-location").val() || ""
             }
         };
-       /* $.extend(s.params, t), n ? $http.post("/buyer/statistics/logger", JSON.stringify(s), function (e) {
-            n(e)
-        }) : $http.post("/buyer/statistics/logger", JSON.stringify(s))*/
+        /* $.extend(s.params, t), n ? $http.post("/buyer/statistics/logger", JSON.stringify(s), function (e) {
+             n(e)
+         }) : $http.post("/buyer/statistics/logger", JSON.stringify(s))*/
     }, window.sharetag = function (e, a) {
         var t = {event_name: e, params: {source: a || ""}};
         $http.post("/buyer/logger/share", JSON.stringify(t))

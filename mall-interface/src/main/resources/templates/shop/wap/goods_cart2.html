@@ -61,7 +61,7 @@
 							<p class="text_title flex-between" style="margin-top: .1rem">
 								<span th:text="#{messages.coupon}"></span>
 								<select class="select_oo">
-									<option  th:each="obj : ${data.couponin}" th:data-id="{obj.id}" th:value="${obj.couponAmount}" th:text="${obj.couponName}"> </option>
+									<option  th:each="obj : ${data.couponin}" th:data-id="${obj.id}" th:value="${obj.couponAmount}" th:text="${obj.couponName}"> </option>
 								</select>
 							</p>
 						</div>
@@ -167,7 +167,7 @@
 						<input class="content_bt" type="button" id="orderPay" value="立即支付" />
 					</div>
 					<!--弹窗发票-->
-					<div class="bill flex-center">
+					<div  class="bill flex-center">
 						<div class="bill_content">
 							<div class="back1"></div>
 							<div class="bill_title">Contact Info</div>
@@ -176,7 +176,7 @@
 									<div class="bill_title_color">address</div>
 									<div class="page_address">
 <!--										<div class="address_box" th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></div>-->
-										<textarea class="address_box" th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></textarea>
+										<textarea class="address_box" name="invoice" th:text="${addr.countries} + ${addr.city} +${addr.areaInfo }"></textarea>
 									</div>
 								</div>
 								<div>
@@ -344,6 +344,7 @@
 			$(".ui-shade").css("display","flex");
 		});
 		$("#orderPay").click(function (){
+			var invoice=$(".address_box").text();
            var ids=$("#ids").val();
            var addr_id=$(".address_id");
            var coupon_id ='';
@@ -371,7 +372,8 @@
            	 flag =false;
 		   }
            if(flag){
-           	 window.location.href="/goods_cart3?addr_id="+addr+"&payId="+payid+"&ids="+ids;
+           	console.log("--------------invoice:"+invoice)
+           	 window.location.href="/goods_cart3?addr_id="+addr+"&payId="+payid+"&ids="+ids+"&invoice+"+invoice;
 		   }
 		});
 

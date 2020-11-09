@@ -225,9 +225,9 @@
                 <div class="nav-box">
                     <div class="currency-select">
                         <select>
-                            <option data-currency-code="USD">
+                            <!--<option data-currency-code="USD">
                                 USD
-                            </option>
+                            </option>-->
                             <option data-currency-code="EUR">
                                 EUR
                             </option>
@@ -238,7 +238,7 @@
                         <div class="background"></div>
                         <ul class="nav sl-subhead-title J-NavList">
                             <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
-                                <a href="/">Home</a>
+                                <a th:href="@{/store.htm(id=${goodsStore.id})}">Home</a>
                             </li>
 
                             <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
@@ -519,7 +519,7 @@
                 <div class="footer-menu">
                     <h4 class="J-FooterMenu">Footer menu</h4>
                     <div>
-                        <a href="/">
+                        <a th:href="@{/store.htm(id=${goodsStore.id})}">
                             Home </a>
                         <a th:href="@{/store_goods_search.htm}">
                             Search </a>

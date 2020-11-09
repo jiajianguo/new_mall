@@ -393,11 +393,15 @@
             var gsp ="";
             var load = true;
             if($("#specification").length==0){
-                var load = true;
+                 load = true;
             }else{
-                gsp=getgsp();
-                if(gsp.length < 1){
-                    alert("请选择商品规格");
+                var s= $('input:radio[class=this]');
+                if(s.length > $("#specification").length){
+                    s.each(function(){
+                        gsp=gsp+ $(this).attr('id')+',';
+                    });
+                }else {
+                    alert("请正确选择商品规格");
                     load = false;
                 }
             }
@@ -430,15 +434,16 @@
         var gsp ="";
         var load = true;
         if($("#specification").length==0){
-            var load = true;
+             load = true;
         }else {
             var s = $(".specitem").find("input[type=radio ]");
-            s.each(function () {
-                if ($(this).is(":checked")) {
-                    gsp = gsp + $(this).attr("id") + ',';
-                }
-            });
-            if (gsp.length == 0) {
+            if(s.length > $("#specification").length){
+                s.each(function () {
+                    if ($(this).is(":checked")) {
+                        gsp = gsp + $(this).attr("id") + ',';
+                    }
+                });
+            }else {
                 load = false;
                 alert("请选择规格属性");
             }

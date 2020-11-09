@@ -213,18 +213,14 @@
 			load=true;
 		}else{
 			var s=$("div[class=sepc_act]")
-			console
-			if(s!=null){
+			if(s.length>$("#specification").length){
 				s.each(function () {
 					gsp = $(this).attr("gsp") + "," + gsp;
 				});
 				console.log("gsp", gsp);
 			}else{
 				load=false;
-			}
-			if(gsp.length < 1){
-				load=false;
-				alert("请选择规格属性");
+				alert("请正确选择规格！！！")
 			}
 		}
 
@@ -455,7 +451,7 @@
 		$(".shose_spec span").text(specarr.join("，"));
 		var id= $(this).attr('data-id');
 		var gsp =$(this).attr('gsp');
-		goods_spec_set(id,);
+		goods_spec_set(id,gsp);
 	})
 
 </script>

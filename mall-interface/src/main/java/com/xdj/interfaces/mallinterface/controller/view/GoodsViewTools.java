@@ -55,6 +55,8 @@ import java.util.*;
    private IGroupGoodsService groupGoodsService;
    @Resource
    private IStoreRateService storeRateService;
+   @Resource
+   private IStoreCartService storeCartService;
 
    @Resource
    private AccessoryViewTools accessViewTools;
@@ -62,6 +64,19 @@ import java.util.*;
 
    private Logger log = LoggerFactory.getLogger("goodstools");
 
+
+   /**
+    * 查询购物车数量以及商品信息
+    */
+
+
+
+   public List<ShoppingStorecart> getCart(Long userId){
+     Map params = new HashMap();
+     params.put("user_id", userId);
+     params.put("sc_status", Integer.valueOf(0));
+     return this.storeCartService.queryByCondition(params);
+   }
    /**
     * 规格添加
     * @param goods
@@ -621,6 +636,9 @@ import java.util.*;
        if(goods.getRateId() !=null){
          ShoppingStoreRate rate = storeRateService.getObjById(goods.getRateId());
          goods.setRate(rate);
+       }
+       if(goods.getGoodsMainPhotoId()!=null){
+         accessViewTools.addMainPhoto(goods);
        }
        s.setGoods(goods);
      }

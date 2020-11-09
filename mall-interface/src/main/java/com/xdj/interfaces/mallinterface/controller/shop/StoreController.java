@@ -3,6 +3,7 @@ package com.xdj.interfaces.mallinterface.controller.shop;
 import com.xdj.interfaces.mallinterface.controller.view.*;
 import com.xdj.interfaces.mallinterface.mv.JModelAndView;
 import com.xdj.interfaces.mallinterface.mv.PageModel;
+import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
 import com.xdj.interfaces.mallinterface.util.CommUtil;
 import com.xdj.www.entity.*;
@@ -59,6 +60,8 @@ public class StoreController {
     private  UserViewTools userViewTools;
     @Resource
     private OrderViewTools orderViewTools;
+    @Resource
+    private GoodsCartTools goodsCartTools;
     @Resource
     private IStoreNavigationService storenavigationService;
     private  final static Logger log = LoggerFactory.getLogger("store");
@@ -178,6 +181,22 @@ public class StoreController {
                     this.userConfigService.getUserConfig(), 1, request,response);
             mv.addObject("op_title", "店铺已经关闭或者未开通店铺");
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
+        }
+        ShoppingUser user = SecurityUserHolder.getCurrentUser();
+        List<ShoppingStorecart> cart = goodsViewTools.getCart(user.getId());
+        int count = 0;
+        List<ShoppingGoodscart> gcs =new ArrayList<>();
+        if(cart!=null && cart.size()>0) {
+            for (ShoppingStorecart sc2 : cart) {
+                goodsCartTools.addGcs(sc2);
+                for (ShoppingGoodscart gc1 : sc2.getGcs()) {
+                    count = count + gc1.getCount();
+                    goodsViewTools.addGoodsCartGood(gc1);
+                    gcs.add(gc1);
+                }
+            }
+            mv.addObject("cartSize", count);
+            mv.addObject("goodscarts",gcs);
         }
         return mv;
     }

@@ -150,7 +150,7 @@ public class AdressController {
             address = new ShoppingAddress();
             address.setAddtime(new Date());
             address.setDeletestatus(false);
-            address.setIsdefault(false);
+            /*address.setIsdefault(false);*/
             address.setUserId(user.getId());
             address.setDeletestatus(false);
         } else {

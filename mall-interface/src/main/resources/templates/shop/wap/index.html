@@ -181,8 +181,10 @@
             <a th:href="@{/advert_redirect.htm(url=${wapslide.apAccUrl},id=${wapslide.advId})}" target='_blank'></a>
         </div>
         <div id='focus' class='focus' th:if="${wapslide.apType=='wapslide'}">
-            <div class='hd'>
-                <ul></ul>
+            <div class="hd_box">
+                <div class='hd'>
+                    <ul></ul>
+                </div>
             </div>
             <div class='bd'>
                 <div class='tempWrap' style='overflow: hidden; position: relative;'>
@@ -264,7 +266,7 @@
         <div class="phone_brand">
             <ul id="banners">
                 <li th:each="gb,index : ${gbs}" th:class="${index.index <4?'display:none;':''}">
-                    <a href="/" target="_blank"> <!--th:href="@{/brand_goods.htm(id=${gb.id})}"-->
+                    <a href="#" target="_blank"> <!--th:href="@{/brand_goods.htm(id=${gb.id})}"-->
                         <img th:src="@{${'/'+gb.brandLogo.path+'/'+gb.brandLogo.name}}" width="88" height="44"/>
                     </a>
                 </li>
@@ -284,8 +286,8 @@
                         <img th:if="${goods.d_goods.goods_main_photo}"   th:src="@{${'/'+goods.d_goods.goods_main_photo.path +'/'+goods.d_goods.goods_main_photo.name}}">
                         <img th:unless="${goods.d_goods.goods_main_photo}"  th:src="@{'/'+config.goodsImage.path +'/'+config.goodsImage.name}">
                         <p class="price" >
-                            <b th:text="#{messages.money.class}+${goods.d_goods.storePrice}" style="font-size: 14px"></b>
-                            <del th:text="#{messages.money.class}+${goods.d_goods.goodsCurrentPrice }" style="text-decoration: line-through;font-size: 14px"></del>
+                            <b th:text="#{messages.money.class}+${goods.d_goods.storePrice}" style="font-size: 12px"></b>
+                            <del th:text="#{messages.money.class}+${goods.d_goods.goodsCurrentPrice }" style="text-decoration: line-through;font-size: 10px"></del>
                         </p>
 
                     </a>

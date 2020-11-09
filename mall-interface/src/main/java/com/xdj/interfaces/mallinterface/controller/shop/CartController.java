@@ -992,9 +992,9 @@ public class CartController {
                 List<ShoppingAddress> addrs = this.addressService.queryByCondition(params);
                 if(addrs.size()>0){
                     mv.addObject("addr", addrs.get(0));
-                }else if(addressList.size() > 0) {
-                    mv.addObject("addr", addressList.get(0));
-                }
+                }else if (addressList.size() > 0) {
+                        mv.addObject("addr", addressList.get(0));
+                    }
 
                 //组装数据  -》一店铺分类的 返回的店铺购物车数据信息
                 JSONArray data = new JSONArray();
@@ -1067,19 +1067,20 @@ public class CartController {
             params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
             params.put("orderBy", "addTime");
             params.put("sort", "desc");
-            List<ShoppingAddress> addrs = this.addressService.queryByCondition(params);
-           /* List<ShoppingAddress> adds = new ArrayList<>();
-            if (addrs != null && addrs.size() > 0) {
-                for (ShoppingAddress addr : addrs) {
-                    if (addr.getAreaId() != null) {
-                        ShoppingArea area = areaService.getObjById(addr.getAreaId());
-                        areaViewTools.addGrandpa(area);
-                        addr.setArea(area);
-                    }
-                    adds.add(addr);
-                }
-            }*/
-            mv.addObject("addrs", addrs);
+            List<ShoppingAddress> addressList = this.addressService.queryByCondition(params);
+            mv.addObject("addressList",addressList);
+            params.clear();
+            params.put("user_id", SecurityUserHolder.getCurrentUser().getId());
+            params.put("orderBy", "addTime");
+            params.put("sort", "desc");
+            params.put("isdefault",1);
+            List<ShoppingAddress> addrs =this.addressService.queryByCondition(params);
+            if(addrs.size()>0){
+                mv.addObject("addr", addrs.get(0));
+            }else if(addressList.size() > 0) {
+                mv.addObject("addr", addressList.get(0));
+            }
+
             Map<Long,List<ShoppingGoodscart>>  cartMsg = new HashMap<>();
             Map<Long,BigDecimal> priceMsg= new HashMap<>();
             for(ShoppingGoodscart s: gcs){
@@ -1174,7 +1175,7 @@ public class CartController {
 
 
     @RequestMapping({"/goods_cart3"})
-    public ModelAndView before_pay( HttpServletRequest request, HttpServletResponse response,String ids,String addr_id, String coupon_id,String payId){
+    public ModelAndView before_pay( HttpServletRequest request, HttpServletResponse response,String ids,String addr_id, String coupon_id,String payId,String invoice){
         ModelAndView mv = new JModelAndView("wap/pay.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
         BigDecimal amount = new BigDecimal("0.00");
@@ -1220,6 +1221,7 @@ public class CartController {
                 }
                 order.setOrderType("web");
                 amount = amount.add(order.getTotalprice());
+                order.setInvoice(invoice);
                 orderFormService.save(order);
                 c.setOfId(order.getId());
                 goodsCartService.update(c);
@@ -1622,8 +1624,8 @@ public class CartController {
         ShoppingGoodscart gc = this.goodsCartService.getObjById(CommUtil.null2Long(id));
         ShoppingStorecart the_sc = storeCartService.getObjById(gc.getScId());
         this.goodsCartService.delete(CommUtil.null2Long(id));
-        goodsCartTools.addGcs(the_sc);
         this.storeCartService.delete(the_sc.getId());
+        goodsCartTools.addGcs(the_sc);
         ShoppingUser user =SecurityUserHolder.getCurrentUser();
         List<ShoppingStorecart> cart = getCart(user.getId());
         double total_price = 0.0D;
@@ -1633,12 +1635,12 @@ public class CartController {
             goodsCartTools.addGcs(sc2);
             for (ShoppingGoodscart gc1 : sc2.getGcs()) {
                 total_price = CommUtil.null2Double(gc1.getPrice()) * gc1.getCount() + total_price;
-                count += 1;
+                count = count+gc1.getCount();
                 sc_total_price = sc_total_price + CommUtil.null2Double(gc1.getPrice()) * gc1.getCount();
                 sc2.setTotalPrice(BigDecimal.valueOf(sc_total_price));
             }
-            sc2.setDeletestatus(true);
-            this.storeCartService.update(sc2);
+            //sc2.setDeletestatus(true);
+            //this.storeCartService.update(sc2);
         }
         request.getSession(false).setAttribute("cart", cart);
         JSONObject map = new JSONObject();
