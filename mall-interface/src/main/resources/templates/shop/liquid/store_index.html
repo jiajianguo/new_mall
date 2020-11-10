@@ -252,9 +252,15 @@
                                     All products </a>
                             </li>
 
+
+
+                            <li class="nav-item nav-single" th:each="ugc,iter : ${ugcaccsorry}" th:if="${iter.count<=10}" > <!-- nav-single 没有二级菜单class -->
+                                <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}" th:text="${ugc.classname}"></a>
+                            </li>
+
                             <li class="nav-item J-SubMenu"> <!-- nav-single 没有二级菜单class -->
                                 <a href="javascript:;">
-                                    All categories </a>
+                                    more </a>
                                 <div class="nav-item-down-menu">
                                     <div>
                                         <!--二级菜单==>广告位前-->
@@ -278,11 +284,6 @@
                                     </div>
                                 </div>
                             </li>
-
-                            <li class="nav-item nav-single" th:each="ugc,iter : ${ugcaccsorry}" th:if="${iter.count<=10}" > <!-- nav-single 没有二级菜单class -->
-                                <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}" th:text="${ugc.classname}"></a>
-                            </li>
-
                             <!--会员中心==登陆&注册-->
 
                             <li class="nav-item nav-single nav-member">
@@ -310,9 +311,8 @@
                     <a class="head-buycart iconfont icon-gouwu " th:href="@{/goods_cart1.htm}">
                         <i style="display: none;"></i>
                         <div class="goods_num" th:text="${cartSize!=null?cartSize:0}"></div>
-
                         <div class="cart_hover">
-                            <!--<p th:text="'商品总价：￥'+ ">￥666</p>-->
+                            <div class="shop-row">
                             <div class="flex-between hover_goods_item" th:each="obj :${goodscarts}">
                                 <div class="flex-star goods_intro">
                                     <object>
@@ -321,15 +321,31 @@
                                     <img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
                                         </a>
                                     </object>
-                                    <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
+                                    <div>
+                                        <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
+                                        <div class="goods_sp">衣服 黑色 L </div>
+                                        <div class="hover_goods_item_price" th:text="'￥'+${obj.price}"></div>
+                                    </div>
 
                                 </div>
                                 <div>
-                                    <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>
-                                    <p class="del" th:data-id="${obj.id}">删除</p>
+<!--                                <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>-->
+                                    <div th:text="' × '+${obj.count}"></div>
+<!--                                    <p class="del" th:data-id="${obj.id}">删除</p>-->
+                                    <img class="removebt" src="/asset/img/book.png"/>
                                 </div>
 
                             </div>
+                            </div>
+                            <div class="popupbtzong">
+                                <div class="popuppay-row">
+                                    <div>total：￥</div>
+                                    <p class="popuppay" th:text="${total} "></p>
+                                </div>
+
+                                <button class="popup-bt1">进入购物车</button>
+                            </div>
+
                         </div>
                     </a>
                 </div>

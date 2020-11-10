@@ -1031,3 +1031,14 @@ top: 20px;
 .showdata{
   display: none;
 }
+.showtitle th{
+  width: 5%;
+}
+.showtitle th:nth-child(1){
+  width: 25%;
+}
+
+
+.shop_list{
+  background: rgb(255,248,225);
+}

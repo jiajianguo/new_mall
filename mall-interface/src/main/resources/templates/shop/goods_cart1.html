@@ -26,7 +26,7 @@
         function confirm_cart() {
             //判断勾选商品
             var flag= false;
-            var inp = jQuery(".table tr td ").find("input[type=checkbox]");
+            var inp =$(".shop_list td").find("input[type=checkbox]");
             var ids = '';
             if(inp){
                 inp.each(function(){
@@ -161,14 +161,19 @@
              * 选中结算商品
              */
             jQuery(".table tr.shop_list td input[type=checkbox]").click(function(){
-                goods_cart_price();
+                goods_cart_price($(this));
             });
 
             $(".checkall input").click(function () {
                 if($(this).is(":checked")){
                     jQuery(".table tr.shop_list td ").find("input[type=checkbox]").prop("checked",true);
+
+                    $(".shop_list").css("background","rgb(255,248,225)");
+
                     goods_cart_price();
                 }else {
+                    $(".shop_list").css("background","#fff");
+
                     jQuery(".table tr.shop_list td ").find("input[type=checkbox]").prop("checked",false);
                     $("#orange_price").text("0.00")
                 }
@@ -180,19 +185,36 @@
 
 
 
-        function goods_cart_price (){
+        function goods_cart_price (_this){
             console.log('调用方法');
             var s=jQuery(".table tr.shop_list td ").find("input[type=checkbox]");
             var price=0;
+            console.log(_this);
+            if(_this){
+                if(_this.is(":checked")){
+                    _this.parents("tr").css("background","rgb(255,248,225)");
+                }else {
+                    _this.parents("tr").css("background","#fff");
+                }
+            }
+            let len = 0;
             if(s){
                 s.each(function(){
                     if(jQuery(this).is(':checked')){
+                        len++;
                         var id=jQuery(this).val();
                         var p = jQuery("#goods_total_price_"+id).text();
                         var ps=p.slice(1,p.length);
                         price=price+parseFloat(p.slice(1,p.length));
                     }
                 })
+
+                if(len == s.length){
+                    $(".title.checkall input").prop("checked",true);
+                }else {
+                    $(".title.checkall input").prop("checked",false);
+                }
+
                 jQuery("#orange_price").text(price.toFixed(2));
             }
         }
@@ -369,22 +391,30 @@
                 <li class="last" th:text="'5.'+#{messages.evalution}"></li>-->
             </ul>
         </div>
-        <form  status="no_submit" id="cart_goods_form" method="post" target="_blank" th:action="@{/goods_cart2.htm}">
+        <form th:each="sc : ${data}" status="no_submit" id="cart_goods_form" method="post" target="_blank" th:action="@{/goods_cart2.htm}">
             <input  th:id="userId" th:value="${user.id}" type="hidden"/>
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td width="" align="center" class="title checkall">
-                            <input type="checkbox"><span  th:text="#{messages.select.all }"></span>
+                            <input type="checkbox" checked="checked"><span  th:text="#{messages.select.all }"></span>
                         </td>
                         <td width="50%" align="center" class="title" th:text="#{messages.store.goods}"></td>
                         <td width="8%" align="center" class="title" th:text="#{messages.unit.price}"></td>
                         <td width="12%" align="center" class="title" th:text="#{messages.amount}"></td>
                         <td width="8%" align="center" class="title" th:text="#{messages.subtotal}"></td>
-<!--                        <td align="center" class="title" th:text="#{messages.operation}"></td>-->
+                       <td align="center" class="title" th:text="#{messages.operation}"></td>
                     </tr>
-                    <tr class="shop_list" th:each="sc :${carts}" >   <!--th:attr="goods_list='goods_info_'+${obj.id}" th:id="${obj.id}"-->
-                        <span th:each="obj,index :${sc.gcs}" th:data-id="${obj.id}" th:if="${index.index <1}">
+                    <tr>
+                        <div class="h1">
+                <span class="h1_l" style="color: #ee921e">
+                  店铺名称：
+                    <a th:href="@{/store.htm(id=${sc.store.id})}" target="_blank" th:text="${sc.store.storeName}"></a>
+                </span>
+                        </div>
+                    </tr>
+                    <tr class="shop_list" th:each="obj :${sc.carts}" >   <!--th:attr="goods_list='goods_info_'+${obj.id}" th:id="${obj.id}"-->
+                        <!--<span th:each="obj,index :${sc.gcs}" th:data-id="${obj.id}" th:if="${index.index <1}">-->
                            <td class="goods_ids">
                                 <input type="checkbox" name="ids" th:value="${obj.id}" checked="checked" >
                             </td>
@@ -463,10 +493,11 @@
                                 <a href="javascript:void(0);"  th:data-id="${obj.id}"  th:data-name="${sc.store.id}"  onclick="cart_remove(this.getAttribute('data-id'),this.getAttribute('data-name'),this);"
                                    th:text="#{messages.delete}" class="cart_common"> </a>
                             </td>
-                        </span>
+                        <!--</span>-->
                     </tr>
                 </table>
             </div>
+        </form>
             <div class="h2">
             <span class="h2_r">
               <em th:text="#{messages.selected.goodsprice}+':'+#{messages.money.class}"></em>
@@ -476,7 +507,7 @@
                 <a href="javascript:void(0);" onclick="confirm_cart();" th:text="#{messages.pay}"></a>
             </span>
             </div>
-        </form>
+
         <div class="car_nogoods" th:unless="${carts.size()>0}" style="display:none;">
             <div class="shopcar">
                 <dl>

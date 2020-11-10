@@ -423,9 +423,7 @@ public class GoodsController {
             mv.addObject("recommend", recommend);
             mv.addObject("begin_price", begin_price);
             mv.addObject("end_price", end_price);
-            mv.addObject("goodsViewTools", this.goodsViewTools);
-            mv.addObject("storeViewTools", this.storeViewTools);
-            mv.addObject("areaViewTools", this.areaViewTools);
+            viewTools.addCartTop(mv);
             /*ShoppingGoodsExample ex = new ShoppingGoodsExample();
             ex.createCriteria()
                     .andGoodsStoreIdEqualTo(store.getId())
@@ -1022,6 +1020,7 @@ public class GoodsController {
                     params.put("pageSize",4);
                     List<ShoppingGoodsWithBLOBs> goodsList =this.goodsService.queryByCondition(params);
                     viewTools.mainPhotoHandle(goodsList);
+                    viewTools.addCartTop(mv);
                     mv.addObject("goods_recommend_list",goodsList );
                     params.clear();
                     params.put("evaluate_goods_id", obj.getId());

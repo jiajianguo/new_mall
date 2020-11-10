@@ -238,7 +238,7 @@
                         <div class="background"></div>
                         <ul class="nav sl-subhead-title J-NavList">
                             <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
-                                <a th:href="@{/store.htm(id=${goodsStore.id})}">Home</a>
+                                <a th:href="@{/store.htm(id=${store.id})}">Home</a>
                             </li>
 
                             <li class="nav-item nav-single"> <!-- nav-single 没有二级菜单class -->
@@ -303,6 +303,27 @@
 
                     <a class="head-buycart iconfont icon-gouwu " th:href="@{/goods_cart1.htm}">
                         <i style="display: none;"></i>
+                        <div class="goods_num" th:text="${cartSize!=null?cartSize:0}"></div>
+                        <div class="cart_hover">
+                            <p th:text="'商品总价：￥'+${total} "></p>
+                            <div class="flex-between hover_goods_item" th:each="obj :${goodscarts}">
+                                <div class="flex-star goods_intro">
+                                    <object>
+                                        <a th:href="@{/goods.htm(id=${obj.goods.id})}">
+                                            <img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+                                            <img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
+                                        </a>
+                                    </object>
+                                    <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
+
+                                </div>
+                                <div>
+                                    <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>
+                                    <p class="del" th:data-id="${obj.id}">删除</p>
+                                </div>
+
+                            </div>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -519,7 +540,7 @@
                 <div class="footer-menu">
                     <h4 class="J-FooterMenu">Footer menu</h4>
                     <div>
-                        <a th:href="@{/store.htm(id=${goodsStore.id})}">
+                        <a th:href="@{/store.htm(id=${store.id})}">
                             Home </a>
                         <a th:href="@{/store_goods_search.htm}">
                             Search </a>

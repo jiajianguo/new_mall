@@ -327,9 +327,8 @@
             <div class="paybtn"> <!--class="h1"-->
                 <input type="button" class="return_cart"  style="cursor:pointer;" th:value="'<<<'+#{messages.return.home}">
                 <!--<span class="h1_l">店铺名称：
-                  <a th:href="@{/store.htm(id=${sc.store.id})}" target="_blank" th:text="${sc.store.storeName}"></a>
-                  <input name="store_id" type="hidden" th:id="store_id" th:value="${sc.store.id}"/>
-                  <input name="addrs" type="hidden" th:id="${addrs}" th:value="${addrs.size()}"/>
+                  <a th:href="@{/store.htm(id=${data.store.id})}" target="_blank" th:text="${data.store.storeName}"></a>
+                  <input name="store_id" type="hidden" th:id="store_id" th:value="${data.store.id}"/>
                 </span>-->
                 <input type="hidden" name="ids" th:value="${ids}">
             </div>
@@ -474,7 +473,7 @@
                             }else{
                                 $(this).attr("data-nu","show")
                             }
-                            $(this).attr("data-nu") == "show" ? $(".showdata").css({"display":"block"}) : $(".showdata").css({"display":"none"})
+                            $(this).attr("data-nu") == "show" ? $(".showdata").css({"display":"table-row"}) : $(".showdata").css({"display":"none"})
 
                         })
                     })
@@ -528,6 +527,7 @@
                                     <th th:text="#{messages.rate.price}"></th>
                                     <th th:text="#{messages.amount}"></th>
                                     <th th:text="#{messages.subtotal}"></th>
+                                    <th th:text="详情" style="color: #ee921e;cursor: pointer"></th>
                                 </tr>
                                 </thead>
                                 <span th:each="d : ${data}">

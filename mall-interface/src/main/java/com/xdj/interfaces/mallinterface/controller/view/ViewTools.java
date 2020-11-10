@@ -1,19 +1,17 @@
 package com.xdj.interfaces.mallinterface.controller.view;
 
-import com.xdj.interfaces.mallinterface.mv.JModelAndView;
 import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
-import com.xdj.www.core.annotation.SecurityMapping;
 import com.xdj.www.core.tools.CommUtil;
 import com.xdj.www.entity.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Component
@@ -52,6 +50,8 @@ public class ViewTools {
     private IGroupAreaService groupAreaService;
     @Resource
     private GoodsCartTools goodsCartTools;
+    @Resource
+    private GoodsViewTools goodsViewTools;
     @Resource
     private AccessoryViewTools accessViewTools;
     @Resource
@@ -726,6 +726,32 @@ public class ViewTools {
             mv.addObject("ship_css", "lower");
             mv.addObject("ship_type", "低于");
             mv.addObject("ship_result",CommUtil.null2String(Double.valueOf(CommUtil.mul(Double.valueOf(-ship_result), Integer.valueOf(100)))) + "%");
+        }
+    }
+
+    /**
+     * 添加顶部购物车信息
+     * @param mv
+     */
+    public void addCartTop(ModelAndView mv) {
+        ShoppingUser user = SecurityUserHolder.getCurrentUser();
+        List<ShoppingStorecart> cart = goodsViewTools.getCart(user.getId());
+        int count = 0;
+        BigDecimal total=new BigDecimal(0);
+        List<ShoppingGoodscart> gcs =new ArrayList<>();
+        if(cart!=null && cart.size()>0) {
+            for (ShoppingStorecart sc2 : cart) {
+                total=total.add(sc2.getTotalPrice());
+                goodsCartTools.addGcs(sc2);
+                for (ShoppingGoodscart gc1 : sc2.getGcs()) {
+                    count = count + gc1.getCount();
+                    goodsViewTools.addGoodsCartGood(gc1);
+                    gcs.add(gc1);
+                }
+            }
+            mv.addObject("total",total);
+            mv.addObject("cartSize", count);
+            mv.addObject("goodscarts",gcs);
         }
     }
 }
