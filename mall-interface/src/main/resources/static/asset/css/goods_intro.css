@@ -366,3 +366,14 @@
 	from{bottom: 0;}
 	to{bottom: -100vh;}
 }
+
+.tstext{
+	display: none;
+	margin-left: .2rem;
+	font-size: .24rem;
+	color: #FF0000;
+}
+.gg-data{
+	display: flex;
+	align-items: center;
+}

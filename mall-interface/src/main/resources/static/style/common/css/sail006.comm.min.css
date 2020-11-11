@@ -12090,6 +12090,7 @@ h3.title {
     border: none;
     border-radius: 2px;
     color: #ffffff;
+    cursor: pointer;
 }
 .popupbtzong{
     padding: 20px;
@@ -12114,8 +12115,8 @@ h3.title {
     padding: 0;
 }
 .removebt{
-    width: 15px;
-    height: 15px;
+    width: 20px !important;
+    height: 20px !important;
 }
 .shop-row{
     overflow: auto;

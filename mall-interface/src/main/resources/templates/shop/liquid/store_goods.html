@@ -370,24 +370,40 @@
                         <i style="display: none;"></i>
                         <div class="goods_num" th:text="${cartSize!=null?cartSize:0}"></div>
                         <div class="cart_hover">
-                            <p th:text="'商品总价：￥'+${total} "></p>
-                            <div class="flex-between hover_goods_item" th:each="obj :${goodscarts}">
-                                <div class="flex-star goods_intro">
-                                    <object>
-                                        <a th:href="@{/goods.htm(id=${obj.goods.id})}">
-                                            <img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
-                                            <img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
-                                        </a>
-                                    </object>
-                                    <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
+                            <div class="shop-row">
+                                <div class="flex-between hover_goods_item" th:each="obj :${goodscarts}">
+                                    <div class="flex-star goods_intro">
+                                        <object>
+                                            <a th:href="@{/goods.htm(id=${obj.goods.id})}">
+                                                <img  class="shopimg" th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+                                                <img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
+                                            </a>
+                                        </object>
+                                        <div>
+                                            <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
+                                            <div class="goods_sp">衣服 黑色 L </div>
+                                            <div class="hover_goods_item_price" th:text="'￥'+${obj.price}"></div>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <!--                                <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>-->
+                                        <div th:text="' × '+${obj.count}"></div>
+                                        <!--                                    <p class="del" th:data-id="${obj.id}">删除</p>-->
+                                        <img class="removebt del" src="/asset/img/remove.png" th:data-id="${obj.id}"/>
+                                    </div>
 
                                 </div>
-                                <div>
-                                    <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>
-                                    <p class="del" th:data-id="${obj.id}">删除</p>
-                                </div>
-
                             </div>
+                            <div class="popupbtzong">
+                                <div class="popuppay-row">
+                                    <div>total：￥</div>
+                                    <p class="popuppay" th:text="${total} "></p>
+                                </div>
+
+                                <button class="popup-bt1">进入购物车</button>
+                            </div>
+
                         </div>
                     </a>
                 </div>
@@ -1110,6 +1126,31 @@
     })
 
     jQuery(document).ready(function() {
+
+
+        $(".del").click(function () {
+            var gcId=$(this).attr("data-id");
+            jQuery.post('/remove_goods_cart.htm', {"id": gcId}, function (data) {
+                $(".goods_num").text(data.count);
+                $(".popuppay").text(data.total_price);
+            }, "json");
+            $(this).parents(".hover_goods_item").remove();
+        })
+
+
+        $(".shopimg").click(function () {
+            let href = $(this).parent().attr("href");
+            window.location.href = href;
+        })
+
+        $(".popup-bt1").click(function () {
+            window.location.href="/goods_cart1.htm";
+        })
+
+
+        $(".cart_hover").click(function (e) {
+            e.preventDefault();
+        })
 
         // $("#add_cart").on('click', function () {
             $("#add_cart").click(function(){

@@ -38,7 +38,7 @@
             }
 
             if(flag){
-                window.location.href="/goods_cart2.htm?ids="+ids;
+                window.location.href="/goods_cart2?ids="+ids;
             }else{
                 alert('请勾选要结算的商品');
             }
@@ -391,7 +391,7 @@
                 <li class="last" th:text="'5.'+#{messages.evalution}"></li>-->
             </ul>
         </div>
-        <form th:each="sc : ${data}" status="no_submit" id="cart_goods_form" method="post" target="_blank" th:action="@{/goods_cart2.htm}">
+        <form th:each="sc : ${data}" status="no_submit" id="cart_goods_form" method="post" target="_blank" th:action="@{/goods_cart2}">
             <input  th:id="userId" th:value="${user.id}" type="hidden"/>
             <div class="table">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">

@@ -334,16 +334,23 @@
             </div>
 
 
-            <div class="table">
+            <div class="table"  th:each="d : ${cartData}">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td width="57%" align="center" class="title" th:text="#{messages.store.goods}"></td>
                         <td width="10%" align="center" class="title" th:text="#{messages.unit.price}"></td>
                         <td width="11%" align="center" class="title" th:text="#{messages.amount}"></td>
                         <td width="11%" align="center" class="title" th:text="#{messages.subtotal}"></td>
-                        <!--<td align="center" class="title" ><a href="/goods_cart1.htm" th:text="#{messages.return.home}"> </a> </td>-->
                     </tr>
-                    <span th:each="d : ${data}">
+                       <tr>
+                        <div class="h1">
+                <span class="h1_l" style="color: #ee921e">
+                  店铺名称：
+                    <a th:href="@{/store.htm(id=${d.store.id})}" target="_blank" th:text="${d.store.storeName}"></a>
+                </span>
+                        </div>
+                    </tr>
+
                         <tr th:each="gc :${d.carts}">
                             <td class="baby">
                                 <a th:href="@{/goods.htm(id=${gc.goodsId})}" target="_blank">
@@ -391,7 +398,6 @@
                             <td align="center" th:text="${gc.count}"></td>
                             <td align="center"><strong class="orange" th:text="'¥'+${gc.count * gc.price}"></strong></td>
                         </tr>
-                    </span>
 
                 </table>
             </div>
@@ -530,7 +536,7 @@
                                     <th th:text="详情" style="color: #ee921e;cursor: pointer"></th>
                                 </tr>
                                 </thead>
-                                <span th:each="d : ${data}">
+                                <span th:each="d : ${cartData}">
                                     <tr class="showdata"  th:each="gc :${d.carts}">
                                         <td th:text="${gc.goods.goodsName}"></td>
                                         <td th:text="${gc.price}"></td>

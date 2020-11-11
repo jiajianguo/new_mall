@@ -317,8 +317,8 @@
                                 <div class="flex-star goods_intro">
                                     <object>
                                         <a th:href="@{/goods.htm(id=${obj.goods.id})}">
-                                    <img th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
-                                    <img th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
+                                    <img  class="shopimg" th:if="${obj.goods.goods_main_photo}" th:src="@{'/'+${obj.goods.goods_main_photo.path}+'/'+${obj.goods.goods_main_photo.name}}" >
+                                    <img class="shopimg" th:unless="${obj.goods.goods_main_photo}" th:src="@{'/'+${config.goodsImage.path}+'/'+${config.goodsImage.name}}">
                                         </a>
                                     </object>
                                     <div>
@@ -332,7 +332,7 @@
 <!--                                <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>-->
                                     <div th:text="' × '+${obj.count}"></div>
 <!--                                    <p class="del" th:data-id="${obj.id}">删除</p>-->
-                                    <img class="removebt" src="/asset/img/book.png"/>
+                                    <img class="removebt del" src="/asset/img/remove.png" th:data-id="${obj.id}"/>
                                 </div>
 
                             </div>
@@ -532,14 +532,19 @@
                     var gcId=$(this).attr("data-id");
                     jQuery.post('/remove_goods_cart.htm', {"id": gcId}, function (data) {
                         $(".goods_num").text(data.count);
+                        $(".popuppay").text(data.total_price);
                     }, "json");
                     $(this).parents(".hover_goods_item").remove();
                 })
                 
                 
-                $(".hover_goods_item img").click(function () {
+                $(".shopimg").click(function () {
                     let href = $(this).parent().attr("href");
                     window.location.href = href;
+                })
+
+                $(".popup-bt1").click(function () {
+                    window.location.href="/goods_cart1.htm";
                 })
 
 

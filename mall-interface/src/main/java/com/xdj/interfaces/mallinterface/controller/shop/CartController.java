@@ -945,8 +945,13 @@ public class CartController {
 
     @RequestMapping({"/goods_cart2"})
     public  ModelAndView goodsCartTwo(HttpServletRequest request, HttpServletResponse response, String ids){
-        ModelAndView mv = new JModelAndView("wap/goods_cart2.html", this.configService.getSysConfig(),
+        ModelAndView mv = new JModelAndView("goods_cart2.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
+        String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
+        if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+            mv = new JModelAndView("wap/goods_cart2.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+        }
         if(StringUtils.isNotBlank(ids)){
             //获取goodscart
             String[]  primarys= ids.split(",");
@@ -1023,6 +1028,7 @@ public class CartController {
                     List<ShoppingCoupon> couponinfos = this.couponService.queryByCondition(params);
                     obj.put("couponin",couponinfos);
                     data.add(obj);
+                    mv.addObject("totalPrice", priceMsg.get(entry.getKey()));
                 }
                 params.clear();
                 params.put("type", "admin");
@@ -1032,12 +1038,20 @@ public class CartController {
                 request.getSession(false).setAttribute("cart_session", cart_session);
                 mv.addObject("cart_session", cart_session);
                 mv.addObject("cartData",data);
+
                 mv.addObject("ids",ids);
+                viewTools.topHandle(mv, request);
+                viewTools.headHandle(mv, request);
+                viewTools.footerHandle(mv);
 
             }
 
         } else {
-            mv = new JModelAndView("wap/error.html", this.configService.getSysConfig(),this.userConfigService.getUserConfig(), 1, request, response);
+            mv = new JModelAndView("error.html", this.configService.getSysConfig(),this.userConfigService.getUserConfig(), 1, request, response);
+            if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+                mv = new JModelAndView("wap/error.html", this.configService.getSysConfig(),
+                        this.userConfigService.getUserConfig(), 1, request, response);
+            }
             mv.addObject("op_title", "请选择正确的商品结算");
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }

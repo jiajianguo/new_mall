@@ -12,6 +12,8 @@
 	<script src="/asset/js/main-new.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/main.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="/asset/css/base.css">
+	<script src="/asset/js/message.js"></script>
 </head>
 <body>
 	<div class="ui-pane">
@@ -95,7 +97,9 @@
 					<div class="goods_spec">
 						<div class="spec_line" id="specification" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
 							<div class="spec_tit">
-								<span th:text="${spec.name}"></span>
+								<div class="gg-data"><span class="gg-data-row" th:text="${spec.name}"></span>
+									     			 <span class="tstext">0</span>
+								</div>
 								<b></b>
 							</div>
 							<div class="sepc_cont flex-star" >
@@ -175,7 +179,8 @@
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-gouwuchezhengpin"></use>
 						</svg>
-						<p><a  th:href="@{/goods_cart1.htm}" th:text="#{messages.goods.cart}"></a></p>
+						<p>
+							<a  th:href="@{/goods_cart1.htm}" th:text="#{messages.goods.cart}"></a></p>
 						<div class="cart_num flex-center" id="cart_unm" th:text="${cartSize != null?cartSize: 0 }"></div>
 					</div>
 				</div>
@@ -196,6 +201,7 @@
 	})
 
 
+
 	$("#add_cart").on('click',function (){
 		var  id= $(this).attr('data-id');
 		var count = $("#count").val();
@@ -206,6 +212,22 @@
 		}else{
 			price=$("#store_price").text();
 		}
+
+
+
+		$(".gg-data").each(function(){
+			if($(this).find(".tstext").text() == 0 || $(this).find(".tstext").text() == "选择规格"){
+				$(this).find(".tstext").text("选择规格")
+			}
+		})
+
+		$(".tstext").each(function(){
+			if($(this).text() == "选择规格"){
+				$(this).css({"display":"block"})
+			}else{
+				$(this).css({"display":"none"})
+			}
+		})
 
 		var gsp="";
 		var load = true;
@@ -220,7 +242,7 @@
 				console.log("gsp", gsp);
 			}else{
 				load=false;
-				alert("请正确选择规格！！！")
+				// alert("请正确选择规格！！！")
 			}
 		}
 
@@ -231,9 +253,11 @@
 		if(load){
 			add_goods_to_cart(id,count,price,gsp,false)
 		}else{
-			alert('购物失败');
+			// alert('购物失败');
 		}
+
 	})
+
 
 	$("#buy_goods").on('click',function (){
 		var  id= $(this).attr('data-id');
@@ -261,6 +285,7 @@
 			}else{
 				load=false;
 			}
+			console.info(gsp[0])
 			if(gsp.length < 1){
 				load=false;
 				alert("请选择规格属性");
@@ -336,7 +361,8 @@
 			var goodscollect=jQuery("#goodscollect").text();
 			jQuery.post("/add_goods_favorite.htm", {"id": goodsId}, function (data) {
 				if (data == 0) {
-					alert("商品收藏成功！");
+					//alert("商品收藏成功！");
+					toast({time:5000, msg:'商品收藏成功！'})
 					jQuery("#goodscollect").text(parseInt(goodscollect)+parseInt(1));
 				}
 				if (data == 1) {
@@ -381,7 +407,8 @@
 				}else{
 					var num=$("#cart_unm").text();
 					$("#cart_unm").text(parseInt(num)+1);
-					alert('添加到购物车成功');
+					// alert('添加到购物车成功');
+					toast({time:3000, msg:'添加购物车成功！'})
 				}
 			}else{
 				alert(res.msg);
@@ -452,7 +479,19 @@
 		var id= $(this).attr('data-id');
 		var gsp =$(this).attr('gsp');
 		goods_spec_set(id,gsp);
+		tptext()
 	})
+
+
+	function tptext(){
+		$(".tstext").each(function(){
+			if($(this).text() == "选择规格"){
+				$(this).css({"display":"block"})
+			}else{
+				$(this).css({"display":"none"})
+			}
+		})
+	}
 
 </script>
 </html>
