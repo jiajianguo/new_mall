@@ -409,16 +409,96 @@
         </script>
         <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
     </div>
-    <!-- 商铺信息  -->
+
+    <!-- 产品类别 -->
+    <div class="main best-sellers clearfloat JH-Columns ">
+        <h3 class="title border sl-main-title">
+            <span th:text="#{messages.goods.class}"></span>
+        </h3>
+        <ul class="sellers-ul four-col">
+            <li class="sellers-item" th:each="c,index : ${ugcaccsorry}" th:if="${index.index <8}">
+                <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${goodsStore.id})}">
+                    <div class="sellers-title-box">
+                        <p class="sellers-title" th:text="${c.classname}">  </p>
+                    </div>
+                    <div>
+                        <img th:if="${c.store_gc_img}" class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="${'/'+c.store_gc_img.path+'/'+c.store_gc_img.name }"
+                             th:src="@{${'/'+c.store_gc_img.path+'/'+c.store_gc_img.name }}" alt="">
+                        <img th:unless="${c.store_gc_img}" class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             data-original="https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg"
+                             src="https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg" alt="">
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+	<!-- 主流商品区 -->
+	<div class="main goods-list clearfloat JH-Columns ">
+        <h3 class="title border sl-main-title">
+            <span th:text="#{messages.recommend.goods}"></span>
+        </h3>
+        <ul class="classify-ul four-col">
+            <li th:each="goods : ${goods_recommend}" class="classify-item" itemscope="" itemtype="http://schema.org/Product">
+                <meta itemprop="name" th:content="${goods.goodsName}">
+                <meta itemprop="url" content="/products/all-black">
+                <meta itemprop="image" th:content="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}">
+                <a th:if="${config.secondDomainOpen == true && goods.goods_store.storeSecondDomain != null}"  th:href="@{${'http://'+ goods.goods_store.storeSecondDomain+config.sysDomain+ '/goods.htm(id='+goods.id +')'}}" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="CNY">
+                    <link itemprop="availability" href="http://localhost">
+                    <div class="img-wrapper">
+                        <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}"
+                             th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"
+                             th:alt="${goods.goodsName}">
+                    </div>
+                    <div class="good-info">
+                        <p class="name" th:text="${goods.goodsName}"></p>
+                        <p class="price">
+                            <span class="visually-hidden" aria-hidden="false" >Sale price</span>
+                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
+                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
+                            <span class="visually-hidden" aria-hidden="false">Regular price</span>
+                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
+                        </p>
+                    </div>
+                </a>
+                <a th:unless="${config.secondDomainOpen == true && obj.d_goods.goods_store.storeSecondDomain != null}" th:href="@{/goods.htm(id=${goods.id})}" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="CNY">
+                    <link itemprop="availability" href="http://localhost">
+                    <div class="img-wrapper">
+                        <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
+                             th:data-original="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}"
+                             th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"
+                             th:alt="${goods.goodsName}">
+                    </div>
+                    <div class="good-info">
+                        <p class="name" th:text="${goods.goodsName}"></p>
+                        <p class="price">
+                            <span class="visually-hidden" aria-hidden="false" >Sale price</span>
+                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
+                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
+                            <span class="visually-hidden" aria-hidden="false">Regular price</span>
+                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 商铺信息
     <div class="main single-image clearfloat JH-Columns "  style="height: 400px;">
         <div class="single-image-main"  style="height: 400px;">
-            <!-- 店铺描述 -->
+           店铺描述
             <div class="single-img-text">
                 <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
                      data-original="https://img.xshoppy.shop/uploader/78a958a13f598347bbf5f1dc8f108026.png"
                      src="https://img.xshoppy.shop/uploader/78a958a13f598347bbf5f1dc8f108026.png" alt="">
             </div>
-            <!-- 商品展示 -->
+             商品展示 
             <div class="single-img-img">
                 <div>
                     <div class="model-title sl-main-title ">
@@ -505,85 +585,7 @@
             </div>
         </div>
     </div>
-
-    <!-- 产品类别 -->
-    <div class="main best-sellers clearfloat JH-Columns ">
-        <h3 class="title border sl-main-title">
-            <span th:text="#{messages.goods.class}"></span>
-        </h3>
-        <ul class="sellers-ul four-col">
-            <li class="sellers-item" th:each="c,index : ${ugcaccsorry}" th:if="${index.index <8}">
-                <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${goodsStore.id})}">
-                    <div class="sellers-title-box">
-                        <p class="sellers-title" th:text="${c.classname}">  </p>
-                    </div>
-                    <div>
-                        <img th:if="${c.store_gc_img}" class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
-                             th:data-original="${'/'+c.store_gc_img.path+'/'+c.store_gc_img.name }"
-                             th:src="@{${'/'+c.store_gc_img.path+'/'+c.store_gc_img.name }}" alt="">
-                        <img th:unless="${c.store_gc_img}" class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
-                             data-original="https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg"
-                             src="https://img.xshoppy.shop/uploader/0b7e8b408065ada5ed605917ec096e29.jpg" alt="">
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-
-	<!-- 主流商品区 -->
-	<div class="main goods-list clearfloat JH-Columns ">
-        <h3 class="title border sl-main-title">
-            <span th:text="#{messages.recommend.goods}"></span>
-        </h3>
-        <ul class="classify-ul four-col">
-            <li th:each="goods : ${goods_recommend}" class="classify-item" itemscope="" itemtype="http://schema.org/Product">
-                <meta itemprop="name" th:content="${goods.goodsName}">
-                <meta itemprop="url" content="/products/all-black">
-                <meta itemprop="image" th:content="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}">
-                <a th:if="${config.secondDomainOpen == true && goods.goods_store.storeSecondDomain != null}"  th:href="@{${'http://'+ goods.goods_store.storeSecondDomain+config.sysDomain+ '/goods.htm(id='+goods.id +')'}}" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-                    <meta itemprop="priceCurrency" content="CNY">
-                    <link itemprop="availability" href="http://localhost">
-                    <div class="img-wrapper">
-                        <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
-                             th:data-original="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}"
-                             th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"
-                             th:alt="${goods.goodsName}">
-                    </div>
-                    <div class="good-info">
-                        <p class="name" th:text="${goods.goodsName}"></p>
-                        <p class="price">
-                            <span class="visually-hidden" aria-hidden="false" >Sale price</span>
-                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
-                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
-                            <span class="visually-hidden" aria-hidden="false">Regular price</span>
-                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
-                        </p>
-                    </div>
-                </a>
-                <a th:unless="${config.secondDomainOpen == true && obj.d_goods.goods_store.storeSecondDomain != null}" th:href="@{/goods.htm(id=${goods.id})}" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-                    <meta itemprop="priceCurrency" content="CNY">
-                    <link itemprop="availability" href="http://localhost">
-                    <div class="img-wrapper">
-                        <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
-                             th:data-original="${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}"
-                             th:src="@{${'/'+goods.goods_main_photo.path+'/'+goods.goods_main_photo.name}}"
-                             th:alt="${goods.goodsName}">
-                    </div>
-                    <div class="good-info">
-                        <p class="name" th:text="${goods.goodsName}"></p>
-                        <p class="price">
-                            <span class="visually-hidden" aria-hidden="false" >Sale price</span>
-                            <span class="pay-price sl-subhead-title" th:data-seller-price="${storePrice}" th:data-price="${storePrice}"
-                                  itemprop="price" th:content="${storePrice}" th:text="${storePrice}"></span>
-                            <span class="visually-hidden" aria-hidden="false">Regular price</span>
-                            <span class="orig-price sl-subhead-title" th:data-seller-price="${goodsPrice}" data-price="${goodsPrice}"></span>
-                        </p>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
+    -->
 
     <footer class="JH-Columns J-footer" style="padding-bottom: 0px;">
         <div class="main">

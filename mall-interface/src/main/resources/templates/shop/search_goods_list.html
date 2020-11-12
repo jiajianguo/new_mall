@@ -268,6 +268,7 @@ jQuery(document).ready(function(){
       </div>
     </div>
   </div>
+
   <!--head-end -->
   <div id="nav">
     <div class="nav">
@@ -275,16 +276,16 @@ jQuery(document).ready(function(){
         <div class="nav_left">
           <h2>
             <a th:href="@{/goods_class.htm}">
-                        <span >
-                            <span th:text="#{messages.type.all}"></span>
-                            <em>
-                                <img th:src="@{/style/system/front/default/images/nav_left.png}">
-                            </em>
-                        </span>
+                <span >
+                    <span th:text="#{messages.type.all}"></span>
+                    <em>
+                        <img th:src="@{/style/system/front/default/images/nav_left.png}">
+                    </em>
+                </span>
             </a>
           </h2>
           <div class="index_topleft">
-            <div id="left_menu" class="left_menu">
+            <div id="left_menu" class="left_menu" style="display: none">
               <dl sc_color="rgb(249, 244, 245)" style="position:relative;" th:each="gc : ${gcs}" th:id="${gc.id}" class="left_menu_dl"  th:child_count="${gc.childs == null ?0 : gc.childs.size() }">
                 <dt th:id="'dts_'+${gc.id}" class="left_menu_dt">
                   <i class="left_menu_i" th:if="${gc.iconType != null && gc.iconType == 0  && gc.iconSys != '' } ">
@@ -334,8 +335,7 @@ jQuery(document).ready(function(){
             </div>
           </div>
         </div>
-
-        <ul id="navul">
+        <ul id="navul" >
           <li th:each="nav : ${navs}">
             <a th:id="${nav.id}" th:target='${nav.newWin ==1? "_blank":""}' th:original_url="${nav.originalUrl}"
                th:href="@{${nav.url}}">
@@ -493,26 +493,30 @@ jQuery(document).ready(function(){
                       <strong th:text="#{messages.money.class}+${obj.storePrice }"></strong>
                     </span>
                     <span class="recent">
-                      <span th:text="#"></span>累计售出
+                      <span th:text="#{messages.sold}"></span>
                       <strong class="orange" th:text="${obj.goodsSalenum}"></strong>
-                      笔
+                      <span th:text="#{messages.sum}"></span>
                     </span>
                   </li>
                   <li class="goodsli2">
                     <p class="goodsli2_p2">
                       <span class="goodshopname">
-                        店铺名称：<a th:href="@{/store.htm(id=${obj.goods_store.id})}" th:text="${obj.goods_store.storeName}"></a>
+                        <span th:text="#{messages.shop.name}+':'"></span>
+                        <a th:href="@{/store.htm(id=${obj.goods_store.id})}" th:text="${obj.goods_store.storeName}"></a>
                       </span>
                       <span class="goods2send">
-                        店铺等级：<span th:text="${obj.goods_store.grade.gradename}"></span>
+                         <span th:text="#{messages.shop.level}+':'"></span>
+                        <span th:text="${obj.goods_store.grade.gradename}"></span>
                       </span>
                     </p>
                     <p class="goodsli2_p">
                       <span class="goodsli2_p_sp">
-                        与描述相符：<b style="color:#F00" th:text="${obj.descriptionEvaluate +'分'}"></b>
+                         <span th:text="#{messages.describle.equal}"></span>
+                        <b style="color:#F00" th:text="${obj.descriptionEvaluate +'分'}"></b>
                       </span>
                       <span class="goodsli2_p_eva">
-                        累计评价：<i th:text="${obj.evaluates.size()}"></i>
+                        <span th:text="#{messages.evalution.add}+':'"></span>
+                        <i th:text="${obj.evaluates.size()}"></i>
                       </span>
                     </p>
                   </li>

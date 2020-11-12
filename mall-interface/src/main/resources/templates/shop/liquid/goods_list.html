@@ -188,7 +188,7 @@
                 </div>
 
                 <!-- 搜索 -->
-                <div class="search-box ">
+                <div class="search-box">
                     <form th:action="@{/store_goods_search.htm}" method="post" autocomplete="off">
 
                         <input name="keyword" type="text" placeholder="Start Typing Here" class="search" id="search_box"/>
@@ -433,33 +433,74 @@
 
     </style>
     <div class="JH-Columns main section featured-product grid-four featured-product-1Aa  ">
-        <div class="select-nav"  style="background-color: #eee;color:#f2f2f2;">
-            <ul style="color: #faad14;margin-left: 25px;">
-                <li class="nav-items" th:text="#{messages.sort}+':'"></li>
-                <li class="nav-items">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.default}"> </a>
-                </li>
-                <li class="nav-items">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.price}"> </a>
-                </li>
-                <li class="nav-item">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.sale}"></a>
-                </li>
-                <li class="nav-item">
-                    <a  class="" th:href="@{/goods_list.htm(store_id=${store.id})}" th:text="#{messages.by.popularity}"> 人气</a>
-                </li>
-                <li class="nav-item">
-                    <span th:text="#{messages.price}+':'"></span>
-                    <from action="/goodsList.htm" method="POST" >
-                        <input type="hidden" name="store_id" th:value="${store.id}">
-                        <input type="text"   name="begin_price"  >
-                        <span>~</span>
-                        <input type="text" name="end_price" >
-                        <input  type="submit" th:value="#{messages.submit}" >
-                    </from>
-                </li>
-            </ul>
+        <div class="search-div"  >
+            <div class="search-menu-box">
+                <div class="search-nav-box">
+                    <style>
+                        .search-menu-box .search-J-NavWrap{
+                            height: 50px;
+                            display: inline-block;
+                            line-height: 50px;
+                            position: relative;
+                            overflow: hidden;
+                            flex: 1;
+                            width: 98%;
+                        }
+                        .search-menu-box .search-J-NavWrap ul li{
+                            float:left;
+                            height:50px;
+                            text-align:center;
+                            line-height:50px;
+                            list-style:none;
+                            margin-left: 10px;
+                        }
+                        .search-menu-box .search-J-NavWrap ul .search-nav-item :hover{
+                            background:#FFB902;
+                            color: white;
+                        }
+                    </style>
+                    <div class="search-J-NavWrap"   style="background-color: #eee;color:#f2f2f2;"><!--class="select-nav"-->
+                        <ul class="search-nav "  style="color: #faad14;margin-left: 25px;">
+                            <li class="search-nav-item" th:text="#{messages.sort}+':'"></li>
+                            <li class="search-nav-item ">
+                                <a  class="" th:href="@{/goods_list.htm(store_id=${store.id},orderBy='addTime',orderType='desc')}" th:text="#{messages.default}"> </a>
+                            </li>
+                            <li class="search-nav-item">
+                                <a  class="" th:href="@{/goods_list.htm(store_id=${store.id},orderBy='store_price',orderType='asc')}" th:text="#{messages.price}"> </a>
+                            </li>
+                            <li class="search-nav-item">
+                                <a  class="" th:href="@{/goods_list.htm(store_id=${store.id},orderBy='goods_salenum',orderType='desc')}" th:text="#{messages.sale}"></a>
+                            </li>
+                            <li class="search-nav-item">
+                                <a  class="" th:href="@{/goods_list.htm(store_id=${store.id},orderBy='goods_click',orderType='desc')}" th:text="#{messages.by.popularity}"></a>
+                            </li>
+                            <li class="search-nav-items">
+                                <span th:text="#{messages.price}+':'"></span>
+                                <from action="/goods_list.htm" method="POST" style="margin-left: 10px;" id="price_search" >
+                                    <input type="hidden" name="type" value="goods" />
+                                    <input type="hidden" name="store_id" th:value="${store.id}" />
+                                    <input type="text"   name="begin_price" />
+                                    <span>~</span>
+                                    <input type="text" name="end_price" />
+                                    <input  type="button" onclick="submit_search()"  th:value="#{messages.search}"   style="margin-left: 7px;border-radius: 2px;width: 55px" />
+                                </from>
+                            </li>
+                        </ul>
+                    </div>
+                    <script>
+                         function submit_search () {
+                            var url = '/goods_list.htm';
+                            var begin_price =$("input[name=begin_price]").val();
+                            var end_price =$("input[name=end_price]").val();
+                            var store_id=jQuery("#store_id").val();
+                            window.location = url + '?begin_price=' + begin_price+"&end_price="+end_price+"&type=goods&orderBy=store_price&orderType=asc&store_id=" + store_id;
+                        }
+                    </script>
+                </div>
+            </div>
         </div>
+
+
         <div class="swiper-container swiper-container-horizontal">
             <!--class="swiper-wrapper category-img-front"-->
             <style>

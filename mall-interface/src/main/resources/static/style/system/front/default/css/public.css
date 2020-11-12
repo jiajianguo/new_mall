@@ -188,7 +188,7 @@ left:-50%; }
 
 /*全部商品分类*/
 
-.nav{ width:1200px; margin-left:auto; margin-right:auto; position:relative; z-index:99999; height:40px; background:#fff; line-height:40px; color:#333; border-bottom:3px solid #A8000D;}
+.nav{ width:1200px; margin-left:auto; margin-right:auto; position:relative; z-index:999; height:40px; background:#fff; line-height:40px; color:#333; border-bottom:3px solid #A8000D;}
 .nav_left{
     float:left;
     width:180px;

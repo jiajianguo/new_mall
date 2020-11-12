@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
     <link rel="stylesheet" type="text/css" href="/css/swiper.min.css"/>
     <script src="/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-
     <script src="https://at.alicdn.com/t/font_2061876_ypwchl6fp5a.js" type="text/javascript" charset="utf-8"></script>
     <script src="/js/changePX.js" type="text/javascript" charset="utf-8"></script>
 </head>
@@ -21,8 +20,7 @@
         <div class="pclogo flex-star">
             <a th:href="@{/store.htm(id=${goodsStore.id})}">
                 <img th:if="${goodsStore.storeLogo}"
-                     th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"
-                     style="width: 1.2rem;height: 0.8rem;"/>
+                     th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"  style="width: 1.2rem;height: 0.8rem;"/>
                 <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"
                      style="width: 1.2rem;height: 0.8rem;"/>
             </a>
@@ -42,9 +40,13 @@
             </a>
         </div>
         <a href="/goods_cart1.htm" class="header-button btn_right">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-gouwu"></use>
-            </svg>
+            <div class="goods_num" th:text="${cartSize !=null ? cartSize:0}"></div>
+            <div>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-gouwu"></use>
+                </svg>
+            </div>
+
         </a>
     </div>
     <style>
@@ -61,16 +63,16 @@
             background-color: #faad14;
         }
     </style>
-    <div class="ui-content">
-        <div class="page_nav flex-star">
-				<span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
-					<span th:if="${ugc.childs}" th:id="'ugc_child_'+${ugc.id}">
-						<span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
-							<a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}"
+    <div class="ui-content" style="padding-bottom: 0">
+        <div class="page_nav flex-center">
+				<div class="flex-star" style="width: auto">
+                    <span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
+                        <span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
+                            <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}"
                                th:text="${cugc.classname}"></a>
-						</span>
-					</span>
-				</span>
+                        </span>
+                    </span>
+                </div>
         </div>
         <hr>
         <div class="search_box flex-between">
@@ -177,7 +179,7 @@
             <div class="show_box" th:utext="${obj.goodsDetails}"></div>
         </div>
 		<div class="goods_pingj">
-            <div class="evaluation">
+            <div class="evaluation" style="display: none">
                 <div class="eva_bar_box">
                     <div class="eva_bar">
                         <div class="eva_bar_left">
@@ -191,6 +193,8 @@
                                 </span>
                             </div>
                             <ul class="scroller_ul">
+
+
                                 <li th:text="#{messages.satisfaction.veryNo}"></li>
                                 <li th:text="#{messages.satisfaction.no}"></li>
                                 <li th:text="#{messages.satisfaction.normal}"></li>
@@ -216,7 +220,48 @@
                     <div class="fenyes" th:html="${gotoPageAjaxHTML}"></div>
                 </div>
             </div>
+
+
+            <div class="pinlun_item">
+                <div class="item_user flex-star">
+                    <img src="http://localhost/upload/store/1/2016/04/06/2a4c105f-d92e-4268-b7e9-c2f015e1a614.jpg" />
+                    <div>
+                        <span>马化腾</span>
+                        <p>红色+ML</p>
+                    </div>
+                </div>
+                <div class="pinlun_cont">
+                    这衣服很好，强烈推荐。
+                </div>
+                <div class="huifu_box">
+                    <div class="huifu_item">
+                        <div class="huifu_user flex-star">
+                            <img src="http://localhost/upload/store/1/2016/04/06/2a4c105f-d92e-4268-b7e9-c2f015e1a614.jpg" />
+                            <div>真的吗?</div>
+                        </div>
+                    </div>
+
+                    <div class="huifu_item">
+                        <div class="huifu_user flex-star">
+                            <img src="http://localhost/upload/store/1/2016/04/06/2a4c105f-d92e-4268-b7e9-c2f015e1a614.jpg" />
+                            回复
+                            <img src="http://localhost/upload/store/1/2016/04/06/2a4c105f-d92e-4268-b7e9-c2f015e1a614.jpg" />
+                            <div>真的吗?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
+
+        <div class="page_shade flex-center">
+            <div class="">
+                <textarea placeholder="请输入评论内容"></textarea>
+                <div style="text-align: center">
+                    <button>保存</button>
+                </div>
+            </div>
+        </div>
+
         <div class="ui-shade">
             <div class="phone_nav">
                 <div th:each="ugc : ${ugcs}" th:if="${ugc.display}">
@@ -235,6 +280,15 @@
 <script src="/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
+        $(".goods_pingj").on("click",".pinlun_item img",function () {
+                $(".page_shade").css("display","flex");
+        })
+
+        $(".page_shade").click(function () {
+            $(".page_shade").css("display","none");
+        })
+
+
         setTimeout(function () {
             var mySwiper2 = new Swiper('#thumbs', {
                 spaceBetween: 10,
@@ -417,7 +471,8 @@
                 add_goods_to_cart(id,count,price,gsp,false)
             }
         });
-   function getgsp(){
+
+       function getgsp(){
        var s= $('input:radio[class=this]');
        var gsp="";
        if(s.length >0){

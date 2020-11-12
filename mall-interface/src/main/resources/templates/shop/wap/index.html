@@ -124,7 +124,11 @@
 			<a th:if="${user}" href="javascript:void(0);" th:text="${user.username}+#{messages.hello}"></a>
 			<a th:unless="${user}" href="/register.htm" th:text="#{messages.register}"></a>
 		</span>
-
+        <span class="log">
+			<select>
+                <option></option>
+            </select>
+		</span>
     </div>
 
     <form name="theForm" id="theForm" action="/search.htm" method="post">
