@@ -14,13 +14,13 @@
 <!--  $!httpInclude.include("/head.htm")
   $!httpInclude.include("/nav1.htm")-->
 
-  <div class="index">
+  <!--<div class="index">
     <div class="index2">
       <div class="paywaiting">
-        <!--<span>
+        &lt;!&ndash;<span>
           <img th:src="@{/style/common/images/loading.gif}"  />
         </span>
-        <span style="margin-top:10px;">正在为您跳转支付页面，请等待......</span>-->
+        <span style="margin-top:10px;">正在为您跳转支付页面，请等待......</span>&ndash;&gt;
         <input type="hidden" id="type" name="type" th:value="${type}" >
         <input type="hidden"  id="order_id"  name="" th:value="${order_id}" >
         <input type="hidden" id="url" name="url" th:value="${url}" >
@@ -34,19 +34,26 @@
   </div>
   <div id="paymsg">
 
-  </div>
+  </div>-->
+  <div th:utext="${content}"></div>
 
  <!-- $!httpInclude.include("/footer.htm")-->
 
 </div>
+
+<script>
+  $(function(){
+    jQuery("#paypalForm").submit();
+  });
+</script>
 </body>
 </html>
-<script>
+<!--<script>
   jQuery(document).ready(function(){
     var id;
     var type =jQuery("#type").val();
     var order_id =jQuery("#order_id").val();
-    console.log("order----"+order_id);
+    console.log("order&#45;&#45;&#45;&#45;"+order_id);
     var url=jQuery("#url").val();
     var payType =jQuery("#payType").val();
     var payment_id =jQuery("#payment_id").val();
@@ -55,23 +62,23 @@
     var integral_order_id =jQuery("#integral_order_id").val();
     switch (type) {
       case "goods":
-        console.log("order_1----"+order_id);
+        console.log("order_1&#45;&#45;&#45;&#45;"+order_id);
         id = order_id;
         break;
       case "cash"  :
-        console.log("order_2----"+cash_id);
+        console.log("order_2&#45;&#45;&#45;&#45;"+cash_id);
         id = cash_id;
         break;
       case "gold" :
-        console.log("order_4----"+gold_id);
+        console.log("order_4&#45;&#45;&#45;&#45;"+gold_id);
         id = gold_id;
         break;
       case "integral" :
-        console.log("order_5----"+integral_order_id);
+        console.log("order_5&#45;&#45;&#45;&#45;"+integral_order_id);
         id = integral_order_id;
         break;
     }
-    console.log("order_3----"+id);
+    console.log("order_3&#45;&#45;&#45;&#45;"+id);
     switch (payType) {
       case "alipay" :
         handlepay('genericAlipay',url,payment_id,type,id);
@@ -100,5 +107,5 @@
         //jQuery("#wxcodepay_overlay").show();
       }});
   }
-</script>
+</script>-->
 

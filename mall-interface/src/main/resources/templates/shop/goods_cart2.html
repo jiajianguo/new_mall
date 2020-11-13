@@ -153,7 +153,46 @@
         });
 
         function save_order() {
-            jQuery("#cart_form").submit();
+            //jQuery("#cart_form").submit();
+            var invoice=$("#invoice_address").text();
+            var ids=$("#ids").val();
+            var addr_id=$("#addr_id").val();
+            var coupon_id ='';
+            var payIds =$(".banksp").find("input[type =radio]");
+            var payid;
+            var flag= true;
+            var addr;
+            /*if(addr_id){
+                addr_id.each(function(){
+                    addr=$(this).attr('data-id');
+                })
+            }*/
+            payIds.each(function(){
+                if($(this).is(":checked")){
+                    payid = $(this).val();
+                }
+            });
+
+            if(!verify(addr_id)){
+                alert("选择收货地址");
+                flag =false;
+            }
+            if(!verify(payid)){
+                alert("请选择支付方式");
+                flag =false;
+            }
+            if(flag){
+                console.log("--------------invoice:"+invoice)
+                window.location.href="/goods_cart3?addr_id="+addr_id+"&payId="+payid+"&ids="+ids+"&invoice="+invoice;
+            }
+        }
+        function verify(s){
+            if(s){
+                if(s.length >0){
+                    return true;
+                }
+            }
+            return false;
         }
 
 
@@ -323,14 +362,14 @@
                 <li class="last" th:text="#{messages.evalution }"></li>-->
             </ul>
         </div>
-        <form th:action="@{/goods_cart3.htm}" method="post" th:enctype="@{/goods_cart3.htm}" id="cart_form">
+        <form  method="post"  id="cart_form"> <!--th:enctype="@{/goods_cart3}"-->
             <div class="paybtn"> <!--class="h1"-->
                 <input type="button" class="return_cart"  style="cursor:pointer;" th:value="'<<<'+#{messages.return.home}">
                 <!--<span class="h1_l">店铺名称：
                   <a th:href="@{/store.htm(id=${data.store.id})}" target="_blank" th:text="${data.store.storeName}"></a>
                   <input name="store_id" type="hidden" th:id="store_id" th:value="${data.store.id}"/>
                 </span>-->
-                <input type="hidden" name="ids" th:value="${ids}">
+                <input type="hidden" name="ids" id="ids" th:value="${ids}">
             </div>
 
 
@@ -396,12 +435,40 @@
                             </td>
                             <td align="center" th:text="${gc.price}"></td>
                             <td align="center" th:text="${gc.count}"></td>
-                            <td align="center"><strong class="orange" th:text="'¥'+${gc.count * gc.price}"></strong></td>
+                            <td align="center"><strong class="orange" >￥<span class="orangepay" th:text="${gc.count * gc.price}"></span></strong></td>
                         </tr>
 
                 </table>
             </div>
             <div class="sendadress">
+
+                <h1>
+                    <span class="sendperadr margin10" th:text="#{messages.pay.method}"></span>
+                </h1>
+                <div id="selectpay" class="bankcar">
+                    <ul >
+                        <li>
+                            <h1 th:text="#{messages.pay.inline}"></h1>
+                            <div th:each="pay : ${pays}" class="bankone">
+                      <span class="banksp">
+                        <input name="payType" type="radio" th:value="${pay.id}"  checked="checked" /> <!--th:value="${pay.mark}"-->
+                      </span>
+                                <span class="bankimg">
+                        <img th:if="${pay.mark == 'alipay' || pay.mark == 'alipay_wap'}"  th:src="@{/style/common/images/payment/alipay.jpg}" width="120" height="47" />
+                        <img th:if="${pay.mark == 'paypal'}"  th:src="@{/style/common/images/payment/paypal.jpg}" width="120" height="47" />
+                        <!--<img th:if="${pay.mark == 'tenpay'}"   th:src="@{/style/common/images/payment/tenpay.jpg}" width="125" height="47" />-->
+                        <img th:if="${pay.mark == 'outline'}"  th:src="@{/style/common/images/payment/outline.jpg}" width="120" height="47" />
+                        <img th:if="${pay.mark == 'payafter'}" th:src="@{/style/common/images/payment/payafter.jpg}" width="120" height="47" />
+                        <img th:if="${pay.mark == 'balance'}"  th:src="@{/style/common/images/payment/balance.jpg}" width="120" height="47" />
+                        <img th:if="${pay.mark == 'wxcodepay' || pay.mark == 'weixin_wap'}" th:src="@{/style/common/images/payment/weixin.png}" width="120" height="47" />
+                      </span>
+                                <span class="bank_txt" th:text="${pay.content}"></span>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+
                 <h1>
                     <div class="sendhright">
                         <span class="sendperbtn">
@@ -429,7 +496,7 @@
                                 <span id="telephone" th:text="${addr.telephone}"></span>
                                 <span id="address" th:if="${addr!= null }" th:text="${addr.areaInfo!=null?addr.areaInfo:''}+${addr.city}+'  '+${addr.countries}"></span>
                                 <!--<input type="hidden" id="addr" th:if="${addr != null }" th:text="${addr.areaInfo!=null?addr.areaInfo:''}+${addr.city}+'  '+${ addr.countries}"/>-->
-                                <input type="hidden" id="person_info" th:value="${addr.truename}+':'+${addr.mobile}"/>
+                                <input type="hidden" id="person_info" th:value="${addr.truename}+':'+${addr.telephone}"/>
                                 <input class="updress" type="button" value="修改地址">
                             </label>
                             <div class="popup-dz">
@@ -482,6 +549,17 @@
                             $(this).attr("data-nu") == "show" ? $(".showdata").css({"display":"table-row"}) : $(".showdata").css({"display":"none"})
 
                         })
+
+
+
+                        var tempay = 0;
+                        $(".orangepay").each(function(){
+                            var tempzong = $(this).text();
+                            tempay = parseFloat(tempay) + parseFloat(tempzong);
+                        })
+                        $("#order_pay_fee").text(tempay);
+                        $("#goods_amount").text(tempay);
+                        console.log(tempay);
                     })
                 </script>
 
@@ -609,16 +687,17 @@
                     <strong class="red" style=" font-size:24px;" id="order_coupon"></strong>
                 </div>
 
-                <div class="paysend">
+                <!--<div class="paysend">
                     <span th:text="#{messages.shop.totalprice}"></span>
                     <strong class="red" style=" font-size:24px;" id="order_store_amount"  th:text="${'¥'+totalPrice}"></strong>
-                </div>
+                </div>-->
                 <div class="paysend">
                     <div class="paysd">
                         <div class="paysd_box">
                             <span>
                                 <strong th:text="#{messages.payable.price}"></strong>
-                                <b id="order_pay_fee"  th:text="${'¥'+totalPrice}"></b>
+                                <b>￥</b>
+                                <b id="order_pay_fee"  th:text="${totalPrice}"></b>
                             </span>
                             <ul>
                                 <li><span id="order_address_info"></span></li>

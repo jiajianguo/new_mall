@@ -1190,8 +1190,13 @@ public class CartController {
 
     @RequestMapping({"/goods_cart3"})
     public ModelAndView before_pay( HttpServletRequest request, HttpServletResponse response,String ids,String addr_id, String coupon_id,String payId,String invoice){
-        ModelAndView mv = new JModelAndView("wap/pay.html", this.configService.getSysConfig(),
+        ModelAndView mv = new JModelAndView("line_pay.html", this.configService.getSysConfig(),
                 this.userConfigService.getUserConfig(), 1, request, response);
+        String shopping_view_type = CommUtil.null2String(request.getSession().getAttribute("shopping_view_type"));
+        if ((shopping_view_type != null) && (!shopping_view_type.equals("")) && (shopping_view_type.equals("wap"))) {
+            mv = new JModelAndView("wap/pay.html", this.configService.getSysConfig(),
+                    this.userConfigService.getUserConfig(), 1, request, response);
+        }
         BigDecimal amount = new BigDecimal("0.00");
         String orderNo = SecurityUserHolder.getCurrentUser().getId() + CommUtil.formatTime("yyyyMMddHHmmss", new Date());
         String[] primarys = ids.split(",");

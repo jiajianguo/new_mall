@@ -458,8 +458,8 @@ left:-50%; }
 .banktitle h1{ float:left; background:url(../images/bankright.jpg) no-repeat right center; height:40px; padding-right:25px; line-height:40px; margin-top:10px; margin-left:10px; overflow:hidden;}
 .banktitle span{ float:left; font-size:14px; font-weight:bold; height:40px; line-height:40px;  padding-left:25px; background:url(../images/bankleft.jpg) no-repeat;}
 .bankcar{ width:1000px; float:left; overflow:hidden;}
-.bankcar ul li{ margin-left:10px; margin-right:10px; width:920px; float:left; padding-left:20px; margin-top:20px;}
-.bankcar ul li h1{ line-height:30px; background:#F1F1F1; width:920px; float:left; height:30px; margin-bottom:10px; padding-left:10px; font-family:12px;}
+.bankcar ul li{ /*margin-left:10px; margin-right:10px;*/ width:920px; float:left; /*padding-left:20px; margin-top:20px;*/}
+.bankcar ul li h1{ line-height:30px; background:#F1F1F1; width:920px; float:left; height:30px; margin-bottom:10px; padding-left:60px; font-family:12px;}
 .bankcar ul li span{ float:left; display:block;  margin-right:8px;}
 .banksp input{ margin-top:0px;}
 .bankimg{ border:1px solid #ccc; display:block; overflow:hidden; float:left;}

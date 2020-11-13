@@ -1021,6 +1021,7 @@ public class GoodsController {
                     List<ShoppingGoodsWithBLOBs> goodsList =this.goodsService.queryByCondition(params);
                     viewTools.mainPhotoHandle(goodsList);
                     viewTools.addCartTop(mv);
+                    viewTools.addCartTop(mv);
                     mv.addObject("goods_recommend_list",goodsList );
                     params.clear();
                     params.put("evaluate_goods_id", obj.getId());
@@ -1137,16 +1138,7 @@ public class GoodsController {
             mv.addObject("url", CommUtil.getURL(request) + "/index.htm");
         }
 
-        ShoppingUser user =SecurityUserHolder.getCurrentUser();
-        List<ShoppingStorecart> cart = goodsViewTools.getCart(user.getId());
-        int count = 0;
-        for (ShoppingStorecart sc2 : cart) {
-            goodsCartTools.addGcs(sc2);
-            for (ShoppingGoodscart gc1 : sc2.getGcs()) {
-                count =count+gc1.getCount();
-            }
-        }
-        mv.addObject("cartSize",count);
+
         return mv;
     }
 

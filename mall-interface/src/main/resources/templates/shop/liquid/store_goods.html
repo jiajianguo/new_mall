@@ -308,18 +308,23 @@
                                     All products </a>
                             </li>
 
+
+                            <li class="nav-item nav-single" th:each="ugc,iter : ${ugcaccsorry}"
+                                th:if="${iter.count<=10}"> <!-- nav-single 没有二级菜单class -->
+                                <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
+                                   th:text="${ugc.classname}"></a>
+                            </li>
+
                             <li class="nav-item J-SubMenu"> <!-- nav-single 没有二级菜单class -->
                                 <a href="javascript:;">
-                                    All categories </a>
+                                    more </a>
                                 <div class="nav-item-down-menu">
                                     <div>
                                         <!--二级菜单==>广告位前-->
 
                                         <!--二级菜单-->
                                         <div class="submenu">
-                                            <a th:each="ugc : ${ugcaccsorry}"
-                                               th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
-                                               th:text="${ugc.classname}"></a>
+                                            <a th:each="ugc : ${ugcaccsorry}" th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}" th:text="${ugc.classname}"></a>
                                         </div>
 
                                         <!--二级菜单==>广告位后-->
@@ -336,13 +341,6 @@
                                     </div>
                                 </div>
                             </li>
-
-                            <li class="nav-item nav-single" th:each="ugc,iter : ${ugcaccsorry}"
-                                th:if="${iter.count<=10}"> <!-- nav-single 没有二级菜单class -->
-                                <a th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}"
-                                   th:text="${ugc.classname}"></a>
-                            </li>
-
                             <!--会员中心==登陆&注册-->
 
                             <li class="nav-item nav-single nav-member">
