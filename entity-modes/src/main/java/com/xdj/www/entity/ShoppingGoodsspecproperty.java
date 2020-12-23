@@ -2,6 +2,9 @@ package com.xdj.www.entity;
 
 import java.util.Date;
 
+/**
+ * @author Administrator
+ */
 public class ShoppingGoodsspecproperty extends BaseEntity{
     private Long id;
 
@@ -17,7 +20,22 @@ public class ShoppingGoodsspecproperty extends BaseEntity{
 
     private Long specimageId;
 
+    /**
+     * 规格属性图片
+     */
+    private ShoppingAccessory accessory;
+
+
     private ShoppingGoodsspecification spec;
+
+
+    public ShoppingAccessory getAccessory() {
+        return accessory;
+    }
+
+    public void setAccessory(ShoppingAccessory accessory) {
+        this.accessory = accessory;
+    }
 
     public ShoppingGoodsspecification getSpec() {
         return spec;

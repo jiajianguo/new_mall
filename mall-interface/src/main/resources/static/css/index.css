@@ -4,7 +4,8 @@
 
 .btn_right{
 	right: .24rem;
-	left: auto;
+	top: 18px;
+	position: absolute;
 }
 
 .search_box{
@@ -62,6 +63,7 @@
 
 .specitem{
 	margin: 0 .2rem .1rem 0;
+	display: block;
 }
 
 .num_box{
@@ -356,4 +358,28 @@
 	font-size: 20px;
 }
 
+.goods_num{
+	font-size: 14px;
+	color: #feab27;
+	font-weight: bold;
+	width: 20px;
+	border: 1px solid #feab27;
+	height: 20px;
+	position: absolute;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 18px;
+	top: -5px;
+	right: -5px;
+	background: white;
+}
+
+.goodsCart_box{
+	position: relative;
+}
+
+.goodsCart_box svg{
+	width: 30px;
+	height: 30px;
+}
 

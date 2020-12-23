@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Goods Details</title>
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="viewport"  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <link rel="stylesheet" type="text/css" href="/css/framework.css"/>
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
     <link rel="stylesheet" type="text/css" href="/css/swiper.min.css"/>
@@ -39,12 +38,12 @@
                      style="width: 1.2rem;height: 0.8rem;"/>
             </a>
         </div>
-        <a href="/goods_cart1.htm" class="header-button btn_right">
-            <div class="goods_num" th:text="${cartSize !=null ? cartSize:0}"></div>
-            <div>
+        <a href="/goods_cart1.htm" class="btn_right">
+            <div class="goodsCart_box">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-gouwu"></use>
                 </svg>
+                <div class="goods_num" id="goods_num" th:text="${cartSize !=null ? cartSize:0}"></div>
             </div>
 
         </a>
@@ -60,6 +59,26 @@
             line-height: 1rem;
         }
         .page_nav >span>span :hover{
+            background-color: #faad14;
+        }
+       .specitem .color_img{
+            border-radius:50%;
+            border: 1px solid #f2cb94;
+
+        }
+        .specitem  .color_content{
+            width: 55px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 1px solid #4a4a4a;
+            border-radius:4px;
+        }
+        .specitem .color_img div{
+            border-radius:50%;
+            margin: 4px 4px;border: 1px solid #f2cb94;
+        }
+        .this_color {
             background-color: #faad14;
         }
     </style>
@@ -83,38 +102,40 @@
         </div>
         <div class="goods_intro flex-center">
             <div>
-                <div id="gallery" class="swiper-container main">
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
-                            <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                <div id="sw666">
+                    <div id="gallery" class="swiper-container main">
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+                                <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                            </div>
+                            <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"  th:each="img,item: ${obj.goods_photos}">
+                                <img data-src="" th:src="@{'/'+${img.path}+'/'+${img.name}}">
+                            </div>
                         </div>
-                        <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"
-                             th:each="img,item: ${obj.goods_photos}">
-                            <img th:src="@{'/'+${img.path}+'/'+${img.name}}"><!--style="width: 6rem;height: 6rem"-->
+                        <div class="swiper-button-prev flex-center">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-left"></use>
+                            </svg>
                         </div>
-                    </div>
-                    <div class="swiper-button-prev flex-center">
-                        <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-left"></use>
-                        </svg>
-                    </div>
-                    <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
-                    <div class="swiper-button-next flex-center">
-                        <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-right"></use>
-                        </svg>
+                        <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
+                        <div class="swiper-button-next flex-center">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-right"></use>
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <div id="thumbs" class="swiper-container doli">
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
-                            <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
-                        </div>
-                        <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"
-                             th:each="img,iter: ${obj.goods_photos}">
-                            <img th:src="@{'/'+${img.path}+'/'+${img.name}}">
+                <div id="suolvu">
+                    <div id="thumbs" class="swiper-container doli">
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+                                <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                            </div>
+                            <div class="swiper-slide" th:if="${obj.goods_photos !=  null }" th:each="img,iter: ${obj.goods_photos}">
+                                <img th:src="@{'/'+${img.path}+'/'+${img.name}}">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,14 +163,21 @@
                     </div>
                 </div>
                 <div class="spec_box">
-                    <div class="spec_item" th:if="${obj.specification != null}" id="specification" th:each="spec : ${obj.specification}">
-                        <div class="flex-star spec_cont">
-							<label class="flex-star specitem" th:data-id="${spec.id}" th:text="${spec.name}"></label>
-                            <label class="flex-star specitem" th:each="gsp : ${obj.goods_specs}"
-                                   th:if="${gsp.spec.id == spec.id}">
-                                <input type="radio" th:name="${gsp.spec.id }" th:id="${gsp.id}" th:data-id="${obj.id}"  th:attr="spec=${gsp.spec.id}" />
-                                <span th:text="${gsp.value}"></span>
-                            </label>
+                    <div class="spec_item " th:if="${obj.specification != null}"  th:each="spec : ${obj.specification}">
+                        <div class="spec_cont">
+							<div class="specitem specification" th:data-id="${spec.id}" >
+                                <span th:text="${spec.name+':  '}"> </span>
+                                &nbsp;
+                                <span  class="gspName"> </span>
+                            </div>
+                            <div class="specitem" th:each="gsp : ${obj.goods_specs}"  th:if="${gsp.spec.id == spec.id}" style="display: inline-block">
+                                <div class="color_img" th:if="${gsp.accessory != null}"  th:id="${gsp.id}" th:data-id="${obj.id}" style="width: 50px;height: 50px;">
+                                    <div th:id="${gsp.id}" th:data-id="${obj.id}" th:style="'background-image: url('+@{${gsp.accessory.path+'/'+gsp.accessory.name}}+');background-size: cover !important;width: 40px;height: 40px;'"></div>
+                                    <input  type="hidden" name="gspName" th:value="${gsp.value}" />
+                                </div>
+                                <div th:id="${gsp.id}" th:data-id="${obj.id}" class="color_content" th:unless="${gsp.accessory !=  null}" th:text="${gsp.value}" >
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="spec_item">
@@ -193,8 +221,6 @@
                                 </span>
                             </div>
                             <ul class="scroller_ul">
-
-
                                 <li th:text="#{messages.satisfaction.veryNo}"></li>
                                 <li th:text="#{messages.satisfaction.no}"></li>
                                 <li th:text="#{messages.satisfaction.normal}"></li>
@@ -281,13 +307,12 @@
 <script type="text/javascript">
     $(function () {
         $(".goods_pingj").on("click",".pinlun_item img",function () {
-                $(".page_shade").css("display","flex");
+           $(".page_shade").css("display","flex");
         })
 
         $(".page_shade").click(function () {
             $(".page_shade").css("display","none");
         })
-
 
         setTimeout(function () {
             var mySwiper2 = new Swiper('#thumbs', {
@@ -341,7 +366,6 @@
                 }
             }
         });
-
 
 		$(".page_show_nav div").click(function(){
 			$(this).addClass("page_show_nav_act").siblings().removeClass("page_show_nav_act");
@@ -402,17 +426,27 @@
         /**
          * 切换商品规格
          */
-        $('input[type=radio]').click(function(){
+        $('.color_img').click(function(){
             var id = $(this).attr('data-id');
             var gsp = $(this).attr('id');
-            console.log('id=',id);
-            var name =$(this).attr('name');
             //删除this
-            $('input:radio[spec='+name+']').removeClass("this");
-            $(this).addClass('this');
-            //加载不同的规格不同的价格
+            $(this).parent().siblings().children().removeClass('this_color');
+            $(this).addClass('this_color');
+            var v= $(this).find('input[type=hidden]').val();
+            //添加属性到
+            $(this).parent().siblings().find("span[class=gspName]").text(v);
             goods_spec_set(id,gsp);
         });
+
+        $('.color_content').click(function(){
+            $(this).parent().siblings().children().removeClass('this_color');
+            $(this).addClass('this_color')
+            var v= $(this).text();
+            //添加属性到
+            $(this).parent().siblings().find("span[class=gspName]").text(v);
+        });
+
+
 
         /**
          * 根据不同的规格加载不同的价格
@@ -432,9 +466,101 @@
                         $("#store_price").text(store_price);
                     }
                     $("#inventory").text(goods_inventory);
-                    console.log('执行数据-----');
+                    var paths= res.path;
+                    setSwStr(paths);
                 });
             }
+        }
+
+        /**
+         * 不同属性不同照片
+         */
+        function setSwStr(paths){
+            let str ='';
+            let suolueStr ='';
+            if(paths){
+                str=`<div id="gallery" class="swiper-container main">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">`;
+                suolueStr= `<div id="thumbs" class="swiper-container doli">
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">`;
+                let s='';
+                let suo='';
+                for(item in paths){
+                    s=s+` <div class="swiper-slide">
+                                        <img src="`+paths[item]+`">
+                                    </div>`;
+                    suo=suo+`<div class="swiper-slide">
+                                        <img src="`+paths[item]+`" >
+                                    </div>`;
+                }
+               str =str+s+`</div>
+                            <div class="swiper-button-prev flex-center">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-left"></use>
+                                </svg>
+                            </div>
+                            <div class="swiper-button-next flex-center">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-right"></use>
+                                </svg>
+                            </div>
+                        </div>`;
+                suolueStr =suolueStr + suo+`</div>
+                            </div>`;
+            }else{
+                str=`<div id="gallery" class="swiper-container main">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3218732665,2311223579&fm=26&gp=0.jpg">
+                                    </div>
+                            </div>
+
+                            <div class="swiper-button-prev flex-center">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-left"></use>
+                                </svg>
+                            </div>
+                            <div class="swiper-button-next flex-center">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-right"></use>
+                                </svg>
+                            </div>
+                        </div>`;
+                suolueStr= `<div id="thumbs" class="swiper-container doli">
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">
+                                   <div class="swiper-slide">
+                                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3218732665,2311223579&fm=26&gp=0.jpg">
+                                    </div>
+                                </div>
+                            </div>`
+            }
+
+
+
+
+
+            $("#sw666").html(str);
+            $("#suolvu").html(suolueStr);
+            var mySwiper2 = new Swiper('#thumbs', {
+                spaceBetween: 10,
+                slidesPerView: 5,
+                watchSlidesVisibility: true,//防止不可点击
+            })
+
+            var mySwiper1 = new Swiper('#gallery', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                spaceBetween: 10,
+                thumbs: {
+                    swiper: mySwiper2,
+                }
+            })
         }
 
         /**
@@ -446,11 +572,13 @@
             var price =$("#store_price").text();
             var gsp ="";
             var load = true;
-            if($("#specification").length==0){
+            if($(".specification").length==0){
                  load = true;
+                console.log("1");
             }else{
-                var s= $('input:radio[class=this]');
-                if(s.length > $("#specification").length){
+                var s= $('.specitem .this_color');
+                console.log("123"+s.length);
+                if(s.length == $(".specification").length){
                     s.each(function(){
                         gsp=gsp+ $(this).attr('id')+',';
                     });
@@ -468,39 +596,38 @@
                 alert('数量信息有误');
             }
             if(load){
-                add_goods_to_cart(id,count,price,gsp,false)
+               add_goods_to_cart(id,count,price,gsp,false)
             }
         });
 
        function getgsp(){
-       var s= $('input:radio[class=this]');
-       var gsp="";
-       if(s.length >0){
-           s.each(function(){
-               gsp=gsp+ $(this).attr('id')+',';
-           });
+           var s= $('input:radio[class=this]');
+           var gsp="";
+           if(s.length >0){
+               s.each(function(){
+                   gsp=gsp+ $(this).attr('id')+',';
+               });
+           }
+           return gsp;
        }
-       return gsp;
-   }
+
     $("#buy_goods").on('click',function (){
         var  id= $(this).attr('data-id');
         var count = $("#quantity").val();
         var price =$("#store_price").text();
         var gsp ="";
         var load = true;
-        if($("#specification").length==0){
+        if($(".specification").length==0){
              load = true;
         }else {
-            var s = $(".specitem").find("input[type=radio ]");
-            if(s.length > $("#specification").length){
-                s.each(function () {
-                    if ($(this).is(":checked")) {
-                        gsp = gsp + $(this).attr("id") + ',';
-                    }
+            var s= $('.specitem .this_color');
+            if(s.length == $(".specification").length){
+                s.each(function(){
+                    gsp=gsp+ $(this).attr('id')+',';
                 });
             }else {
+                alert("请正确选择商品规格");
                 load = false;
-                alert("请选择规格属性");
             }
         }
         if(count){
@@ -510,13 +637,11 @@
             alert('数量信息有误');
         }
         if(load){
-            add_goods_to_cart(id,count,price,gsp,true)
+           add_goods_to_cart(id,count,price,gsp,true)
         }else{
             alert("检查信息");
         }
     });
-
-
 
     /**
      * 添加到购物车
@@ -537,6 +662,7 @@
         if(combinStatus == '2'){
             type='combin';
         }
+
         jQuery.post("/addGoodsCart", {
             "id": id,
             "count": count,
@@ -550,12 +676,17 @@
                 if(flag){
                     window.location.href = "/goods_cart1.htm";
                 }else{
+                    if(jQuery("#goods_num").text()){
+                      var c= jQuery("#goods_num").text();
+                        jQuery("#goods_num").text(parseInt(count)+parseInt(c));
+                    }else{
+                        jQuery("#goods_num").text(count);
+                    }
                     alert('添加到购物车成功');
                 }
             }else{
                 alert(res.msg);
             }
-
         });
     }
     });

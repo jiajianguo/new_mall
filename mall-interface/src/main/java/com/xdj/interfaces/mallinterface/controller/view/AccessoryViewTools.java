@@ -163,4 +163,11 @@ public class AccessoryViewTools {
             child.setAcc(accessory);
         }
     }
+
+    public void addSpecImg(ShoppingGoodsspecproperty s) {
+        if(s != null){
+            ShoppingAccessory accessory =accessoryService.getObjById(s.getSpecimageId());
+            s.setAccessory(accessory);
+        }
+    }
 }

@@ -63,9 +63,7 @@
 					<p id="goodscollect" th:text="${obj.goodsCollect}"></p>
 				</div>
 			</div>
-			<div class="goods_tit" th:text="${obj.goodsName}">
-
-			</div>
+			<div class="goods_tit" th:text="${obj.goodsName}"> </div>
 
 			<div class="cuxiao">
 				<div class="cux_tit flex-between">
@@ -78,11 +76,13 @@
 				</div>
 			</div>
 
+			<!--购物弹窗-->
 			<div class="ui-shade">
 				<div class="ui-modal">
 					<svg class="icon modal_close" aria-hidden="true">
 						<use xlink:href="#icon-quxiao"></use>
 					</svg>
+
 					<div class="goods_into flex-star">
 						<img th:if="${obj.goods_main_photo != null }" th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
 						<div class="goods_tit">
@@ -95,20 +95,27 @@
 					</div>
 
 					<div class="goods_spec">
-						<div class="spec_line" id="specification" th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
+						<div class="spec_line"  th:if="${obj.specification != null}" th:each="spec : ${obj.specification}">
 							<div class="spec_tit">
-								<div class="gg-data"><span class="gg-data-row" th:text="${spec.name}"></span>
-									     			 <span class="tstext">0</span>
+								<div class="gg-data">
+									<span class="gg-data-row specification" th:text="${spec.name}" ></span>
+									<span class="tstext">0</span>
 								</div>
 								<b></b>
 							</div>
 							<div class="sepc_cont flex-star" >
-								<div th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}" th:data-id="${obj.id}"  th:text="${gsp.value}" th:attr="gsp=${gsp.id}">
+								<div  th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}"  style="margin-left: .1rem" >
+									<div th:if="${gsp.accessory != null}"  th:data-id="${obj.id}"  th:gsp="${gsp.id}" class="flex-property properties-box">
+										<div  class="no_spc_img" th:style="'background-image: url('+@{${gsp.accessory.path+'/'+gsp.accessory.name}}+');background-size: cover !important'"> </div>
+										<span th:text="${gsp.value}" style="display: none" class="gspName"></span>
+									</div>
+									<div class="and_spc_img properties-box" th:unless="${gsp.accessory  != null}"  th:data-id="${obj.id}"  th:attr="gsp=${gsp.id}" th:text="${gsp.value}" >
+
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
 					<div class="spec_line">
 						<div class="spec_tit" th:text="#{messages.amount}"></div>
 						<div class="num_opt flex-star">
@@ -201,7 +208,9 @@
 	})
 
 
-
+    /**
+	 * 添加购物车
+	 */
 	$("#add_cart").on('click',function (){
 		var  id= $(this).attr('data-id');
 		var count = $("#count").val();
@@ -212,8 +221,6 @@
 		}else{
 			price=$("#store_price").text();
 		}
-
-
 
 		$(".gg-data").each(function(){
 			if($(this).find(".tstext").text() == 0 || $(this).find(".tstext").text() == "选择规格"){
@@ -234,15 +241,15 @@
 		if($("#specification").length==0){
 			load=true;
 		}else{
-			var s=$("div[class=sepc_act]")
-			if(s.length>$("#specification").length){
-				s.each(function () {
-					gsp = $(this).attr("gsp") + "," + gsp;
-				});
-				console.log("gsp", gsp);
+			var s=$(".properties-box");
+			if(s){
+				gsp=gsps(s);
 			}else{
 				load=false;
-				// alert("请正确选择规格！！！")
+			}
+			if(gsp.length < $(".specification").length ){
+				load=false;
+				alert("请选择规格属性");
 			}
 		}
 
@@ -253,12 +260,14 @@
 		if(load){
 			add_goods_to_cart(id,count,price,gsp,false)
 		}else{
-			// alert('购物失败');
+			alert('购物失败');
 		}
 
 	})
 
-
+    /**
+	 * 立即购买
+	 */
 	$("#buy_goods").on('click',function (){
 		var  id= $(this).attr('data-id');
 		var count = $("#count").val();
@@ -269,24 +278,21 @@
 		}else{
 			price=$("#store_price").text();
 		}
-
 		var gsp="";
 		var load = true;
-		if($("#specification").length==0){
+		if($(".specification").length==0){
 			load=true;
 		}else{
-			var s=$("div[class=sepc_act]")
-			console
-			if(s!=null){
-				s.each(function () {
-					gsp = $(this).attr("gsp") + "," + gsp;
-				});
-				console.log("gsp", gsp);
+			var s=$(".properties-box");
+			if(s){
+				gsp=gsps(s);
 			}else{
 				load=false;
 			}
-			console.info(gsp[0])
-			if(gsp.length < 1){
+			console.log("length====="+gsp.length);
+			console.log("classs====" + $(".specification").length);
+
+			if(gsp.length < $(".specification").length ){
 				load=false;
 				alert("请选择规格属性");
 			}
@@ -303,6 +309,16 @@
 		}
 	});
 
+	function gsps(elements){
+		var gsp='';
+		elements.each(function () {
+			if($(this).hasClass('sepc_act')){
+				gsp = $(this).attr("gsp") + "," + gsp;
+			}
+		});
+		return gsp;
+	}
+
 	$("#count").blur(function(){
 		var count = $(this).val();
 		var flag= count_verify(count);
@@ -311,6 +327,9 @@
 		}
 	});
 
+	/**
+	 * 验证数量
+	 */
 	function count_verify(count){
 		var inventory = parseInt($("#inventory").val());
 		if(!count){
@@ -346,11 +365,22 @@
 					$("#store_price").text(store_price);
 				}
 				$("#inventory").text(goods_inventory);
-
+                addimg(res.path);
 			});
 		}
 	}
 
+	function addimg(paths){
+		var data_src="";
+		if(paths.length > 0){
+			data_src =paths[0];
+		}
+		$(".goods_into>img").attr("src",data_src);
+	}
+
+	/**
+	 * 添加收藏
+	 */
 	jQuery("#add_favorite").click(function () {
 		var storeId=jQuery("#store_id").val();
 		var user_store_id=jQuery("#user_store_id").val();
@@ -382,7 +412,6 @@
 	 * @param flag
 	 */
 	function add_goods_to_cart(id,count,price,gsp,flag){
-		console.log('gsp',gsp);
 		var type='';
 		var groupBuy = $("#gropBuy").val();
 		if(groupBuy == '2'){
@@ -418,7 +447,9 @@
 	}
 
 
-
+	/**
+	 * 减数量
+	 */
 	$("#sub_count").click(function(){
 		var count = parseInt($("#count").val());
 		if(count >1){
@@ -427,6 +458,9 @@
 		}
 	});
 
+	/**
+	 * 添加数量
+	 */
 	$("#add_count").click(function(){
 		var count = parseInt($("#count").val());
 		var inventory = parseInt($("#inventory").val())
@@ -459,20 +493,31 @@
 		spaceBetween : 10,
 		loop: true
 	});
+
 	$(".bottom_btn").click(function(){
 		$(".ui-shade").css("display","block");
 		$(".ui-modal").addClass("shadeshow");
 	})
+
 	$(".ui-modal").click(function(){
 		event.stopPropagation();
 	})
+
 	$(".ui-shade,.modal_close").click(function(){
 		$(".ui-shade").css("display","none")
 	})
+
+
 	let specarr = [];
-	$(".sepc_cont div").click(function() {
-		$(this).addClass("sepc_act").siblings().removeClass("sepc_act");
-		$(this).parents(".spec_line").find(".spec_tit span").text($(this).text());
+	$(".sepc_cont>div>div").click(function() {
+		$(this).addClass("sepc_act");
+		$(this).parent().siblings().children().removeClass("sepc_act");
+		var p=$(this).text()
+		if(p){
+			$(this).parents(".spec_line").find(".spec_tit span[class=tstext]").text($(this).text());
+		}else{
+			$(this).parents(".spec_line").find(".spec_tit span[class=tstext]").text($(this).find('span[class=gspName]').text());
+		}
 		let sepcindex = $(this).parents(".spec_line").index();
 		specarr[sepcindex] = $(this).text();
 		$(".shose_spec span").text(specarr.join("，"));
@@ -481,7 +526,6 @@
 		goods_spec_set(id,gsp);
 		tptext()
 	})
-
 
 	function tptext(){
 		$(".tstext").each(function(){

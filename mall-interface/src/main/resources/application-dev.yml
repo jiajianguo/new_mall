@@ -49,7 +49,6 @@ spring:
         max-idle: 8
         max-wait: 2000ms
 
-
   resources:
     static-locations: classpath:/static
   thymeleaf:
@@ -59,11 +58,12 @@ spring:
       content-type: text/html
     cache: false
     prefix: classpath:/templates
+
 # 日志配置
 logging:
   level:
     org.springframework: info
-    com.xdj.interfaces.mallinterface.mapper: debug
+    #com.xdj.interfaces.mallinterface.mapper: debug
 # mybatis 相关配置
 mybatis:
   mapper-locations: classpath:mybatis/*.*

@@ -1,45 +1,16 @@
 package com.xdj.www.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author Administrator
+ */
 public class ShoppingGoodsWithBLOBs extends ShoppingGoods {
     private String goodsDetails;
 
     private String goodsInventoryDetail;
-
-
-
-    @Override
-    public String toString() {
-
-        return "ShoppingGoodsWithBLOBs{" +
-                "goodsDetails='" + goodsDetails + '\'' +
-                ", goodsInventoryDetail='" + goodsInventoryDetail + '\'' +
-                ", goodsProperty='" + goodsProperty + '\'' +
-                ", seoDescription='" + seoDescription + '\'' +
-                ", ztcAdminContent='" + ztcAdminContent + '\'' +
-                ", goods_store=" + goods_store +
-                ", shoppingGoodsclass=" + shoppingGoodsclass +
-                ", goods_main_photo=" + goods_main_photo +
-                ", goods_photos=" + goods_photos +
-                ", goods_ugcs=" + goods_ugcs +
-                ", goods_specs=" + goods_specs +
-                ", goods_brand=" + goods_brand +
-                ", group_goods_list=" + group_goods_list +
-                ", consults=" + consults +
-                ", evaluates=" + evaluates +
-                ", favs=" + favs +
-                ", transport=" + transport +
-                ", dynamics=" + dynamics +
-                ", bargainGoods_list=" + bargainGoods_list +
-                ", ag_goods_list=" + ag_goods_list +
-                ", combin_goods=" + combin_goods +
-                '}';
-    }
 
     private String goodsProperty;
 
@@ -48,7 +19,7 @@ public class ShoppingGoodsWithBLOBs extends ShoppingGoods {
     private String ztcAdminContent;
 
     /**
-     * 货物商店
+     *货物商店
      */
     private  ShoppingStoreWithBLOBs  goods_store;
     /**
@@ -120,11 +91,43 @@ public class ShoppingGoodsWithBLOBs extends ShoppingGoods {
 
     private ShoppingDeliveryGoods dg;
 
+    /**
+     * 商品规格
+     */
     private List<ShoppingGoodsspecification> specification ;
     /**
      * 商品规格
      */
     private List<ShoppingGoodsWithBLOBs> combin_goods ;
+
+    @Override
+    public String toString() {
+
+        return "ShoppingGoodsWithBLOBs{" +
+                "goodsDetails='" + goodsDetails + '\'' +
+                ", goodsInventoryDetail='" + goodsInventoryDetail + '\'' +
+                ", goodsProperty='" + goodsProperty + '\'' +
+                ", seoDescription='" + seoDescription + '\'' +
+                ", ztcAdminContent='" + ztcAdminContent + '\'' +
+                ", goods_store=" + goods_store +
+                ", shoppingGoodsclass=" + shoppingGoodsclass +
+                ", goods_main_photo=" + goods_main_photo +
+                ", goods_photos=" + goods_photos +
+                ", goods_ugcs=" + goods_ugcs +
+                ", goods_specs=" + goods_specs +
+                ", goods_brand=" + goods_brand +
+                ", group_goods_list=" + group_goods_list +
+                ", consults=" + consults +
+                ", evaluates=" + evaluates +
+                ", favs=" + favs +
+                ", transport=" + transport +
+                ", dynamics=" + dynamics +
+                ", bargainGoods_list=" + bargainGoods_list +
+                ", ag_goods_list=" + ag_goods_list +
+                ", combin_goods=" + combin_goods +
+                '}';
+    }
+
 
     public List<ShoppingGoodsspecification> getSpecification() {
         return specification;

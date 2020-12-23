@@ -609,6 +609,7 @@ public class GoodsController {
         int count = 0;
         double price = 0.0D;
         goodsViewTools.addGroup(goods);
+        JSONArray paths= new JSONArray();
         if(goods.getGroupBuy() ==2 ){
             goodsViewTools.addgroupGoodsList(goods);
             for (ShoppingGroupGoods gg : goods.getGroup_goods_list()){
@@ -623,23 +624,35 @@ public class GoodsController {
             if (goods.getInventoryType().equals("spec")) {
                 JSONArray  list = JSON.parseArray(goods.getGoodsInventoryDetail());
                 String[] gsp_ids = gsp.split(",");
+                log.info(" gsp_ids ==={}",gsp_ids);
                 if(list != null){
                     for (int i=0;i<list.size();i++) {
                         JSONObject   temp= list.getJSONObject(i);
                         String[] temp_ids = CommUtil.null2String(temp.get("id")).split("_");
+                        if(gsp_ids[0].equals(temp_ids[0])){
+                            log.info("actions_ids ==={}",temp);
+                            if(temp.containsKey("path")){
+                                paths.add(temp.getString("path"));
+                            }
+                        }
                         Arrays.sort(gsp_ids);
                         Arrays.sort(temp_ids);
                         if (Arrays.equals(gsp_ids, temp_ids)) {
                             count = CommUtil.null2Int(temp.get("count"));
                             price = CommUtil.null2Double(temp.get("price"));
                         }
+
                     }
                 }
 
             }
         }
+        if(paths.isEmpty()){
+            paths.add(goods.getGoods_main_photo().getPath()+"/"+goods.getGoods_main_photo().getName());
+        }
         map.put("count", Integer.valueOf(count));
         map.put("price", Double.valueOf(price));
+        map.put("path",paths);
         response.setContentType("text/plain");
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("UTF-8");

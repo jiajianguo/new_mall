@@ -112,6 +112,7 @@ import java.util.*;
        if(specs != null){
          for( ShoppingGoodsspecproperty s: specs){
               s.setSpec(goodsSpecificationService.getObjById(s.getSpecId()));
+              accessViewTools.addSpecImg(s);
          }
        }
        goods.setGoods_specs(specs);

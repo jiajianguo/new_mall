@@ -288,7 +288,7 @@
 
                                         <!--二级菜单-->
                                         <div class="submenu">
-                                            <a th:each="ugc : ${ugcaccsorry}" th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${goodsStore.id})}" th:text="${ugc.classname}"></a>
+                                            <a th:each="ugc : ${ugcaccsorry}" th:href="@{/goods_list.htm(gc_id=${ugc.id},store_id=${store.id})}" th:text="${ugc.classname}"></a>
                                         </div>
 
                                         <!--二级菜单==>广告位后-->

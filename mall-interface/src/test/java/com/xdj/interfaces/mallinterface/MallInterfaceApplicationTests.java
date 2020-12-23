@@ -1,7 +1,7 @@
 package com.xdj.interfaces.mallinterface;
 
 import com.xdj.interfaces.mallinterface.service.SendMessageService;
-import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

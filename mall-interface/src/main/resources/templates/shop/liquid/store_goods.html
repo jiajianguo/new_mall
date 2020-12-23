@@ -186,7 +186,6 @@
             <div class="logo-box">
                 <!-- LOGO -->
                 <div class="logo" itemscope="" itemtype="http://schema.org/Organization">
-
                     <a th:href="@{/store.htm(id=${goodsStore.id})}" itemprop="url">
                         <img th:if="${goodsStore.storeLogo}" class="lazy-load J-LazyLoad lazy-load-show"
                              th:data-original="${'/'+goodsStore.storeLogo.path+'/'+goodsStore.storeLogo.name}"
@@ -207,28 +206,9 @@
                         <input name="keyword" type="text" placeholder="Start Typing Here" class="search"
                                id="search_box"/>
                     </form>
-                    <!--<div class="search-select" data-search-type="2">
-                        <select>
-                            <option data-tag="All categories" value="0">All categories</option>
-                            <option th:each="ugc : ${ugcaccsorry}" th:data-tag="${ugc.classname}" th:value="${ugc.id}" th:text="${ugc.classname}">
-                            </option>
-                        </select>
-
-                        <label>All categories</label>
-                    </div>-->
                     <div class="search-icon">
                         <span class="iconfont icon-sousuo"></span>
                     </div>
-
-
-                    <!--<div class="search-link">
-                        <div class="link-title">Quick Links</div>
-                        <a href="/products?handler=cycling-1">cycling</a>
-                        <a href="/products?handler=fitness">fitness</a>
-                        <a href="/products?handler=rubby">rubby</a>
-                        <a href="/products?handler=outdoor">outdoor</a>
-                        <a href="/products?handler=skiing">skiing</a>
-                    </div>-->
                 </div>
 
                 <script type="application/javascript">
@@ -286,9 +266,6 @@
                 <div class="nav-box">
                     <div class="currency-select">
                         <select>
-                            <!--<option data-currency-code="USD">
-                                USD
-                            </option>-->
                             <option data-currency-code="EUR">
                                 EUR
                             </option>
@@ -406,7 +383,6 @@
                     </a>
                 </div>
             </div>
-
             <!--加购弹窗-->
             <div class="add-cart-popup">
                 <div class="title">
@@ -431,7 +407,6 @@
                 </div>
             </div>
         </div>
-
         <!--移动端搜索弹窗-->
         <div class="search-popup">
             <div class="search-box">
@@ -466,7 +441,6 @@
     <input type="hidden" class="J-isShowInventory" value="0">
     <input type="hidden" class="J-recent-order-names" value="">
 
-
     <div class="JH-Columns main recommend product " itemscope="" itemtype="http://schema.org/Product">
         <meta itemprop="name" content="default">
         <meta itemprop="url" content="">
@@ -481,121 +455,44 @@
         <!--左侧==>商品图片模块-->
         <div class="recom-item thumbnail">
             <div class="product-details-banner">
-                <div class="swiper-container swiper-no-swiping gallery-top JH-GalleryTop gallery_top_XRm swiper-container-horizontal swiper-container-autoheight">
-                    <!-- 查看大图 -->
-                    <!--<div class="expand-img J-ExpandImg">
-                        <span class="iconfont icon-search"></span>
-                        Click to expand
-                    </div>-->
-                    <div class="swiper-wrapper "
-                         style="height: 519px; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-
-                        <div th:if="${obj.goods_main_photo != null}" class="swiper-slide swiper-slide-duplicate-active"
-                             th:data-id="${obj.id}" style="width: 519px;" data-swiper-slide-index="1">
-                            <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}"
-                                 alt="Character  Sport  Bike Helmet">
-                            <!-- 放大镜 -->
-                            <div class="cover"></div>
-                        </div>
-
-                        <div th:if="${obj.goods_photos !=  null && obj.goods_photos.size() >0 }"
-                             th:each="img,iter: ${obj.goods_photos}" class="swiper-slide swiper-slide-duplicate-active"
-                             th:data-id="${obj.id}" style="width: 519px;" data-swiper-slide-index="1">
-                            <img th:src="@{'/'+${img.path}+'/'+${img.name}}" alt="Character  Sport  Bike Helmet"
-                                 th:data-index="${iter.count}">
-                            <!-- 放大镜 -->
-                            <div class="cover"></div>
-                        </div>
-
-
-                    </div>
-                    <div class="swiper-pagination swiper-pagination-fraction"><span
-                            class="swiper-pagination-current">2</span> / <span class="swiper-pagination-total">2</span>
-                    </div>
-                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-                <div class="swiper-container gallery-thumbs JH-GalleryThumbs gallery_thumb_T8f swiper-container-horizontal swiper-container-ios swiper-container-thumbs">
-                    <div class="swiper-wrapper"
-                         style="height: 100px; transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
-                        <!--177.667-->
-
-                        <div th:if="${obj.goods_main_photo != null}"
-                             class="swiper-slide swiper-slide-min swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
-                             th:data-id="${obj.id}" style="width: 74.8333px; margin-right: 14px;">
-                            <div>
-                                <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}"
-                                     alt="Character  Sport  Bike Helmet">
+                <div>
+                    <div id="sw666" style="height: 490px;">
+                        <div id="gallery" class="swiper-container main">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+                                    <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                                </div>
+                                <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"  th:each="img,item: ${obj.goods_photos}">
+                                    <img data-src="" th:src="@{'/'+${img.path}+'/'+${img.name}}">
+                                </div>
                             </div>
                         </div>
-                        <div th:if="${obj.goods_photos !=  null && obj.goods_photos.size() >0 }"
-                             th:each="img,iter: ${obj.goods_photos}"
-                             class="swiper-slide swiper-slide-min swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
-                             th:data-id="${obj.id}" style="width: 74.8333px; margin-right: 14px;">
-                            <div>
-                                <img th:src="@{'/'+${img.path}+'/'+${img.name}}" alt="Character  Sport  Bike Helmet">
+                    </div>
+                    <div id="suolvu">
+                        <div id="thumbs" style="height: 125px" class="swiper-container doli">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
+                                    <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                                </div>
+                                <div class="swiper-slide" th:if="${obj.goods_photos !=  null }" th:each="img,iter: ${obj.goods_photos}">
+                                    <img th:src="@{'/'+${img.path}+'/'+${img.name}}">
+                                </div>
                             </div>
                         </div>
-
+                        <style>
+                            #thumbs img{
+                                display: block;
+                                width: 100%;
+                                height: 80px;
+                            }
+                        </style>
                     </div>
-                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-                <div class="swiper-button-prev iconfont icon-back-copy JH-Prev swiper-button-disabled swiper-button-lock"
-                     tabindex="0" role="button" aria-label="Previous slide" aria-disabled="true"></div>
-                <div class="swiper-button-next iconfont icon-next-copy JH-Next swiper-button-disabled swiper-button-lock"
-                     tabindex="0" role="button" aria-label="Next slide" aria-disabled="true"></div>
-                <script type="text/javascript">
-                    var thumbsSwiper = new Swiper('.gallery_thumb_T8f', {
-                        watchOverflow: true,
-                        spaceBetween: 14,
-                        slidesPerView: 6,
-                        slidesPerGroup: 6,
-                        watchSlidesVisibility: true,
-                        initialSlide: 0,
-                        navigation: {
-                            nextEl: '.swiper-button-next',
-                            prevEl: '.swiper-button-prev',
-                        },
-                        breakpoints: {
-                            768: {
-                                slidesPerView: 4.5,
-                                slidesPerGroup: 1
-                            }
-                        },
-                        centerInsufficientSlides: true,
-                    });
-                    var gallerySwiper = new Swiper('.gallery_top_XRm', {
-                        watchOverflow: true,
-                        autoplay: false,
-                        slidesPerView: 1,
-                        loop: true,
-                        autoHeight: true,
-                        initialSlide: 0,
-                        pagination: {
-                            el: '.swiper-pagination',
-                            type: 'fraction',
-                        },
-                        breakpoints: {
-                            768: {
-                                navigation: {
-                                    nextEl: '.recom-item .swiper-button-next',
-                                    prevEl: '.recom-item .swiper-button-prev',
-                                },
-                            }
-                        },
-                        thumbs: {
-                            swiper: thumbsSwiper,
-                        },
-                    });
-                    var objTop = $('.gallery_top_XRm .swiper-slide');
-                    var bannerSlide = function (banner_id) {
-                        for (var i = 0; i < objTop.length; i++) {
-                            if ($(objTop[i]).attr("data-id") === banner_id) {
-                                gallerySwiper.slideTo(i, 500, false);
-                                return
-                            }
-                        }
-                    };
-                </script>
+                </div>
             </div>
         </div>
+
         <!--右侧==>商品信息价格模块-->
         <div class="recom-item paddL80 J-Product" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
             <div class="flipclock">
@@ -605,14 +502,13 @@
             <link itemprop="availability" href="http://schema.org/InStock">
             <h4 class="title sl-main-title" itemprop="name" th:text="${obj.goodsName}"></h4>
 
-
             <div class="product-price">
                 <ul>
                     <li>
                         <span class="detbt" th:text="#{messages.price.normal}"> </span>
                         <span class="through">
-                                        <span th:text="'¥'+${obj.goodsPrice}"></span>
-                                    </span>
+                            <span th:text="'¥'+${obj.goodsPrice}"></span>
+                        </span>
                     </li>
 
                     <li th:unless="${obj.groupBuy==2}">
@@ -653,20 +549,79 @@
             </div>
 
             <!-- 规格属性 -->
-
-            <div class="types-item J-Attribute" id="specification" th:if="${obj.specification != null}"
-                 th:each="spec : ${obj.specification}">
-                <span th:text="${spec.name+':'}"></span>
-                <div class="product-types-select">
-                    <select class="gsp">
-                        <!--<option disabled="" selected="" value="0">Select</option>-->
-                        <option  th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}"
-                                th:value="${gsp.id}"
-                                th:text="${gsp.value}"></option>
-                    </select>
+            <div class="types-item J-Attribute" id="specification" th:if="${obj.specification != null}"  th:each="spec : ${obj.specification}">
+                <div>
+                    <span th:text="${spec.name+':'}"></span>
+                    <span class="color"></span>
+                    <span class="chima"></span>
                 </div>
-            </div>
+                <div class="chose_box" th:each="gsp : ${obj.goods_specs}" th:if="${gsp.spec.id == spec.id}">
+                    <div class="yuan" th:if="${gsp.accessory !=  null}" th:data-color="${gsp.value}" th:gsp="${gsp.id}" th:data-id="${obj.id}" th:style="'background-image: url('+@{${gsp.accessory.path+'/'+gsp.accessory.name}}+');background-size: cover !important;'">
+                    </div>
+                    <div class="kuang " th:unless="${gsp.accessory !=  null}" th:text="${gsp.value}" th:gsp="${gsp.id}">
+                    </div>
+                </div>
 
+                <script>
+                    $(".chose_box .kuang").click(function () {
+                        $(this).parents(".types-item").find(".chima").text($(this).text());
+                        $(".chose_box .kuang").removeClass("check");
+                        $(this).addClass("check");
+                    })
+
+                    $(".chose_box .yuan").click(function () {
+                        $(this).parents(".types-item").find(".color").text($(this).attr("data-color"));
+                        $(".chose_box .yuan").removeClass("chimacheck");
+                        $(this).addClass("chimacheck");
+                        var id=$(this).attr('data-id');
+                        var gsp=$(this).attr('gsp');
+                        goods_spec_set(id,gsp);
+                    })
+                </script>
+
+                <style>
+
+                    .chose_box{
+                        display: inline-block;
+                        padding: 10px 0;
+                    }
+
+                    .chose_box div.yuan{
+                        width: 40px;
+                        height: 40px;
+                        background: black;
+                        border: 4px solid #999;
+                        margin-right: 10px;
+                        border-radius: 50%;
+                    }
+
+                    .chose_box div.kuang{
+                        width: 60px;
+                        height: 30px;
+                        line-height: 30px;
+                        color: #fff;
+                        background: #aaa;
+                        margin-right: 10px;
+                        text-align: center;
+                        border-radius: 5px;
+                    }
+
+                    .chose_box div.check{
+                        background: #333;
+                    }
+                    .chose_box div.chimacheck{
+                        border: 4px solid yellow;
+
+                    }
+
+                    #thumbs img{
+                        display: block;
+                        height: 80px;
+                    }
+
+                </style>
+
+                </div>
             <div class="select-tips J-SelectTips"></div>
 
             <div class="types-btn">
@@ -792,7 +747,6 @@
                         }
                     </script>
                 </div>
-
             </div>
 
             <div class="good-quantity-tips J-InventoryQuantity"></div>
@@ -961,6 +915,27 @@
             "currency": "USD",
             "value": "12.00"
         });
+
+
+        setTimeout(function () {
+            var mySwiper2 = new Swiper('#thumbs', {
+                spaceBetween: 10,
+                slidesPerView: 5,
+                watchSlidesVisibility: true,//防止不可点击
+            })
+
+            var mySwiper1 = new Swiper('#gallery', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                spaceBetween: 10,
+                thumbs: {
+                    swiper: mySwiper2,
+                }
+            })
+
+        }, 1000);
     </script>
 
 
@@ -1150,9 +1125,7 @@
             e.preventDefault();
         })
 
-        // $("#add_cart").on('click', function () {
-            $("#add_cart").click(function(){
-            console.log("add_cart============")
+        $("#add_cart").click(function(){
             var id = $(this).attr('data-id');
             var storeId = $(this).attr('data-name');
             var groupBuy = jQuery("#gropBuy").val();
@@ -1180,15 +1153,15 @@
                     if ($("#specification").length == 0) {
                         add = true;
                     } else {
-                        jQuery("#specification").each(function () {
-                            jQuery.each($(".gsp option:selected"), function () {
-                                gsp = $(this).val() + "," + gsp;
-                            });
-                            if ($(".gsp option:selected").val() == 0) {
-                                add = false;
-                                alert("请选择规格！！！")
+                        var s=$(".chose_box >div");
+                        s.each(function(){
+                            if($(this).hasClass('chimacheck')){
+                                gsp=gsp+$(this).attr("gsp")+',';
+                            }else if($(this).hasClass('check')){
+                                gsp=gsp+$(this).attr("gsp")+',';
                             }
-                        });
+                        })
+
                     }
                     console.log(gsp);
                     var count = jQuery("#goods_count").val();
@@ -1245,14 +1218,14 @@
                 if($("#specification").length==0){
                     add=true;
                 }else{
-                    jQuery("#specification").each(function () {
-                        jQuery.each($(".gsp option:selected"), function () {
-                            gsp =$(this).val() + "," + gsp;
-                        });
-                        if ($(".gsp option:selected").val() == 0){
-                            add = false;
+                    var s=$(".chose_box >div");
+                    s.each(function(){
+                        if($(this).hasClass('chimacheck')){
+                            gsp=gsp+$(this).attr("gsp")+',';
+                        }else if($(this).hasClass('check')){
+                            gsp=gsp+$(this).attr("gsp")+',';
                         }
-                    });
+                    })
                 }
                 var count = jQuery("#goods_count").val();
                 if (count == 0) {
@@ -1276,7 +1249,96 @@
                 }
             }
         })
+
     })
+
+    /**
+     * 根据不同的规格加载不同的价格
+     * @param id
+     */
+    function goods_spec_set(id,gsp) {
+        var load = true;
+        if (load) {
+            $.post("/load_goods_gsp.htm", {"id":id, "gsp": gsp},function (data) {
+                var res =JSON.parse(data);
+                var  goods_inventory = res.count;
+                var  store_price = res.price;
+                var groupBuy = $("#groupBuy").val();
+                if(groupBuy == '2'){
+                    $("#gg_price").text(store_price);
+                }else{
+                    $("#store_price").text(store_price);
+                }
+                $("#inventory").text(goods_inventory);
+                var paths= res.path;
+                setSwStr(paths);
+            });
+        }
+    }
+    /**
+     * 不同属性不同照片
+     */
+    function setSwStr(paths){
+        let str ='';
+        let suolueStr ='';
+        if(paths){
+            str=`<div id="gallery" class="swiper-container main">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">`;
+            suolueStr= `<div id="thumbs" style="height: 125px" class="swiper-container doli">
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">`;
+            let s='';
+            let suo='';
+            for(item in paths){
+                s=s+` <div class="swiper-slide">
+                                        <img src="`+paths[item]+`">
+                                    </div>`;
+                suo=suo+`<div class="swiper-slide">
+                                        <img src="`+paths[item]+`" >
+                                    </div>`;
+            }
+            str =str+s+``;
+            suolueStr =suolueStr + suo+`</div>
+                            </div>`;
+        }else{
+            str=`<div id="gallery" class="swiper-container main">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3218732665,2311223579&fm=26&gp=0.jpg">
+                                    </div>
+                            </div>
+                        </div>`;
+            suolueStr= `<div id="thumbs" style="height: 125px" class="swiper-container doli">
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">
+                                   <div class="swiper-slide">
+                                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3218732665,2311223579&fm=26&gp=0.jpg">
+                                    </div>
+                                </div>
+                            </div>`
+        }
+
+        $("#sw666").html(str);
+        $("#suolvu").html(suolueStr);
+        var mySwiper2 = new Swiper('#thumbs', {
+            spaceBetween: 10,
+            slidesPerView: 5,
+            watchSlidesVisibility: true,//防止不可点击
+        })
+
+        var mySwiper1 = new Swiper('#gallery', {
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            spaceBetween: 10,
+            thumbs: {
+                swiper: mySwiper2,
+            }
+        })
+    }
 
     function add_goods_to_cart(id,count,price,gsp,flag){
         console.log('gsp',gsp);

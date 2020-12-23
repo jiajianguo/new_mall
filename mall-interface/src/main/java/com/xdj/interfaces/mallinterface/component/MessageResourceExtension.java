@@ -1,4 +1,4 @@
-package com.xdj.interfaces.mallinterface.component;//package com.example.springboot.i18n.component;
+package com.xdj.interfaces.mallinterface.component;
 //
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
