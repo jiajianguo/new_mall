@@ -496,7 +496,7 @@ public class CartController {
                     goodsCartService.save(cart);
                     res.setCode("200");
                     res.setMsg("successs");
-                    res.setData(count);
+                    res.setData(cart.getId());
                     return res;
                 }else{
                     res.setMsg("不能购买自己的商品");

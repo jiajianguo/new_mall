@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract interface IGoodsCartService
 {
-  public abstract boolean save(ShoppingGoodscart paramGoodsCart);
+  public abstract int save(ShoppingGoodscart paramGoodsCart);
 
   public abstract ShoppingGoodscart getObjById(Long paramLong);
 

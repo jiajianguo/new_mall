@@ -29,13 +29,8 @@
 
    @Override
    @CachePut(cacheNames = "insertgoodsCart",condition = "#goodsCart != null")
-   public boolean save(ShoppingGoodscart goodsCart){
-     try{
-       this.goodsCartDao.insertSelective(goodsCart);
-       return true;
-     } catch (Exception e) {
-       e.printStackTrace();
-     }return false;
+   public int save(ShoppingGoodscart goodsCart){
+       return  this.goodsCartDao.insertSelective(goodsCart);
    }
 
    @Override

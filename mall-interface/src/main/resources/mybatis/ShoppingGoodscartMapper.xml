@@ -175,7 +175,7 @@
       #{ofId,jdbcType=BIGINT}, #{cartType,jdbcType=VARCHAR}, #{scId,jdbcType=BIGINT},
       #{specInfo,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingGoodscart">
+  <insert id="insertSelective" parameterType="com.xdj.www.entity.ShoppingGoodscart" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into shopping_goodscart
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

@@ -356,24 +356,21 @@
                                         </object>
                                         <div>
                                             <div class="goods_name" th:text="${obj.goods.goodsName}"></div>
-                                            <div class="goods_sp">衣服 黑色 L </div>
+                                            <div class="goods_sp" th:text="${obj.specInfo}"></div>
                                             <div class="hover_goods_item_price" th:text="'￥'+${obj.price}"></div>
                                         </div>
-
                                     </div>
                                     <div>
-                                        <!--                                <div class="hover_goods_item_price" th:text="'￥'+${obj.price}+' × '+${obj.count}"></div>-->
-                                        <div th:text="' × '+${obj.count}"></div>
-                                        <!--                                    <p class="del" th:data-id="${obj.id}">删除</p>-->
+                                        <div th:text="'X'+${obj.count}"></div>
                                         <img class="removebt del" src="/asset/img/remove.png" th:data-id="${obj.id}"/>
                                     </div>
-
                                 </div>
                             </div>
+
                             <div class="popupbtzong">
                                 <div class="popuppay-row">
                                     <div>total：￥</div>
-                                    <p class="popuppay" th:text="${total} "></p>
+                                    <p class="popuppay" th:text="${total}"></p>
                                 </div>
 
                                 <button class="popup-bt1">进入购物车</button>
@@ -456,21 +453,21 @@
         <div class="recom-item thumbnail">
             <div class="product-details-banner">
                 <div>
-                    <div id="sw666" style="height: 490px;">
+                    <div id="sw666" style="height: 600px;width:600px">
                         <div id="gallery" class="swiper-container main">
                             <div class="swiper-pagination"></div>
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
-                                    <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}">
+                                    <img th:src="@{'/'+${obj.goods_main_photo.path}+'/'+${obj.goods_main_photo.name}}" style="height: 580px;width:600px">
                                 </div>
-                                <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"  th:each="img,item: ${obj.goods_photos}">
+                                <div class="swiper-slide" th:if="${obj.goods_photos !=  null }"  th:each="img,item: ${obj.goods_photos}" style="height: 580px;width:600px">
                                     <img data-src="" th:src="@{'/'+${img.path}+'/'+${img.name}}">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="suolvu">
-                        <div id="thumbs" style="height: 125px" class="swiper-container doli">
+                        <div id="thumbs" style="height: 100px" class="swiper-container doli">
                             <div class="swiper-pagination"></div>
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide" th:if="${obj.goods_main_photo != null}">
@@ -903,8 +900,6 @@
     <!-- 最近购买 -->
     <div class="J-lastSale-wrap"></div>
 
-    <!-- 激励分享弹窗 -->
-
     <!-- 详情页数据上报 -->
     <script type="text/javascript">
         typeof fbq == 'function' && fbq('track', 'ViewContent', {
@@ -1163,7 +1158,6 @@
                         })
 
                     }
-                    console.log(gsp);
                     var count = jQuery("#goods_count").val();
                     if (count == 0) {
                         add = false;
@@ -1366,16 +1360,45 @@
                 if(flag){
                     window.location.href = "/goods_cart1.htm";
                 }else{
-                    alert('添加到购物车成功');
-                    $(".goods_num").text(parseInt(num)+parseInt(res.data))
-                }
-            }else{
-                alert(res.msg);
+                    //更新数量
+                    $(".goods_num").text(parseInt(num)+parseInt(res.data));
+                    //添加到数据到购物车环节
+                    add_cart_msg(count,price,);
+                    //定时器4秒后隐藏购物车信息
+                    }
             }
-
         });
     }
 
+    function add_cart_msg(id,path,spec,price,name,count){
+        var str=`<div class="flex-between hover_goods_item" >
+                                    <div class="flex-star goods_intro">
+                                        <object>
+                                            <a href="/goods.htm?id=`+id+`">
+                                                <img  class="shopimg"  src="`+path+`" >
+                                            </a>
+                                        </object>
+                                        <div>
+                                            <div class="goods_name" > `+name+`</div>
+                                            <div class="goods_sp" >`+spec+`</div>
+                                            <div class="hover_goods_item_price" >￥`+price+`</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div >X`+count+`</div>
+                                        <img class="removebt del" src="/asset/img/remove.png" data-id="`+id+`"/>
+                                    </div>
+                                </div>`;
+        //
+        var s=$(".shop-row");
+        $(".popupbtzong").before(str);
+        //加入产品价格
+        var p=$(".popuppay-row p[class=popuppay]").text();
+        if(!p){
+            p='0.00';
+        }
+        $(".popuppay-row p[class=popuppay]").text(parseFloat(p).toFixed(2)+parseFloat(price).toFixed(2)*parseInt(count));
+    }
 
 </script>
 </body>
