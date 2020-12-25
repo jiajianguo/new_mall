@@ -11984,11 +11984,6 @@ h3.title {
     }
 }
 
-.head-buycart:hover .cart_hover{
-    display: block;
-}
-
-
 .goods_num {
     position: absolute;
     background: white;

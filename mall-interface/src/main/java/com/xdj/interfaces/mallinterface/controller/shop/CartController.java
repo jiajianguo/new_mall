@@ -474,7 +474,6 @@ public class CartController {
                             }
                         }
                     }
-
                     ShoppingGoodscart cart = new ShoppingGoodscart();
                     cart.setDeletestatus(false);
                     cart.setScId(sc.getId());
@@ -494,9 +493,19 @@ public class CartController {
                     cart.setCount(Integer.parseInt(count));
                     cart.setGoodsId(goods.getId());
                     goodsCartService.save(cart);
+                    JSONObject data = new JSONObject();
+                    data.put("id",cart.getId());
+                    data.put("name",goods.getGoodsName());
+                    data.put("specInfo",cart.getSpecInfo());
+                    accessoryViewTools.addMainPhoto(goods);
+                    String path="";
+                    if(goods.getGoods_main_photo() != null){
+                        path ="/"+goods.getGoods_main_photo().getPath()+"/"+goods.getGoods_main_photo().getName();
+                    }
+                    data.put("path",path);
                     res.setCode("200");
                     res.setMsg("successs");
-                    res.setData(cart.getId());
+                    res.setData(data);
                     return res;
                 }else{
                     res.setMsg("不能购买自己的商品");

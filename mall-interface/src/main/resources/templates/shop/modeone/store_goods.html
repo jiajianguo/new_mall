@@ -84,16 +84,15 @@
     </style>
     <div class="ui-content" style="padding-bottom: 0">
         <div class="page_nav flex-center">
-				<div class="flex-star" style="width: auto">
+            <div class="flex-star" style="width: auto">
                     <span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
                         <span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
                             <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}"
                                th:text="${cugc.classname}"></a>
                         </span>
                     </span>
-                </div>
+            </div>
         </div>
-        <hr>
         <div class="search_box flex-between">
             <input type="text" placeholder="搜索" name="keyword" id="keyword" value=""/>
             <svg class="icon" aria-hidden="true" id="search">

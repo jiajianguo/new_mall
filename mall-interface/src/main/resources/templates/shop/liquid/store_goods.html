@@ -1334,6 +1334,11 @@
         })
     }
 
+    $(".head-buycart").mouseover(function(){
+        $(".cart_hover").css('display','block');
+    }).mouseout(function(){
+        $(".cart_hover").css('display','none');
+    });
     function add_goods_to_cart(id,count,price,gsp,flag){
         console.log('gsp',gsp);
         var type='';
@@ -1347,6 +1352,9 @@
         }
 
         var num=$(".goods_num").text();
+        if(!num){
+            num='0';
+        }
         jQuery.post("/addGoodsCart", {
             "id": id,
             "count": count,
@@ -1361,13 +1369,20 @@
                     window.location.href = "/goods_cart1.htm";
                 }else{
                     //更新数量
-                    $(".goods_num").text(parseInt(num)+parseInt(res.data));
+                    $(".goods_num").text(parseInt(num)+parseInt(count));
                     //添加到数据到购物车环节
-                    add_cart_msg(count,price,);
+                    add_cart_msg(res.data.id,res.data.path,res.data.specInfo,price,res.data.name,count);
+                    //显示购物车信息
+                    $(".cart_hover").css('display','block');
                     //定时器4秒后隐藏购物车信息
-                    }
+                    window.setTimeout("hide()",4000);
+                }
             }
         });
+    }
+
+    function hide(){
+        $(".cart_hover").css('display','none');
     }
 
     function add_cart_msg(id,path,spec,price,name,count){
@@ -1391,15 +1406,14 @@
                                 </div>`;
         //
         var s=$(".shop-row");
-        $(".popupbtzong").before(str);
+        $(".shop-row").append(str);
         //加入产品价格
         var p=$(".popuppay-row p[class=popuppay]").text();
         if(!p){
             p='0.00';
         }
-        $(".popuppay-row p[class=popuppay]").text(parseFloat(p).toFixed(2)+parseFloat(price).toFixed(2)*parseInt(count));
+        $(".popuppay-row p[class=popuppay]").text((parseFloat(p)+parseFloat(price)*parseInt(count)).toFixed(2));
     }
-
 </script>
 </body>
 </html>
