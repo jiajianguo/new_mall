@@ -1,7 +1,6 @@
 package com.xdj.interfaces.mallinterface.controller.shop;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.Gson;
 import com.xdj.interfaces.mallinterface.controller.view.*;
 import com.xdj.interfaces.mallinterface.mv.JModelAndView;
@@ -20,8 +19,6 @@ import com.xdj.interfaces.mallinterface.pay.tenpay.util.TenpayUtil;
 import com.xdj.interfaces.mallinterface.pay.util.ChinaBankSubmit;
 import com.xdj.interfaces.mallinterface.security.SecurityUserHolder;
 import com.xdj.interfaces.mallinterface.service.*;
-import com.xdj.interfaces.mallinterface.service.impl.TemplateServiceImpl;
-import com.xdj.interfaces.mallinterface.util.QrCodeUtils;
 import com.xdj.www.core.domain.virtual.SysMap;
 import com.xdj.www.core.tools.CommUtil;
 import com.xdj.www.core.tools.Md5Encrypt;
@@ -38,7 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -1356,6 +1352,9 @@ public class PayContoller {
         }
         List sms = new ArrayList();
         String business = payment.getPaypalUserid();
+
+        System.err.println("business:paypal---"+business);
+
         sms.add(new SysMap("business", business));
         String return_url = url + "/paypal_return.htm";
         String notify_url = url + "/paypal_notify.htm";

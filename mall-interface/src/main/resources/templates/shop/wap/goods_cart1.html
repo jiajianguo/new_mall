@@ -54,7 +54,7 @@
 				<button  th:unless="${address }" type="button" onclick="javascript:window.location.href='/buyer/address_add.htm'" th:text="#{messages.add}"></button>
 			</div>-->
 				<div class="page_tit">购物车</div>
-				<div class="goodscartList"  >
+				<div class="goodscartList" th:if="${carts.size()>0}">
 					<div th:each="sc : ${data}">
 						<div class="goodscartStore flex-between">
 							<div class="Store_box flex-star">
@@ -116,6 +116,13 @@
 					</div>
 				</div>
 
+			<div class="goodscartList" th:unless="${carts.size()>0}">
+					<div class="content_text">
+							<img class="cartimg" src="/asset/img/carttp.png" >
+							<p th:text="#{messages.cart.notice}"></p>
+					</div>
+			</div>
+
 				<div class="page_bottom">
 					<div class="bottom_box1 flex-between">
 						<label class="flex-star">
@@ -142,8 +149,44 @@
 					-->
 				</div>
 
+			<div class="ui-shade" style="z-index: 1000">
+				<input type="hidden" name="gc_id" id="gc_id" value="">
+				<div class="ui-modal"  onclick="modal(event)">
+					<svg class="icon modal_close" aria-hidden="true">
+						<use xlink:href="#icon-quxiao"></use>
+					</svg>
+					<div class="goods_into flex-star">
+						<img class="goods_img" src="" >
+						<div class="goods_tit">
+							<div id="goods_name"></div>
+							<div class="shose_spec">
+								<b>已选:</b>
+								<span></span>
+							</div>
+						</div>
+					</div>
+					<div class="goods_spec">
+					</div>
+					<!--<div class="spec_line">
+                        <div class="spec_tit">
+                            Quantité
+                        </div>
+                        <div class="num_opt flex-star">
+                            <div class="flex-center" id="add_count">-</div>
+                            <input type="number" name="" id="goods_count" value="1" />
+                            <div class="flex-center" id="sub">+</div>
+                        </div>
+                    </div>-->
+					<div class="modal_btn flex-between">
+						<input type="button" class="" name="mal_btn" id="sure" value="Oui." />
+						<input type="button" class="" name="mal_btn" id="cancel" value="Annuler" />
+					</div>
 
-			<div th:unless="${carts.size()>0}" class="ui-pane">
+				</div>
+			</div>
+
+
+			<!--<div th:unless="${carts.size()>0}" class="ui-pane">
 				<div class="ui-content">
 					<div class="content">
 						<div class="content_text">
@@ -153,47 +196,15 @@
 					</div>
 				</div>
 				<div class="Nav"></div>
-			</div>
+			</div>-->
 
 			<!--<div class="page_modal_box" style="z-index: 10000000;">-->
-				<div class="ui-shade" style="z-index: 1000">
-					<input type="hidden" name="gc_id" id="gc_id" value="">
-					<div class="ui-modal"  onclick="modal(event)">
-						<svg class="icon modal_close" aria-hidden="true">
-							<use xlink:href="#icon-quxiao"></use>
-						</svg>
-						<div class="goods_into flex-star">
-							<img class="goods_img" src="" >
-							<div class="goods_tit">
-								<div id="goods_name"></div>
-								<div class="shose_spec">
-									<b>已选:</b>
-									<span></span>
-								</div>
-							</div>
-						</div>
-						<div class="goods_spec">
-						</div>
-						<!--<div class="spec_line">
-							<div class="spec_tit">
-								Quantité
-							</div>
-							<div class="num_opt flex-star">
-								<div class="flex-center" id="add_count">-</div>
-								<input type="number" name="" id="goods_count" value="1" />
-								<div class="flex-center" id="sub">+</div>
-							</div>
-						</div>-->
-						<div class="modal_btn flex-between">
-							<input type="button" class="" name="mal_btn" id="sure" value="Oui." />
-							<input type="button" class="" name="mal_btn" id="cancel" value="Annuler" />
-						</div>
 
-					</div>
-				</div>
 			<!--</div>-->
 		</div>
 	</div>
+
+
 </body>
 <script type="text/javascript">
 	$(".spec_box").click(function(){
