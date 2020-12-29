@@ -123,143 +123,67 @@
 <body class="template1-body" style="">
 <div class="nav-model-mask J-Mask"></div>
 <div class="nav-drawer drawer J-Nav-Drawer">
-    <div class="close" style="padding-left: 0.5rem ">
-        <i class="iconfont icon-close" style="font-size: 24px;"></i>
+    <div class="close" style="">
+        <i class="iconfont icon-close" style="font-size: 24px;margin-left: 140px"></i>
     </div>
     <ul class="nav-ul sl-subhead-title">
-        <li class="nav-item sl-subhead-title">
-            <a href="/user/login.htm" th:text="#{messages.login}"></a>
-        </li>
-        <li class="nav-item sl-subhead-title">
-            <a href="/register.htm" th:text="#{messages.register}"> </a>
+        <li class="nav-item sl-subhead-title" th:each="c,index : ${ugcaccsorry}">
+            <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${store.id})}" th:text="${c.classname}"></a>
         </li>
     </ul>
-
-
-</div>
-<div class="buy-cart-box drawer J-BuyCart--Box J-CartList" style="display: none;">
-    <h3 class="buy-title sl-main-title">
-        Your Cart <span class="close iconfont icon-close"></span>
-    </h3>
-
-    <div class="flex-main">
-        <div class="cart-discount-tips J-CartDiscountTips sl-subhead-title">
-            <span class="iconfont icon-yduizhekou"></span>
-            <em></em>
-        </div>
-
-        <ul class="buy-product-list clearfloat J-BuyProduct"></ul>
-        <div class="cart-comments display-none">
-            <p>Comment</p>
-            <div>
-                <textarea class="jh-textarea J-Textarea"></textarea>
-            </div>
-        </div>
-        <div class="currency-tips">
-            All orders are processed in
-			<span class="payment-currency">USD</span>.
-            While the content of your cart is currently displayed in
-			<span class="display-currency">CYN</span>,
-            you will checkout using
-			<span class="payment-currency">USD</span>
-            at the most current exchange rate.
-        </div>
-        <div class="total-tips">
-            <span class="iconfont icon-gantanhao"></span>
-            <h4>Out of stock</h4>
-            <p>Some items are no longer available. Your cart has been updated.</p>
-        </div>
-        <div class="cart-coupon-main">
-                            <span class="cart-coupon-open J-CartCouponOpen" style="display: block;">
-                    Have a discount code?                </span>
-            <div style="display: none;">
-                <div class="cart-coupon-box">
-                    <input type="text" class="jh-input J-GetCartCouponVal" placeholder="Discount code">
-                    <button class="jh-btn sl-subhead-title sl-main-btn jh-btn-disabled fr J-GetCartCoupon"
-                            disabled="disabled">
-                        Apply
-                    </button>
-                </div>
-                <div class="J-CartCouponTips"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="buy-cart-total">
-
-        <div class="subtotal-price sl-subhead-title">
-            <span class="fl">Subtotal</span>
-            <span class="fr sl-subhead-title J-Subtotal" data-price="0.00"><strong>$0.00</strong> </span>
-        </div>
-
-        <div class="cart-discount sl-subhead-title">
-            <div class="fl">
-                <span class="fl">Discount</span>
-                <span class="iconfont icon-wenhao J-DiscountTips" style="display: none;"></span>
-                <div class="cartlist-discount-tips">
-                    <p>This discount code cannot be used in conjunction with other promotional or discounted offer.</p>
-                    <span class="iconfont icon-bofang"></span>
-                </div>
-            </div>
-            <span class="fr J-CartDiscount" data-price="0.00"><strong></strong> </span>
-        </div>
-
-        <div class="total-price sl-subhead-title">
-            <span class="fl">Total</span>
-            <span class="fr J-Total" data-price="0.00">USD <strong>$0.00</strong> </span>
-        </div>
-
-        <div class="total-describe">Taxes and shipping calculated at checkout</div>
-
-        <button class="jh-btn sl-subhead-title sl-main-btn J-Gopay JH-Event-CheckOut jh-btn-disabled"
-                disabled="disabled">
-            <span class="btn-text">
-                CHECK OUT                <em class="iconfont icon-right"></em>
-            </span>
-
-            <span class="iconfont icon-jiazai loading">
-
-            </span>
-        </button>
-
-    </div>
 </div>
 
-<div class="buy-cart-box drawer J-BuyCart--Box cart-empty J-CartEmpty" style="display: block;">
-    <div class="buy-cart">
-        <h3 class="buy-title sl-main-title">
-            Your Cart <span class="close iconfont icon-close"></span>
-        </h3>
-        <div class="icon-cart-empty">
-            <span class="iconfont icon-empty-cart"></span>
-        </div>
-        <p>Your cart is empty.</p>
-    </div>
-</div>
-<h1 style="display: none">default</h1>
-<input type="hidden" class="preview-hide-code" value="1">
-<input type="hidden" class="sail-event-page-location" value="index">
-<input type="hidden" class="sail-event-page-handler" value="">
-<input type="hidden" class="sail-event-recommend-product" value="0">
-<input type="hidden" class="J-isPreview" value="0">
-<input type="hidden" class="sail-event-referer" value="https://www.xshoppy.com/advantage/templates">
-<input type="hidden" class="J-PaypalClientId"  value="AegPP-h905NDC0rb2cUvPxTq7LXZ6xT6KfcV5gRDkRklD_A9OJV07WclY1bjmpZoYxwF3UNKOkrK3orn">
-<input type="hidden" class="J-getCurrentState" value="HK" data-flag="https://static.xshoppy.shop/country_image/HK.png">
-<!-- 访客地区 -->
-<input type="hidden" class="J-IsRenovation" value="0">
-<input type="hidden" class="J-language" value="en">
-<input type="hidden" class="J-TemplateStyle" value="general">
 <div class="PageContainer J-PageContainer">
-    <input type="hidden" class="JH-page-location" value="">
-    <input type="hidden" class="JH-currency-tag" value="USD">
-    <input type="hidden" class="JH-Event-Name" value="index">
-    <input type="hidden" class="J-isOpenCurrency" value="0">
-    <input type="hidden" class="J-CurrentStateCode" value="USD" data-symbol="$" data-rate-value="1.0000">
-    <input type="hidden" class="J-currency-code" value="USD" data-symbol="$" data-rate-value="1.0000">
     <input type="hidden" class="J-currency-code" th:value="${store.id}" id="storeId">
     <div class="JH-Columns">
         <div class="head-notice ">
-            <a href="javascript:;"> Enjoy Free Express Shipping on orders over $29 </a>
+            <p>
+                <a href="javascript:;"> Enjoy Free Express Shipping on orders over $29 </a>
+            </p>
+            <hr>
+            <style>
+                .JH-Columns .head-notice  .items_menu_box{
+                    height: 50px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                }
+                .JH-Columns .head-notice  .items_menu_box .items_menu{
+                    height: 50px;
+                    list-style: none;
+                    padding: 0px 15px;
+                    font-size: 20px;
+                    font-weight: bold;
+                    transform: skewX(-20deg);
+                }
+                .JH-Columns .head-notice  .items_menu_box .items_menu:hover{
+                    background-color: #FFFF00;
+                    border-radius: 2px;
+                }
+                .JH-Columns .head-notice  .items_menu_box .items_menu p{
+                    height: 50px;
+                    text-align: center;
+                    line-height: 50px;
+                    font-size: 18px;
+                }
+                @media(max-width:960px)
+                {
+                    .JH-Columns .head-notice  div{
+                        display: none;
+                    }
+                }
+            </style>
+            <div style="width: 100%;height:50px;background-color: #000">
+                <ul class="items_menu_box">
+                    <li th:each="c,index : ${ugcaccsorry}"  class="items_menu">
+                        <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${store.id})}">
+                            <div class="sellers-title-box">
+                                <p class="sellers-title" th:text="${c.classname}">  </p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="header">
             <div class="main head">
@@ -329,16 +253,16 @@
     <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/jquery.js(v=0517)}"></script>
     <script type="text/javascript" th:src="@{https://static.xshoppy.shop/buyer/public/js/plug/Swiper.js(v=0517)}"></script>
     <!-- 商铺信息  -->
-    <div class="page_nav flex-star">
-				<span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
-					<span th:if="${ugc.childs}" th:id="'ugc_child_'+${ugc.id}">
-						<span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
-							<a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${store.id})}"
-                               th:text="${cugc.classname}"></a>
-						</span>
-					</span>
-				</span>
-    </div>
+    <!--<div class="page_nav flex-star">
+        <span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
+            <span th:if="${ugc.childs}" th:id="'ugc_child_'+${ugc.id}">
+                <span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
+                    <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${store.id})}"
+                       th:text="${cugc.classname}"></a>
+                </span>
+            </span>
+        </span>
+    </div>-->
 
 	<!-- 主流商品区 -->
 	<div class="main goods-list clearfloat JH-Columns ">

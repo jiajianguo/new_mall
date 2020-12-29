@@ -425,11 +425,11 @@ footer .foot .share-box > a {
     color: #333;
     background-color: #fff;
     transition: all .35s cubic-bezier(.46, .01, .32, 1);
-    padding-top: .5rem
+    padding-top: .2rem
 }
 
 .nav-drawer.drawer {
-    width: 290px;
+    width: 180px;
     left: -290px;
     display: flex;
     flex-direction: column
@@ -1841,7 +1841,7 @@ footer {
     }
 
     .goods-list .classify-ul .name {
-        font-size: .5973rem
+        font-size: .4rem
     }
 
     .goods-list .classify-ul .img-wrapper {

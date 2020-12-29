@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org"   style="font-size: 40px;">
 <head>
     <meta charset="UTF-8" http-equiv="Content-Type">
-    <title>emode-modeone</title>
+    <title>store-index</title>
     <meta name="description" content="default">
     <meta property="og:site_name" content="default">
     <meta property="og:title" content="default">
@@ -117,6 +117,18 @@
     </style>
 </head>
 <body class="template1-body" style="">
+<div class="nav-model-mask J-Mask"></div>
+<div class="nav-drawer drawer J-Nav-Drawer">
+    <div class="close" style="">
+        <i class="iconfont icon-close" style="font-size: 24px;margin-left:140px; "></i>
+    </div>
+    <ul class="nav-ul sl-subhead-title">
+        <li class="nav-item sl-subhead-title" th:each="c,index : ${ugcaccsorry}">
+            <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${goodsStore.id})}" th:text="${c.classname}"></a>
+        </li>
+    </ul>
+</div>
+
 <!-- 访客地区 -->
 <div class="PageContainer J-PageContainer">
     <input type="hidden" class="J-currency-code" th:value="${goodsStore.id}" id="storeId">
@@ -141,8 +153,14 @@
                     background-color: #FFFF00;
                     border-radius: 2px;
                 }
+                @media(max-width:960px)
+                {
+                    .JH-Columns .head-notice  div{
+                        display: none;
+                    }
+                }
             </style>
-            <div style="width: 100%;height:50px;background-color: #000">
+            <div style="width: 100%;min-height:50px;background-color: #000">
                 <ul class="items_menu_box">
                     <li th:each="c,index : ${ugcaccsorry}"  class="items_menu">
                         <a th:href="@{/goods_list.htm(gc_id=${c.id},store_id=${goodsStore.id})}">
@@ -176,6 +194,7 @@
                         <span class="nav-icon-show bottom"></span>
                     </div>
                     <ul class="nav-ul sl-subhead-title">
+
                     </ul>
                 </div>
 
@@ -380,105 +399,6 @@
         </ul>
     </div>
 
-
-    <!-- 商铺信息
-    <div class="main single-image clearfloat JH-Columns "  style="height: 400px;">
-        <div class="single-image-main"  style="height: 400px;">
-           店铺描述
-            <div class="single-img-text">
-                <img class="lazy-load J-LazyLoad lazy-load-show" data-widths="[]"
-                     data-original="https://img.xshoppy.shop/uploader/78a958a13f598347bbf5f1dc8f108026.png"
-                     src="https://img.xshoppy.shop/uploader/78a958a13f598347bbf5f1dc8f108026.png" alt="">
-            </div>
-             商品展示
-            <div class="single-img-img">
-                <div>
-                    <div class="model-title sl-main-title ">
-                        <div style="font-size: 14px;" >
-                            <div>
-                                <span th:text="#{messages.shop.name}+':'"></span>
-                                <span th:text="${goodsStore.storeName}"></span>
-                            </div>
-                            <div>
-                                <span th:text="#{messages.store.no}"></span>
-                                <span th:text="${goodsStore.id}"></span>
-                            </div>
-                            <div>
-                                <span th:text="#{messages.shop.level}"></span>
-                                <span th:text="${goodsStore.id}"></span>
-                            </div>
-                            <div >
-                                <span th:text="#{messages.store.creattime}"></span>
-                                <span th:text="${#dates.format(goodsStore.addtime,'yyyy-MM-dd')}"></span>
-                            </div>
-                            <div>
-                                <span th:text="#{messages.service.attitude}"></span>
-                                <span >
-                                    <b th:text="${goodsStore.point.serviceEvaluate}"></b>
-                                    <em th:class="${service_css}">
-                                        <span th:text="${service_result}"></span>
-                                        <strong th:text="${service_type }"></strong>
-                                    </em>
-                                </span>
-                            </div>
-                            <div >
-                                <span th:text="#{messages.describle.equal}"></span>
-                                <span >
-                                    <b th:text="${goodsStore.point.descriptionEvaluate}"></b>
-                                    <em th:class="${description_css}">
-                                        <span th:text="${description_result}"></span>
-                                        <strong th:text="${description_type}"></strong>
-                                    </em>
-                                </span>
-                            </div>
-                            <div>
-                                <span th:text="#{messages.delivery.speed}"></span>
-                                <span >
-                                    <b th:text="${goodsStore.point.shipEvaluate}"></b>
-                                    <em th:class="${ship_css}">
-                                        <span th:text="${ship_result}"></span>
-                                        <strong th:text="${ship_type}"> </strong>
-                                    </em>
-                                </span>
-                            </div>
-                            <div >
-                                <span th:text="#{messages.goods.amount}"></span>
-                                <span th:text="${goods_counts }"></span>
-                            </div>
-                            <div >
-                                <span th:text="#{messages.contact.number}"></span>
-                                <span th:text="${goodsStore.storeTelephone}"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="model-describe">
-                        <div style="font-size: 14px;">
-                            <div >
-                                <span th:text="#{messages.plateform.customer}"></span>
-                                <span >
-                                     <a  th:if="${user}" class="im_common" href="javascript:void(0);" th:user_id="${goodsStore.user.id}" th:id="${'userDialog_img_contact_'+goodsStore.user.id}" th:user_name="${goodsStore.user.username}"> 咨询客服</a>
-                                     <a th:unless="${user}" class="im_common" href="javascript:void(0);" th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login">咨询客服 </a>
-                                </span>
-                            </div>
-                            <div >
-                                <span th:text="#{messages.site-off.customer}"></span>
-                                <span >
-                                     <a target="_blank" th:href="@{${'http://wpa.qq.com/msgrd?v=3&uin='+goodsStore.storeQq+'&Site='+goodsStore.storeQq +'&Menu=yes'}}">
-                                     <img th:alt="#{messages.click.sendmessage}" th:src="@{${'http://wpa.qq.com/pa?p=2:'+goodsStore.storeQq+':51'}}" />
-                                   </a>
-                                </span>
-                            </div>
-                            <a  th:if="${user!=null }"  class="jh-btn sl-main-btn"  th:data-id="${goodsStore.id}"  onclick="add_store_favorite(this.getAttribute('data-id'))">收藏店铺 </a>
-                            <a  th:unless="${user !=null}"  th:dialog_uri="@{/user_dialog_login.htm}" dialog_title="会员登录" dialog_width="450" dialog_height="100" dialog_id="user_login" class="jh-btn sl-main-btn" th:data-id="${goodsStore.id}"  onclick="add_store_favorite(this.getAttribute('data-id'))">收藏店铺 </a>
-                            <a class="jh-btn sl-main-btn" href="javascript:;">Our story </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
-
     <footer class="JH-Columns J-footer" style="padding-bottom: 0px;">
         <div class="main">
             <div class="help-center clearfloat">
@@ -529,8 +449,6 @@
             }
         })
     }
-
-
 </script>
 
 </body>

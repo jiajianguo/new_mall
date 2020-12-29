@@ -8,6 +8,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * @author Administrator
+ */
 @Mapper
 public interface ShoppingGoodscartMapper {
     long countByExample(ShoppingGoodscartExample example);

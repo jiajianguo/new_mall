@@ -15,39 +15,7 @@
 
 <div class="ui-pane">
     <div class="Nav"></div>
-    <div class="ui-header">
-        <div class="pclogo flex-star">
-            <a th:href="@{/store.htm(id=${goodsStore.id})}">
-                <img th:if="${goodsStore.storeLogo}"
-                     th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"  style="width: 1.2rem;height: 0.8rem;"/>
-                <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"
-                     style="width: 1.2rem;height: 0.8rem;"/>
-            </a>
-        </div>
-        <a href="/goods_cart1.htm" class="header-button left">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-caidan"></use>
-            </svg>
-        </a>
-        <div class="header-title">
-            <a th:href="@{/store.htm(id=${goodsStore.id})}">
-                <img th:if="${goodsStore.storeLogo}"
-                     th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"
-                     style="width: 1.2rem;height: 0.8rem;"/>
-                <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"
-                     style="width: 1.2rem;height: 0.8rem;"/>
-            </a>
-        </div>
-        <a href="/goods_cart1.htm" class="btn_right">
-            <div class="goodsCart_box">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-gouwu"></use>
-                </svg>
-                <div class="goods_num" id="goods_num" th:text="${cartSize !=null ? cartSize:0}"></div>
-            </div>
 
-        </a>
-    </div>
     <style>
         .page_nav > span{
             height: 1rem;
@@ -84,15 +52,50 @@
     </style>
     <div class="ui-content" style="padding-bottom: 0">
         <div class="page_nav flex-center">
-            <div class="flex-star" style="width: auto">
+				<div class="flex-star" style="width: auto">
                     <span th:each="ugc : ${ugcs}" th:if="${ugc.display}">
-                        <span th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
+                        <span  class="ugc_css" th:if="${ugc.childs}" th:id="${'ugc_child_'+ugc.id}" th:each="cugc : ${ugc.childs}">
                             <a th:href="@{/goods_list.htm(gc_id=${cugc.id},store_id=${goodsStore.id})}"
                                th:text="${cugc.classname}"></a>
                         </span>
                     </span>
-            </div>
+                </div>
         </div>
+
+        <div class="ui-header" style="position: absolute;top:78px;">
+            <div class="pclogo flex-star">
+                <a th:href="@{/store.htm(id=${goodsStore.id})}">
+                    <img th:if="${goodsStore.storeLogo}"
+                         th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"  style="width: .8rem;height: 0.6rem;"/>
+                    <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"  style="width: .8rem;height: 0.6rem;"/>
+                </a>
+            </div>
+            <a href="/goods_cart1.htm" class="header-button left">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-caidan"></use>
+                </svg>
+            </a>
+            <div class="header-title">
+                <a th:href="@{/store.htm(id=${goodsStore.id})}">
+                    <img th:if="${goodsStore.storeLogo}"
+                         th:src="@{${goodsStore.storeLogo.path}+'/'+${goodsStore.storeLogo.name}}"
+                         style="width: 1.2rem;height: 0.8rem;"/>
+                    <img th:unless="${goodsStore.storeLogo}" th:src="@{/style/system/front/default/images/logo.png}"
+                         style="width: 1.2rem;height: 0.8rem;"/>
+                </a>
+            </div>
+            <a href="/goods_cart1.htm" class="btn_right">
+                <div class="goodsCart_box">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-gouwu"></use>
+                    </svg>
+                    <div class="goods_num" id="goods_num" th:text="${cartSize !=null ? cartSize:0}"></div>
+                </div>
+
+            </a>
+        </div>
+
+        <hr>
         <div class="search_box flex-between">
             <input type="text" placeholder="搜索" name="keyword" id="keyword" value=""/>
             <svg class="icon" aria-hidden="true" id="search">
@@ -183,7 +186,7 @@
                         <p>Quantity &nbsp;&nbsp;Inventory&nbsp;&nbsp;  <small id="inventory" style="font-size: .22rem;color: #FEAB27;" th:text="${obj.goodsInventory}"></small></p>
                         <div class="num_box flex-between">
                             <button  id="sub_count" type="button">-</button>
-                            <input type="number" name="count" id="quantity" value="1"/>
+                            <input type="text" name="count" id="quantity" value="1"/>
                             <button id="add_count" type="button">+</button>
                         </div>
                     </div>
@@ -508,39 +511,7 @@
                         </div>`;
                 suolueStr =suolueStr + suo+`</div>
                             </div>`;
-            }else{
-                str=`<div id="gallery" class="swiper-container main">
-                            <div class="swiper-pagination"></div>
-                            <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3218732665,2311223579&fm=26&gp=0.jpg">
-                                    </div>
-                            </div>
-
-                            <div class="swiper-button-prev flex-center">
-                                <svg class="icon" aria-hidden="true">
-                                    <use xlink:href="#icon-left"></use>
-                                </svg>
-                            </div>
-                            <div class="swiper-button-next flex-center">
-                                <svg class="icon" aria-hidden="true">
-                                    <use xlink:href="#icon-right"></use>
-                                </svg>
-                            </div>
-                        </div>`;
-                suolueStr= `<div id="thumbs" class="swiper-container doli">
-                                <div class="swiper-pagination"></div>
-                                <div class="swiper-wrapper">
-                                   <div class="swiper-slide">
-                                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3218732665,2311223579&fm=26&gp=0.jpg">
-                                    </div>
-                                </div>
-                            </div>`
             }
-
-
-
-
 
             $("#sw666").html(str);
             $("#suolvu").html(suolueStr);

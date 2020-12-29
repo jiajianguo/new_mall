@@ -2001,7 +2001,22 @@ $(function () {
     }), $(document).on("click", ".J-Mask", function () {
         SAIL_ENV.config.mask_layer("hide"), 0 < $(".J-TestModal").length && $(".J-TestModal").hide(), y && (y = !1, $(".J-NavShow").removeClass("close"), $(".J-PageContainer").removeClass("PageContainer--show"), $(".J-Nav-Drawer").removeClass("drawer--left")), SAIL_ENV.config.show_buycart && (SAIL_ENV.config.show_buycart = !1, $(".J-BuyCart--Box").removeClass("buy-cart--right"))
     }), $(document).on("click", ".J-NavShow", function () {
-        y ? (y = !1, SAIL_ENV.config.mask_layer("hide"), $(".J-NavShow").removeClass("close"), $(".J-PageContainer").removeClass("PageContainer--show"), $(".J-Nav-Drawer").removeClass("drawer--left"), $(".showcase-body").length && ($(".header").removeClass("color-white"), $(".nav-item-down-menu").slideUp(), $(".nav-item").removeClass("active"), $(".search-popup").removeClass("search-popup--show"))) : (y = !0, SAIL_ENV.config.mask_layer("show"), $(".J-NavShow").addClass("close"), $(".J-Nav-Drawer").addClass("drawer--left"), $(".J-PageContainer").addClass("PageContainer--show"), $(".showcase-body").length && ($(".header").addClass("color-white"), $(".menu-popup").show()))
+        y ? (
+                y = !1,
+                SAIL_ENV.config.mask_layer("hide"),
+                $(".J-NavShow").removeClass("close"),
+                $(".J-PageContainer").removeClass("PageContainer--show"),
+                $(".J-Nav-Drawer").removeClass("drawer--left"),
+                $(".showcase-body").length && ($(".header").removeClass("color-white"),
+                $(".nav-item-down-menu").slideUp(), $(".nav-item").removeClass("active"),
+                $(".search-popup").removeClass("search-popup--show"))
+            ) :
+            (y = !0, SAIL_ENV.config.mask_layer("show"),
+                $(".J-NavShow").addClass("close"),
+                $(".J-Nav-Drawer").addClass("drawer--left"),
+                $(".J-PageContainer").addClass("PageContainer--show"),
+                $(".showcase-body").length && ($(".header").addClass("color-white"),
+                $(".menu-popup").show()))
     }), b.getItem("email") && ($(".J-Subscribe").hide(), $(".newsletter-email").val(SAIL_ENV.language[SAIL_ENV.language.lang].subscribe), $(".newsletter-email").attr("disabled", "disabled").addClass("disable-input")), $(".J-Subscribe").click(function () {
         var t = $(this), a = $.trim(t.siblings(".newsletter-email").val());
         new RegExp(SAIL_ENV.config.EmailReg).test(a) ? $http.post("/buyer/user/subscribe", JSON.stringify({email: a}), function (e) {
