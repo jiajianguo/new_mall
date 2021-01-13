@@ -222,6 +222,27 @@
 			price=$("#store_price").text();
 		}
 
+
+		var gsp="";
+		var load = true;
+		if($(".specification").length==0){
+			load=true;
+		}else{
+			var s=$(".properties-box");
+			if(s){
+				gsp=gsps(s);
+			}else{
+				load=false;
+			}
+			console.log("length====="+gsp.length);
+			console.log("classs====" + $(".specification").length);
+
+			if(gsp.length < $(".specification").length ){
+				load=false;
+				alert("请选择规格属性");
+			}
+		}
+
 		$(".gg-data").each(function(){
 			if($(this).find(".tstext").text() == 0 || $(this).find(".tstext").text() == "选择规格"){
 				$(this).find(".tstext").text("选择规格")
@@ -235,29 +256,12 @@
 				$(this).css({"display":"none"})
 			}
 		})
-
-		var gsp="";
-		var load = true;
-		if($("#specification").length==0){
-			load=true;
-		}else{
-			var s=$(".properties-box");
-			if(s){
-				gsp=gsps(s);
-			}else{
-				load=false;
-			}
-			if(gsp.length < $(".specification").length ){
-				load=false;
-				alert("请选择规格属性");
-			}
-		}
-
 		if(!count_verify(count)){
 			load= false;
 			alert('数量信息有误');
 		}
 		if(load){
+			console.log("261 gsp cart"+gsp);
 			add_goods_to_cart(id,count,price,gsp,false)
 		}else{
 			alert('购物失败');

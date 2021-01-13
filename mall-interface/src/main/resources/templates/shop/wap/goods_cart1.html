@@ -5,6 +5,7 @@
 	<title >Shopping Bag</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="/asset/css/framework.css" />
+	<link rel="stylesheet" type="text/css" href="/asset/css/goods_intro.css"/>
 	<link rel="stylesheet" type="text/css" href="/asset/css/goods_cart.css"/>
 	<script src="/asset/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/asset/js/changePX.js" type="text/javascript" charset="utf-8"></script>
@@ -159,6 +160,7 @@
 						<img class="goods_img" src="" >
 						<div class="goods_tit">
 							<div id="goods_name"></div>
+							<div class="price">$688.00</div>
 							<div class="shose_spec">
 								<b>已选:</b>
 								<span></span>
@@ -234,16 +236,23 @@
 		$(".ui-shade").css("display","none")
 	})
 
+	function gsps(elements){
+		var gsp='';
+		elements.each(function () {
+			if($(this).hasClass('sepc_act')){
+				gsp = $(this).attr("gsp") + "," + gsp;
+			}
+		});
+		return gsp;
+	}
+
 	$("#sure").click(function(){
-		var eles=$("div[class=sepc_act]");
-		var ids='';
-		if(eles){
-			eles.each(function(){
-				if($(this).attr('gsp') != 'undefined' && $(this).attr('gsp') != undefined && $(this).attr('gsp')  != ''){
-					ids=ids+$(this).attr('gsp')+',';
-				}
-			});
+		var ids="";
+		var s=$(".properties-box");
+		if(s){
+			ids=gsps(s);
 		}
+		console.log("ids"+ids)
 		var gc_id=$("#gc_id").val();
 		if(gc_id){
 			if(ids){
@@ -271,12 +280,47 @@
 	let specarr = [];
 	function getspec(_that){
 		$(_that).addClass("sepc_act").siblings().removeClass("sepc_act");
-		$(_that).parents(".spec_line").find(".spec_tit span").text($(_that).text());
+		var p=$(_that).text();
+		if(p){
+			//$(this).parents(".spec_line").find(".spec_tit span[class=tstext]").text($(this).text());
+			$(_that).parents(".spec_line").find(".spec_tit").text($(_that).text());
+		}else{
+			$(_that).parents(".spec_line").find(".spec_tit").text($(_that).find('span[class=gspName]').text());
+		}
+
 		let sepcindex = $(_that).parents(".spec_line").index();
 		specarr[sepcindex] = $(_that).text();
 		$(".shose_spec span").text(specarr.join("，"));
+
+		var id= $(_that).attr('data-id');
+		var gsp =$(_that).attr('gsp');
+		goods_spec_set(id,gsp);
 	}
 
+	/**
+	 * 根据不同的规格加载不同的价格
+	 * @param id 商品id
+	 * @param gsp gspid
+	 */
+	function goods_spec_set(id,gsp) {
+		var load = true;
+		if (load) {
+			$.post("/load_goods_gsp.htm", {"id":id, "gsp": gsp},function (data) {
+				var res =JSON.parse(data);
+				var  store_price = res.price;
+					$(".price").text('￥'+store_price);
+				addimg(res.path);
+			});
+		}
+	}
+
+	function addimg(paths){
+		var data_src="";
+		if(paths.length > 0){
+			data_src =paths[0];
+		}
+		$(".goods_into>img").attr("src",data_src);
+	}
 
 
 	function cartMolda(id){
@@ -288,6 +332,8 @@
 				$(".goods_img").attr('src','/'+res.data.goods_main_photo.path+'/'+res.data.goods_main_photo.name);
 				$("#goods_name").text("");
 				$("#goods_name").text(res.data.goodsName);
+				$(".price").text("");
+				$(".price").text('￥'+res.data.storePrice);
 				if(gsps){
 					$.each(gsps,function(i,n){
 						gsp=gsp +`<div class="spec_line">
@@ -297,9 +343,21 @@
 									</div>
 									<div class="sepc_cont flex-star" >`;
 						var specs= res.data.goods_specs;
-						var spec;
+
 						if(specs){
-							spec=specsdata(n,specs);
+							var spec="";
+							//spec=specsdata(n,specs);
+							$.each(specs,function (i,m) {
+								if(m.spec.id == n.id) {
+									if (m.accessory) {
+										var s=m.accessory.path+'/'+m.accessory.name;
+										spec = spec + `<div class="flex-property colorbacok properties-box" onclick="getspec(this)"  gsp="` + m.id + `" data-id="` + id + `"><div  class="no_spc_img" style="background-image: url(`+s+`); background-size: cover !important'"><span style="display: none" class="gspName">` + m.value + `</span></div> </div>`;
+									}else {
+										spec = spec + `<div onclick="getspec(this)" class="and_spc_img properties-box"  gsp="` + m.id + `" data-id="` + id + `">`+m.value+`</div>`
+									}
+								}
+							});
+
 						}
 						gsp=gsp+spec+`</div> </div>`;
 					});
@@ -313,8 +371,12 @@
 		if(spec){
 			var specs="";
 			$.each(spec,function (i,n) {
-				if(n.spec.id == gsp.id){
-					specs =specs+`<div onclick="getspec(this)"  gsp="`+n.id +`">`+n.value+`</div>`;
+				if(n.spec.id == gsp.id) {
+					if (n.accessory) {
+						specs = specs + `<div onclick="getspec(this)" class="no_spc_img "  gsp="` + n.id + `" style="background-image: url(` + n.accessory.path + `/` + n.accessory.name + `); background-size: cover !important'"><span style="display: none" class="gspName">` + n.value + `</span> </div>`;
+					}else {
+						specs = specs + `<div onclick="getspec(this)" class="and_spc_img properties-box"  gsp="` + n.id + `">`+n.value+`</div>`
+					}
 				}
 			});
 			return specs;
@@ -441,7 +503,7 @@
 						allprice += pricestr;
 					}
 				})
-				$(".allprice").text( "$" + allprice.toFixed(2))
+				$(".allprice").text( "￥" + allprice.toFixed(2))
 			}
 
 </script>
